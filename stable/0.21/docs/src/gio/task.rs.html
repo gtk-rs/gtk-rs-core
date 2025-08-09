@@ -1,91 +1,18 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/task.rs`."><title>task.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a00149764 2025-07-14)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
-
-    function checkDocsLatestStable() {
-        function popup(msg, url) { return `
-            <style scoped="scoped">
-                .popup {
-                    max-width: 16em;
-                    background-color: #fff;
-                    position: fixed;
-                    z-index: 1;
-                    margin-left: auto;
-                    bottom: 1em;
-                    right: 1em;
-                    border-radius: 5px;
-                    box-shadow: 1px 1px 4px #777;
-                }
-
-                .popup a.version {
-                    color: #e57300;
-                    padding: 0.6em 1em;
-                    display: block;
-                }
-                .popup a.version:hover {
-                    color: #b25900;
-                }
-
-                .popup a.close {
-                    color: white;
-                    background: grey;
-                    border-radius: 99px;
-                    display: inline-block;
-                    width: 19px;
-                    line-height: 19px;
-                    font-weight: bold;
-                    text-align: center;
-                    margin: 0.6em;
-                    float: right;
-                }
-                .popup a.close:hover {
-                    background: black;
-                }
-            </style>
-            <section class="popup" id="gir_docs_popup">
-                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
-                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
-                    ⚠ ${msg}
-                </a>
-            </section>
-        ` };
-
-        if ("0.21" == "main") {
-            document.body.insertAdjacentHTML(
-                'beforeend',
-                popup("This is the development version. Go to latest stable version.", "stable/latest")
-            );
-        } else {
-            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
-                .then(response => response.text())
-                .then(latest_branch => {
-                    if (latest_branch.trim() != "0.21") {
-                        document.body.insertAdjacentHTML(
-                            'beforeend',
-                            popup("This version is outdated. Go to latest version.", "stable/latest")
-                        );
-                    }
-                });
-        }
-    }
-</script>
-
-
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>task.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-4"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/task.rs`."><title>task.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (de3efa79f 2025-08-08)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>task.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-4"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
-<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">future::Future</a>, <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>, <a href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
+<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, future::Future, mem::transmute, panic, ptr};
 <a href=#4 id=4 data-nosnippet>4</a>
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>glib::{
-<a href=#6 id=6 data-nosnippet>6</a>    <a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
-<a href=#7 id=7 data-nosnippet>7</a>    signal::{<a href="../../glib/signal/fn.connect_raw.html">connect_raw</a>, <a href="../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>},
-<a href=#8 id=8 data-nosnippet>8</a>    <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>,
+<a href=#6 id=6 data-nosnippet>6</a>    prelude::<span class="kw-2">*</span>,
+<a href=#7 id=7 data-nosnippet>7</a>    signal::{connect_raw, SignalHandlerId},
+<a href=#8 id=8 data-nosnippet>8</a>    translate::<span class="kw-2">*</span>,
 <a href=#9 id=9 data-nosnippet>9</a>};
 <a href=#10 id=10 data-nosnippet>10</a>
 <a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span>futures_channel::oneshot;
 <a href=#12 id=12 data-nosnippet>12</a>
-<a href=#13 id=13 data-nosnippet>13</a><span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="auto/async_result.rs.html#8-106">AsyncResult</a>, <a href="auto/cancellable.rs.html#8-86">Cancellable</a>};
+<a href=#13 id=13 data-nosnippet>13</a><span class="kw">use crate</span>::{ffi, AsyncResult, Cancellable};
 <a href=#14 id=14 data-nosnippet>14</a>
-<a href=#15 id=15 data-nosnippet>15</a><a class="macro" href="../../glib/macro.wrapper.html">glib::wrapper!</a> {
+<a href=#15 id=15 data-nosnippet>15</a><span class="macro">glib::wrapper!</span> {
 <a href=#16 id=16 data-nosnippet>16</a>    <span class="comment">// rustdoc-stripper-ignore-next
 <a href=#17 id=17 data-nosnippet>17</a>    </span><span class="doccomment">/// `LocalTask` provides idiomatic access to gio's `GTask` API, for
 <a href=#18 id=18 data-nosnippet>18</a>    /// instance by being generic over their value type, while not completely departing
@@ -98,14 +25,14 @@
 <a href=#25 id=25 data-nosnippet>25</a>    /// not allow to automatically enforce all the invariants required to be a completely
 <a href=#26 id=26 data-nosnippet>26</a>    /// safe abstraction. See the `Task` type for more details.
 <a href=#27 id=27 data-nosnippet>27</a>    </span><span class="attr">#[doc(alias = <span class="string">"GTask"</span>)]
-<a href=#28 id=28 data-nosnippet>28</a>    </span><span class="kw">pub struct </span><a href="../../gio/struct.LocalTask.html">LocalTask</a>&lt;V: <a href="../../glib/value/trait.ValueType.html">ValueType</a>&gt;(Object&lt;<a href="../../gio_sys/struct.GTask.html">ffi::GTask</a>, <a href="../../gio_sys/type.GTaskClass.html">ffi::GTaskClass</a>&gt;) @implements <a href="auto/async_result.rs.html#8-106">AsyncResult</a>;
+<a href=#28 id=28 data-nosnippet>28</a>    </span><span class="kw">pub struct </span>LocalTask&lt;V: ValueType&gt;(Object&lt;ffi::GTask, ffi::GTaskClass&gt;) @implements AsyncResult;
 <a href=#29 id=29 data-nosnippet>29</a>
 <a href=#30 id=30 data-nosnippet>30</a>    <span class="kw">match fn </span>{
 <a href=#31 id=31 data-nosnippet>31</a>        type_ =&gt; || ffi::g_task_get_type(),
 <a href=#32 id=32 data-nosnippet>32</a>    }
 <a href=#33 id=33 data-nosnippet>33</a>}
 <a href=#34 id=34 data-nosnippet>34</a>
-<a href=#35 id=35 data-nosnippet>35</a><a class="macro" href="../../glib/macro.wrapper.html">glib::wrapper!</a> {
+<a href=#35 id=35 data-nosnippet>35</a><span class="macro">glib::wrapper!</span> {
 <a href=#36 id=36 data-nosnippet>36</a>    <span class="comment">// rustdoc-stripper-ignore-next
 <a href=#37 id=37 data-nosnippet>37</a>    </span><span class="doccomment">/// `Task` provides idiomatic access to gio's `GTask` API, for
 <a href=#38 id=38 data-nosnippet>38</a>    /// instance by being generic over their value type, while not completely departing
@@ -684,7 +611,7 @@
 <a href=#611 id=611 data-nosnippet>611</a>    ///
 <a href=#612 id=612 data-nosnippet>612</a>    /// [`trait@glib::ObjectExt`], [`AsyncResultExt`][trait@crate::prelude::AsyncResultExt]
 <a href=#613 id=613 data-nosnippet>613</a>    </span><span class="attr">#[doc(alias = <span class="string">"GTask"</span>)]
-<a href=#614 id=614 data-nosnippet>614</a>    </span><span class="kw">pub struct </span><a href="../../gio/struct.Task.html">Task</a>&lt;V: <a href="../../glib/value/trait.ValueType.html">ValueType</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>&gt;(Object&lt;<a href="../../gio_sys/struct.GTask.html">ffi::GTask</a>, <a href="../../gio_sys/type.GTaskClass.html">ffi::GTaskClass</a>&gt;) @implements <a href="auto/async_result.rs.html#8-106">AsyncResult</a>;
+<a href=#614 id=614 data-nosnippet>614</a>    </span><span class="kw">pub struct </span>Task&lt;V: ValueType + Send&gt;(Object&lt;ffi::GTask, ffi::GTaskClass&gt;) @implements AsyncResult;
 <a href=#615 id=615 data-nosnippet>615</a>
 <a href=#616 id=616 data-nosnippet>616</a>    <span class="kw">match fn </span>{
 <a href=#617 id=617 data-nosnippet>617</a>        type_ =&gt; || ffi::g_task_get_type(),
@@ -1040,64 +967,64 @@
 <a href=#967 id=967 data-nosnippet>967</a>    }
 <a href=#968 id=968 data-nosnippet>968</a>}
 <a href=#969 id=969 data-nosnippet>969</a>
-<a href=#970 id=970 data-nosnippet>970</a><a class="macro" href="#621-968">task_impl!</a>(LocalTask);
-<a href=#971 id=971 data-nosnippet>971</a><a class="macro" href="#621-968">task_impl!</a>(Task, @bound: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>, @safety: <span class="kw">unsafe</span>);
+<a href=#970 id=970 data-nosnippet>970</a><span class="macro">task_impl!</span>(LocalTask);
+<a href=#971 id=971 data-nosnippet>971</a><span class="macro">task_impl!</span>(Task, @bound: Send, @safety: <span class="kw">unsafe</span>);
 <a href=#972 id=972 data-nosnippet>972</a>
-<a href=#973 id=973 data-nosnippet>973</a><span class="kw">impl</span>&lt;V: <a href="../../glib/value/trait.ValueType.html">ValueType</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>&gt; <a href="#35-619">Task</a>&lt;V&gt; {
+<a href=#973 id=973 data-nosnippet>973</a><span class="kw">impl</span>&lt;V: ValueType + Send&gt; Task&lt;V&gt; {
 <a href=#974 id=974 data-nosnippet>974</a>    <span class="attr">#[doc(alias = <span class="string">"g_task_run_in_thread"</span>)]
 <a href=#975 id=975 data-nosnippet>975</a>    </span><span class="kw">pub fn </span>run_in_thread&lt;S, Q&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, task_func: Q)
 <a href=#976 id=976 data-nosnippet>976</a>    <span class="kw">where
-<a href=#977 id=977 data-nosnippet>977</a>        </span>S: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../glib/object/struct.Object.html">glib::Object</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>,
-<a href=#978 id=978 data-nosnippet>978</a>        Q: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="self">Self</span>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>S&gt;, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
+<a href=#977 id=977 data-nosnippet>977</a>        </span>S: IsA&lt;glib::Object&gt; + Send,
+<a href=#978 id=978 data-nosnippet>978</a>        Q: FnOnce(<span class="self">Self</span>, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>S&gt;, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Cancellable&gt;) + Send + <span class="lifetime">'static</span>,
 <a href=#979 id=979 data-nosnippet>979</a>    {
-<a href=#980 id=980 data-nosnippet>980</a>        <span class="kw">let </span>task_func_data = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#975">task_func</a>);
+<a href=#980 id=980 data-nosnippet>980</a>        <span class="kw">let </span>task_func_data = Box_::new(task_func);
 <a href=#981 id=981 data-nosnippet>981</a>
 <a href=#982 id=982 data-nosnippet>982</a>        <span class="comment">// We store the func pointer into the task data.
 <a href=#983 id=983 data-nosnippet>983</a>        // We intentionally do not expose a way to set the task data in the bindings.
 <a href=#984 id=984 data-nosnippet>984</a>        // If we detect that the task data is set, there is not much we can do, so we panic.
 <a href=#985 id=985 data-nosnippet>985</a>        </span><span class="kw">unsafe </span>{
-<a href=#986 id=986 data-nosnippet>986</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
+<a href=#986 id=986 data-nosnippet>986</a>            <span class="macro">assert!</span>(
 <a href=#987 id=987 data-nosnippet>987</a>                ffi::g_task_get_task_data(<span class="self">self</span>.to_glib_none().<span class="number">0</span>).is_null(),
 <a href=#988 id=988 data-nosnippet>988</a>                <span class="string">"Task data was manually set or the task was run thread multiple times"
 <a href=#989 id=989 data-nosnippet>989</a>            </span>);
 <a href=#990 id=990 data-nosnippet>990</a>
-<a href=#991 id=991 data-nosnippet>991</a>            <a href="../../gio_sys/fn.g_task_set_task_data.html">ffi::g_task_set_task_data</a>(
-<a href=#992 id=992 data-nosnippet>992</a>                <a class="self" href="#975">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#993 id=993 data-nosnippet>993</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#980">task_func_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#994 id=994 data-nosnippet>994</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
+<a href=#991 id=991 data-nosnippet>991</a>            ffi::g_task_set_task_data(
+<a href=#992 id=992 data-nosnippet>992</a>                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+<a href=#993 id=993 data-nosnippet>993</a>                Box_::into_raw(task_func_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#994 id=994 data-nosnippet>994</a>                <span class="prelude-val">None</span>,
 <a href=#995 id=995 data-nosnippet>995</a>            );
 <a href=#996 id=996 data-nosnippet>996</a>        }
 <a href=#997 id=997 data-nosnippet>997</a>
 <a href=#998 id=998 data-nosnippet>998</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>trampoline&lt;V, S, Q&gt;(
-<a href=#999 id=999 data-nosnippet>999</a>            task: <span class="kw-2">*mut </span><a href="../../gio_sys/struct.GTask.html">ffi::GTask</a>,
-<a href=#1000 id=1000 data-nosnippet>1000</a>            source_object: <span class="kw-2">*mut </span><a href="../../gobject_sys/struct.GObject.html">glib::gobject_ffi::GObject</a>,
-<a href=#1001 id=1001 data-nosnippet>1001</a>            user_data: <a href="../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
-<a href=#1002 id=1002 data-nosnippet>1002</a>            cancellable: <span class="kw-2">*mut </span><a href="../../gio_sys/struct.GCancellable.html">ffi::GCancellable</a>,
+<a href=#999 id=999 data-nosnippet>999</a>            task: <span class="kw-2">*mut </span>ffi::GTask,
+<a href=#1000 id=1000 data-nosnippet>1000</a>            source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
+<a href=#1001 id=1001 data-nosnippet>1001</a>            user_data: glib::ffi::gpointer,
+<a href=#1002 id=1002 data-nosnippet>1002</a>            cancellable: <span class="kw-2">*mut </span>ffi::GCancellable,
 <a href=#1003 id=1003 data-nosnippet>1003</a>        ) <span class="kw">where
-<a href=#1004 id=1004 data-nosnippet>1004</a>            </span>V: <a href="../../glib/value/trait.ValueType.html">ValueType</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>,
-<a href=#1005 id=1005 data-nosnippet>1005</a>            S: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../glib/object/struct.Object.html">glib::Object</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>,
-<a href=#1006 id=1006 data-nosnippet>1006</a>            Q: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a href="#35-619">Task</a>&lt;V&gt;, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>S&gt;, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
+<a href=#1004 id=1004 data-nosnippet>1004</a>            </span>V: ValueType + Send,
+<a href=#1005 id=1005 data-nosnippet>1005</a>            S: IsA&lt;glib::Object&gt; + Send,
+<a href=#1006 id=1006 data-nosnippet>1006</a>            Q: FnOnce(Task&lt;V&gt;, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>S&gt;, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Cancellable&gt;) + Send + <span class="lifetime">'static</span>,
 <a href=#1007 id=1007 data-nosnippet>1007</a>        {
-<a href=#1008 id=1008 data-nosnippet>1008</a>            <span class="kw">let </span>task = <a href="../../glib/translate/trait.FromGlibPtrNone.html#tymethod.from_glib_none">Task::from_glib_none</a>(<a href="#999">task</a>);
-<a href=#1009 id=1009 data-nosnippet>1009</a>            <span class="kw">let </span>source_object = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>::&lt;<a href="../../glib/object/struct.Object.html">glib::Object</a>&gt;::from_glib_borrow(<a href="#1000">source_object</a>);
-<a href=#1010 id=1010 data-nosnippet>1010</a>            <span class="kw">let </span>cancellable = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>::&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;::from_glib_borrow(<a href="#1002">cancellable</a>);
-<a href=#1011 id=1011 data-nosnippet>1011</a>            <span class="kw">let </span>task_func: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;Q&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">Box::from_raw</a>(<a href="#1001">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-<a href=#1012 id=1012 data-nosnippet>1012</a>            <a href="#1011">task_func</a>(
-<a href=#1013 id=1013 data-nosnippet>1013</a>                <a href="#1008">task</a>,
-<a href=#1014 id=1014 data-nosnippet>1014</a>                <a href="#1009">source_object</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| <a href="#1014">s</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>()),
-<a href=#1015 id=1015 data-nosnippet>1015</a>                <a href="#1010">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(),
+<a href=#1008 id=1008 data-nosnippet>1008</a>            <span class="kw">let </span>task = Task::from_glib_none(task);
+<a href=#1009 id=1009 data-nosnippet>1009</a>            <span class="kw">let </span>source_object = <span class="prelude-ty">Option</span>::&lt;glib::Object&gt;::from_glib_borrow(source_object);
+<a href=#1010 id=1010 data-nosnippet>1010</a>            <span class="kw">let </span>cancellable = <span class="prelude-ty">Option</span>::&lt;Cancellable&gt;::from_glib_borrow(cancellable);
+<a href=#1011 id=1011 data-nosnippet>1011</a>            <span class="kw">let </span>task_func: Box_&lt;Q&gt; = Box::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+<a href=#1012 id=1012 data-nosnippet>1012</a>            task_func(
+<a href=#1013 id=1013 data-nosnippet>1013</a>                task,
+<a href=#1014 id=1014 data-nosnippet>1014</a>                source_object.as_ref().as_ref().map(|s| s.unsafe_cast_ref()),
+<a href=#1015 id=1015 data-nosnippet>1015</a>                cancellable.as_ref().as_ref(),
 <a href=#1016 id=1016 data-nosnippet>1016</a>            );
 <a href=#1017 id=1017 data-nosnippet>1017</a>        }
 <a href=#1018 id=1018 data-nosnippet>1018</a>
-<a href=#1019 id=1019 data-nosnippet>1019</a>        <span class="kw">let </span>task_func = <a href="#998-1017">trampoline</a>::&lt;V, S, Q&gt;;
+<a href=#1019 id=1019 data-nosnippet>1019</a>        <span class="kw">let </span>task_func = trampoline::&lt;V, S, Q&gt;;
 <a href=#1020 id=1020 data-nosnippet>1020</a>        <span class="kw">unsafe </span>{
-<a href=#1021 id=1021 data-nosnippet>1021</a>            <a href="../../gio_sys/fn.g_task_run_in_thread.html">ffi::g_task_run_in_thread</a>(<a class="self" href="#975">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#1019">task_func</a>));
+<a href=#1021 id=1021 data-nosnippet>1021</a>            ffi::g_task_run_in_thread(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, <span class="prelude-val">Some</span>(task_func));
 <a href=#1022 id=1022 data-nosnippet>1022</a>        }
 <a href=#1023 id=1023 data-nosnippet>1023</a>    }
 <a href=#1024 id=1024 data-nosnippet>1024</a>}
 <a href=#1025 id=1025 data-nosnippet>1025</a>
-<a href=#1026 id=1026 data-nosnippet>1026</a><span class="kw">unsafe impl</span>&lt;V: <a href="../../glib/value/trait.ValueType.html">ValueType</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#35-619">Task</a>&lt;V&gt; {}
-<a href=#1027 id=1027 data-nosnippet>1027</a><span class="kw">unsafe impl</span>&lt;V: <a href="../../glib/value/trait.ValueType.html">ValueType</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#35-619">Task</a>&lt;V&gt; {}
+<a href=#1026 id=1026 data-nosnippet>1026</a><span class="kw">unsafe impl</span>&lt;V: ValueType + Send&gt; Send <span class="kw">for </span>Task&lt;V&gt; {}
+<a href=#1027 id=1027 data-nosnippet>1027</a><span class="kw">unsafe impl</span>&lt;V: ValueType + Send&gt; Sync <span class="kw">for </span>Task&lt;V&gt; {}
 <a href=#1028 id=1028 data-nosnippet>1028</a>
 <a href=#1029 id=1029 data-nosnippet>1029</a><span class="comment">// rustdoc-stripper-ignore-next
 <a href=#1030 id=1030 data-nosnippet>1030</a></span><span class="doccomment">/// A handle to a task running on the I/O thread pool.
@@ -1106,35 +1033,35 @@
 <a href=#1033 id=1033 data-nosnippet>1033</a>/// from the task can be retrieved by awaiting on this handle. Dropping the handle "detaches" the
 <a href=#1034 id=1034 data-nosnippet>1034</a>/// task, allowing it to complete but discarding the return value.
 <a href=#1035 id=1035 data-nosnippet>1035</a></span><span class="attr">#[derive(Debug)]
-<a href=#1036 id=1036 data-nosnippet>1036</a></span><span class="kw">pub struct </span><a href="../../gio/struct.JoinHandle.html">JoinHandle</a>&lt;T&gt; {
-<a href=#1037 id=1037 data-nosnippet>1037</a>    rx: oneshot::Receiver&lt;<a href="https://doc.rust-lang.org/nightly/std/thread/type.Result.html">std::thread::Result</a>&lt;T&gt;&gt;,
+<a href=#1036 id=1036 data-nosnippet>1036</a></span><span class="kw">pub struct </span>JoinHandle&lt;T&gt; {
+<a href=#1037 id=1037 data-nosnippet>1037</a>    rx: oneshot::Receiver&lt;std::thread::Result&lt;T&gt;&gt;,
 <a href=#1038 id=1038 data-nosnippet>1038</a>}
 <a href=#1039 id=1039 data-nosnippet>1039</a>
-<a href=#1040 id=1040 data-nosnippet>1040</a><span class="kw">impl</span>&lt;T&gt; <a href="#1036-1038">JoinHandle</a>&lt;T&gt; {
+<a href=#1040 id=1040 data-nosnippet>1040</a><span class="kw">impl</span>&lt;T&gt; JoinHandle&lt;T&gt; {
 <a href=#1041 id=1041 data-nosnippet>1041</a>    <span class="attr">#[inline]
-<a href=#1042 id=1042 data-nosnippet>1042</a>    </span><span class="kw">fn </span>new() -&gt; (<span class="self">Self</span>, oneshot::Sender&lt;<a href="https://doc.rust-lang.org/nightly/std/thread/type.Result.html">std::thread::Result</a>&lt;T&gt;&gt;) {
+<a href=#1042 id=1042 data-nosnippet>1042</a>    </span><span class="kw">fn </span>new() -&gt; (<span class="self">Self</span>, oneshot::Sender&lt;std::thread::Result&lt;T&gt;&gt;) {
 <a href=#1043 id=1043 data-nosnippet>1043</a>        <span class="kw">let </span>(tx, rx) = oneshot::channel();
-<a href=#1044 id=1044 data-nosnippet>1044</a>        (<span class="self">Self </span>{ <a href="#1043">rx</a> }, <a href="#1043">tx</a>)
+<a href=#1044 id=1044 data-nosnippet>1044</a>        (<span class="self">Self </span>{ rx }, tx)
 <a href=#1045 id=1045 data-nosnippet>1045</a>    }
 <a href=#1046 id=1046 data-nosnippet>1046</a>}
 <a href=#1047 id=1047 data-nosnippet>1047</a>
-<a href=#1048 id=1048 data-nosnippet>1048</a><span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a> <span class="kw">for </span><a href="#1036-1038">JoinHandle</a>&lt;T&gt; {
-<a href=#1049 id=1049 data-nosnippet>1049</a>    <span class="kw">type </span>Output = <a href="https://doc.rust-lang.org/nightly/std/thread/type.Result.html">std::thread::Result</a>&lt;T&gt;;
+<a href=#1048 id=1048 data-nosnippet>1048</a><span class="kw">impl</span>&lt;T&gt; Future <span class="kw">for </span>JoinHandle&lt;T&gt; {
+<a href=#1049 id=1049 data-nosnippet>1049</a>    <span class="kw">type </span>Output = std::thread::Result&lt;T&gt;;
 <a href=#1050 id=1050 data-nosnippet>1050</a>    <span class="attr">#[inline]
 <a href=#1051 id=1051 data-nosnippet>1051</a>    </span><span class="kw">fn </span>poll(
-<a href=#1052 id=1052 data-nosnippet>1052</a>        <span class="kw-2">mut </span><span class="self">self</span>: <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">std::pin::Pin</a>&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
-<a href=#1053 id=1053 data-nosnippet>1053</a>        cx: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html">std::task::Context</a>&lt;<span class="lifetime">'_</span>&gt;,
-<a href=#1054 id=1054 data-nosnippet>1054</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html">std::task::Poll</a>&lt;<span class="self">Self</span>::Output&gt; {
-<a href=#1055 id=1055 data-nosnippet>1055</a>        <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html#method.new">std::pin::Pin::new</a>(<span class="kw-2">&amp;mut </span><a class="self" href="#1052">self</a>.rx)
-<a href=#1056 id=1056 data-nosnippet>1056</a>            .<a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html#tymethod.poll">poll</a>(<a href="#1053">cx</a>)
-<a href=#1057 id=1057 data-nosnippet>1057</a>            .<a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#method.map">map</a>(|r| <a href="#1057">r</a>.<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>())
+<a href=#1052 id=1052 data-nosnippet>1052</a>        <span class="kw-2">mut </span><span class="self">self</span>: std::pin::Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;,
+<a href=#1053 id=1053 data-nosnippet>1053</a>        cx: <span class="kw-2">&amp;mut </span>std::task::Context&lt;<span class="lifetime">'_</span>&gt;,
+<a href=#1054 id=1054 data-nosnippet>1054</a>    ) -&gt; std::task::Poll&lt;<span class="self">Self</span>::Output&gt; {
+<a href=#1055 id=1055 data-nosnippet>1055</a>        std::pin::Pin::new(<span class="kw-2">&amp;mut </span><span class="self">self</span>.rx)
+<a href=#1056 id=1056 data-nosnippet>1056</a>            .poll(cx)
+<a href=#1057 id=1057 data-nosnippet>1057</a>            .map(|r| r.unwrap())
 <a href=#1058 id=1058 data-nosnippet>1058</a>    }
 <a href=#1059 id=1059 data-nosnippet>1059</a>}
 <a href=#1060 id=1060 data-nosnippet>1060</a>
-<a href=#1061 id=1061 data-nosnippet>1061</a><span class="kw">impl</span>&lt;T&gt; futures_core::FusedFuture <span class="kw">for </span><a href="#1036-1038">JoinHandle</a>&lt;T&gt; {
+<a href=#1061 id=1061 data-nosnippet>1061</a><span class="kw">impl</span>&lt;T&gt; futures_core::FusedFuture <span class="kw">for </span>JoinHandle&lt;T&gt; {
 <a href=#1062 id=1062 data-nosnippet>1062</a>    <span class="attr">#[inline]
-<a href=#1063 id=1063 data-nosnippet>1063</a>    </span><span class="kw">fn </span>is_terminated(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#1064 id=1064 data-nosnippet>1064</a>        <a class="self" href="#1063">self</a>.rx.is_terminated()
+<a href=#1063 id=1063 data-nosnippet>1063</a>    </span><span class="kw">fn </span>is_terminated(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+<a href=#1064 id=1064 data-nosnippet>1064</a>        <span class="self">self</span>.rx.is_terminated()
 <a href=#1065 id=1065 data-nosnippet>1065</a>    }
 <a href=#1066 id=1066 data-nosnippet>1066</a>}
 <a href=#1067 id=1067 data-nosnippet>1067</a>
@@ -1147,21 +1074,21 @@
 <a href=#1074 id=1074 data-nosnippet>1074</a>///
 <a href=#1075 id=1075 data-nosnippet>1075</a>/// This function should not be used to spawn async tasks. Instead, use
 <a href=#1076 id=1076 data-nosnippet>1076</a>/// [`glib::MainContext::spawn`] or [`glib::MainContext::spawn_local`] to run a future.
-<a href=#1077 id=1077 data-nosnippet>1077</a></span><span class="kw">pub fn </span><a href="../../gio/fn.spawn_blocking.html">spawn_blocking</a>&lt;T, F&gt;(func: F) -&gt; <a href="#1036-1038">JoinHandle</a>&lt;T&gt;
+<a href=#1077 id=1077 data-nosnippet>1077</a></span><span class="kw">pub fn </span>spawn_blocking&lt;T, F&gt;(func: F) -&gt; JoinHandle&lt;T&gt;
 <a href=#1078 id=1078 data-nosnippet>1078</a><span class="kw">where
-<a href=#1079 id=1079 data-nosnippet>1079</a>    </span>T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
-<a href=#1080 id=1080 data-nosnippet>1080</a>    F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() -&gt; T + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
+<a href=#1079 id=1079 data-nosnippet>1079</a>    </span>T: Send + <span class="lifetime">'static</span>,
+<a href=#1080 id=1080 data-nosnippet>1080</a>    F: FnOnce() -&gt; T + Send + <span class="lifetime">'static</span>,
 <a href=#1081 id=1081 data-nosnippet>1081</a>{
 <a href=#1082 id=1082 data-nosnippet>1082</a>    <span class="comment">// use Cancellable::NONE as source obj to fulfill `Send` requirement
-<a href=#1083 id=1083 data-nosnippet>1083</a>    </span><span class="kw">let </span>task = <span class="kw">unsafe </span>{ <a href="#35-619">Task</a>::&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;::new(Cancellable::NONE, Cancellable::NONE, |<span class="kw">_</span>, <span class="kw">_</span>| {}) };
-<a href=#1084 id=1084 data-nosnippet>1084</a>    <span class="kw">let </span>(join, tx) = <a href="#1042-1045">JoinHandle::new</a>();
-<a href=#1085 id=1085 data-nosnippet>1085</a>    <a href="#1083">task</a>.<a href="#975-1023">run_in_thread</a>(<span class="kw">move </span>|task, <span class="kw">_</span>: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;, <span class="kw">_</span>| {
-<a href=#1086 id=1086 data-nosnippet>1086</a>        <span class="kw">let </span>res = <a href="https://doc.rust-lang.org/nightly/std/panic/fn.catch_unwind.html">panic::catch_unwind</a>(<a href="https://doc.rust-lang.org/nightly/core/panic/unwind_safe/struct.AssertUnwindSafe.html">panic::AssertUnwindSafe</a>(<a href="#1077">func</a>));
-<a href=#1087 id=1087 data-nosnippet>1087</a>        <span class="kw">let _ </span>= <a href="#1084">tx</a>.send(<a href="#1086">res</a>);
-<a href=#1088 id=1088 data-nosnippet>1088</a>        <span class="kw">unsafe </span>{ <a href="../../gio_sys/fn.g_task_return_pointer.html">ffi::g_task_return_pointer</a>(<a href="#1085">task</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>(), <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>) }
+<a href=#1083 id=1083 data-nosnippet>1083</a>    </span><span class="kw">let </span>task = <span class="kw">unsafe </span>{ Task::&lt;bool&gt;::new(Cancellable::NONE, Cancellable::NONE, |<span class="kw">_</span>, <span class="kw">_</span>| {}) };
+<a href=#1084 id=1084 data-nosnippet>1084</a>    <span class="kw">let </span>(join, tx) = JoinHandle::new();
+<a href=#1085 id=1085 data-nosnippet>1085</a>    task.run_in_thread(<span class="kw">move </span>|task, <span class="kw">_</span>: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Cancellable&gt;, <span class="kw">_</span>| {
+<a href=#1086 id=1086 data-nosnippet>1086</a>        <span class="kw">let </span>res = panic::catch_unwind(panic::AssertUnwindSafe(func));
+<a href=#1087 id=1087 data-nosnippet>1087</a>        <span class="kw">let _ </span>= tx.send(res);
+<a href=#1088 id=1088 data-nosnippet>1088</a>        <span class="kw">unsafe </span>{ ffi::g_task_return_pointer(task.to_glib_none().<span class="number">0</span>, ptr::null_mut(), <span class="prelude-val">None</span>) }
 <a href=#1089 id=1089 data-nosnippet>1089</a>    });
 <a href=#1090 id=1090 data-nosnippet>1090</a>
-<a href=#1091 id=1091 data-nosnippet>1091</a>    <a href="#1084">join</a>
+<a href=#1091 id=1091 data-nosnippet>1091</a>    join
 <a href=#1092 id=1092 data-nosnippet>1092</a>}
 <a href=#1093 id=1093 data-nosnippet>1093</a>
 <a href=#1094 id=1094 data-nosnippet>1094</a><span class="attr">#[cfg(test)]

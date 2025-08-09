@@ -1,84 +1,11 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/font_metrics.rs`."><title>font_metrics.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a00149764 2025-07-14)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
-
-    function checkDocsLatestStable() {
-        function popup(msg, url) { return `
-            <style scoped="scoped">
-                .popup {
-                    max-width: 16em;
-                    background-color: #fff;
-                    position: fixed;
-                    z-index: 1;
-                    margin-left: auto;
-                    bottom: 1em;
-                    right: 1em;
-                    border-radius: 5px;
-                    box-shadow: 1px 1px 4px #777;
-                }
-
-                .popup a.version {
-                    color: #e57300;
-                    padding: 0.6em 1em;
-                    display: block;
-                }
-                .popup a.version:hover {
-                    color: #b25900;
-                }
-
-                .popup a.close {
-                    color: white;
-                    background: grey;
-                    border-radius: 99px;
-                    display: inline-block;
-                    width: 19px;
-                    line-height: 19px;
-                    font-weight: bold;
-                    text-align: center;
-                    margin: 0.6em;
-                    float: right;
-                }
-                .popup a.close:hover {
-                    background: black;
-                }
-            </style>
-            <section class="popup" id="gir_docs_popup">
-                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
-                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
-                    ⚠ ${msg}
-                </a>
-            </section>
-        ` };
-
-        if ("0.21" == "main") {
-            document.body.insertAdjacentHTML(
-                'beforeend',
-                popup("This is the development version. Go to latest stable version.", "stable/latest")
-            );
-        } else {
-            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
-                .then(response => response.text())
-                .then(latest_branch => {
-                    if (latest_branch.trim() != "0.21") {
-                        document.body.insertAdjacentHTML(
-                            'beforeend',
-                            popup("This version is outdated. Go to latest version.", "stable/latest")
-                        );
-                    }
-                });
-        }
-    }
-</script>
-
-
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">pango/auto/</div>font_metrics.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/font_metrics.rs`."><title>font_metrics.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (de3efa79f 2025-08-08)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-68b7e25d.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">pango/auto/</div>font_metrics.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 <a href=#2 id=2 data-nosnippet>2</a>// from gir-files (https://github.com/gtk-rs/gir-files)
 <a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use </span><a href="../../../pango_sys/index.html"><span class="kw">crate</span>::ffi</a>;
-<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
+<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use </span><span class="kw">crate</span>::ffi;
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
 <a href=#7 id=7 data-nosnippet>7</a>
-<a href=#8 id=8 data-nosnippet>8</a><a class="macro" href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
+<a href=#8 id=8 data-nosnippet>8</a><span class="macro">glib::wrapper!</span> {
 <a href=#9 id=9 data-nosnippet>9</a>    <span class="doccomment">/// A [`FontMetrics`][crate::FontMetrics] structure holds the overall metric information
 <a href=#10 id=10 data-nosnippet>10</a>    /// for a font.
 <a href=#11 id=11 data-nosnippet>11</a>    ///
@@ -94,7 +21,7 @@
 <a href=#21 id=21 data-nosnippet>21</a>    ///   &lt;img alt="Font metrics" src="fontmetrics-light.png"&gt;
 <a href=#22 id=22 data-nosnippet>22</a>    /// &lt;/picture&gt;
 <a href=#23 id=23 data-nosnippet>23</a>    </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-<a href=#24 id=24 data-nosnippet>24</a>    </span><span class="kw">pub struct </span><a href="../../../pango/struct.FontMetrics.html">FontMetrics</a>(Shared&lt;<a href="../../../pango_sys/struct.PangoFontMetrics.html">ffi::PangoFontMetrics</a>&gt;);
+<a href=#24 id=24 data-nosnippet>24</a>    </span><span class="kw">pub struct </span>FontMetrics(Shared&lt;ffi::PangoFontMetrics&gt;);
 <a href=#25 id=25 data-nosnippet>25</a>
 <a href=#26 id=26 data-nosnippet>26</a>    <span class="kw">match fn </span>{
 <a href=#27 id=27 data-nosnippet>27</a>        <span class="kw-2">ref </span>=&gt; |ptr| ffi::pango_font_metrics_ref(ptr),
@@ -103,7 +30,7 @@
 <a href=#30 id=30 data-nosnippet>30</a>    }
 <a href=#31 id=31 data-nosnippet>31</a>}
 <a href=#32 id=32 data-nosnippet>32</a>
-<a href=#33 id=33 data-nosnippet>33</a><span class="kw">impl </span><a href="#8-31">FontMetrics</a> {
+<a href=#33 id=33 data-nosnippet>33</a><span class="kw">impl </span>FontMetrics {
 <a href=#34 id=34 data-nosnippet>34</a>    <span class="doccomment">/// Gets the approximate character width for a font metrics structure.
 <a href=#35 id=35 data-nosnippet>35</a>    ///
 <a href=#36 id=36 data-nosnippet>36</a>    /// This is merely a representative value useful, for example, for
@@ -115,8 +42,8 @@
 <a href=#42 id=42 data-nosnippet>42</a>    /// the character width, in Pango units.
 <a href=#43 id=43 data-nosnippet>43</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_metrics_get_approximate_char_width"</span>)]
 <a href=#44 id=44 data-nosnippet>44</a>    #[doc(alias = <span class="string">"get_approximate_char_width"</span>)]
-<a href=#45 id=45 data-nosnippet>45</a>    </span><span class="kw">pub fn </span>approximate_char_width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#46 id=46 data-nosnippet>46</a>        <span class="kw">unsafe </span>{ <a href="../../../pango_sys/fn.pango_font_metrics_get_approximate_char_width.html">ffi::pango_font_metrics_get_approximate_char_width</a>(<a class="self" href="#45">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#45 id=45 data-nosnippet>45</a>    </span><span class="kw">pub fn </span>approximate_char_width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+<a href=#46 id=46 data-nosnippet>46</a>        <span class="kw">unsafe </span>{ ffi::pango_font_metrics_get_approximate_char_width(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#47 id=47 data-nosnippet>47</a>    }
 <a href=#48 id=48 data-nosnippet>48</a>
 <a href=#49 id=49 data-nosnippet>49</a>    <span class="doccomment">/// Gets the approximate digit width for a font metrics structure.
@@ -132,8 +59,8 @@
 <a href=#59 id=59 data-nosnippet>59</a>    /// the digit width, in Pango units.
 <a href=#60 id=60 data-nosnippet>60</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_metrics_get_approximate_digit_width"</span>)]
 <a href=#61 id=61 data-nosnippet>61</a>    #[doc(alias = <span class="string">"get_approximate_digit_width"</span>)]
-<a href=#62 id=62 data-nosnippet>62</a>    </span><span class="kw">pub fn </span>approximate_digit_width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#63 id=63 data-nosnippet>63</a>        <span class="kw">unsafe </span>{ <a href="../../../pango_sys/fn.pango_font_metrics_get_approximate_digit_width.html">ffi::pango_font_metrics_get_approximate_digit_width</a>(<a class="self" href="#62">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#62 id=62 data-nosnippet>62</a>    </span><span class="kw">pub fn </span>approximate_digit_width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+<a href=#63 id=63 data-nosnippet>63</a>        <span class="kw">unsafe </span>{ ffi::pango_font_metrics_get_approximate_digit_width(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#64 id=64 data-nosnippet>64</a>    }
 <a href=#65 id=65 data-nosnippet>65</a>
 <a href=#66 id=66 data-nosnippet>66</a>    <span class="doccomment">/// Gets the ascent from a font metrics structure.
@@ -148,8 +75,8 @@
 <a href=#75 id=75 data-nosnippet>75</a>    /// the ascent, in Pango units.
 <a href=#76 id=76 data-nosnippet>76</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_metrics_get_ascent"</span>)]
 <a href=#77 id=77 data-nosnippet>77</a>    #[doc(alias = <span class="string">"get_ascent"</span>)]
-<a href=#78 id=78 data-nosnippet>78</a>    </span><span class="kw">pub fn </span>ascent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#79 id=79 data-nosnippet>79</a>        <span class="kw">unsafe </span>{ <a href="../../../pango_sys/fn.pango_font_metrics_get_ascent.html">ffi::pango_font_metrics_get_ascent</a>(<a class="self" href="#78">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#78 id=78 data-nosnippet>78</a>    </span><span class="kw">pub fn </span>ascent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+<a href=#79 id=79 data-nosnippet>79</a>        <span class="kw">unsafe </span>{ ffi::pango_font_metrics_get_ascent(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#80 id=80 data-nosnippet>80</a>    }
 <a href=#81 id=81 data-nosnippet>81</a>
 <a href=#82 id=82 data-nosnippet>82</a>    <span class="doccomment">/// Gets the descent from a font metrics structure.
@@ -164,8 +91,8 @@
 <a href=#91 id=91 data-nosnippet>91</a>    /// the descent, in Pango units.
 <a href=#92 id=92 data-nosnippet>92</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_metrics_get_descent"</span>)]
 <a href=#93 id=93 data-nosnippet>93</a>    #[doc(alias = <span class="string">"get_descent"</span>)]
-<a href=#94 id=94 data-nosnippet>94</a>    </span><span class="kw">pub fn </span>descent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#95 id=95 data-nosnippet>95</a>        <span class="kw">unsafe </span>{ <a href="../../../pango_sys/fn.pango_font_metrics_get_descent.html">ffi::pango_font_metrics_get_descent</a>(<a class="self" href="#94">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#94 id=94 data-nosnippet>94</a>    </span><span class="kw">pub fn </span>descent(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+<a href=#95 id=95 data-nosnippet>95</a>        <span class="kw">unsafe </span>{ ffi::pango_font_metrics_get_descent(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#96 id=96 data-nosnippet>96</a>    }
 <a href=#97 id=97 data-nosnippet>97</a>
 <a href=#98 id=98 data-nosnippet>98</a>    <span class="doccomment">/// Gets the line height from a font metrics structure.
@@ -182,8 +109,8 @@
 <a href=#109 id=109 data-nosnippet>109</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_44"</span>)))]
 <a href=#110 id=110 data-nosnippet>110</a>    #[doc(alias = <span class="string">"pango_font_metrics_get_height"</span>)]
 <a href=#111 id=111 data-nosnippet>111</a>    #[doc(alias = <span class="string">"get_height"</span>)]
-<a href=#112 id=112 data-nosnippet>112</a>    </span><span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#113 id=113 data-nosnippet>113</a>        <span class="kw">unsafe </span>{ <a href="../../../pango_sys/fn.pango_font_metrics_get_height.html">ffi::pango_font_metrics_get_height</a>(<a class="self" href="#112">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#112 id=112 data-nosnippet>112</a>    </span><span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+<a href=#113 id=113 data-nosnippet>113</a>        <span class="kw">unsafe </span>{ ffi::pango_font_metrics_get_height(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#114 id=114 data-nosnippet>114</a>    }
 <a href=#115 id=115 data-nosnippet>115</a>
 <a href=#116 id=116 data-nosnippet>116</a>    <span class="doccomment">/// Gets the suggested position to draw the strikethrough.
@@ -196,8 +123,8 @@
 <a href=#123 id=123 data-nosnippet>123</a>    /// the suggested strikethrough position, in Pango units.
 <a href=#124 id=124 data-nosnippet>124</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_metrics_get_strikethrough_position"</span>)]
 <a href=#125 id=125 data-nosnippet>125</a>    #[doc(alias = <span class="string">"get_strikethrough_position"</span>)]
-<a href=#126 id=126 data-nosnippet>126</a>    </span><span class="kw">pub fn </span>strikethrough_position(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#127 id=127 data-nosnippet>127</a>        <span class="kw">unsafe </span>{ <a href="../../../pango_sys/fn.pango_font_metrics_get_strikethrough_position.html">ffi::pango_font_metrics_get_strikethrough_position</a>(<a class="self" href="#126">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#126 id=126 data-nosnippet>126</a>    </span><span class="kw">pub fn </span>strikethrough_position(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+<a href=#127 id=127 data-nosnippet>127</a>        <span class="kw">unsafe </span>{ ffi::pango_font_metrics_get_strikethrough_position(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#128 id=128 data-nosnippet>128</a>    }
 <a href=#129 id=129 data-nosnippet>129</a>
 <a href=#130 id=130 data-nosnippet>130</a>    <span class="doccomment">/// Gets the suggested thickness to draw for the strikethrough.
@@ -207,8 +134,8 @@
 <a href=#134 id=134 data-nosnippet>134</a>    /// the suggested strikethrough thickness, in Pango units.
 <a href=#135 id=135 data-nosnippet>135</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_metrics_get_strikethrough_thickness"</span>)]
 <a href=#136 id=136 data-nosnippet>136</a>    #[doc(alias = <span class="string">"get_strikethrough_thickness"</span>)]
-<a href=#137 id=137 data-nosnippet>137</a>    </span><span class="kw">pub fn </span>strikethrough_thickness(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#138 id=138 data-nosnippet>138</a>        <span class="kw">unsafe </span>{ <a href="../../../pango_sys/fn.pango_font_metrics_get_strikethrough_thickness.html">ffi::pango_font_metrics_get_strikethrough_thickness</a>(<a class="self" href="#137">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#137 id=137 data-nosnippet>137</a>    </span><span class="kw">pub fn </span>strikethrough_thickness(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+<a href=#138 id=138 data-nosnippet>138</a>        <span class="kw">unsafe </span>{ ffi::pango_font_metrics_get_strikethrough_thickness(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#139 id=139 data-nosnippet>139</a>    }
 <a href=#140 id=140 data-nosnippet>140</a>
 <a href=#141 id=141 data-nosnippet>141</a>    <span class="doccomment">/// Gets the suggested position to draw the underline.
@@ -222,8 +149,8 @@
 <a href=#149 id=149 data-nosnippet>149</a>    /// the suggested underline position, in Pango units.
 <a href=#150 id=150 data-nosnippet>150</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_metrics_get_underline_position"</span>)]
 <a href=#151 id=151 data-nosnippet>151</a>    #[doc(alias = <span class="string">"get_underline_position"</span>)]
-<a href=#152 id=152 data-nosnippet>152</a>    </span><span class="kw">pub fn </span>underline_position(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#153 id=153 data-nosnippet>153</a>        <span class="kw">unsafe </span>{ <a href="../../../pango_sys/fn.pango_font_metrics_get_underline_position.html">ffi::pango_font_metrics_get_underline_position</a>(<a class="self" href="#152">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#152 id=152 data-nosnippet>152</a>    </span><span class="kw">pub fn </span>underline_position(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+<a href=#153 id=153 data-nosnippet>153</a>        <span class="kw">unsafe </span>{ ffi::pango_font_metrics_get_underline_position(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#154 id=154 data-nosnippet>154</a>    }
 <a href=#155 id=155 data-nosnippet>155</a>
 <a href=#156 id=156 data-nosnippet>156</a>    <span class="doccomment">/// Gets the suggested thickness to draw for the underline.
@@ -233,7 +160,7 @@
 <a href=#160 id=160 data-nosnippet>160</a>    /// the suggested underline thickness, in Pango units.
 <a href=#161 id=161 data-nosnippet>161</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_metrics_get_underline_thickness"</span>)]
 <a href=#162 id=162 data-nosnippet>162</a>    #[doc(alias = <span class="string">"get_underline_thickness"</span>)]
-<a href=#163 id=163 data-nosnippet>163</a>    </span><span class="kw">pub fn </span>underline_thickness(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#164 id=164 data-nosnippet>164</a>        <span class="kw">unsafe </span>{ <a href="../../../pango_sys/fn.pango_font_metrics_get_underline_thickness.html">ffi::pango_font_metrics_get_underline_thickness</a>(<a class="self" href="#163">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#163 id=163 data-nosnippet>163</a>    </span><span class="kw">pub fn </span>underline_thickness(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+<a href=#164 id=164 data-nosnippet>164</a>        <span class="kw">unsafe </span>{ ffi::pango_font_metrics_get_underline_thickness(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
 <a href=#165 id=165 data-nosnippet>165</a>    }
 <a href=#166 id=166 data-nosnippet>166</a>}</code></pre></div></section></main></body></html>

@@ -1,91 +1,18 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/glyph_string.rs`."><title>glyph_string.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a00149764 2025-07-14)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
-
-    function checkDocsLatestStable() {
-        function popup(msg, url) { return `
-            <style scoped="scoped">
-                .popup {
-                    max-width: 16em;
-                    background-color: #fff;
-                    position: fixed;
-                    z-index: 1;
-                    margin-left: auto;
-                    bottom: 1em;
-                    right: 1em;
-                    border-radius: 5px;
-                    box-shadow: 1px 1px 4px #777;
-                }
-
-                .popup a.version {
-                    color: #e57300;
-                    padding: 0.6em 1em;
-                    display: block;
-                }
-                .popup a.version:hover {
-                    color: #b25900;
-                }
-
-                .popup a.close {
-                    color: white;
-                    background: grey;
-                    border-radius: 99px;
-                    display: inline-block;
-                    width: 19px;
-                    line-height: 19px;
-                    font-weight: bold;
-                    text-align: center;
-                    margin: 0.6em;
-                    float: right;
-                }
-                .popup a.close:hover {
-                    background: black;
-                }
-            </style>
-            <section class="popup" id="gir_docs_popup">
-                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
-                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
-                    ⚠ ${msg}
-                </a>
-            </section>
-        ` };
-
-        if ("0.21" == "main") {
-            document.body.insertAdjacentHTML(
-                'beforeend',
-                popup("This is the development version. Go to latest stable version.", "stable/latest")
-            );
-        } else {
-            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
-                .then(response => response.text())
-                .then(latest_branch => {
-                    if (latest_branch.trim() != "0.21") {
-                        document.body.insertAdjacentHTML(
-                            'beforeend',
-                            popup("This version is outdated. Go to latest version.", "stable/latest")
-                        );
-                    }
-                });
-        }
-    }
-</script>
-
-
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">pango/auto/</div>glyph_string.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/glyph_string.rs`."><title>glyph_string.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (de3efa79f 2025-08-08)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-68b7e25d.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">pango/auto/</div>glyph_string.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 <a href=#2 id=2 data-nosnippet>2</a>// from gir-files (https://github.com/gtk-rs/gir-files)
 <a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{<a href="../../../pango_sys/index.html">ffi</a>, <a href="../analysis.rs.html#9-14">Analysis</a>, <a href="font.rs.html#14-29">Font</a>, <a href="../rectangle.rs.html#8-16">Rectangle</a>};
-<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
+<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{ffi, Analysis, Font, Rectangle};
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
 <a href=#7 id=7 data-nosnippet>7</a>
-<a href=#8 id=8 data-nosnippet>8</a><a class="macro" href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
+<a href=#8 id=8 data-nosnippet>8</a><span class="macro">glib::wrapper!</span> {
 <a href=#9 id=9 data-nosnippet>9</a>    <span class="doccomment">/// A [`GlyphString`][crate::GlyphString] is used to store strings of glyphs with geometry
 <a href=#10 id=10 data-nosnippet>10</a>    /// and visual attribute information.
 <a href=#11 id=11 data-nosnippet>11</a>    ///
 <a href=#12 id=12 data-nosnippet>12</a>    /// The storage for the glyph information is owned by the structure
 <a href=#13 id=13 data-nosnippet>13</a>    /// which simplifies memory management.
 <a href=#14 id=14 data-nosnippet>14</a>    </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-<a href=#15 id=15 data-nosnippet>15</a>    </span><span class="kw">pub struct </span><a href="../../../pango/struct.GlyphString.html">GlyphString</a>(Boxed&lt;<a href="../../../pango_sys/struct.PangoGlyphString.html">ffi::PangoGlyphString</a>&gt;);
+<a href=#15 id=15 data-nosnippet>15</a>    </span><span class="kw">pub struct </span>GlyphString(Boxed&lt;ffi::PangoGlyphString&gt;);
 <a href=#16 id=16 data-nosnippet>16</a>
 <a href=#17 id=17 data-nosnippet>17</a>    <span class="kw">match fn </span>{
 <a href=#18 id=18 data-nosnippet>18</a>        copy =&gt; |ptr| ffi::pango_glyph_string_copy(mut_override(ptr)),
@@ -94,7 +21,7 @@
 <a href=#21 id=21 data-nosnippet>21</a>    }
 <a href=#22 id=22 data-nosnippet>22</a>}
 <a href=#23 id=23 data-nosnippet>23</a>
-<a href=#24 id=24 data-nosnippet>24</a><span class="kw">impl </span><a href="#8-22">GlyphString</a> {
+<a href=#24 id=24 data-nosnippet>24</a><span class="kw">impl </span>GlyphString {
 <a href=#25 id=25 data-nosnippet>25</a>    <span class="doccomment">/// Create a new [`GlyphString`][crate::GlyphString].
 <a href=#26 id=26 data-nosnippet>26</a>    ///
 <a href=#27 id=27 data-nosnippet>27</a>    /// # Returns
@@ -102,8 +29,8 @@
 <a href=#29 id=29 data-nosnippet>29</a>    /// the newly allocated [`GlyphString`][crate::GlyphString], which
 <a href=#30 id=30 data-nosnippet>30</a>    ///   should be freed with `Pango::GlyphString::free()`.
 <a href=#31 id=31 data-nosnippet>31</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_new"</span>)]
-<a href=#32 id=32 data-nosnippet>32</a>    </span><span class="kw">pub fn </span>new() -&gt; <a href="#8-22">GlyphString</a> {
-<a href=#33 id=33 data-nosnippet>33</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../pango_sys/fn.pango_glyph_string_new.html">ffi::pango_glyph_string_new</a>()) }
+<a href=#32 id=32 data-nosnippet>32</a>    </span><span class="kw">pub fn </span>new() -&gt; GlyphString {
+<a href=#33 id=33 data-nosnippet>33</a>        <span class="kw">unsafe </span>{ from_glib_full(ffi::pango_glyph_string_new()) }
 <a href=#34 id=34 data-nosnippet>34</a>    }
 <a href=#35 id=35 data-nosnippet>35</a>
 <a href=#36 id=36 data-nosnippet>36</a>    <span class="doccomment">/// Compute the logical and ink extents of a glyph string.
@@ -126,17 +53,17 @@
 <a href=#53 id=53 data-nosnippet>53</a>    /// ## `logical_rect`
 <a href=#54 id=54 data-nosnippet>54</a>    /// rectangle used to store the logical extents of the glyph string
 <a href=#55 id=55 data-nosnippet>55</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_extents"</span>)]
-<a href=#56 id=56 data-nosnippet>56</a>    </span><span class="kw">pub fn </span>extents(<span class="kw-2">&amp;mut </span><span class="self">self</span>, font: <span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="font.rs.html#14-29">Font</a>&gt;) -&gt; (<a href="../rectangle.rs.html#8-16">Rectangle</a>, <a href="../rectangle.rs.html#8-16">Rectangle</a>) {
+<a href=#56 id=56 data-nosnippet>56</a>    </span><span class="kw">pub fn </span>extents(<span class="kw-2">&amp;mut </span><span class="self">self</span>, font: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Font&gt;) -&gt; (Rectangle, Rectangle) {
 <a href=#57 id=57 data-nosnippet>57</a>        <span class="kw">unsafe </span>{
-<a href=#58 id=58 data-nosnippet>58</a>            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Rectangle::uninitialized</a>();
-<a href=#59 id=59 data-nosnippet>59</a>            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Rectangle::uninitialized</a>();
-<a href=#60 id=60 data-nosnippet>60</a>            <a href="../../../pango_sys/fn.pango_glyph_string_extents.html">ffi::pango_glyph_string_extents</a>(
-<a href=#61 id=61 data-nosnippet>61</a>                <a class="self" href="#56">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
-<a href=#62 id=62 data-nosnippet>62</a>                <a href="#56">font</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#63 id=63 data-nosnippet>63</a>                <a href="#58">ink_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
-<a href=#64 id=64 data-nosnippet>64</a>                <a href="#59">logical_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#58 id=58 data-nosnippet>58</a>            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = Rectangle::uninitialized();
+<a href=#59 id=59 data-nosnippet>59</a>            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = Rectangle::uninitialized();
+<a href=#60 id=60 data-nosnippet>60</a>            ffi::pango_glyph_string_extents(
+<a href=#61 id=61 data-nosnippet>61</a>                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
+<a href=#62 id=62 data-nosnippet>62</a>                font.as_ref().to_glib_none().<span class="number">0</span>,
+<a href=#63 id=63 data-nosnippet>63</a>                ink_rect.to_glib_none_mut().<span class="number">0</span>,
+<a href=#64 id=64 data-nosnippet>64</a>                logical_rect.to_glib_none_mut().<span class="number">0</span>,
 <a href=#65 id=65 data-nosnippet>65</a>            );
-<a href=#66 id=66 data-nosnippet>66</a>            (<a href="#58">ink_rect</a>, <a href="#59">logical_rect</a>)
+<a href=#66 id=66 data-nosnippet>66</a>            (ink_rect, logical_rect)
 <a href=#67 id=67 data-nosnippet>67</a>        }
 <a href=#68 id=68 data-nosnippet>68</a>    }
 <a href=#69 id=69 data-nosnippet>69</a>
@@ -166,22 +93,22 @@
 <a href=#93 id=93 data-nosnippet>93</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_extents_range"</span>)]
 <a href=#94 id=94 data-nosnippet>94</a>    </span><span class="kw">pub fn </span>extents_range(
 <a href=#95 id=95 data-nosnippet>95</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-<a href=#96 id=96 data-nosnippet>96</a>        start: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-<a href=#97 id=97 data-nosnippet>97</a>        end: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-<a href=#98 id=98 data-nosnippet>98</a>        font: <span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="font.rs.html#14-29">Font</a>&gt;,
-<a href=#99 id=99 data-nosnippet>99</a>    ) -&gt; (<a href="../rectangle.rs.html#8-16">Rectangle</a>, <a href="../rectangle.rs.html#8-16">Rectangle</a>) {
+<a href=#96 id=96 data-nosnippet>96</a>        start: i32,
+<a href=#97 id=97 data-nosnippet>97</a>        end: i32,
+<a href=#98 id=98 data-nosnippet>98</a>        font: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Font&gt;,
+<a href=#99 id=99 data-nosnippet>99</a>    ) -&gt; (Rectangle, Rectangle) {
 <a href=#100 id=100 data-nosnippet>100</a>        <span class="kw">unsafe </span>{
-<a href=#101 id=101 data-nosnippet>101</a>            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Rectangle::uninitialized</a>();
-<a href=#102 id=102 data-nosnippet>102</a>            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Rectangle::uninitialized</a>();
-<a href=#103 id=103 data-nosnippet>103</a>            <a href="../../../pango_sys/fn.pango_glyph_string_extents_range.html">ffi::pango_glyph_string_extents_range</a>(
-<a href=#104 id=104 data-nosnippet>104</a>                <a class="self" href="#95">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
-<a href=#105 id=105 data-nosnippet>105</a>                <a href="#96">start</a>,
-<a href=#106 id=106 data-nosnippet>106</a>                <a href="#97">end</a>,
-<a href=#107 id=107 data-nosnippet>107</a>                <a href="#98">font</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#108 id=108 data-nosnippet>108</a>                <a href="#101">ink_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
-<a href=#109 id=109 data-nosnippet>109</a>                <a href="#102">logical_rect</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
+<a href=#101 id=101 data-nosnippet>101</a>            <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = Rectangle::uninitialized();
+<a href=#102 id=102 data-nosnippet>102</a>            <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = Rectangle::uninitialized();
+<a href=#103 id=103 data-nosnippet>103</a>            ffi::pango_glyph_string_extents_range(
+<a href=#104 id=104 data-nosnippet>104</a>                <span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>,
+<a href=#105 id=105 data-nosnippet>105</a>                start,
+<a href=#106 id=106 data-nosnippet>106</a>                end,
+<a href=#107 id=107 data-nosnippet>107</a>                font.as_ref().to_glib_none().<span class="number">0</span>,
+<a href=#108 id=108 data-nosnippet>108</a>                ink_rect.to_glib_none_mut().<span class="number">0</span>,
+<a href=#109 id=109 data-nosnippet>109</a>                logical_rect.to_glib_none_mut().<span class="number">0</span>,
 <a href=#110 id=110 data-nosnippet>110</a>            );
-<a href=#111 id=111 data-nosnippet>111</a>            (<a href="#101">ink_rect</a>, <a href="#102">logical_rect</a>)
+<a href=#111 id=111 data-nosnippet>111</a>            (ink_rect, logical_rect)
 <a href=#112 id=112 data-nosnippet>112</a>        }
 <a href=#113 id=113 data-nosnippet>113</a>    }
 <a href=#114 id=114 data-nosnippet>114</a>
@@ -197,8 +124,8 @@
 <a href=#124 id=124 data-nosnippet>124</a>    /// the logical width of the glyph string.
 <a href=#125 id=125 data-nosnippet>125</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_get_width"</span>)]
 <a href=#126 id=126 data-nosnippet>126</a>    #[doc(alias = <span class="string">"get_width"</span>)]
-<a href=#127 id=127 data-nosnippet>127</a>    </span><span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#128 id=128 data-nosnippet>128</a>        <span class="kw">unsafe </span>{ <a href="../../../pango_sys/fn.pango_glyph_string_get_width.html">ffi::pango_glyph_string_get_width</a>(<a href="../../../glib/translate/fn.mut_override.html">mut_override</a>(<a class="self" href="#127">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
+<a href=#127 id=127 data-nosnippet>127</a>    </span><span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+<a href=#128 id=128 data-nosnippet>128</a>        <span class="kw">unsafe </span>{ ffi::pango_glyph_string_get_width(mut_override(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
 <a href=#129 id=129 data-nosnippet>129</a>    }
 <a href=#130 id=130 data-nosnippet>130</a>
 <a href=#131 id=131 data-nosnippet>131</a>    <span class="doccomment">/// Converts from character position to x position.
@@ -230,20 +157,20 @@
 <a href=#157 id=157 data-nosnippet>157</a>    /// ## `x_pos`
 <a href=#158 id=158 data-nosnippet>158</a>    /// location to store result
 <a href=#159 id=159 data-nosnippet>159</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_index_to_x"</span>)]
-<a href=#160 id=160 data-nosnippet>160</a>    </span><span class="kw">pub fn </span>index_to_x(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, analysis: <span class="kw-2">&amp;</span><a href="../analysis.rs.html#9-14">Analysis</a>, index_: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, trailing: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#161 id=161 data-nosnippet>161</a>        <span class="kw">let </span>length = <a href="#160">text</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as _</span>;
+<a href=#160 id=160 data-nosnippet>160</a>    </span><span class="kw">pub fn </span>index_to_x(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span>str, analysis: <span class="kw-2">&amp;</span>Analysis, index_: i32, trailing: bool) -&gt; i32 {
+<a href=#161 id=161 data-nosnippet>161</a>        <span class="kw">let </span>length = text.len() <span class="kw">as _</span>;
 <a href=#162 id=162 data-nosnippet>162</a>        <span class="kw">unsafe </span>{
-<a href=#163 id=163 data-nosnippet>163</a>            <span class="kw">let </span><span class="kw-2">mut </span>x_pos = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">std::mem::MaybeUninit::uninit</a>();
-<a href=#164 id=164 data-nosnippet>164</a>            <a href="../../../pango_sys/fn.pango_glyph_string_index_to_x.html">ffi::pango_glyph_string_index_to_x</a>(
-<a href=#165 id=165 data-nosnippet>165</a>                <a href="../../../glib/translate/fn.mut_override.html">mut_override</a>(<a class="self" href="#160">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>),
-<a href=#166 id=166 data-nosnippet>166</a>                <a href="#160">text</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#167 id=167 data-nosnippet>167</a>                <a href="#161">length</a>,
-<a href=#168 id=168 data-nosnippet>168</a>                <a href="../../../glib/translate/fn.mut_override.html">mut_override</a>(<a href="#160">analysis</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>),
-<a href=#169 id=169 data-nosnippet>169</a>                <a href="#160">index_</a>,
-<a href=#170 id=170 data-nosnippet>170</a>                <a href="#160">trailing</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
-<a href=#171 id=171 data-nosnippet>171</a>                <a href="#163">x_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
+<a href=#163 id=163 data-nosnippet>163</a>            <span class="kw">let </span><span class="kw-2">mut </span>x_pos = std::mem::MaybeUninit::uninit();
+<a href=#164 id=164 data-nosnippet>164</a>            ffi::pango_glyph_string_index_to_x(
+<a href=#165 id=165 data-nosnippet>165</a>                mut_override(<span class="self">self</span>.to_glib_none().<span class="number">0</span>),
+<a href=#166 id=166 data-nosnippet>166</a>                text.to_glib_none().<span class="number">0</span>,
+<a href=#167 id=167 data-nosnippet>167</a>                length,
+<a href=#168 id=168 data-nosnippet>168</a>                mut_override(analysis.to_glib_none().<span class="number">0</span>),
+<a href=#169 id=169 data-nosnippet>169</a>                index_,
+<a href=#170 id=170 data-nosnippet>170</a>                trailing.into_glib(),
+<a href=#171 id=171 data-nosnippet>171</a>                x_pos.as_mut_ptr(),
 <a href=#172 id=172 data-nosnippet>172</a>            );
-<a href=#173 id=173 data-nosnippet>173</a>            <a href="#163">x_pos</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()
+<a href=#173 id=173 data-nosnippet>173</a>            x_pos.assume_init()
 <a href=#174 id=174 data-nosnippet>174</a>        }
 <a href=#175 id=175 data-nosnippet>175</a>    }
 <a href=#176 id=176 data-nosnippet>176</a>
@@ -258,9 +185,9 @@
 <a href=#185 id=185 data-nosnippet>185</a>    /// ## `new_len`
 <a href=#186 id=186 data-nosnippet>186</a>    /// the new length of the string
 <a href=#187 id=187 data-nosnippet>187</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_set_size"</span>)]
-<a href=#188 id=188 data-nosnippet>188</a>    </span><span class="kw">pub fn </span>set_size(<span class="kw-2">&amp;mut </span><span class="self">self</span>, new_len: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
+<a href=#188 id=188 data-nosnippet>188</a>    </span><span class="kw">pub fn </span>set_size(<span class="kw-2">&amp;mut </span><span class="self">self</span>, new_len: i32) {
 <a href=#189 id=189 data-nosnippet>189</a>        <span class="kw">unsafe </span>{
-<a href=#190 id=190 data-nosnippet>190</a>            <a href="../../../pango_sys/fn.pango_glyph_string_set_size.html">ffi::pango_glyph_string_set_size</a>(<a class="self" href="#188">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#188">new_len</a>);
+<a href=#190 id=190 data-nosnippet>190</a>            ffi::pango_glyph_string_set_size(<span class="self">self</span>.to_glib_none_mut().<span class="number">0</span>, new_len);
 <a href=#191 id=191 data-nosnippet>191</a>        }
 <a href=#192 id=192 data-nosnippet>192</a>    }
 <a href=#193 id=193 data-nosnippet>193</a>
@@ -292,30 +219,30 @@
 <a href=#219 id=219 data-nosnippet>219</a>    ///   whether the user clicked on the leading or trailing edge of the
 <a href=#220 id=220 data-nosnippet>220</a>    ///   character
 <a href=#221 id=221 data-nosnippet>221</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_glyph_string_x_to_index"</span>)]
-<a href=#222 id=222 data-nosnippet>222</a>    </span><span class="kw">pub fn </span>x_to_index(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, analysis: <span class="kw-2">&amp;</span><a href="../analysis.rs.html#9-14">Analysis</a>, x_pos: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
-<a href=#223 id=223 data-nosnippet>223</a>        <span class="kw">let </span>length = <a href="#222">text</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as _</span>;
+<a href=#222 id=222 data-nosnippet>222</a>    </span><span class="kw">pub fn </span>x_to_index(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span>str, analysis: <span class="kw-2">&amp;</span>Analysis, x_pos: i32) -&gt; (i32, i32) {
+<a href=#223 id=223 data-nosnippet>223</a>        <span class="kw">let </span>length = text.len() <span class="kw">as _</span>;
 <a href=#224 id=224 data-nosnippet>224</a>        <span class="kw">unsafe </span>{
-<a href=#225 id=225 data-nosnippet>225</a>            <span class="kw">let </span><span class="kw-2">mut </span>index_ = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">std::mem::MaybeUninit::uninit</a>();
-<a href=#226 id=226 data-nosnippet>226</a>            <span class="kw">let </span><span class="kw-2">mut </span>trailing = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">std::mem::MaybeUninit::uninit</a>();
-<a href=#227 id=227 data-nosnippet>227</a>            <a href="../../../pango_sys/fn.pango_glyph_string_x_to_index.html">ffi::pango_glyph_string_x_to_index</a>(
-<a href=#228 id=228 data-nosnippet>228</a>                <a href="../../../glib/translate/fn.mut_override.html">mut_override</a>(<a class="self" href="#222">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>),
-<a href=#229 id=229 data-nosnippet>229</a>                <a href="#222">text</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#230 id=230 data-nosnippet>230</a>                <a href="#223">length</a>,
-<a href=#231 id=231 data-nosnippet>231</a>                <a href="../../../glib/translate/fn.mut_override.html">mut_override</a>(<a href="#222">analysis</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>),
-<a href=#232 id=232 data-nosnippet>232</a>                <a href="#222">x_pos</a>,
-<a href=#233 id=233 data-nosnippet>233</a>                <a href="#225">index_</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
-<a href=#234 id=234 data-nosnippet>234</a>                <a href="#226">trailing</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
+<a href=#225 id=225 data-nosnippet>225</a>            <span class="kw">let </span><span class="kw-2">mut </span>index_ = std::mem::MaybeUninit::uninit();
+<a href=#226 id=226 data-nosnippet>226</a>            <span class="kw">let </span><span class="kw-2">mut </span>trailing = std::mem::MaybeUninit::uninit();
+<a href=#227 id=227 data-nosnippet>227</a>            ffi::pango_glyph_string_x_to_index(
+<a href=#228 id=228 data-nosnippet>228</a>                mut_override(<span class="self">self</span>.to_glib_none().<span class="number">0</span>),
+<a href=#229 id=229 data-nosnippet>229</a>                text.to_glib_none().<span class="number">0</span>,
+<a href=#230 id=230 data-nosnippet>230</a>                length,
+<a href=#231 id=231 data-nosnippet>231</a>                mut_override(analysis.to_glib_none().<span class="number">0</span>),
+<a href=#232 id=232 data-nosnippet>232</a>                x_pos,
+<a href=#233 id=233 data-nosnippet>233</a>                index_.as_mut_ptr(),
+<a href=#234 id=234 data-nosnippet>234</a>                trailing.as_mut_ptr(),
 <a href=#235 id=235 data-nosnippet>235</a>            );
-<a href=#236 id=236 data-nosnippet>236</a>            (<a href="#225">index_</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(), <a href="#226">trailing</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>())
+<a href=#236 id=236 data-nosnippet>236</a>            (index_.assume_init(), trailing.assume_init())
 <a href=#237 id=237 data-nosnippet>237</a>        }
 <a href=#238 id=238 data-nosnippet>238</a>    }
 <a href=#239 id=239 data-nosnippet>239</a>}
 <a href=#240 id=240 data-nosnippet>240</a>
-<a href=#241 id=241 data-nosnippet>241</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#8-22">GlyphString</a> {
+<a href=#241 id=241 data-nosnippet>241</a><span class="kw">impl </span>Default <span class="kw">for </span>GlyphString {
 <a href=#242 id=242 data-nosnippet>242</a>    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-<a href=#243 id=243 data-nosnippet>243</a>        <a href="#32-34"><span class="self">Self</span>::new</a>()
+<a href=#243 id=243 data-nosnippet>243</a>        <span class="self">Self</span>::new()
 <a href=#244 id=244 data-nosnippet>244</a>    }
 <a href=#245 id=245 data-nosnippet>245</a>}
 <a href=#246 id=246 data-nosnippet>246</a>
-<a href=#247 id=247 data-nosnippet>247</a><span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#8-22">GlyphString</a> {}
-<a href=#248 id=248 data-nosnippet>248</a><span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#8-22">GlyphString</a> {}</code></pre></div></section></main></body></html>
+<a href=#247 id=247 data-nosnippet>247</a><span class="kw">unsafe impl </span>Send <span class="kw">for </span>GlyphString {}
+<a href=#248 id=248 data-nosnippet>248</a><span class="kw">unsafe impl </span>Sync <span class="kw">for </span>GlyphString {}</code></pre></div></section></main></body></html>

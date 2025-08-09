@@ -1,83 +1,10 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/dbus_method_invocation.rs`."><title>dbus_method_invocation.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a00149764 2025-07-14)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
-
-    function checkDocsLatestStable() {
-        function popup(msg, url) { return `
-            <style scoped="scoped">
-                .popup {
-                    max-width: 16em;
-                    background-color: #fff;
-                    position: fixed;
-                    z-index: 1;
-                    margin-left: auto;
-                    bottom: 1em;
-                    right: 1em;
-                    border-radius: 5px;
-                    box-shadow: 1px 1px 4px #777;
-                }
-
-                .popup a.version {
-                    color: #e57300;
-                    padding: 0.6em 1em;
-                    display: block;
-                }
-                .popup a.version:hover {
-                    color: #b25900;
-                }
-
-                .popup a.close {
-                    color: white;
-                    background: grey;
-                    border-radius: 99px;
-                    display: inline-block;
-                    width: 19px;
-                    line-height: 19px;
-                    font-weight: bold;
-                    text-align: center;
-                    margin: 0.6em;
-                    float: right;
-                }
-                .popup a.close:hover {
-                    background: black;
-                }
-            </style>
-            <section class="popup" id="gir_docs_popup">
-                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
-                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
-                    ⚠ ${msg}
-                </a>
-            </section>
-        ` };
-
-        if ("0.21" == "main") {
-            document.body.insertAdjacentHTML(
-                'beforeend',
-                popup("This is the development version. Go to latest stable version.", "stable/latest")
-            );
-        } else {
-            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
-                .then(response => response.text())
-                .then(latest_branch => {
-                    if (latest_branch.trim() != "0.21") {
-                        document.body.insertAdjacentHTML(
-                            'beforeend',
-                            popup("This version is outdated. Go to latest version.", "stable/latest")
-                        );
-                    }
-                });
-        }
-    }
-</script>
-
-
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>dbus_method_invocation.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/dbus_method_invocation.rs`."><title>dbus_method_invocation.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (de3efa79f 2025-08-08)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>dbus_method_invocation.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
-<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/variant_type/struct.VariantTy.html">VariantTy</a>};
+<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>, VariantTy};
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="auto/dbus_method_invocation.rs.html#14-33">DBusMethodInvocation</a>};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use crate</span>::{ffi, DBusMethodInvocation};
 <a href=#6 id=6 data-nosnippet>6</a>
-<a href=#7 id=7 data-nosnippet>7</a><span class="kw">impl </span><a href="auto/dbus_method_invocation.rs.html#14-33">DBusMethodInvocation</a> {
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">impl </span>DBusMethodInvocation {
 <a href=#8 id=8 data-nosnippet>8</a>    <span class="doccomment">/// Finishes handling a D-Bus method call by returning an error.
 <a href=#9 id=9 data-nosnippet>9</a>    ///
 <a href=#10 id=10 data-nosnippet>10</a>    /// See g_dbus_error_encode_gerror() for details about what error name
@@ -105,13 +32,13 @@
 <a href=#32 id=32 data-nosnippet>32</a>    /// ## `format`
 <a href=#33 id=33 data-nosnippet>33</a>    /// printf()-style format.
 <a href=#34 id=34 data-nosnippet>34</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_method_invocation_return_error_literal"</span>)]
-<a href=#35 id=35 data-nosnippet>35</a>    </span><span class="kw">pub fn </span>return_error&lt;T: <a href="../../glib/error/trait.ErrorDomain.html">ErrorDomain</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, error: T, message: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
+<a href=#35 id=35 data-nosnippet>35</a>    </span><span class="kw">pub fn </span>return_error&lt;T: ErrorDomain&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, error: T, message: <span class="kw-2">&amp;</span>str) {
 <a href=#36 id=36 data-nosnippet>36</a>        <span class="kw">unsafe </span>{
-<a href=#37 id=37 data-nosnippet>37</a>            <a href="../../gio_sys/fn.g_dbus_method_invocation_return_error_literal.html">ffi::g_dbus_method_invocation_return_error_literal</a>(
-<a href=#38 id=38 data-nosnippet>38</a>                <a class="self" href="#35">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_full">to_glib_full</a>(),
-<a href=#39 id=39 data-nosnippet>39</a>                <a href="../../glib/error/trait.ErrorDomain.html#tymethod.domain">T::domain</a>().<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
-<a href=#40 id=40 data-nosnippet>40</a>                <a href="#35">error</a>.<a href="../../glib/error/trait.ErrorDomain.html#tymethod.code">code</a>(),
-<a href=#41 id=41 data-nosnippet>41</a>                <a href="#35">message</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#37 id=37 data-nosnippet>37</a>            ffi::g_dbus_method_invocation_return_error_literal(
+<a href=#38 id=38 data-nosnippet>38</a>                <span class="self">self</span>.to_glib_full(),
+<a href=#39 id=39 data-nosnippet>39</a>                T::domain().into_glib(),
+<a href=#40 id=40 data-nosnippet>40</a>                error.code(),
+<a href=#41 id=41 data-nosnippet>41</a>                message.to_glib_none().<span class="number">0</span>,
 <a href=#42 id=42 data-nosnippet>42</a>            );
 <a href=#43 id=43 data-nosnippet>43</a>        }
 <a href=#44 id=44 data-nosnippet>44</a>    }
@@ -125,11 +52,11 @@
 <a href=#52 id=52 data-nosnippet>52</a>    /// ## `error`
 <a href=#53 id=53 data-nosnippet>53</a>    /// A #GError.
 <a href=#54 id=54 data-nosnippet>54</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_method_invocation_return_gerror"</span>)]
-<a href=#55 id=55 data-nosnippet>55</a>    </span><span class="kw">pub fn </span>return_gerror(<span class="kw-2">&amp;</span><span class="self">self</span>, error: <a href="../../glib/error/struct.Error.html">glib::Error</a>) {
+<a href=#55 id=55 data-nosnippet>55</a>    </span><span class="kw">pub fn </span>return_gerror(<span class="kw-2">&amp;</span><span class="self">self</span>, error: glib::Error) {
 <a href=#56 id=56 data-nosnippet>56</a>        <span class="kw">unsafe </span>{
-<a href=#57 id=57 data-nosnippet>57</a>            <a href="../../gio_sys/fn.g_dbus_method_invocation_return_gerror.html">ffi::g_dbus_method_invocation_return_gerror</a>(
-<a href=#58 id=58 data-nosnippet>58</a>                <a class="self" href="#55">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_full">to_glib_full</a>(),
-<a href=#59 id=59 data-nosnippet>59</a>                <a href="#55">error</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#57 id=57 data-nosnippet>57</a>            ffi::g_dbus_method_invocation_return_gerror(
+<a href=#58 id=58 data-nosnippet>58</a>                <span class="self">self</span>.to_glib_full(),
+<a href=#59 id=59 data-nosnippet>59</a>                error.to_glib_none().<span class="number">0</span>,
 <a href=#60 id=60 data-nosnippet>60</a>            );
 <a href=#61 id=61 data-nosnippet>61</a>        }
 <a href=#62 id=62 data-nosnippet>62</a>    }
@@ -142,14 +69,14 @@
 <a href=#69 id=69 data-nosnippet>69</a>    /// DBus return values must be tuples.
 <a href=#70 id=70 data-nosnippet>70</a>    ///
 <a href=#71 id=71 data-nosnippet>71</a>    /// If `Err` return the contained error with [`Self::return_gerror`].
-<a href=#72 id=72 data-nosnippet>72</a>    </span><span class="kw">pub fn </span>return_result(<span class="self">self</span>, result: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../glib/variant/struct.Variant.html">glib::Variant</a>&gt;, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) {
-<a href=#73 id=73 data-nosnippet>73</a>        <span class="kw">match </span><a href="#72">result</a> {
-<a href=#74 id=74 data-nosnippet>74</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="prelude-val">Some</span>(value)) <span class="kw">if </span>!<a href="#74">value</a>.<a href="../../glib/variant/struct.Variant.html#method.is_type">is_type</a>(VariantTy::TUPLE) =&gt; {
-<a href=#75 id=75 data-nosnippet>75</a>                <span class="kw">let </span>tupled = <a href="../../glib/variant/struct.Variant.html#method.tuple_from_iter">glib::Variant::tuple_from_iter</a>(<a href="https://doc.rust-lang.org/nightly/core/iter/sources/once/fn.once.html">std::iter::once</a>(<a href="#74">value</a>));
-<a href=#76 id=76 data-nosnippet>76</a>                <a class="self" href="#72">self</a>.<a href="auto/dbus_method_invocation.rs.html#283-290">return_value</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<span class="kw-2">&amp;</span><a href="#75">tupled</a>));
+<a href=#72 id=72 data-nosnippet>72</a>    </span><span class="kw">pub fn </span>return_result(<span class="self">self</span>, result: <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;glib::Variant&gt;, glib::Error&gt;) {
+<a href=#73 id=73 data-nosnippet>73</a>        <span class="kw">match </span>result {
+<a href=#74 id=74 data-nosnippet>74</a>            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(value)) <span class="kw">if </span>!value.is_type(VariantTy::TUPLE) =&gt; {
+<a href=#75 id=75 data-nosnippet>75</a>                <span class="kw">let </span>tupled = glib::Variant::tuple_from_iter(std::iter::once(value));
+<a href=#76 id=76 data-nosnippet>76</a>                <span class="self">self</span>.return_value(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>tupled));
 <a href=#77 id=77 data-nosnippet>77</a>            }
-<a href=#78 id=78 data-nosnippet>78</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(value) =&gt; <a class="self" href="#72">self</a>.<a href="auto/dbus_method_invocation.rs.html#283-290">return_value</a>(<a href="#78">value</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>()),
-<a href=#79 id=79 data-nosnippet>79</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(error) =&gt; <a class="self" href="#72">self</a>.<a href="#55-62">return_gerror</a>(<a href="#79">error</a>),
+<a href=#78 id=78 data-nosnippet>78</a>            <span class="prelude-val">Ok</span>(value) =&gt; <span class="self">self</span>.return_value(value.as_ref()),
+<a href=#79 id=79 data-nosnippet>79</a>            <span class="prelude-val">Err</span>(error) =&gt; <span class="self">self</span>.return_gerror(error),
 <a href=#80 id=80 data-nosnippet>80</a>        }
 <a href=#81 id=81 data-nosnippet>81</a>    }
 <a href=#82 id=82 data-nosnippet>82</a>
@@ -165,12 +92,12 @@
 <a href=#92 id=92 data-nosnippet>92</a>    /// This can be called only from the thread where the main context is running, e.g.
 <a href=#93 id=93 data-nosnippet>93</a>    /// from any other `Future` that is executed on this main context, or after calling
 <a href=#94 id=94 data-nosnippet>94</a>    /// `with_thread_default` or `acquire` on the main context.
-<a href=#95 id=95 data-nosnippet>95</a>    </span><span class="kw">pub fn </span>return_future_local&lt;F&gt;(<span class="self">self</span>, f: F) -&gt; <a href="../../glib/main_context_futures/struct.JoinHandle.html">glib::JoinHandle</a>&lt;()&gt;
+<a href=#95 id=95 data-nosnippet>95</a>    </span><span class="kw">pub fn </span>return_future_local&lt;F&gt;(<span class="self">self</span>, f: F) -&gt; glib::JoinHandle&lt;()&gt;
 <a href=#96 id=96 data-nosnippet>96</a>    <span class="kw">where
-<a href=#97 id=97 data-nosnippet>97</a>        </span>F: <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../glib/variant/struct.Variant.html">glib::Variant</a>&gt;, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>,
+<a href=#97 id=97 data-nosnippet>97</a>        </span>F: std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;glib::Variant&gt;, glib::Error&gt;&gt; + <span class="lifetime">'static</span>,
 <a href=#98 id=98 data-nosnippet>98</a>    {
-<a href=#99 id=99 data-nosnippet>99</a>        <a href="../../glib/functions/fn.spawn_future_local.html">glib::spawn_future_local</a>(<span class="kw">async move </span>{
-<a href=#100 id=100 data-nosnippet>100</a>            <a class="self" href="#95">self</a>.<a href="#72-81">return_result</a>(<a href="#95">f</a>.<span class="kw">await</span>);
+<a href=#99 id=99 data-nosnippet>99</a>        glib::spawn_future_local(<span class="kw">async move </span>{
+<a href=#100 id=100 data-nosnippet>100</a>            <span class="self">self</span>.return_result(f.<span class="kw">await</span>);
 <a href=#101 id=101 data-nosnippet>101</a>        })
 <a href=#102 id=102 data-nosnippet>102</a>    }
 <a href=#103 id=103 data-nosnippet>103</a>}</code></pre></div></section></main></body></html>

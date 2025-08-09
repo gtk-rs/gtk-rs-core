@@ -1,85 +1,12 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/converter.rs`."><title>converter.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a00149764 2025-07-14)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
-
-    function checkDocsLatestStable() {
-        function popup(msg, url) { return `
-            <style scoped="scoped">
-                .popup {
-                    max-width: 16em;
-                    background-color: #fff;
-                    position: fixed;
-                    z-index: 1;
-                    margin-left: auto;
-                    bottom: 1em;
-                    right: 1em;
-                    border-radius: 5px;
-                    box-shadow: 1px 1px 4px #777;
-                }
-
-                .popup a.version {
-                    color: #e57300;
-                    padding: 0.6em 1em;
-                    display: block;
-                }
-                .popup a.version:hover {
-                    color: #b25900;
-                }
-
-                .popup a.close {
-                    color: white;
-                    background: grey;
-                    border-radius: 99px;
-                    display: inline-block;
-                    width: 19px;
-                    line-height: 19px;
-                    font-weight: bold;
-                    text-align: center;
-                    margin: 0.6em;
-                    float: right;
-                }
-                .popup a.close:hover {
-                    background: black;
-                }
-            </style>
-            <section class="popup" id="gir_docs_popup">
-                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
-                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
-                    ⚠ ${msg}
-                </a>
-            </section>
-        ` };
-
-        if ("0.21" == "main") {
-            document.body.insertAdjacentHTML(
-                'beforeend',
-                popup("This is the development version. Go to latest stable version.", "stable/latest")
-            );
-        } else {
-            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
-                .then(response => response.text())
-                .then(latest_branch => {
-                    if (latest_branch.trim() != "0.21") {
-                        document.body.insertAdjacentHTML(
-                            'beforeend',
-                            popup("This version is outdated. Go to latest version.", "stable/latest")
-                        );
-                    }
-                });
-        }
-    }
-</script>
-
-
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>converter.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/converter.rs`."><title>converter.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (de3efa79f 2025-08-08)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>converter.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
-<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
+<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::{mem, ptr};
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
 <a href=#6 id=6 data-nosnippet>6</a>
-<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="auto/converter.rs.html#8-28">Converter</a>, <a href="auto/flags.rs.html#522-537">ConverterFlags</a>, <a href="auto/enums.rs.html#117-132">ConverterResult</a>};
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use crate</span>::{ffi, Converter, ConverterFlags, ConverterResult};
 <a href=#8 id=8 data-nosnippet>8</a>
-<a href=#9 id=9 data-nosnippet>9</a><span class="kw">pub trait </span><a href="../../gio/prelude/trait.ConverterExtManual.html">ConverterExtManual</a>: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/converter.rs.html#8-28">Converter</a>&gt; + <span class="lifetime">'static </span>{
+<a href=#9 id=9 data-nosnippet>9</a><span class="kw">pub trait </span>ConverterExtManual: IsA&lt;Converter&gt; + <span class="lifetime">'static </span>{
 <a href=#10 id=10 data-nosnippet>10</a>    <span class="doccomment">/// This is the main operation used when converting data. It is to be called
 <a href=#11 id=11 data-nosnippet>11</a>    /// multiple times in a loop, and each time it will do some work, i.e.
 <a href=#12 id=12 data-nosnippet>12</a>    /// producing some output (in @outbuf) or consuming some input (from @inbuf) or
@@ -183,48 +110,48 @@
 <a href=#110 id=110 data-nosnippet>110</a>    /// will be set to the number of bytes
 <a href=#111 id=111 data-nosnippet>111</a>    ///    written to @outbuf on success
 <a href=#112 id=112 data-nosnippet>112</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_converter_convert"</span>)]
-<a href=#113 id=113 data-nosnippet>113</a>    </span><span class="kw">fn </span>convert&lt;IN: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;, OUT: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html">AsMut</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt;&gt;(
+<a href=#113 id=113 data-nosnippet>113</a>    </span><span class="kw">fn </span>convert&lt;IN: AsRef&lt;[u8]&gt;, OUT: AsMut&lt;[u8]&gt;&gt;(
 <a href=#114 id=114 data-nosnippet>114</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#115 id=115 data-nosnippet>115</a>        inbuf: IN,
 <a href=#116 id=116 data-nosnippet>116</a>        outbuf: OUT,
-<a href=#117 id=117 data-nosnippet>117</a>        flags: <a href="auto/flags.rs.html#522-537">ConverterFlags</a>,
-<a href=#118 id=118 data-nosnippet>118</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="auto/enums.rs.html#117-132">ConverterResult</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
-<a href=#119 id=119 data-nosnippet>119</a>        <span class="kw">let </span>inbuf: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;IN&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#115">inbuf</a>);
+<a href=#117 id=117 data-nosnippet>117</a>        flags: ConverterFlags,
+<a href=#118 id=118 data-nosnippet>118</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;(ConverterResult, usize, usize), glib::Error&gt; {
+<a href=#119 id=119 data-nosnippet>119</a>        <span class="kw">let </span>inbuf: Box&lt;IN&gt; = Box::new(inbuf);
 <a href=#120 id=120 data-nosnippet>120</a>        <span class="kw">let </span>(inbuf_size, inbuf) = {
-<a href=#121 id=121 data-nosnippet>121</a>            <span class="kw">let </span>slice = (<span class="kw-2">*</span><a href="#119">inbuf</a>).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>();
-<a href=#122 id=122 data-nosnippet>122</a>            (<a href="#121">slice</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(), <a href="#121">slice</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>())
+<a href=#121 id=121 data-nosnippet>121</a>            <span class="kw">let </span>slice = (<span class="kw-2">*</span>inbuf).as_ref();
+<a href=#122 id=122 data-nosnippet>122</a>            (slice.len(), slice.as_ptr())
 <a href=#123 id=123 data-nosnippet>123</a>        };
-<a href=#124 id=124 data-nosnippet>124</a>        <span class="kw">let </span><span class="kw-2">mut </span>outbuf: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;OUT&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box::new</a>(<a href="#116">outbuf</a>);
+<a href=#124 id=124 data-nosnippet>124</a>        <span class="kw">let </span><span class="kw-2">mut </span>outbuf: Box&lt;OUT&gt; = Box::new(outbuf);
 <a href=#125 id=125 data-nosnippet>125</a>        <span class="kw">let </span>(outbuf_size, outbuf) = {
-<a href=#126 id=126 data-nosnippet>126</a>            <span class="kw">let </span>slice = (<span class="kw-2">*</span><a href="#124">outbuf</a>).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsMut.html#tymethod.as_mut">as_mut</a>();
-<a href=#127 id=127 data-nosnippet>127</a>            (<a href="#126">slice</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(), <a href="#126">slice</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_mut_ptr">as_mut_ptr</a>())
+<a href=#126 id=126 data-nosnippet>126</a>            <span class="kw">let </span>slice = (<span class="kw-2">*</span>outbuf).as_mut();
+<a href=#127 id=127 data-nosnippet>127</a>            (slice.len(), slice.as_mut_ptr())
 <a href=#128 id=128 data-nosnippet>128</a>        };
 <a href=#129 id=129 data-nosnippet>129</a>        <span class="kw">unsafe </span>{
-<a href=#130 id=130 data-nosnippet>130</a>            <span class="kw">let </span><span class="kw-2">mut </span>bytes_read = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
-<a href=#131 id=131 data-nosnippet>131</a>            <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
-<a href=#132 id=132 data-nosnippet>132</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-<a href=#133 id=133 data-nosnippet>133</a>            <span class="kw">let </span>ret = <a href="../../gio_sys/fn.g_converter_convert.html">ffi::g_converter_convert</a>(
-<a href=#134 id=134 data-nosnippet>134</a>                <a class="self" href="#114">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#135 id=135 data-nosnippet>135</a>                <a href="../../glib/translate/fn.mut_override.html">mut_override</a>(<a href="#120">inbuf</a>),
-<a href=#136 id=136 data-nosnippet>136</a>                <a href="#120">inbuf_size</a>,
-<a href=#137 id=137 data-nosnippet>137</a>                <a href="#125">outbuf</a>,
-<a href=#138 id=138 data-nosnippet>138</a>                <a href="#125">outbuf_size</a>,
-<a href=#139 id=139 data-nosnippet>139</a>                <a href="#117">flags</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
-<a href=#140 id=140 data-nosnippet>140</a>                <a href="#130">bytes_read</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
-<a href=#141 id=141 data-nosnippet>141</a>                <a href="#131">bytes_written</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
-<a href=#142 id=142 data-nosnippet>142</a>                <span class="kw-2">&amp;mut </span><a href="#132">error</a>,
+<a href=#130 id=130 data-nosnippet>130</a>            <span class="kw">let </span><span class="kw-2">mut </span>bytes_read = mem::MaybeUninit::uninit();
+<a href=#131 id=131 data-nosnippet>131</a>            <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = mem::MaybeUninit::uninit();
+<a href=#132 id=132 data-nosnippet>132</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+<a href=#133 id=133 data-nosnippet>133</a>            <span class="kw">let </span>ret = ffi::g_converter_convert(
+<a href=#134 id=134 data-nosnippet>134</a>                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+<a href=#135 id=135 data-nosnippet>135</a>                mut_override(inbuf),
+<a href=#136 id=136 data-nosnippet>136</a>                inbuf_size,
+<a href=#137 id=137 data-nosnippet>137</a>                outbuf,
+<a href=#138 id=138 data-nosnippet>138</a>                outbuf_size,
+<a href=#139 id=139 data-nosnippet>139</a>                flags.into_glib(),
+<a href=#140 id=140 data-nosnippet>140</a>                bytes_read.as_mut_ptr(),
+<a href=#141 id=141 data-nosnippet>141</a>                bytes_written.as_mut_ptr(),
+<a href=#142 id=142 data-nosnippet>142</a>                <span class="kw-2">&amp;mut </span>error,
 <a href=#143 id=143 data-nosnippet>143</a>            );
-<a href=#144 id=144 data-nosnippet>144</a>            <span class="kw">if </span><a href="#132">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
-<a href=#145 id=145 data-nosnippet>145</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((
-<a href=#146 id=146 data-nosnippet>146</a>                    <a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#133">ret</a>),
-<a href=#147 id=147 data-nosnippet>147</a>                    <a href="#130">bytes_read</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(),
-<a href=#148 id=148 data-nosnippet>148</a>                    <a href="#131">bytes_written</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>(),
+<a href=#144 id=144 data-nosnippet>144</a>            <span class="kw">if </span>error.is_null() {
+<a href=#145 id=145 data-nosnippet>145</a>                <span class="prelude-val">Ok</span>((
+<a href=#146 id=146 data-nosnippet>146</a>                    from_glib(ret),
+<a href=#147 id=147 data-nosnippet>147</a>                    bytes_read.assume_init(),
+<a href=#148 id=148 data-nosnippet>148</a>                    bytes_written.assume_init(),
 <a href=#149 id=149 data-nosnippet>149</a>                ))
 <a href=#150 id=150 data-nosnippet>150</a>            } <span class="kw">else </span>{
-<a href=#151 id=151 data-nosnippet>151</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#132">error</a>))
+<a href=#151 id=151 data-nosnippet>151</a>                <span class="prelude-val">Err</span>(from_glib_full(error))
 <a href=#152 id=152 data-nosnippet>152</a>            }
 <a href=#153 id=153 data-nosnippet>153</a>        }
 <a href=#154 id=154 data-nosnippet>154</a>    }
 <a href=#155 id=155 data-nosnippet>155</a>}
 <a href=#156 id=156 data-nosnippet>156</a>
-<a href=#157 id=157 data-nosnippet>157</a><span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/converter.rs.html#8-28">Converter</a>&gt;&gt; <a href="#9-155">ConverterExtManual</a> <span class="kw">for </span>O {}</code></pre></div></section></main></body></html>
+<a href=#157 id=157 data-nosnippet>157</a><span class="kw">impl</span>&lt;O: IsA&lt;Converter&gt;&gt; ConverterExtManual <span class="kw">for </span>O {}</code></pre></div></section></main></body></html>

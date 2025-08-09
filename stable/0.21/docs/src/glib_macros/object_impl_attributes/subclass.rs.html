@@ -1,85 +1,12 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/object_impl_attributes/subclass.rs`."><title>subclass.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-aa0817cf.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.90.0-nightly (a00149764 2025-07-14)" data-channel="nightly" data-search-js="search-179e01a3.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-4e99c027.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-673ee1e0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
-
-    function checkDocsLatestStable() {
-        function popup(msg, url) { return `
-            <style scoped="scoped">
-                .popup {
-                    max-width: 16em;
-                    background-color: #fff;
-                    position: fixed;
-                    z-index: 1;
-                    margin-left: auto;
-                    bottom: 1em;
-                    right: 1em;
-                    border-radius: 5px;
-                    box-shadow: 1px 1px 4px #777;
-                }
-
-                .popup a.version {
-                    color: #e57300;
-                    padding: 0.6em 1em;
-                    display: block;
-                }
-                .popup a.version:hover {
-                    color: #b25900;
-                }
-
-                .popup a.close {
-                    color: white;
-                    background: grey;
-                    border-radius: 99px;
-                    display: inline-block;
-                    width: 19px;
-                    line-height: 19px;
-                    font-weight: bold;
-                    text-align: center;
-                    margin: 0.6em;
-                    float: right;
-                }
-                .popup a.close:hover {
-                    background: black;
-                }
-            </style>
-            <section class="popup" id="gir_docs_popup">
-                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
-                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
-                    ⚠ ${msg}
-                </a>
-            </section>
-        ` };
-
-        if ("0.21" == "main") {
-            document.body.insertAdjacentHTML(
-                'beforeend',
-                popup("This is the development version. Go to latest stable version.", "stable/latest")
-            );
-        } else {
-            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
-                .then(response => response.text())
-                .then(latest_branch => {
-                    if (latest_branch.trim() != "0.21") {
-                        document.body.insertAdjacentHTML(
-                            'beforeend',
-                            popup("This version is outdated. Go to latest version.", "stable/latest")
-                        );
-                    }
-                });
-        }
-    }
-</script>
-
-
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib_macros/object_impl_attributes/</div>subclass.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/object_impl_attributes/subclass.rs`."><title>subclass.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (de3efa79f 2025-08-08)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-68b7e25d.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib_macros/object_impl_attributes/</div>subclass.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>heck::ToShoutySnakeCase;
-<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.40/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.40/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
+<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>proc_macro2::TokenStream;
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>quote::{format_ident, quote, ToTokens};
 <a href=#6 id=6 data-nosnippet>6</a>
-<a href=#7 id=7 data-nosnippet>7</a><span class="kw">pub fn </span>impl_object_subclass(input: <a href="../object_impl_attributes.rs.html#19-27"><span class="kw">super</span>::Input</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a> {
-<a href=#8 id=8 data-nosnippet>8</a>    <span class="kw">let </span>crate_ident = <a href="../utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>();
-<a href=#9 id=9 data-nosnippet>9</a>    <span class="kw">let </span><a href="../object_impl_attributes.rs.html#19-27"><span class="kw">super</span>::Input</a> {
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">pub fn </span>impl_object_subclass(input: <span class="kw">super</span>::Input) -&gt; TokenStream {
+<a href=#8 id=8 data-nosnippet>8</a>    <span class="kw">let </span>crate_ident = <span class="kw">crate</span>::utils::crate_ident_new();
+<a href=#9 id=9 data-nosnippet>9</a>    <span class="kw">let </span><span class="kw">super</span>::Input {
 <a href=#10 id=10 data-nosnippet>10</a>        attrs,
 <a href=#11 id=11 data-nosnippet>11</a>        generics,
 <a href=#12 id=12 data-nosnippet>12</a>        trait_path,
@@ -87,21 +14,21 @@
 <a href=#14 id=14 data-nosnippet>14</a>        unsafety,
 <a href=#15 id=15 data-nosnippet>15</a>        items,
 <a href=#16 id=16 data-nosnippet>16</a>        meta_dynamic,
-<a href=#17 id=17 data-nosnippet>17</a>    } = <a href="#7">input</a>;
+<a href=#17 id=17 data-nosnippet>17</a>    } = input;
 <a href=#18 id=18 data-nosnippet>18</a>
-<a href=#19 id=19 data-nosnippet>19</a>    <span class="kw">let </span>register_object_subclass = <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(dynamic) = <a href="#16">meta_dynamic</a> {
-<a href=#20 id=20 data-nosnippet>20</a>        <span class="kw">let </span>plugin_ty = <a href="#19">dynamic</a>
+<a href=#19 id=19 data-nosnippet>19</a>    <span class="kw">let </span>register_object_subclass = <span class="kw">if let </span><span class="prelude-val">Some</span>(dynamic) = meta_dynamic {
+<a href=#20 id=20 data-nosnippet>20</a>        <span class="kw">let </span>plugin_ty = dynamic
 <a href=#21 id=21 data-nosnippet>21</a>            .plugin_type
-<a href=#22 id=22 data-nosnippet>22</a>            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#22">p</a>.<a href="https://docs.rs/quote/1.0.40/quote/to_tokens/trait.ToTokens.html#tymethod.into_token_stream">into_token_stream</a>())
-<a href=#23 id=23 data-nosnippet>23</a>            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a>(#crate_ident::TypeModule));
-<a href=#24 id=24 data-nosnippet>24</a>        <a href="#194-313">register_object_subclass_as_dynamic</a>(
-<a href=#25 id=25 data-nosnippet>25</a>            <span class="kw-2">&amp;</span><a href="#8">crate_ident</a>,
-<a href=#26 id=26 data-nosnippet>26</a>            <span class="kw-2">&amp;</span><a href="#13">self_ty</a>,
-<a href=#27 id=27 data-nosnippet>27</a>            <span class="kw-2">&amp;</span><a href="#20">plugin_ty</a>,
-<a href=#28 id=28 data-nosnippet>28</a>            <a href="#19">dynamic</a>.lazy_registration,
+<a href=#22 id=22 data-nosnippet>22</a>            .map(|p| p.into_token_stream())
+<a href=#23 id=23 data-nosnippet>23</a>            .unwrap_or(<span class="macro">quote!</span>(#crate_ident::TypeModule));
+<a href=#24 id=24 data-nosnippet>24</a>        register_object_subclass_as_dynamic(
+<a href=#25 id=25 data-nosnippet>25</a>            <span class="kw-2">&amp;</span>crate_ident,
+<a href=#26 id=26 data-nosnippet>26</a>            <span class="kw-2">&amp;</span>self_ty,
+<a href=#27 id=27 data-nosnippet>27</a>            <span class="kw-2">&amp;</span>plugin_ty,
+<a href=#28 id=28 data-nosnippet>28</a>            dynamic.lazy_registration,
 <a href=#29 id=29 data-nosnippet>29</a>        )
 <a href=#30 id=30 data-nosnippet>30</a>    } <span class="kw">else </span>{
-<a href=#31 id=31 data-nosnippet>31</a>        <a href="#172-190">register_object_subclass_as_static</a>(<span class="kw-2">&amp;</span><a href="#8">crate_ident</a>, <span class="kw-2">&amp;</span><a href="#13">self_ty</a>)
+<a href=#31 id=31 data-nosnippet>31</a>        register_object_subclass_as_static(<span class="kw-2">&amp;</span>crate_ident, <span class="kw-2">&amp;</span>self_ty)
 <a href=#32 id=32 data-nosnippet>32</a>    };
 <a href=#33 id=33 data-nosnippet>33</a>
 <a href=#34 id=34 data-nosnippet>34</a>    <span class="kw">let </span><span class="kw-2">mut </span>has_new = <span class="bool-val">false</span>;
@@ -133,20 +60,20 @@
 <a href=#60 id=60 data-nosnippet>60</a>        }
 <a href=#61 id=61 data-nosnippet>61</a>    }
 <a href=#62 id=62 data-nosnippet>62</a>
-<a href=#63 id=63 data-nosnippet>63</a>    <span class="kw">let </span>parent_type_opt = (!<a href="#35">has_parent_type</a>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| {
-<a href=#64 id=64 data-nosnippet>64</a>        <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a>(
+<a href=#63 id=63 data-nosnippet>63</a>    <span class="kw">let </span>parent_type_opt = (!has_parent_type).then(|| {
+<a href=#64 id=64 data-nosnippet>64</a>        <span class="macro">quote!</span>(
 <a href=#65 id=65 data-nosnippet>65</a>            <span class="kw">type </span>ParentType = #crate_ident::Object;
 <a href=#66 id=66 data-nosnippet>66</a>        )
 <a href=#67 id=67 data-nosnippet>67</a>    });
 <a href=#68 id=68 data-nosnippet>68</a>
-<a href=#69 id=69 data-nosnippet>69</a>    <span class="kw">let </span>interfaces_opt = (!<a href="#36">has_interfaces</a>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| {
-<a href=#70 id=70 data-nosnippet>70</a>        <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a>(
+<a href=#69 id=69 data-nosnippet>69</a>    <span class="kw">let </span>interfaces_opt = (!has_interfaces).then(|| {
+<a href=#70 id=70 data-nosnippet>70</a>        <span class="macro">quote!</span>(
 <a href=#71 id=71 data-nosnippet>71</a>            <span class="kw">type </span>Interfaces = ();
 <a href=#72 id=72 data-nosnippet>72</a>        )
 <a href=#73 id=73 data-nosnippet>73</a>    });
 <a href=#74 id=74 data-nosnippet>74</a>
-<a href=#75 id=75 data-nosnippet>75</a>    <span class="kw">let </span>new_opt = (!<a href="#34">has_new</a>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| {
-<a href=#76 id=76 data-nosnippet>76</a>        <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
+<a href=#75 id=75 data-nosnippet>75</a>    <span class="kw">let </span>new_opt = (!has_new).then(|| {
+<a href=#76 id=76 data-nosnippet>76</a>        <span class="macro">quote!</span> {
 <a href=#77 id=77 data-nosnippet>77</a>            <span class="attr">#[inline]
 <a href=#78 id=78 data-nosnippet>78</a>            </span><span class="kw">fn </span>new() -&gt; <span class="self">Self </span>{
 <a href=#79 id=79 data-nosnippet>79</a>                ::std::default::Default::default()
@@ -154,13 +81,13 @@
 <a href=#81 id=81 data-nosnippet>81</a>        }
 <a href=#82 id=82 data-nosnippet>82</a>    });
 <a href=#83 id=83 data-nosnippet>83</a>
-<a href=#84 id=84 data-nosnippet>84</a>    <span class="kw">let </span>class_opt = (!<a href="#38">has_class</a>)
-<a href=#85 id=85 data-nosnippet>85</a>        .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a>(<span class="kw">type </span>Class = #crate_ident::subclass::basic::ClassStruct&lt;<span class="self">Self</span>&gt;;));
+<a href=#84 id=84 data-nosnippet>84</a>    <span class="kw">let </span>class_opt = (!has_class)
+<a href=#85 id=85 data-nosnippet>85</a>        .then(|| <span class="macro">quote!</span>(<span class="kw">type </span>Class = #crate_ident::subclass::basic::ClassStruct&lt;<span class="self">Self</span>&gt;;));
 <a href=#86 id=86 data-nosnippet>86</a>
-<a href=#87 id=87 data-nosnippet>87</a>    <span class="kw">let </span>instance_opt = (!<a href="#37">has_instance</a>)
-<a href=#88 id=88 data-nosnippet>88</a>        .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a>(<span class="kw">type </span>Instance = #crate_ident::subclass::basic::InstanceStruct&lt;<span class="self">Self</span>&gt;;));
+<a href=#87 id=87 data-nosnippet>87</a>    <span class="kw">let </span>instance_opt = (!has_instance)
+<a href=#88 id=88 data-nosnippet>88</a>        .then(|| <span class="macro">quote!</span>(<span class="kw">type </span>Instance = #crate_ident::subclass::basic::InstanceStruct&lt;<span class="self">Self</span>&gt;;));
 <a href=#89 id=89 data-nosnippet>89</a>
-<a href=#90 id=90 data-nosnippet>90</a>    <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
+<a href=#90 id=90 data-nosnippet>90</a>    <span class="macro">quote!</span> {
 <a href=#91 id=91 data-nosnippet>91</a>        #(#attrs)*
 <a href=#92 id=92 data-nosnippet>92</a>        #unsafety <span class="kw">impl </span>#generics #trait_path <span class="kw">for </span>#self_ty {
 <a href=#93 id=93 data-nosnippet>93</a>            #parent_type_opt
@@ -243,11 +170,11 @@
 <a href=#170 id=170 data-nosnippet>170</a>
 <a href=#171 id=171 data-nosnippet>171</a><span class="comment">// Registers the object subclass as a static type.
 <a href=#172 id=172 data-nosnippet>172</a></span><span class="kw">fn </span>register_object_subclass_as_static(
-<a href=#173 id=173 data-nosnippet>173</a>    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-<a href=#174 id=174 data-nosnippet>174</a>    self_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">syn::Ident</a>,
-<a href=#175 id=175 data-nosnippet>175</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<a href=#173 id=173 data-nosnippet>173</a>    crate_ident: <span class="kw-2">&amp;</span>TokenStream,
+<a href=#174 id=174 data-nosnippet>174</a>    self_ty: <span class="kw-2">&amp;</span>syn::Ident,
+<a href=#175 id=175 data-nosnippet>175</a>) -&gt; TokenStream {
 <a href=#176 id=176 data-nosnippet>176</a>    <span class="comment">// registers the object subclass on first use (lazy registration).
-<a href=#177 id=177 data-nosnippet>177</a>    </span><a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
+<a href=#177 id=177 data-nosnippet>177</a>    </span><span class="macro">quote!</span> {
 <a href=#178 id=178 data-nosnippet>178</a>        <span class="kw">impl </span>#self_ty {
 <a href=#179 id=179 data-nosnippet>179</a>            <span class="doccomment">/// Registers the type only once.
 <a href=#180 id=180 data-nosnippet>180</a>            </span><span class="attr">#[inline]
@@ -265,27 +192,27 @@
 <a href=#192 id=192 data-nosnippet>192</a><span class="comment">// The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
 <a href=#193 id=193 data-nosnippet>193</a>// An object subclass can be reregistered as a dynamic type.
 <a href=#194 id=194 data-nosnippet>194</a></span><span class="kw">fn </span>register_object_subclass_as_dynamic(
-<a href=#195 id=195 data-nosnippet>195</a>    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-<a href=#196 id=196 data-nosnippet>196</a>    self_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">syn::Ident</a>,
-<a href=#197 id=197 data-nosnippet>197</a>    plugin_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-<a href=#198 id=198 data-nosnippet>198</a>    lazy_registration: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-<a href=#199 id=199 data-nosnippet>199</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<a href=#195 id=195 data-nosnippet>195</a>    crate_ident: <span class="kw-2">&amp;</span>TokenStream,
+<a href=#196 id=196 data-nosnippet>196</a>    self_ty: <span class="kw-2">&amp;</span>syn::Ident,
+<a href=#197 id=197 data-nosnippet>197</a>    plugin_ty: <span class="kw-2">&amp;</span>TokenStream,
+<a href=#198 id=198 data-nosnippet>198</a>    lazy_registration: bool,
+<a href=#199 id=199 data-nosnippet>199</a>) -&gt; TokenStream {
 <a href=#200 id=200 data-nosnippet>200</a>    <span class="comment">// The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
 <a href=#201 id=201 data-nosnippet>201</a>    // An object subclass can be reregistered as a dynamic type.
-<a href=#202 id=202 data-nosnippet>202</a>    </span><span class="kw">if </span><a href="#198">lazy_registration</a> {
+<a href=#202 id=202 data-nosnippet>202</a>    </span><span class="kw">if </span>lazy_registration {
 <a href=#203 id=203 data-nosnippet>203</a>        <span class="comment">// registers the object subclass as a dynamic type on the first use (lazy registration).
 <a href=#204 id=204 data-nosnippet>204</a>        // a weak reference on the plugin is stored and will be used later on the first use of the object subclass.
 <a href=#205 id=205 data-nosnippet>205</a>        // this implementation relies on a static storage of a weak reference on the plugin and of the GLib type to know if the object subclass has been registered.
 <a href=#206 id=206 data-nosnippet>206</a>
 <a href=#207 id=207 data-nosnippet>207</a>        // the registration status type.
-<a href=#208 id=208 data-nosnippet>208</a>        </span><span class="kw">let </span>registration_status_type = <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"{}RegistrationStatus"</span>, self_ty);
+<a href=#208 id=208 data-nosnippet>208</a>        </span><span class="kw">let </span>registration_status_type = <span class="macro">format_ident!</span>(<span class="string">"{}RegistrationStatus"</span>, self_ty);
 <a href=#209 id=209 data-nosnippet>209</a>        <span class="comment">// name of the static variable to store the registration status.
-<a href=#210 id=210 data-nosnippet>210</a>        </span><span class="kw">let </span>registration_status = <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.format_ident.html">format_ident!</a>(
+<a href=#210 id=210 data-nosnippet>210</a>        </span><span class="kw">let </span>registration_status = <span class="macro">format_ident!</span>(
 <a href=#211 id=211 data-nosnippet>211</a>            <span class="string">"{}"</span>,
 <a href=#212 id=212 data-nosnippet>212</a>            registration_status_type.to_string().to_shouty_snake_case()
 <a href=#213 id=213 data-nosnippet>213</a>        );
 <a href=#214 id=214 data-nosnippet>214</a>
-<a href=#215 id=215 data-nosnippet>215</a>        <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
+<a href=#215 id=215 data-nosnippet>215</a>        <span class="macro">quote!</span> {
 <a href=#216 id=216 data-nosnippet>216</a>            <span class="doccomment">/// The registration status type: a tuple of the weak reference on the plugin and of the GLib type.
 <a href=#217 id=217 data-nosnippet>217</a>            </span><span class="kw">struct </span>#registration_status_type(&lt;#plugin_ty <span class="kw">as </span>#crate_ident::clone::Downgrade&gt;::Weak, #crate_ident::Type);
 <a href=#218 id=218 data-nosnippet>218</a>            <span class="kw">unsafe impl </span>Send <span class="kw">for </span>#registration_status_type {}
@@ -361,7 +288,7 @@
 <a href=#288 id=288 data-nosnippet>288</a>    } <span class="kw">else </span>{
 <a href=#289 id=289 data-nosnippet>289</a>        <span class="comment">// registers immediately the object subclass as a dynamic type.
 <a href=#290 id=290 data-nosnippet>290</a>
-<a href=#291 id=291 data-nosnippet>291</a>        </span><a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
+<a href=#291 id=291 data-nosnippet>291</a>        </span><span class="macro">quote!</span> {
 <a href=#292 id=292 data-nosnippet>292</a>            <span class="kw">impl </span>#self_ty {
 <a href=#293 id=293 data-nosnippet>293</a>                <span class="doccomment">/// Do nothing as the object subclass has been registered on implementation load.
 <a href=#294 id=294 data-nosnippet>294</a>                </span><span class="attr">#[inline]
