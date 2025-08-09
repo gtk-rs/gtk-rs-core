@@ -796,12 +796,14 @@ impl<T: TransparentPtrType> PtrSlice<T> {
             for item in other {
                 ptr::write(self.ptr.as_ptr().add(self.len) as *mut T, item.clone());
                 self.len += 1;
-            }
 
-            ptr::write(
-                self.ptr.as_ptr().add(self.len),
-                Ptr::from(ptr::null_mut::<<T as GlibPtrDefault>::GlibType>()),
-            );
+                // Add null terminator on every iteration because `clone`
+                // may panic
+                ptr::write(
+                    self.ptr.as_ptr().add(self.len),
+                    Ptr::from(ptr::null_mut::<<T as GlibPtrDefault>::GlibType>()),
+                );
+            }
         }
     }
 
