@@ -65,6 +65,10 @@ impl std::hash::Hash for StrV {
 
 impl PartialEq<[&'_ str]> for StrV {
     fn eq(&self, other: &[&'_ str]) -> bool {
+        if self.len() != other.len() {
+            return false;
+        }
+
         for (a, b) in Iterator::zip(self.iter(), other.iter()) {
             if a != b {
                 return false;
@@ -1604,6 +1608,7 @@ mod test {
             StrV::from_glib_full_num(ptr, 4, false)
         };
 
+        assert_eq!(items.len(), slice.len());
         for (a, b) in Iterator::zip(items.iter(), slice.iter()) {
             assert_eq!(a, b);
         }
@@ -1628,6 +1633,7 @@ mod test {
             StrV::from_glib_container_num(ptr, 4, false)
         };
 
+        assert_eq!(items.len(), slice.len());
         for (a, b) in Iterator::zip(items.iter(), slice.iter()) {
             assert_eq!(a, b);
         }
@@ -1654,6 +1660,7 @@ mod test {
             res
         };
 
+        assert_eq!(items.len(), slice.len());
         for (a, b) in Iterator::zip(items.iter(), slice.iter()) {
             assert_eq!(a, b);
         }
