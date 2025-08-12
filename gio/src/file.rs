@@ -169,7 +169,7 @@ pub trait FileExtManual: IsA<File> + Sized {
     #[doc(alias = "g_file_replace_contents_async")]
     fn replace_contents_async<
         B: AsRef<[u8]> + Send + 'static,
-        R: FnOnce(Result<(B, glib::GString), (B, glib::Error)>) + 'static,
+        R: FnOnce(Result<(B, Option<glib::GString>), (B, glib::Error)>) + 'static,
         C: IsA<Cancellable>,
     >(
         &self,
@@ -203,7 +203,7 @@ pub trait FileExtManual: IsA<File> + Sized {
         };
         unsafe extern "C" fn replace_contents_async_trampoline<
             B: AsRef<[u8]> + Send + 'static,
-            R: FnOnce(Result<(B, glib::GString), (B, glib::Error)>) + 'static,
+            R: FnOnce(Result<(B, Option<glib::GString>), (B, glib::Error)>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
@@ -253,7 +253,7 @@ pub trait FileExtManual: IsA<File> + Sized {
         flags: FileCreateFlags,
     ) -> Pin<
         Box<
-            dyn std::future::Future<Output = Result<(B, glib::GString), (B, glib::Error)>>
+            dyn std::future::Future<Output = Result<(B, Option<glib::GString>), (B, glib::Error)>>
                 + 'static,
         >,
     > {
