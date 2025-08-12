@@ -36,16 +36,6 @@ impl MatchInfo<'_> {
     pub fn as_ptr(&self) -> *mut ffi::GMatchInfo {
         self.inner.as_ptr()
     }
-    #[doc = "Borrows the underlying C value."]
-    #[inline]
-    pub unsafe fn from_glib_ptr_borrow(ptr: &*mut ffi::GMatchInfo) -> &Self {
-        debug_assert_eq!(
-            std::mem::size_of::<Self>(),
-            std::mem::size_of::<crate::ffi::gpointer>()
-        );
-        debug_assert!(!ptr.is_null());
-        &*(ptr as *const *mut ffi::GMatchInfo as *const Self)
-    }
 }
 
 #[doc(hidden)]
@@ -149,6 +139,32 @@ impl FromGlibPtrBorrow<*const ffi::GMatchInfo> for MatchInfo<'_> {
     }
 }
 
+impl<'a> FromGlibPtrBorrow2<*mut ffi::GMatchInfo> for MatchInfo<'a> {
+    #[doc = "Borrows the underlying C value."]
+    #[inline]
+    unsafe fn from_glib_borrow2(ptr: &*mut ffi::GMatchInfo) -> &Self {
+        debug_assert_eq!(
+            std::mem::size_of::<Self>(),
+            std::mem::size_of::<crate::ffi::gpointer>()
+        );
+        debug_assert!(!ptr.is_null());
+        &*(ptr as *const *mut ffi::GMatchInfo as *const Self)
+    }
+}
+
+impl<'a> FromGlibPtrBorrow2<*const ffi::GMatchInfo> for MatchInfo<'a> {
+    #[doc = "Borrows the underlying C value."]
+    #[inline]
+    unsafe fn from_glib_borrow2(ptr: &*const ffi::GMatchInfo) -> &Self {
+        debug_assert_eq!(
+            std::mem::size_of::<Self>(),
+            std::mem::size_of::<crate::ffi::gpointer>()
+        );
+        debug_assert!(!ptr.is_null());
+        &*(ptr as *const *const ffi::GMatchInfo as *const Self)
+    }
+}
+
 #[doc(hidden)]
 impl IntoGlibPtr<*mut ffi::GMatchInfo> for MatchInfo<'_> {
     #[inline]
@@ -200,7 +216,7 @@ unsafe impl<'a, 'input: 'a> crate::value::FromValue<'a> for &'a MatchInfo<'input
     #[inline]
     unsafe fn from_value(value: &'a crate::Value) -> Self {
         let value = &*(value as *const crate::Value as *const crate::gobject_ffi::GValue);
-        <MatchInfo<'input>>::from_glib_ptr_borrow(
+        <MatchInfo<'input>>::from_glib_borrow2(
             &*(&value.data[0].v_pointer as *const crate::ffi::gpointer
                 as *const *mut ffi::GMatchInfo),
         )
