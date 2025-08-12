@@ -1271,35 +1271,17 @@
 <a href=#1271 id=1271 data-nosnippet>1271</a>        }
 <a href=#1272 id=1272 data-nosnippet>1272</a>    }
 <a href=#1273 id=1273 data-nosnippet>1273</a>
-<a href=#1274 id=1274 data-nosnippet>1274</a>    <span class="doccomment">/// Gets the [`MainContext`][crate::MainContext] with which the source is associated.
-<a href=#1275 id=1275 data-nosnippet>1275</a>    ///
-<a href=#1276 id=1276 data-nosnippet>1276</a>    /// You can call this on a source that has been destroyed, provided
-<a href=#1277 id=1277 data-nosnippet>1277</a>    /// that the [`MainContext`][crate::MainContext] it was attached to still exists (in which
-<a href=#1278 id=1278 data-nosnippet>1278</a>    /// case it will return that [`MainContext`][crate::MainContext]). In particular, you can
-<a href=#1279 id=1279 data-nosnippet>1279</a>    /// always call this function on the source returned from
-<a href=#1280 id=1280 data-nosnippet>1280</a>    /// [`main_current_source()`][crate::main_current_source()]. But calling this function on a source
-<a href=#1281 id=1281 data-nosnippet>1281</a>    /// whose [`MainContext`][crate::MainContext] has been destroyed is an error.
-<a href=#1282 id=1282 data-nosnippet>1282</a>    ///
-<a href=#1283 id=1283 data-nosnippet>1283</a>    /// If the associated [`MainContext`][crate::MainContext] could be destroy concurrently from
-<a href=#1284 id=1284 data-nosnippet>1284</a>    /// a different thread, then this function is not safe to call and
-<a href=#1285 id=1285 data-nosnippet>1285</a>    /// [`dup_context()`][Self::dup_context()] should be used instead.
-<a href=#1286 id=1286 data-nosnippet>1286</a>    ///
-<a href=#1287 id=1287 data-nosnippet>1287</a>    /// # Returns
-<a href=#1288 id=1288 data-nosnippet>1288</a>    ///
-<a href=#1289 id=1289 data-nosnippet>1289</a>    /// the #GMainContext with which the
-<a href=#1290 id=1290 data-nosnippet>1290</a>    ///               source is associated, or [`None`] if the context has not
-<a href=#1291 id=1291 data-nosnippet>1291</a>    ///               yet been added to a source.
-<a href=#1292 id=1292 data-nosnippet>1292</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_source_get_context"</span>)]
-<a href=#1293 id=1293 data-nosnippet>1293</a>    #[doc(alias = <span class="string">"get_context"</span>)]
-<a href=#1294 id=1294 data-nosnippet>1294</a>    #[doc(alias = <span class="string">"g_source_dup_context"</span>)]
-<a href=#1295 id=1295 data-nosnippet>1295</a>    </span><span class="kw">pub fn </span>context(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;MainContext&gt; {
-<a href=#1296 id=1296 data-nosnippet>1296</a>        <span class="attr">#[cfg(feature = <span class="string">"v2_86"</span>)]
-<a href=#1297 id=1297 data-nosnippet>1297</a>        </span><span class="kw">unsafe </span>{
-<a href=#1298 id=1298 data-nosnippet>1298</a>            from_glib_full(ffi::g_source_dup_context(<span class="self">self</span>.to_glib_none().<span class="number">0</span>))
-<a href=#1299 id=1299 data-nosnippet>1299</a>        }
-<a href=#1300 id=1300 data-nosnippet>1300</a>        <span class="attr">#[cfg(not(feature = <span class="string">"v2_86"</span>))]
-<a href=#1301 id=1301 data-nosnippet>1301</a>        </span><span class="kw">unsafe </span>{
-<a href=#1302 id=1302 data-nosnippet>1302</a>            from_glib_none(ffi::g_source_get_context(<span class="self">self</span>.to_glib_none().<span class="number">0</span>))
-<a href=#1303 id=1303 data-nosnippet>1303</a>        }
-<a href=#1304 id=1304 data-nosnippet>1304</a>    }
-<a href=#1305 id=1305 data-nosnippet>1305</a>}</code></pre></div></section></main></body></html>
+<a href=#1274 id=1274 data-nosnippet>1274</a>    <span class="attr">#[doc(alias = <span class="string">"g_source_get_context"</span>)]
+<a href=#1275 id=1275 data-nosnippet>1275</a>    #[doc(alias = <span class="string">"get_context"</span>)]
+<a href=#1276 id=1276 data-nosnippet>1276</a>    #[doc(alias = <span class="string">"g_source_dup_context"</span>)]
+<a href=#1277 id=1277 data-nosnippet>1277</a>    </span><span class="kw">pub fn </span>context(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;MainContext&gt; {
+<a href=#1278 id=1278 data-nosnippet>1278</a>        <span class="attr">#[cfg(feature = <span class="string">"v2_86"</span>)]
+<a href=#1279 id=1279 data-nosnippet>1279</a>        </span><span class="kw">unsafe </span>{
+<a href=#1280 id=1280 data-nosnippet>1280</a>            from_glib_full(ffi::g_source_dup_context(<span class="self">self</span>.to_glib_none().<span class="number">0</span>))
+<a href=#1281 id=1281 data-nosnippet>1281</a>        }
+<a href=#1282 id=1282 data-nosnippet>1282</a>        <span class="attr">#[cfg(not(feature = <span class="string">"v2_86"</span>))]
+<a href=#1283 id=1283 data-nosnippet>1283</a>        </span><span class="kw">unsafe </span>{
+<a href=#1284 id=1284 data-nosnippet>1284</a>            from_glib_none(ffi::g_source_get_context(<span class="self">self</span>.to_glib_none().<span class="number">0</span>))
+<a href=#1285 id=1285 data-nosnippet>1285</a>        }
+<a href=#1286 id=1286 data-nosnippet>1286</a>    }
+<a href=#1287 id=1287 data-nosnippet>1287</a>}</code></pre></div></section></main></body></html>
