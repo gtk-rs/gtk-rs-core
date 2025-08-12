@@ -287,10 +287,10 @@ pub fn register_dynamic_interface<P: DynamicObjectRegisterExt, T: ObjectInterfac
         let already_registered =
             gobject_ffi::g_type_from_name(type_name.as_ptr()) != gobject_ffi::G_TYPE_INVALID;
 
-        let type_info = TypeInfo(gobject_ffi::GTypeInfo {
+        let type_info = TypeInfo::unsafe_from(gobject_ffi::GTypeInfo {
             class_size: mem::size_of::<T::Interface>() as u16,
             class_init: Some(interface_init::<T>),
-            ..TypeInfo::default().0
+            ..TypeInfo::default().inner
         });
 
         // registers the interface within the `type_plugin`
