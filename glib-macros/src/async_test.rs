@@ -35,6 +35,7 @@ pub(crate) fn async_test(_args: TokenStream, mut item: TokenStream) -> TokenStre
         {
             let main_ctx = glib::MainContext::new();
             main_ctx.with_thread_default(move || main_ctx.block_on(async #body))
+                .expect("cannot set thread default main context for test")
         }
     })
     .expect("Body parsing failure");
