@@ -216,53 +216,6 @@ pub trait FileExt: IsA<File> + 'static {
         }
     }
 
-    #[doc(alias = "g_file_copy")]
-    fn copy(
-        &self,
-        destination: &impl IsA<File>,
-        flags: FileCopyFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: Option<&mut dyn FnMut(i64, i64)>,
-    ) -> Result<(), glib::Error> {
-        let mut progress_callback_data: Option<&mut dyn FnMut(i64, i64)> = progress_callback;
-        unsafe extern "C" fn progress_callback_func(
-            current_num_bytes: i64,
-            total_num_bytes: i64,
-            data: glib::ffi::gpointer,
-        ) {
-            let callback = data as *mut Option<&mut dyn FnMut(i64, i64)>;
-            if let Some(ref mut callback) = *callback {
-                callback(current_num_bytes, total_num_bytes)
-            } else {
-                panic!("cannot get closure...")
-            }
-        }
-        let progress_callback = if progress_callback_data.is_some() {
-            Some(progress_callback_func as _)
-        } else {
-            None
-        };
-        let super_callback0: &mut Option<&mut dyn FnMut(i64, i64)> = &mut progress_callback_data;
-        unsafe {
-            let mut error = std::ptr::null_mut();
-            let is_ok = ffi::g_file_copy(
-                self.as_ref().to_glib_none().0,
-                destination.as_ref().to_glib_none().0,
-                flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
-                progress_callback,
-                super_callback0 as *mut _ as *mut _,
-                &mut error,
-            );
-            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
-            if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            }
-        }
-    }
-
     #[doc(alias = "g_file_copy_attributes")]
     fn copy_attributes(
         &self,
@@ -1237,54 +1190,6 @@ pub trait FileExt: IsA<File> + 'static {
                 );
             },
         ))
-    }
-
-    #[doc(alias = "g_file_move")]
-    #[doc(alias = "move")]
-    fn move_(
-        &self,
-        destination: &impl IsA<File>,
-        flags: FileCopyFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: Option<&mut dyn FnMut(i64, i64)>,
-    ) -> Result<(), glib::Error> {
-        let mut progress_callback_data: Option<&mut dyn FnMut(i64, i64)> = progress_callback;
-        unsafe extern "C" fn progress_callback_func(
-            current_num_bytes: i64,
-            total_num_bytes: i64,
-            data: glib::ffi::gpointer,
-        ) {
-            let callback = data as *mut Option<&mut dyn FnMut(i64, i64)>;
-            if let Some(ref mut callback) = *callback {
-                callback(current_num_bytes, total_num_bytes)
-            } else {
-                panic!("cannot get closure...")
-            }
-        }
-        let progress_callback = if progress_callback_data.is_some() {
-            Some(progress_callback_func as _)
-        } else {
-            None
-        };
-        let super_callback0: &mut Option<&mut dyn FnMut(i64, i64)> = &mut progress_callback_data;
-        unsafe {
-            let mut error = std::ptr::null_mut();
-            let is_ok = ffi::g_file_move(
-                self.as_ref().to_glib_none().0,
-                destination.as_ref().to_glib_none().0,
-                flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
-                progress_callback,
-                super_callback0 as *mut _ as *mut _,
-                &mut error,
-            );
-            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
-            if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            }
-        }
     }
 
     #[doc(alias = "g_file_open_readwrite")]
