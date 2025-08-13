@@ -171,6 +171,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
             #[doc = "Borrows the underlying C value."]
             #[inline]
+            #[deprecated = "Use FromGlibBorrow2 trait"]
             pub unsafe fn from_glib_ptr_borrow<'a>(ptr: *const $ffi_name) -> &'a Self {
                 debug_assert!(!ptr.is_null());
                 &*(ptr as *const Self)
@@ -178,6 +179,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
             #[doc = "Borrows the underlying C value mutably."]
             #[inline]
+            #[deprecated = "Use FromGlibBorrowMut2 trait"]
             pub unsafe fn from_glib_ptr_borrow_mut<'a>(ptr: *mut $ffi_name) -> &'a mut Self {
                 debug_assert!(!ptr.is_null());
                 &mut *(ptr as *mut Self)
@@ -229,6 +231,7 @@ macro_rules! glib_boxed_inline_wrapper {
             }
 
             #[inline]
+            #[allow(unused_unsafe)]
             fn to_glib_full(&self) -> *const $ffi_name {
                 unsafe {
                     let copy = |$copy_arg: *const $ffi_name| $copy_expr;
@@ -431,6 +434,30 @@ macro_rules! glib_boxed_inline_wrapper {
         }
 
         #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrBorrow2<$ffi_name> for $name $(<$($generic),+>)? {
+            #[inline]
+            unsafe fn from_glib_borrow2(ptr: &$ffi_name) -> &Self {
+                debug_assert_eq!(
+                    std::mem::size_of::<Self>(),
+                    std::mem::size_of::<$ffi_name>()
+                );
+                &*(ptr as *const $ffi_name as *const Self)
+            }
+        }
+
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrBorrowMut2<$ffi_name> for $name $(<$($generic),+>)? {
+            #[inline]
+            unsafe fn from_glib_borrow_mut2(ptr: &mut $ffi_name) -> &mut Self {
+                debug_assert_eq!(
+                    std::mem::size_of::<Self>(),
+                    std::mem::size_of::<$ffi_name>()
+                );
+                &mut *(ptr as *mut $ffi_name as *mut Self)
+            }
+        }
+
+        #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibContainerAsVec<*mut $ffi_name, *mut $ffi_name> for $name $(<$($generic),+>)? {
             unsafe fn from_glib_none_num_as_vec(ptr: *mut $ffi_name, num: usize) -> Vec<Self> {
                 $crate::translate::FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr as *const _, num)
@@ -593,7 +620,7 @@ macro_rules! glib_boxed_inline_wrapper {
             unsafe fn from_value(value: &'_ $crate::Value) -> Self {
                 let ptr = $crate::gobject_ffi::g_value_get_boxed($crate::translate::ToGlibPtr::to_glib_none(value).0);
                 debug_assert!(!ptr.is_null());
-                &*(ptr as *const $ffi_name as *const $name $(<$($generic),+>)?)
+                <$name $(<$($generic),+>)? as $crate::translate::FromGlibPtrBorrow2<$ffi_name>>::from_glib_borrow2(&*(ptr as *const $ffi_name))
             }
         }
 
