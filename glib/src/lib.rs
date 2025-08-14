@@ -221,7 +221,9 @@ pub use self::log::{log_writer_is_journald, log_writer_supports_color};
 mod bridged_logging;
 #[cfg(feature = "log")]
 #[cfg_attr(docsrs, doc(cfg(feature = "log")))]
-pub use self::bridged_logging::{rust_log_handler, GlibLogger, GlibLoggerDomain, GlibLoggerFormat};
+pub use self::bridged_logging::{
+    rust_log_handler, rust_log_writer, GlibLogger, GlibLoggerDomain, GlibLoggerFormat,
+};
 
 #[macro_use]
 pub mod subclass;

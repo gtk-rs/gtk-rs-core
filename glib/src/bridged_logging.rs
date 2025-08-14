@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{gstr, log as glib_log, log_structured_array, translate::*, LogField};
+use crate::{gstr, log as glib_log, log_structured_array, translate::*, LogField, LogWriterOutput};
 
 // rustdoc-stripper-ignore-next
 /// Enumeration of the possible formatting behaviours for a
@@ -262,7 +262,108 @@ pub fn rust_log_handler(domain: Option<&str>, level: glib_log::LogLevel, message
         glib_log::LogLevel::Debug => rs_log::Level::Debug,
     };
 
-    rs_log::log!(target: domain.unwrap_or("<null>"), level, "{}", message);
+    rs_log::log!(target: domain.unwrap_or_default(), level, "{message}");
+}
+
+#[cfg(feature = "log_kv")]
+struct LogFields<'field>(&'field [LogField<'field>]);
+
+#[cfg(feature = "log_kv")]
+impl<'fields> rs_log::kv::Source for LogFields<'fields> {
+    fn visit<'kvs>(
+        &'kvs self,
+        visitor: &mut dyn rs_log::kv::VisitSource<'kvs>,
+    ) -> Result<(), rs_log::kv::Error> {
+        use rs_log::kv::{Key, Value};
+
+        for field in self.0 {
+            let key = Key::from_str(field.key());
+            let value = field
+                .value_str()
+                .map(Value::from)
+                .unwrap_or_else(Value::null);
+            visitor.visit_pair(key, value)?;
+        }
+
+        Ok(())
+    }
+
+    fn count(&self) -> usize {
+        self.0.len()
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Provides a glib log writer which routes all structured logging messages to the
+/// [`log crate`](https://crates.io/crates/log).
+///
+/// In order to use this function, `glib` must be built with the `log` feature
+/// enabled.
+///
+/// Use this function if you want to use the log crate as the main logging
+/// output in your application, and want to route all structured logging happening in
+/// glib to the log crate. If you want the opposite, use [`GlibLogger`](struct.GlibLogger.html).
+///
+/// NOTE: This should never be used when [`GlibLogger`](struct.GlibLogger.html) is
+/// registered as a logger, otherwise a stack overflow will occur.
+///
+/// ```no_run
+/// glib::log_set_writer_func(glib::rust_log_writer);
+/// ```
+pub fn rust_log_writer(log_level: glib_log::LogLevel, fields: &[LogField<'_>]) -> LogWriterOutput {
+    let lvl = match log_level {
+        glib_log::LogLevel::Error | glib_log::LogLevel::Critical => rs_log::Level::Error,
+        glib_log::LogLevel::Warning => rs_log::Level::Warn,
+        glib_log::LogLevel::Info | glib_log::LogLevel::Message => rs_log::Level::Info,
+        glib_log::LogLevel::Debug => rs_log::Level::Debug,
+    };
+
+    if lvl > rs_log::STATIC_MAX_LEVEL {
+        return LogWriterOutput::Handled;
+    }
+
+    let mut domain = None::<&str>;
+    let mut message = None::<&str>;
+    let mut file = None::<&str>;
+    let mut line = None::<u32>;
+    let mut func = None::<&str>;
+
+    for field in fields {
+        let Some(value) = field.value_str() else {
+            continue;
+        };
+
+        match field.key() {
+            "GLIB_DOMAIN" => domain = Some(value),
+            "MESSAGE" => message = Some(value),
+            "CODE_FILE" => file = Some(value),
+            "CODE_LINE" => line = value.parse().ok(),
+            "CODE_FUNC" => func = Some(value),
+            _ => continue,
+        };
+    }
+
+    if let Some(message) = message {
+        let logger = rs_log::logger();
+        let mut record = rs_log::Record::builder();
+
+        #[cfg(feature = "log_kv")]
+        let fields = LogFields(fields);
+
+        record
+            .level(lvl)
+            .target(domain.unwrap_or_default())
+            .file(file)
+            .line(line)
+            .module_path(func);
+
+        #[cfg(feature = "log_kv")]
+        record.key_values(&fields);
+
+        logger.log(&record.args(format_args!("{message}")).build());
+    }
+
+    LogWriterOutput::Handled
 }
 
 // rustdoc-stripper-ignore-next
