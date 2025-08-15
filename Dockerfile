@@ -2,7 +2,7 @@ FROM fedora:latest
 
 RUN dnf update -y && \
     dnf install wget git meson cmake gcc gcc-c++ \
-    freetype-devel fontconfig-devel libxml2-devel fribidi-devel libpng-devel libjpeg-turbo-devel libXext-devel libXrender-devel gobject-introspection-devel python3-packaging -y && \
+    freetype-devel fontconfig-devel libxml2-devel fribidi-devel libpng-devel libjpeg-turbo-devel libXext-devel libXrender-devel gobject-introspection-devel python3-packaging python3-requests -y && \
     dnf clean all -y
 
 RUN git clone https://gitlab.gnome.org/GNOME/glib.git --depth=1 && \
