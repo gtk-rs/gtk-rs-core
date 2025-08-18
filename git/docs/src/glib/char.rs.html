@@ -1,10 +1,83 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/char.rs`."><title>char.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (898aff704 2025-08-14)" data-channel="nightly" data-search-js="search-281b7574.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib/</div>char.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/char.rs`."><title>char.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (425a9c0a0 2025-08-17)" data-channel="nightly" data-search-js="search-b069538f.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("main" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "main") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib/</div>char.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
-<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::num::TryFromIntError;
+<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/num/error/struct.TryFromIntError.html">std::num::TryFromIntError</a>;
 <a href=#4 id=4 data-nosnippet>4</a>
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>libc::{c_char, c_uchar};
 <a href=#6 id=6 data-nosnippet>6</a>
-<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span><span class="kw">crate</span>::translate::<span class="kw-2">*</span>;
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span><a href="lib.rs.html#164"><span class="kw">crate</span>::translate</a>::<span class="kw-2">*</span>;
 <a href=#8 id=8 data-nosnippet>8</a>
 <a href=#9 id=9 data-nosnippet>9</a><span class="comment">// rustdoc-stripper-ignore-next
 <a href=#10 id=10 data-nosnippet>10</a></span><span class="doccomment">/// Wrapper for values where C functions expect a plain C `char`
@@ -50,52 +123,52 @@
 <a href=#50 id=50 data-nosnippet>50</a>/// have_a_byte(Char::from(b'a').into_glib());
 <a href=#51 id=51 data-nosnippet>51</a>/// ```
 <a href=#52 id=52 data-nosnippet>52</a></span><span class="attr">#[derive(Debug, Copy, Clone, Eq, PartialEq)]
-<a href=#53 id=53 data-nosnippet>53</a></span><span class="kw">pub struct </span>Char(<span class="kw">pub </span>c_char);
+<a href=#53 id=53 data-nosnippet>53</a></span><span class="kw">pub struct </span><a href="../../glib/char/struct.Char.html">Char</a>(<span class="kw">pub </span>c_char);
 <a href=#54 id=54 data-nosnippet>54</a>
-<a href=#55 id=55 data-nosnippet>55</a><span class="kw">impl </span>TryFrom&lt;char&gt; <span class="kw">for </span>Char {
-<a href=#56 id=56 data-nosnippet>56</a>    <span class="kw">type </span>Error = TryFromIntError;
+<a href=#55 id=55 data-nosnippet>55</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html">TryFrom</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>&gt; <span class="kw">for </span><a href="#53">Char</a> {
+<a href=#56 id=56 data-nosnippet>56</a>    <span class="kw">type </span>Error = <a href="https://doc.rust-lang.org/nightly/core/num/error/struct.TryFromIntError.html">TryFromIntError</a>;
 <a href=#57 id=57 data-nosnippet>57</a>
 <a href=#58 id=58 data-nosnippet>58</a>    <span class="attr">#[allow(clippy::unnecessary_cast)]
-<a href=#59 id=59 data-nosnippet>59</a>    </span><span class="kw">fn </span>try_from(c: char) -&gt; <span class="prelude-ty">Result</span>&lt;Char, <span class="self">Self</span>::Error&gt; {
-<a href=#60 id=60 data-nosnippet>60</a>        <span class="prelude-val">Ok</span>(<span class="self">Self</span>(u8::try_from(u32::from(c))<span class="question-mark">? </span><span class="kw">as </span>c_char))
+<a href=#59 id=59 data-nosnippet>59</a>    </span><span class="kw">fn </span>try_from(c: <a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#53">Char</a>, <span class="self">Self</span>::Error&gt; {
+<a href=#60 id=60 data-nosnippet>60</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="self">Self</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html#tymethod.try_from">u8::try_from</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">u32::from</a>(<a href="#59">c</a>))<span class="question-mark">? </span><span class="kw">as </span>c_char))
 <a href=#61 id=61 data-nosnippet>61</a>    }
 <a href=#62 id=62 data-nosnippet>62</a>}
 <a href=#63 id=63 data-nosnippet>63</a>
-<a href=#64 id=64 data-nosnippet>64</a><span class="kw">impl </span>From&lt;Char&gt; <span class="kw">for </span>char {
-<a href=#65 id=65 data-nosnippet>65</a>    <span class="kw">fn </span>from(c: Char) -&gt; char {
-<a href=#66 id=66 data-nosnippet>66</a>        c.<span class="number">0 </span><span class="kw">as </span>u8 <span class="kw">as </span>char
+<a href=#64 id=64 data-nosnippet>64</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#53">Char</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a> {
+<a href=#65 id=65 data-nosnippet>65</a>    <span class="kw">fn </span>from(c: <a href="#53">Char</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a> {
+<a href=#66 id=66 data-nosnippet>66</a>        <a href="#65">c</a>.<span class="number">0 </span><span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>
 <a href=#67 id=67 data-nosnippet>67</a>    }
 <a href=#68 id=68 data-nosnippet>68</a>}
 <a href=#69 id=69 data-nosnippet>69</a>
-<a href=#70 id=70 data-nosnippet>70</a><span class="kw">impl </span>From&lt;u8&gt; <span class="kw">for </span>Char {
+<a href=#70 id=70 data-nosnippet>70</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt; <span class="kw">for </span><a href="#53">Char</a> {
 <a href=#71 id=71 data-nosnippet>71</a>    <span class="attr">#[allow(clippy::unnecessary_cast)]
-<a href=#72 id=72 data-nosnippet>72</a>    </span><span class="kw">fn </span>from(c: u8) -&gt; Char {
-<a href=#73 id=73 data-nosnippet>73</a>        Char(c <span class="kw">as </span>c_char)
+<a href=#72 id=72 data-nosnippet>72</a>    </span><span class="kw">fn </span>from(c: <a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>) -&gt; <a href="#53">Char</a> {
+<a href=#73 id=73 data-nosnippet>73</a>        <a href="#53">Char</a>(<a href="#72">c</a> <span class="kw">as </span>c_char)
 <a href=#74 id=74 data-nosnippet>74</a>    }
 <a href=#75 id=75 data-nosnippet>75</a>}
 <a href=#76 id=76 data-nosnippet>76</a>
-<a href=#77 id=77 data-nosnippet>77</a><span class="kw">impl </span>From&lt;Char&gt; <span class="kw">for </span>u8 {
+<a href=#77 id=77 data-nosnippet>77</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#53">Char</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> {
 <a href=#78 id=78 data-nosnippet>78</a>    <span class="attr">#[allow(clippy::unnecessary_cast)]
-<a href=#79 id=79 data-nosnippet>79</a>    </span><span class="kw">fn </span>from(c: Char) -&gt; u8 {
-<a href=#80 id=80 data-nosnippet>80</a>        c.<span class="number">0 </span><span class="kw">as </span>u8
+<a href=#79 id=79 data-nosnippet>79</a>    </span><span class="kw">fn </span>from(c: <a href="#53">Char</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> {
+<a href=#80 id=80 data-nosnippet>80</a>        <a href="#79">c</a>.<span class="number">0 </span><span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>
 <a href=#81 id=81 data-nosnippet>81</a>    }
 <a href=#82 id=82 data-nosnippet>82</a>}
 <a href=#83 id=83 data-nosnippet>83</a>
 <a href=#84 id=84 data-nosnippet>84</a><span class="attr">#[doc(hidden)]
-<a href=#85 id=85 data-nosnippet>85</a></span><span class="kw">impl </span>FromGlib&lt;c_char&gt; <span class="kw">for </span>Char {
+<a href=#85 id=85 data-nosnippet>85</a></span><span class="kw">impl </span><a href="translate.rs.html#1414-1416">FromGlib</a>&lt;c_char&gt; <span class="kw">for </span><a href="#53">Char</a> {
 <a href=#86 id=86 data-nosnippet>86</a>    <span class="attr">#[inline]
 <a href=#87 id=87 data-nosnippet>87</a>    </span><span class="kw">unsafe fn </span>from_glib(value: c_char) -&gt; <span class="self">Self </span>{
-<a href=#88 id=88 data-nosnippet>88</a>        <span class="self">Self</span>(value)
+<a href=#88 id=88 data-nosnippet>88</a>        <span class="self">Self</span>(<a href="#87">value</a>)
 <a href=#89 id=89 data-nosnippet>89</a>    }
 <a href=#90 id=90 data-nosnippet>90</a>}
 <a href=#91 id=91 data-nosnippet>91</a>
 <a href=#92 id=92 data-nosnippet>92</a><span class="attr">#[doc(hidden)]
-<a href=#93 id=93 data-nosnippet>93</a></span><span class="kw">impl </span>IntoGlib <span class="kw">for </span>Char {
+<a href=#93 id=93 data-nosnippet>93</a></span><span class="kw">impl </span><a href="translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><a href="#53">Char</a> {
 <a href=#94 id=94 data-nosnippet>94</a>    <span class="kw">type </span>GlibType = c_char;
 <a href=#95 id=95 data-nosnippet>95</a>
 <a href=#96 id=96 data-nosnippet>96</a>    <span class="attr">#[inline]
 <a href=#97 id=97 data-nosnippet>97</a>    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; c_char {
-<a href=#98 id=98 data-nosnippet>98</a>        <span class="self">self</span>.<span class="number">0
+<a href=#98 id=98 data-nosnippet>98</a>        <a class="self" href="#97">self</a>.<span class="number">0
 <a href=#99 id=99 data-nosnippet>99</a>    </span>}
 <a href=#100 id=100 data-nosnippet>100</a>}
 <a href=#101 id=101 data-nosnippet>101</a>
@@ -125,51 +198,51 @@
 <a href=#125 id=125 data-nosnippet>125</a>/// have_a_byte(UChar::from(b'a').into_glib());
 <a href=#126 id=126 data-nosnippet>126</a>/// ```
 <a href=#127 id=127 data-nosnippet>127</a></span><span class="attr">#[derive(Debug, Copy, Clone, Eq, PartialEq)]
-<a href=#128 id=128 data-nosnippet>128</a></span><span class="kw">pub struct </span>UChar(<span class="kw">pub </span>c_uchar);
+<a href=#128 id=128 data-nosnippet>128</a></span><span class="kw">pub struct </span><a href="../../glib/char/struct.UChar.html">UChar</a>(<span class="kw">pub </span>c_uchar);
 <a href=#129 id=129 data-nosnippet>129</a>
-<a href=#130 id=130 data-nosnippet>130</a><span class="kw">impl </span>TryFrom&lt;char&gt; <span class="kw">for </span>UChar {
-<a href=#131 id=131 data-nosnippet>131</a>    <span class="kw">type </span>Error = TryFromIntError;
+<a href=#130 id=130 data-nosnippet>130</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html">TryFrom</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>&gt; <span class="kw">for </span><a href="#128">UChar</a> {
+<a href=#131 id=131 data-nosnippet>131</a>    <span class="kw">type </span>Error = <a href="https://doc.rust-lang.org/nightly/core/num/error/struct.TryFromIntError.html">TryFromIntError</a>;
 <a href=#132 id=132 data-nosnippet>132</a>
 <a href=#133 id=133 data-nosnippet>133</a>    <span class="attr">#[allow(clippy::unnecessary_cast)]
-<a href=#134 id=134 data-nosnippet>134</a>    </span><span class="kw">fn </span>try_from(c: char) -&gt; <span class="prelude-ty">Result</span>&lt;UChar, <span class="self">Self</span>::Error&gt; {
-<a href=#135 id=135 data-nosnippet>135</a>        <span class="prelude-val">Ok</span>(<span class="self">Self</span>(u8::try_from(u32::from(c))<span class="question-mark">? </span><span class="kw">as </span>c_uchar))
+<a href=#134 id=134 data-nosnippet>134</a>    </span><span class="kw">fn </span>try_from(c: <a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#128">UChar</a>, <span class="self">Self</span>::Error&gt; {
+<a href=#135 id=135 data-nosnippet>135</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="self">Self</span>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html#tymethod.try_from">u8::try_from</a>(<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">u32::from</a>(<a href="#134">c</a>))<span class="question-mark">? </span><span class="kw">as </span>c_uchar))
 <a href=#136 id=136 data-nosnippet>136</a>    }
 <a href=#137 id=137 data-nosnippet>137</a>}
 <a href=#138 id=138 data-nosnippet>138</a>
-<a href=#139 id=139 data-nosnippet>139</a><span class="kw">impl </span>From&lt;UChar&gt; <span class="kw">for </span>char {
-<a href=#140 id=140 data-nosnippet>140</a>    <span class="kw">fn </span>from(c: UChar) -&gt; char {
-<a href=#141 id=141 data-nosnippet>141</a>        c.<span class="number">0 </span><span class="kw">as _
+<a href=#139 id=139 data-nosnippet>139</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#128">UChar</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a> {
+<a href=#140 id=140 data-nosnippet>140</a>    <span class="kw">fn </span>from(c: <a href="#128">UChar</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a> {
+<a href=#141 id=141 data-nosnippet>141</a>        <a href="#140">c</a>.<span class="number">0 </span><span class="kw">as _
 <a href=#142 id=142 data-nosnippet>142</a>    </span>}
 <a href=#143 id=143 data-nosnippet>143</a>}
 <a href=#144 id=144 data-nosnippet>144</a>
-<a href=#145 id=145 data-nosnippet>145</a><span class="kw">impl </span>From&lt;u8&gt; <span class="kw">for </span>UChar {
+<a href=#145 id=145 data-nosnippet>145</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt; <span class="kw">for </span><a href="#128">UChar</a> {
 <a href=#146 id=146 data-nosnippet>146</a>    <span class="attr">#[allow(clippy::unnecessary_cast)]
-<a href=#147 id=147 data-nosnippet>147</a>    </span><span class="kw">fn </span>from(c: u8) -&gt; UChar {
-<a href=#148 id=148 data-nosnippet>148</a>        UChar(c <span class="kw">as _</span>)
+<a href=#147 id=147 data-nosnippet>147</a>    </span><span class="kw">fn </span>from(c: <a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>) -&gt; <a href="#128">UChar</a> {
+<a href=#148 id=148 data-nosnippet>148</a>        <a href="#128">UChar</a>(<a href="#147">c</a> <span class="kw">as _</span>)
 <a href=#149 id=149 data-nosnippet>149</a>    }
 <a href=#150 id=150 data-nosnippet>150</a>}
 <a href=#151 id=151 data-nosnippet>151</a>
-<a href=#152 id=152 data-nosnippet>152</a><span class="kw">impl </span>From&lt;UChar&gt; <span class="kw">for </span>u8 {
-<a href=#153 id=153 data-nosnippet>153</a>    <span class="kw">fn </span>from(c: UChar) -&gt; u8 {
-<a href=#154 id=154 data-nosnippet>154</a>        c.<span class="number">0 </span><span class="kw">as _
+<a href=#152 id=152 data-nosnippet>152</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#128">UChar</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> {
+<a href=#153 id=153 data-nosnippet>153</a>    <span class="kw">fn </span>from(c: <a href="#128">UChar</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a> {
+<a href=#154 id=154 data-nosnippet>154</a>        <a href="#153">c</a>.<span class="number">0 </span><span class="kw">as _
 <a href=#155 id=155 data-nosnippet>155</a>    </span>}
 <a href=#156 id=156 data-nosnippet>156</a>}
 <a href=#157 id=157 data-nosnippet>157</a>
 <a href=#158 id=158 data-nosnippet>158</a><span class="attr">#[doc(hidden)]
-<a href=#159 id=159 data-nosnippet>159</a></span><span class="kw">impl </span>FromGlib&lt;c_uchar&gt; <span class="kw">for </span>UChar {
+<a href=#159 id=159 data-nosnippet>159</a></span><span class="kw">impl </span><a href="translate.rs.html#1414-1416">FromGlib</a>&lt;c_uchar&gt; <span class="kw">for </span><a href="#128">UChar</a> {
 <a href=#160 id=160 data-nosnippet>160</a>    <span class="attr">#[inline]
 <a href=#161 id=161 data-nosnippet>161</a>    </span><span class="kw">unsafe fn </span>from_glib(value: c_uchar) -&gt; <span class="self">Self </span>{
-<a href=#162 id=162 data-nosnippet>162</a>        <span class="self">Self</span>(value)
+<a href=#162 id=162 data-nosnippet>162</a>        <span class="self">Self</span>(<a href="#161">value</a>)
 <a href=#163 id=163 data-nosnippet>163</a>    }
 <a href=#164 id=164 data-nosnippet>164</a>}
 <a href=#165 id=165 data-nosnippet>165</a>
 <a href=#166 id=166 data-nosnippet>166</a><span class="attr">#[doc(hidden)]
-<a href=#167 id=167 data-nosnippet>167</a></span><span class="kw">impl </span>IntoGlib <span class="kw">for </span>UChar {
+<a href=#167 id=167 data-nosnippet>167</a></span><span class="kw">impl </span><a href="translate.rs.html#331-335">IntoGlib</a> <span class="kw">for </span><a href="#128">UChar</a> {
 <a href=#168 id=168 data-nosnippet>168</a>    <span class="kw">type </span>GlibType = c_uchar;
 <a href=#169 id=169 data-nosnippet>169</a>
 <a href=#170 id=170 data-nosnippet>170</a>    <span class="attr">#[inline]
 <a href=#171 id=171 data-nosnippet>171</a>    </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; c_uchar {
-<a href=#172 id=172 data-nosnippet>172</a>        <span class="self">self</span>.<span class="number">0
+<a href=#172 id=172 data-nosnippet>172</a>        <a class="self" href="#171">self</a>.<span class="number">0
 <a href=#173 id=173 data-nosnippet>173</a>    </span>}
 <a href=#174 id=174 data-nosnippet>174</a>}
 <a href=#175 id=175 data-nosnippet>175</a>

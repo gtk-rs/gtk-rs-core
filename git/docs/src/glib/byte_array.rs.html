@@ -1,4 +1,77 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/byte_array.rs`."><title>byte_array.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (898aff704 2025-08-14)" data-channel="nightly" data-search-js="search-281b7574.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib/</div>byte_array.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/byte_array.rs`."><title>byte_array.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (425a9c0a0 2025-08-17)" data-channel="nightly" data-search-js="search-b069538f.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("main" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "main") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib/</div>byte_array.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a>// rustdoc-stripper-ignore-next
 <a href=#4 id=4 data-nosnippet>4</a></span><span class="doccomment">//! # Examples
@@ -12,20 +85,20 @@
 <a href=#12 id=12 data-nosnippet>12</a>//! ```
 <a href=#13 id=13 data-nosnippet>13</a>
 <a href=#14 id=14 data-nosnippet>14</a></span><span class="kw">use </span>std::{
-<a href=#15 id=15 data-nosnippet>15</a>    borrow::Borrow,
-<a href=#16 id=16 data-nosnippet>16</a>    cmp::Ordering,
-<a href=#17 id=17 data-nosnippet>17</a>    fmt,
-<a href=#18 id=18 data-nosnippet>18</a>    hash::{Hash, Hasher},
-<a href=#19 id=19 data-nosnippet>19</a>    ops::Deref,
-<a href=#20 id=20 data-nosnippet>20</a>    slice,
+<a href=#15 id=15 data-nosnippet>15</a>    <a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html">borrow::Borrow</a>,
+<a href=#16 id=16 data-nosnippet>16</a>    <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a>,
+<a href=#17 id=17 data-nosnippet>17</a>    <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>,
+<a href=#18 id=18 data-nosnippet>18</a>    hash::{<a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html">Hasher</a>},
+<a href=#19 id=19 data-nosnippet>19</a>    <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">ops::Deref</a>,
+<a href=#20 id=20 data-nosnippet>20</a>    <a href="https://doc.rust-lang.org/nightly/alloc/slice/index.html">slice</a>,
 <a href=#21 id=21 data-nosnippet>21</a>};
 <a href=#22 id=22 data-nosnippet>22</a>
-<a href=#23 id=23 data-nosnippet>23</a><span class="kw">use crate</span>::{ffi, translate::<span class="kw-2">*</span>};
+<a href=#23 id=23 data-nosnippet>23</a><span class="kw">use crate</span>::{<a href="../../glib_sys/index.html">ffi</a>, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>};
 <a href=#24 id=24 data-nosnippet>24</a>
-<a href=#25 id=25 data-nosnippet>25</a><span class="macro">wrapper!</span> {
+<a href=#25 id=25 data-nosnippet>25</a><a class="macro" href="wrapper.rs.html#276-443">wrapper!</a> {
 <a href=#26 id=26 data-nosnippet>26</a>    <span class="doccomment">/// Contains the public fields of a GByteArray.
 <a href=#27 id=27 data-nosnippet>27</a>    </span><span class="attr">#[doc(alias = <span class="string">"GByteArray"</span>)]
-<a href=#28 id=28 data-nosnippet>28</a>    </span><span class="kw">pub struct </span>ByteArray(Shared&lt;ffi::GByteArray&gt;);
+<a href=#28 id=28 data-nosnippet>28</a>    </span><span class="kw">pub struct </span><a href="../../glib/struct.ByteArray.html">ByteArray</a>(Shared&lt;<a href="../../glib_sys/struct.GByteArray.html">ffi::GByteArray</a>&gt;);
 <a href=#29 id=29 data-nosnippet>29</a>
 <a href=#30 id=30 data-nosnippet>30</a>    <span class="kw">match fn </span>{
 <a href=#31 id=31 data-nosnippet>31</a>        <span class="kw-2">ref </span>=&gt; |ptr| ffi::g_byte_array_ref(ptr),
@@ -34,46 +107,46 @@
 <a href=#34 id=34 data-nosnippet>34</a>    }
 <a href=#35 id=35 data-nosnippet>35</a>}
 <a href=#36 id=36 data-nosnippet>36</a>
-<a href=#37 id=37 data-nosnippet>37</a><span class="kw">impl </span>Deref <span class="kw">for </span>ByteArray {
-<a href=#38 id=38 data-nosnippet>38</a>    <span class="kw">type </span>Target = [u8];
+<a href=#37 id=37 data-nosnippet>37</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">Deref</a> <span class="kw">for </span><a href="#25-35">ByteArray</a> {
+<a href=#38 id=38 data-nosnippet>38</a>    <span class="kw">type </span>Target = [<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>];
 <a href=#39 id=39 data-nosnippet>39</a>
 <a href=#40 id=40 data-nosnippet>40</a>    <span class="attr">#[inline]
-<a href=#41 id=41 data-nosnippet>41</a>    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[u8] {
+<a href=#41 id=41 data-nosnippet>41</a>    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>] {
 <a href=#42 id=42 data-nosnippet>42</a>        <span class="kw">unsafe </span>{
-<a href=#43 id=43 data-nosnippet>43</a>            <span class="kw">let </span>self_ptr: <span class="kw-2">*const </span>ffi::GByteArray = <span class="self">self</span>.to_glib_none().<span class="number">0</span>;
-<a href=#44 id=44 data-nosnippet>44</a>            <span class="kw">let </span>ptr = (<span class="kw-2">*</span>self_ptr).data;
-<a href=#45 id=45 data-nosnippet>45</a>            <span class="kw">let </span>len = (<span class="kw-2">*</span>self_ptr).len <span class="kw">as </span>usize;
-<a href=#46 id=46 data-nosnippet>46</a>            <span class="macro">debug_assert!</span>(!ptr.is_null() || len == <span class="number">0</span>);
-<a href=#47 id=47 data-nosnippet>47</a>            <span class="kw">if </span>ptr.is_null() {
+<a href=#43 id=43 data-nosnippet>43</a>            <span class="kw">let </span>self_ptr: <span class="kw-2">*const </span><a href="../../glib_sys/struct.GByteArray.html">ffi::GByteArray</a> = <a class="self" href="#41">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>;
+<a href=#44 id=44 data-nosnippet>44</a>            <span class="kw">let </span>ptr = (<span class="kw-2">*</span><a href="#43">self_ptr</a>).data;
+<a href=#45 id=45 data-nosnippet>45</a>            <span class="kw">let </span>len = (<span class="kw-2">*</span><a href="#43">self_ptr</a>).len <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>;
+<a href=#46 id=46 data-nosnippet>46</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
+<a href=#47 id=47 data-nosnippet>47</a>            <span class="kw">if </span><a href="#44">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#48 id=48 data-nosnippet>48</a>                <span class="kw-2">&amp;</span>[]
 <a href=#49 id=49 data-nosnippet>49</a>            } <span class="kw">else </span>{
-<a href=#50 id=50 data-nosnippet>50</a>                slice::from_raw_parts(ptr <span class="kw">as </span><span class="kw-2">*const </span>u8, len)
+<a href=#50 id=50 data-nosnippet>50</a>                <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">slice::from_raw_parts</a>(<a href="#44">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#45">len</a>)
 <a href=#51 id=51 data-nosnippet>51</a>            }
 <a href=#52 id=52 data-nosnippet>52</a>        }
 <a href=#53 id=53 data-nosnippet>53</a>    }
 <a href=#54 id=54 data-nosnippet>54</a>}
 <a href=#55 id=55 data-nosnippet>55</a>
-<a href=#56 id=56 data-nosnippet>56</a><span class="kw">impl </span>AsRef&lt;[u8]&gt; <span class="kw">for </span>ByteArray {
+<a href=#56 id=56 data-nosnippet>56</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; <span class="kw">for </span><a href="#25-35">ByteArray</a> {
 <a href=#57 id=57 data-nosnippet>57</a>    <span class="attr">#[inline]
-<a href=#58 id=58 data-nosnippet>58</a>    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[u8] {
-<a href=#59 id=59 data-nosnippet>59</a>        <span class="self">self
+<a href=#58 id=58 data-nosnippet>58</a>    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>] {
+<a href=#59 id=59 data-nosnippet>59</a>        <span class="self"><a href="#58">self</a>
 <a href=#60 id=60 data-nosnippet>60</a>    </span>}
 <a href=#61 id=61 data-nosnippet>61</a>}
 <a href=#62 id=62 data-nosnippet>62</a>
-<a href=#63 id=63 data-nosnippet>63</a><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="question-mark">?</span>Sized + Borrow&lt;[u8]&gt; + <span class="lifetime">'a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt; <span class="kw">for </span>ByteArray {
-<a href=#64 id=64 data-nosnippet>64</a>    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T) -&gt; ByteArray {
-<a href=#65 id=65 data-nosnippet>65</a>        <span class="kw">let </span>value = value.borrow();
+<a href=#63 id=63 data-nosnippet>63</a><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + <a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html">Borrow</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt; <span class="kw">for </span><a href="#25-35">ByteArray</a> {
+<a href=#64 id=64 data-nosnippet>64</a>    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T) -&gt; <a href="#25-35">ByteArray</a> {
+<a href=#65 id=65 data-nosnippet>65</a>        <span class="kw">let </span>value = <a href="#64">value</a>.<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html#tymethod.borrow">borrow</a>();
 <a href=#66 id=66 data-nosnippet>66</a>        <span class="kw">unsafe </span>{
-<a href=#67 id=67 data-nosnippet>67</a>            <span class="kw">let </span>ba = ffi::g_byte_array_new();
-<a href=#68 id=68 data-nosnippet>68</a>            ffi::g_byte_array_append(ba, value.as_ptr(), value.len() <span class="kw">as </span>u32);
-<a href=#69 id=69 data-nosnippet>69</a>            from_glib_full(ba)
+<a href=#67 id=67 data-nosnippet>67</a>            <span class="kw">let </span>ba = <a href="../../glib_sys/fn.g_byte_array_new.html">ffi::g_byte_array_new</a>();
+<a href=#68 id=68 data-nosnippet>68</a>            <a href="../../glib_sys/fn.g_byte_array_append.html">ffi::g_byte_array_append</a>(<a href="#67">ba</a>, <a href="#65">value</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>(), <a href="#65">value</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>);
+<a href=#69 id=69 data-nosnippet>69</a>            <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#67">ba</a>)
 <a href=#70 id=70 data-nosnippet>70</a>        }
 <a href=#71 id=71 data-nosnippet>71</a>    }
 <a href=#72 id=72 data-nosnippet>72</a>}
 <a href=#73 id=73 data-nosnippet>73</a>
-<a href=#74 id=74 data-nosnippet>74</a><span class="kw">impl </span>fmt::Debug <span class="kw">for </span>ByteArray {
-<a href=#75 id=75 data-nosnippet>75</a>    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-<a href=#76 id=76 data-nosnippet>76</a>        f.debug_list().entries(<span class="self">self</span>.as_ref()).finish()
+<a href=#74 id=74 data-nosnippet>74</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#25-35">ByteArray</a> {
+<a href=#75 id=75 data-nosnippet>75</a>    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+<a href=#76 id=76 data-nosnippet>76</a>        <a href="#75">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.debug_list">debug_list</a>().<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugList.html#method.entries">entries</a>(<a class="self" href="#75">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="https://doc.rust-lang.org/nightly/core/fmt/builders/struct.DebugList.html#method.finish">finish</a>()
 <a href=#77 id=77 data-nosnippet>77</a>    }
 <a href=#78 id=78 data-nosnippet>78</a>}
 <a href=#79 id=79 data-nosnippet>79</a>
@@ -117,23 +190,23 @@
 <a href=#117 id=117 data-nosnippet>117</a>    };
 <a href=#118 id=118 data-nosnippet>118</a>}
 <a href=#119 id=119 data-nosnippet>119</a>
-<a href=#120 id=120 data-nosnippet>120</a><span class="macro">impl_cmp!</span>(ByteArray, [u8]);
-<a href=#121 id=121 data-nosnippet>121</a><span class="macro">impl_cmp!</span>(ByteArray, <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8]);
-<a href=#122 id=122 data-nosnippet>122</a><span class="macro">impl_cmp!</span>(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>ByteArray, [u8]);
-<a href=#123 id=123 data-nosnippet>123</a><span class="macro">impl_cmp!</span>(ByteArray, Vec&lt;u8&gt;);
-<a href=#124 id=124 data-nosnippet>124</a><span class="macro">impl_cmp!</span>(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>ByteArray, Vec&lt;u8&gt;);
+<a href=#120 id=120 data-nosnippet>120</a><a class="macro" href="#80-118">impl_cmp!</a>(<a href="#25-35">ByteArray</a>, [<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
+<a href=#121 id=121 data-nosnippet>121</a><a class="macro" href="#80-118">impl_cmp!</a>(<a href="#25-35">ByteArray</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
+<a href=#122 id=122 data-nosnippet>122</a><a class="macro" href="#80-118">impl_cmp!</a>(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#25-35">ByteArray</a>, [<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
+<a href=#123 id=123 data-nosnippet>123</a><a class="macro" href="#80-118">impl_cmp!</a>(<a href="#25-35">ByteArray</a>, <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;);
+<a href=#124 id=124 data-nosnippet>124</a><a class="macro" href="#80-118">impl_cmp!</a>(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#25-35">ByteArray</a>, <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;);
 <a href=#125 id=125 data-nosnippet>125</a>
-<a href=#126 id=126 data-nosnippet>126</a><span class="kw">impl </span>PartialEq <span class="kw">for </span>ByteArray {
-<a href=#127 id=127 data-nosnippet>127</a>    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
-<a href=#128 id=128 data-nosnippet>128</a>        <span class="self">self</span>[..] == other[..]
+<a href=#126 id=126 data-nosnippet>126</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#25-35">ByteArray</a> {
+<a href=#127 id=127 data-nosnippet>127</a>    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+<a href=#128 id=128 data-nosnippet>128</a>        <a class="self" href="#127">self</a>[..] == <a href="#127">other</a>[..]
 <a href=#129 id=129 data-nosnippet>129</a>    }
 <a href=#130 id=130 data-nosnippet>130</a>}
 <a href=#131 id=131 data-nosnippet>131</a>
-<a href=#132 id=132 data-nosnippet>132</a><span class="kw">impl </span>Eq <span class="kw">for </span>ByteArray {}
+<a href=#132 id=132 data-nosnippet>132</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#25-35">ByteArray</a> {}
 <a href=#133 id=133 data-nosnippet>133</a>
-<a href=#134 id=134 data-nosnippet>134</a><span class="kw">impl </span>Hash <span class="kw">for </span>ByteArray {
-<a href=#135 id=135 data-nosnippet>135</a>    <span class="kw">fn </span>hash&lt;H: Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H) {
-<a href=#136 id=136 data-nosnippet>136</a>        Hash::hash_slice(<span class="kw-2">&amp;</span><span class="self">self</span>[..], state)
+<a href=#134 id=134 data-nosnippet>134</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">Hash</a> <span class="kw">for </span><a href="#25-35">ByteArray</a> {
+<a href=#135 id=135 data-nosnippet>135</a>    <span class="kw">fn </span>hash&lt;H: <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html">Hasher</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H) {
+<a href=#136 id=136 data-nosnippet>136</a>        <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash_slice">Hash::hash_slice</a>(<span class="kw-2">&amp;</span><a class="self" href="#135">self</a>[..], <a href="#135">state</a>)
 <a href=#137 id=137 data-nosnippet>137</a>    }
 <a href=#138 id=138 data-nosnippet>138</a>}
 <a href=#139 id=139 data-nosnippet>139</a><span class="attr">#[cfg(test)]

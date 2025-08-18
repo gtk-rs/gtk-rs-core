@@ -1,45 +1,118 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/error.rs`."><title>error.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (898aff704 2025-08-14)" data-channel="nightly" data-search-js="search-281b7574.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>error.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-2"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/error.rs`."><title>error.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (425a9c0a0 2025-08-17)" data-channel="nightly" data-search-js="search-b069538f.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("main" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "main") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>error.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-2"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
-<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::io;
+<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/std/io/index.html">std::io</a>;
 <a href=#4 id=4 data-nosnippet>4</a>
 <a href=#5 id=5 data-nosnippet>5</a><span class="attr">#[cfg(feature = <span class="string">"v2_74"</span>)]
-<a href=#6 id=6 data-nosnippet>6</a></span><span class="kw">use </span><span class="kw">crate</span>::glib::translate::<span class="kw-2">*</span>;
+<a href=#6 id=6 data-nosnippet>6</a></span><span class="kw">use </span><a href="../../glib/translate/index.html"><span class="kw">crate</span>::glib::translate</a>::<span class="kw-2">*</span>;
 <a href=#7 id=7 data-nosnippet>7</a><span class="attr">#[cfg(feature = <span class="string">"v2_74"</span>)]
-<a href=#8 id=8 data-nosnippet>8</a></span><span class="kw">use </span><span class="kw">crate</span>::glib::FileError;
-<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span><span class="kw">crate</span>::IOErrorEnum;
+<a href=#8 id=8 data-nosnippet>8</a></span><span class="kw">use </span><a href="../../glib/auto/enums/enum.FileError.html"><span class="kw">crate</span>::glib::FileError</a>;
+<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span><a href="auto/enums.rs.html#2182-2345"><span class="kw">crate</span>::IOErrorEnum</a>;
 <a href=#10 id=10 data-nosnippet>10</a>
-<a href=#11 id=11 data-nosnippet>11</a><span class="kw">impl </span>From&lt;IOErrorEnum&gt; <span class="kw">for </span>io::ErrorKind {
-<a href=#12 id=12 data-nosnippet>12</a>    <span class="kw">fn </span>from(kind: IOErrorEnum) -&gt; <span class="self">Self </span>{
-<a href=#13 id=13 data-nosnippet>13</a>        <span class="kw">match </span>kind {
-<a href=#14 id=14 data-nosnippet>14</a>            IOErrorEnum::NotFound =&gt; <span class="self">Self</span>::NotFound,
-<a href=#15 id=15 data-nosnippet>15</a>            IOErrorEnum::Exists =&gt; <span class="self">Self</span>::AlreadyExists,
-<a href=#16 id=16 data-nosnippet>16</a>            IOErrorEnum::InvalidFilename =&gt; <span class="self">Self</span>::InvalidInput,
-<a href=#17 id=17 data-nosnippet>17</a>            IOErrorEnum::InvalidArgument =&gt; <span class="self">Self</span>::InvalidInput,
-<a href=#18 id=18 data-nosnippet>18</a>            IOErrorEnum::PermissionDenied =&gt; <span class="self">Self</span>::PermissionDenied,
-<a href=#19 id=19 data-nosnippet>19</a>            IOErrorEnum::AddressInUse =&gt; <span class="self">Self</span>::AddrInUse,
-<a href=#20 id=20 data-nosnippet>20</a>            IOErrorEnum::TimedOut =&gt; <span class="self">Self</span>::TimedOut,
-<a href=#21 id=21 data-nosnippet>21</a>            IOErrorEnum::WouldBlock =&gt; <span class="self">Self</span>::WouldBlock,
-<a href=#22 id=22 data-nosnippet>22</a>            IOErrorEnum::InvalidData =&gt; <span class="self">Self</span>::InvalidData,
-<a href=#23 id=23 data-nosnippet>23</a>            IOErrorEnum::ConnectionRefused =&gt; <span class="self">Self</span>::ConnectionRefused,
-<a href=#24 id=24 data-nosnippet>24</a>            IOErrorEnum::BrokenPipe =&gt; <span class="self">Self</span>::BrokenPipe,
-<a href=#25 id=25 data-nosnippet>25</a>            IOErrorEnum::NotConnected =&gt; <span class="self">Self</span>::NotConnected,
+<a href=#11 id=11 data-nosnippet>11</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="auto/enums.rs.html#2182-2345">IOErrorEnum</a>&gt; <span class="kw">for </span><a href="https://doc.rust-lang.org/nightly/std/io/error/enum.ErrorKind.html">io::ErrorKind</a> {
+<a href=#12 id=12 data-nosnippet>12</a>    <span class="kw">fn </span>from(kind: <a href="auto/enums.rs.html#2182-2345">IOErrorEnum</a>) -&gt; <span class="self">Self </span>{
+<a href=#13 id=13 data-nosnippet>13</a>        <span class="kw">match </span><a href="#12">kind</a> {
+<a href=#14 id=14 data-nosnippet>14</a>            <a href="auto/enums.rs.html#2189">IOErrorEnum::NotFound</a> =&gt; <span class="self">Self</span>::NotFound,
+<a href=#15 id=15 data-nosnippet>15</a>            <a href="auto/enums.rs.html#2192">IOErrorEnum::Exists</a> =&gt; <span class="self">Self</span>::AlreadyExists,
+<a href=#16 id=16 data-nosnippet>16</a>            <a href="auto/enums.rs.html#2216">IOErrorEnum::InvalidFilename</a> =&gt; <span class="self">Self</span>::InvalidInput,
+<a href=#17 id=17 data-nosnippet>17</a>            <a href="auto/enums.rs.html#2225">IOErrorEnum::InvalidArgument</a> =&gt; <span class="self">Self</span>::InvalidInput,
+<a href=#18 id=18 data-nosnippet>18</a>            <a href="auto/enums.rs.html#2228">IOErrorEnum::PermissionDenied</a> =&gt; <span class="self">Self</span>::PermissionDenied,
+<a href=#19 id=19 data-nosnippet>19</a>            <a href="auto/enums.rs.html#2288">IOErrorEnum::AddressInUse</a> =&gt; <span class="self">Self</span>::AddrInUse,
+<a href=#20 id=20 data-nosnippet>20</a>            <a href="auto/enums.rs.html#2258">IOErrorEnum::TimedOut</a> =&gt; <span class="self">Self</span>::TimedOut,
+<a href=#21 id=21 data-nosnippet>21</a>            <a href="auto/enums.rs.html#2267">IOErrorEnum::WouldBlock</a> =&gt; <span class="self">Self</span>::WouldBlock,
+<a href=#22 id=22 data-nosnippet>22</a>            <a href="auto/enums.rs.html#2294">IOErrorEnum::InvalidData</a> =&gt; <span class="self">Self</span>::InvalidData,
+<a href=#23 id=23 data-nosnippet>23</a>            <a href="auto/enums.rs.html#2310">IOErrorEnum::ConnectionRefused</a> =&gt; <span class="self">Self</span>::ConnectionRefused,
+<a href=#24 id=24 data-nosnippet>24</a>            <a href="auto/enums.rs.html#2326">IOErrorEnum::BrokenPipe</a> =&gt; <span class="self">Self</span>::BrokenPipe,
+<a href=#25 id=25 data-nosnippet>25</a>            <a href="auto/enums.rs.html#2329">IOErrorEnum::NotConnected</a> =&gt; <span class="self">Self</span>::NotConnected,
 <a href=#26 id=26 data-nosnippet>26</a>            <span class="kw">_ </span>=&gt; <span class="self">Self</span>::Other,
 <a href=#27 id=27 data-nosnippet>27</a>        }
 <a href=#28 id=28 data-nosnippet>28</a>    }
 <a href=#29 id=29 data-nosnippet>29</a>}
 <a href=#30 id=30 data-nosnippet>30</a>
-<a href=#31 id=31 data-nosnippet>31</a><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>to_std_io_result&lt;T&gt;(result: <span class="prelude-ty">Result</span>&lt;T, glib::Error&gt;) -&gt; io::Result&lt;T&gt; {
-<a href=#32 id=32 data-nosnippet>32</a>    result.map_err(|g_error| <span class="kw">match </span>g_error.kind::&lt;IOErrorEnum&gt;() {
-<a href=#33 id=33 data-nosnippet>33</a>        <span class="prelude-val">Some</span>(io_error_enum) =&gt; io::Error::new(io_error_enum.into(), g_error),
-<a href=#34 id=34 data-nosnippet>34</a>        <span class="prelude-val">None </span>=&gt; io::Error::other(g_error),
+<a href=#31 id=31 data-nosnippet>31</a><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>to_std_io_result&lt;T&gt;(result: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;T, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html">io::Result</a>&lt;T&gt; {
+<a href=#32 id=32 data-nosnippet>32</a>    <a href="#31">result</a>.<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map_err">map_err</a>(|g_error| <span class="kw">match </span><a href="#32">g_error</a>.<a href="../../glib/error/struct.Error.html#method.kind">kind</a>::&lt;<a href="auto/enums.rs.html#2182-2345">IOErrorEnum</a>&gt;() {
+<a href=#33 id=33 data-nosnippet>33</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(io_error_enum) =&gt; <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html#method.new">io::Error::new</a>(<a href="#33">io_error_enum</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>(), <a href="#32">g_error</a>),
+<a href=#34 id=34 data-nosnippet>34</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a> </a>=&gt; <a href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html#method.other">io::Error::other</a>(<a href="#32">g_error</a>),
 <a href=#35 id=35 data-nosnippet>35</a>    })
 <a href=#36 id=36 data-nosnippet>36</a>}
 <a href=#37 id=37 data-nosnippet>37</a>
 <a href=#38 id=38 data-nosnippet>38</a><span class="attr">#[cfg(feature = <span class="string">"v2_74"</span>)]
 <a href=#39 id=39 data-nosnippet>39</a>#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_74"</span>)))]
-<a href=#40 id=40 data-nosnippet>40</a></span><span class="kw">impl </span>From&lt;FileError&gt; <span class="kw">for </span>IOErrorEnum {
+<a href=#40 id=40 data-nosnippet>40</a></span><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="../../glib/auto/enums/enum.FileError.html">FileError</a>&gt; <span class="kw">for </span><a href="auto/enums.rs.html#2182-2345">IOErrorEnum</a> {
 <a href=#41 id=41 data-nosnippet>41</a>    <span class="attr">#[doc(alias = <span class="string">"g_io_error_from_file_error"</span>)]
-<a href=#42 id=42 data-nosnippet>42</a>    </span><span class="kw">fn </span>from(e: FileError) -&gt; <span class="self">Self </span>{
-<a href=#43 id=43 data-nosnippet>43</a>        <span class="kw">unsafe </span>{ from_glib(<span class="kw">crate</span>::ffi::g_io_error_from_file_error(e.into_glib())) }
+<a href=#42 id=42 data-nosnippet>42</a>    </span><span class="kw">fn </span>from(e: <a href="../../glib/auto/enums/enum.FileError.html">FileError</a>) -&gt; <span class="self">Self </span>{
+<a href=#43 id=43 data-nosnippet>43</a>        <span class="kw">unsafe </span>{ <a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../gio_sys/fn.g_io_error_from_file_error.html"><span class="kw">crate</span>::ffi::g_io_error_from_file_error</a>(<a href="#42">e</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>())) }
 <a href=#44 id=44 data-nosnippet>44</a>    }
 <a href=#45 id=45 data-nosnippet>45</a>}</code></pre></div></section></main></body></html>
