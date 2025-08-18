@@ -28,12 +28,12 @@ jobs:
           - { name: "pango", features: "v1_56", nightly: "--all-features", test_sys: true }
           - { name: "pangocairo", features: "", nightly: "--all-features", test_sys: true }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: ${{ matrix.rust }}
           override: true
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           repository: gtk-rs/checker
           ref: main
@@ -106,7 +106,7 @@ jobs:
           - nightly
           - "1.83.0"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: ${{ matrix.rust }}
@@ -130,7 +130,7 @@ jobs:
     name: rust fmt
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -145,14 +145,14 @@ jobs:
   cargo-deny:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: EmbarkStudios/cargo-deny-action@v2
 
   generator:
     name: regen check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: recursive
           set-safe-directory: true
@@ -169,7 +169,7 @@ jobs:
     name: docs embed check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: recursive
           set-safe-directory: true
