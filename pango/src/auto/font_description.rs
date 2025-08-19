@@ -2,6 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+#[cfg(feature = "v1_57")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_57")))]
+use crate::FontColor;
 use crate::{ffi, FontMask, Gravity, Stretch, Style, Variant, Weight};
 use glib::translate::*;
 
@@ -47,13 +50,13 @@ impl FontDescription {
         }
     }
 
-    //#[cfg(feature = "v1_57")]
-    //#[cfg_attr(docsrs, doc(cfg(feature = "v1_57")))]
-    //#[doc(alias = "pango_font_description_get_color")]
-    //#[doc(alias = "get_color")]
-    //pub fn color(&self) -> /*Ignored*/FontColor {
-    //    unsafe { TODO: call ffi:pango_font_description_get_color() }
-    //}
+    #[cfg(feature = "v1_57")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_57")))]
+    #[doc(alias = "pango_font_description_get_color")]
+    #[doc(alias = "get_color")]
+    pub fn color(&self) -> FontColor {
+        unsafe { from_glib(ffi::pango_font_description_get_color(self.to_glib_none().0)) }
+    }
 
     #[doc(alias = "pango_font_description_get_family")]
     #[doc(alias = "get_family")]
@@ -184,12 +187,14 @@ impl FontDescription {
         }
     }
 
-    //#[cfg(feature = "v1_57")]
-    //#[cfg_attr(docsrs, doc(cfg(feature = "v1_57")))]
-    //#[doc(alias = "pango_font_description_set_color")]
-    //pub fn set_color(&mut self, color: /*Ignored*/FontColor) {
-    //    unsafe { TODO: call ffi:pango_font_description_set_color() }
-    //}
+    #[cfg(feature = "v1_57")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_57")))]
+    #[doc(alias = "pango_font_description_set_color")]
+    pub fn set_color(&mut self, color: FontColor) {
+        unsafe {
+            ffi::pango_font_description_set_color(self.to_glib_none_mut().0, color.into_glib());
+        }
+    }
 
     #[doc(alias = "pango_font_description_set_family")]
     pub fn set_family(&mut self, family: &str) {

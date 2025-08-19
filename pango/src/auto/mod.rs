@@ -79,6 +79,9 @@ pub use self::enums::BidiType;
 pub use self::enums::CoverageLevel;
 pub use self::enums::Direction;
 pub use self::enums::EllipsizeMode;
+#[cfg(feature = "v1_57")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_57")))]
+pub use self::enums::FontColor;
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 pub use self::enums::FontScale;
