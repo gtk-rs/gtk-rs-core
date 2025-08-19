@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/utils.rs`."><title>utils.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (425a9c0a0 2025-08-17)" data-channel="nightly" data-search-js="search-b069538f.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/utils.rs`."><title>utils.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (9eb4a2652 2025-08-18)" data-channel="nightly" data-search-js="search-b069538f.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -73,7 +73,7 @@
 
 <nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib_macros/</div>utils.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
-<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.96/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/proc-macro2/1.0.96/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.96/proc_macro2/struct.TokenStream.html">TokenStream</a>};
+<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.101/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/proc-macro2/1.0.101/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.101/proc_macro2/struct.TokenStream.html">TokenStream</a>};
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>proc_macro_crate::crate_name;
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.40/quote/macro.quote_spanned.html">quote_spanned</a>, <a href="https://docs.rs/quote/1.0.40/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 <a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>syn::{
@@ -161,7 +161,7 @@
 <a href=#88 id=88 data-nosnippet>88</a>    }
 <a href=#89 id=89 data-nosnippet>89</a>}
 <a href=#90 id=90 data-nosnippet>90</a>
-<a href=#91 id=91 data-nosnippet>91</a><span class="kw">pub fn </span>check_meta_items(span: <a href="https://docs.rs/proc-macro2/1.0.96/proc_macro2/struct.Span.html">Span</a>, items: <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="#11-16">ParseNestedMetaItem</a>]) -&gt; <a href="https://docs.rs/syn/2.0.106/syn/error/type.Result.html">syn::Result</a>&lt;()&gt; {
+<a href=#91 id=91 data-nosnippet>91</a><span class="kw">pub fn </span>check_meta_items(span: <a href="https://docs.rs/proc-macro2/1.0.101/proc_macro2/struct.Span.html">Span</a>, items: <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="#11-16">ParseNestedMetaItem</a>]) -&gt; <a href="https://docs.rs/syn/2.0.106/syn/error/type.Result.html">syn::Result</a>&lt;()&gt; {
 <a href=#92 id=92 data-nosnippet>92</a>    <span class="kw">let </span><span class="kw-2">mut </span>err: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://docs.rs/syn/2.0.106/syn/error/struct.Error.html">syn::Error</a>&gt; = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>;
 <a href=#93 id=93 data-nosnippet>93</a>    <span class="kw">for </span>item <span class="kw">in </span><span class="kw-2">&amp;mut *</span>items {
 <a href=#94 id=94 data-nosnippet>94</a>        <span class="kw">if </span>item.get_required() &amp;&amp; !item.get_found() {
@@ -207,7 +207,7 @@
 <a href=#134 id=134 data-nosnippet>134</a>}
 <a href=#135 id=135 data-nosnippet>135</a>
 <a href=#136 id=136 data-nosnippet>136</a><span class="kw">pub fn </span>parse_nested_meta_items_from_stream(
-<a href=#137 id=137 data-nosnippet>137</a>    input: <a href="https://docs.rs/proc-macro2/1.0.96/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+<a href=#137 id=137 data-nosnippet>137</a>    input: <a href="https://docs.rs/proc-macro2/1.0.101/proc_macro2/struct.TokenStream.html">TokenStream</a>,
 <a href=#138 id=138 data-nosnippet>138</a>    items: <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="#11-16">ParseNestedMetaItem</a>],
 <a href=#139 id=139 data-nosnippet>139</a>) -&gt; <a href="https://docs.rs/syn/2.0.106/syn/error/type.Result.html">syn::Result</a>&lt;()&gt; {
 <a href=#140 id=140 data-nosnippet>140</a>    <a href="#111-134">parse_nested_meta_items_from_fn</a>(
@@ -217,7 +217,7 @@
 <a href=#144 id=144 data-nosnippet>144</a>        },
 <a href=#145 id=145 data-nosnippet>145</a>        <a href="#138">items</a>,
 <a href=#146 id=146 data-nosnippet>146</a>    )<span class="question-mark">?</span>;
-<a href=#147 id=147 data-nosnippet>147</a>    <a href="#91-110">check_meta_items</a>(<a href="https://docs.rs/proc-macro2/1.0.96/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(), <a href="#138">items</a>)
+<a href=#147 id=147 data-nosnippet>147</a>    <a href="#91-110">check_meta_items</a>(<a href="https://docs.rs/proc-macro2/1.0.101/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>(), <a href="#138">items</a>)
 <a href=#148 id=148 data-nosnippet>148</a>}
 <a href=#149 id=149 data-nosnippet>149</a>
 <a href=#150 id=150 data-nosnippet>150</a><span class="kw">pub fn </span>parse_nested_meta_items&lt;<span class="lifetime">'a</span>&gt;(
@@ -258,7 +258,7 @@
 <a href=#185 id=185 data-nosnippet>185</a>    }
 <a href=#186 id=186 data-nosnippet>186</a>}
 <a href=#187 id=187 data-nosnippet>187</a>
-<a href=#188 id=188 data-nosnippet>188</a><span class="kw">pub fn </span>crate_ident_new() -&gt; <a href="https://docs.rs/proc-macro2/1.0.96/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<a href=#188 id=188 data-nosnippet>188</a><span class="kw">pub fn </span>crate_ident_new() -&gt; <a href="https://docs.rs/proc-macro2/1.0.101/proc_macro2/struct.TokenStream.html">TokenStream</a> {
 <a href=#189 id=189 data-nosnippet>189</a>    <span class="kw">use </span>proc_macro_crate::FoundCrate;
 <a href=#190 id=190 data-nosnippet>190</a>
 <a href=#191 id=191 data-nosnippet>191</a>    <span class="kw">match </span>crate_name(<span class="string">"glib"</span>) {
@@ -267,7 +267,7 @@
 <a href=#194 id=194 data-nosnippet>194</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<span class="kw">_</span>) =&gt; <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
 <a href=#195 id=195 data-nosnippet>195</a>    }
 <a href=#196 id=196 data-nosnippet>196</a>    .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|s| {
-<a href=#197 id=197 data-nosnippet>197</a>        <span class="kw">let </span>glib = <a href="https://docs.rs/proc-macro2/1.0.96/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="kw-2">&amp;</span><a href="#196">s</a>, <a href="https://docs.rs/proc-macro2/1.0.96/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
+<a href=#197 id=197 data-nosnippet>197</a>        <span class="kw">let </span>glib = <a href="https://docs.rs/proc-macro2/1.0.101/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="kw-2">&amp;</span><a href="#196">s</a>, <a href="https://docs.rs/proc-macro2/1.0.101/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
 <a href=#198 id=198 data-nosnippet>198</a>        <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a>(#glib)
 <a href=#199 id=199 data-nosnippet>199</a>    })
 <a href=#200 id=200 data-nosnippet>200</a>    .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| {
@@ -282,7 +282,7 @@
 <a href=#209 id=209 data-nosnippet>209</a>        // ```
 <a href=#210 id=210 data-nosnippet>210</a>        //
 <a href=#211 id=211 data-nosnippet>211</a>        // Then we can use proc_macro to parse the file and check if glib is imported somehow.
-<a href=#212 id=212 data-nosnippet>212</a>        </span><span class="kw">let </span>glib = <a href="https://docs.rs/proc-macro2/1.0.96/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="string">"glib"</span>, <a href="https://docs.rs/proc-macro2/1.0.96/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
+<a href=#212 id=212 data-nosnippet>212</a>        </span><span class="kw">let </span>glib = <a href="https://docs.rs/proc-macro2/1.0.101/proc_macro2/struct.Ident.html#method.new">Ident::new</a>(<span class="string">"glib"</span>, <a href="https://docs.rs/proc-macro2/1.0.101/proc_macro2/struct.Span.html#method.call_site">Span::call_site</a>());
 <a href=#213 id=213 data-nosnippet>213</a>        <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a>(#glib)
 <a href=#214 id=214 data-nosnippet>214</a>    })
 <a href=#215 id=215 data-nosnippet>215</a>}
@@ -294,9 +294,9 @@
 <a href=#221 id=221 data-nosnippet>221</a>//       return Some(Animal::Goat);
 <a href=#222 id=222 data-nosnippet>222</a>//   }
 <a href=#223 id=223 data-nosnippet>223</a></span><span class="kw">pub fn </span>gen_enum_from_glib(
-<a href=#224 id=224 data-nosnippet>224</a>    enum_name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.96/proc_macro2/struct.Ident.html">Ident</a>,
+<a href=#224 id=224 data-nosnippet>224</a>    enum_name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.101/proc_macro2/struct.Ident.html">Ident</a>,
 <a href=#225 id=225 data-nosnippet>225</a>    enum_variants: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.106/syn/punctuated/struct.Punctuated.html">Punctuated</a>&lt;<a href="https://docs.rs/syn/2.0.106/syn/data/struct.Variant.html">Variant</a>, <a href="https://docs.rs/syn/2.0.106/syn/token/struct.Comma.html">Comma</a>&gt;,
-<a href=#226 id=226 data-nosnippet>226</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.96/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<a href=#226 id=226 data-nosnippet>226</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.101/proc_macro2/struct.TokenStream.html">TokenStream</a> {
 <a href=#227 id=227 data-nosnippet>227</a>    <span class="comment">// FIXME: can we express this with a match()?
 <a href=#228 id=228 data-nosnippet>228</a>    </span><span class="kw">let </span>recurse = <a href="#225">enum_variants</a>.<a href="https://docs.rs/syn/2.0.106/syn/punctuated/struct.Punctuated.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| {
 <a href=#229 id=229 data-nosnippet>229</a>        <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a href="#228">v</a>.ident;
