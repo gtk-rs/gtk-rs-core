@@ -31,6 +31,10 @@ bitflags! {
         #[cfg_attr(docsrs, doc(cfg(feature = "v1_56")))]
         #[doc(alias = "PANGO_FONT_MASK_FEATURES")]
         const FEATURES = ffi::PANGO_FONT_MASK_FEATURES as _;
+        #[cfg(feature = "v1_57")]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v1_57")))]
+        #[doc(alias = "PANGO_FONT_MASK_COLOR")]
+        const COLOR = ffi::PANGO_FONT_MASK_COLOR as _;
     }
 }
 

@@ -471,12 +471,12 @@ impl DBusError {
     //}
 
     //#[doc(alias = "g_dbus_error_set_dbus_error")]
-    //pub fn set_dbus_error(error: &mut glib::Error, dbus_error_name: &str, dbus_error_message: &str, format: Option<&str>, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
+    //pub fn set_dbus_error(dbus_error_name: &str, dbus_error_message: &str, format: Option<&str>, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> Option<glib::Error> {
     //    unsafe { TODO: call ffi:g_dbus_error_set_dbus_error() }
     //}
 
     //#[doc(alias = "g_dbus_error_set_dbus_error_valist")]
-    //pub fn set_dbus_error_valist(error: &mut glib::Error, dbus_error_name: &str, dbus_error_message: &str, format: Option<&str>, var_args: /*Unknown conversion*//*Unimplemented*/Unsupported) {
+    //pub fn set_dbus_error_valist(dbus_error_name: &str, dbus_error_message: &str, format: Option<&str>, var_args: /*Unknown conversion*//*Unimplemented*/Unsupported) -> Option<glib::Error> {
     //    unsafe { TODO: call ffi:g_dbus_error_set_dbus_error_valist() }
     //}
 
