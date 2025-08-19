@@ -47,6 +47,14 @@ impl FontDescription {
         }
     }
 
+    //#[cfg(feature = "v1_57")]
+    //#[cfg_attr(docsrs, doc(cfg(feature = "v1_57")))]
+    //#[doc(alias = "pango_font_description_get_color")]
+    //#[doc(alias = "get_color")]
+    //pub fn color(&self) -> /*Ignored*/FontColor {
+    //    unsafe { TODO: call ffi:pango_font_description_get_color() }
+    //}
+
     #[doc(alias = "pango_font_description_get_family")]
     #[doc(alias = "get_family")]
     pub fn family(&self) -> Option<glib::GString> {
@@ -175,6 +183,13 @@ impl FontDescription {
             ffi::pango_font_description_set_absolute_size(self.to_glib_none_mut().0, size);
         }
     }
+
+    //#[cfg(feature = "v1_57")]
+    //#[cfg_attr(docsrs, doc(cfg(feature = "v1_57")))]
+    //#[doc(alias = "pango_font_description_set_color")]
+    //pub fn set_color(&mut self, color: /*Ignored*/FontColor) {
+    //    unsafe { TODO: call ffi:pango_font_description_set_color() }
+    //}
 
     #[doc(alias = "pango_font_description_set_family")]
     pub fn set_family(&mut self, family: &str) {
