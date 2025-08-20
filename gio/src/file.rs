@@ -7,7 +7,8 @@ use glib::{prelude::*, translate::*};
 #[cfg(feature = "v2_74")]
 use crate::FileIOStream;
 use crate::{
-    ffi, Cancellable, File, FileAttributeValue, FileCreateFlags, FileEnumerator, FileQueryInfoFlags,
+    ffi, Cancellable, File, FileAttributeValue, FileCopyFlags, FileCreateFlags, FileEnumerator,
+    FileQueryInfoFlags,
 };
 
 impl File {
@@ -357,6 +358,53 @@ pub trait FileExtManual: IsA<File> + Sized {
         ))
     }
 
+    #[doc(alias = "g_file_copy")]
+    fn copy(
+        &self,
+        destination: &impl IsA<File>,
+        flags: FileCopyFlags,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        progress_callback: Option<Box<dyn FnMut(i64, i64) + 'static>>,
+    ) -> Result<(), glib::Error> {
+        let mut super_callback0 = progress_callback;
+        let (progress_callback, progress_callback_data) =
+            super_callback0
+                .as_mut()
+                .map_or((None, std::ptr::null_mut()), |progress_callback| {
+                    unsafe extern "C" fn progress_callback_trampoline(
+                        current_num_bytes: i64,
+                        total_num_bytes: i64,
+                        user_data: glib::ffi::gpointer,
+                    ) {
+                        let progress_callback: &mut Box<dyn FnMut(i64, i64) + 'static> =
+                            &mut *(user_data as *mut _);
+                        progress_callback(current_num_bytes, total_num_bytes);
+                    }
+                    (
+                        Some(progress_callback_trampoline as _),
+                        progress_callback as *mut Box<dyn FnMut(i64, i64) + 'static> as *mut _,
+                    )
+                });
+        unsafe {
+            let mut error = std::ptr::null_mut();
+            let is_ok = ffi::g_file_copy(
+                self.as_ref().to_glib_none().0,
+                destination.as_ref().to_glib_none().0,
+                flags.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                progress_callback,
+                progress_callback_data,
+                &mut error,
+            );
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            if error.is_null() {
+                Ok(())
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
+
     #[doc(alias = "g_file_copy_async")]
     fn copy_async<Q: FnOnce(Result<(), glib::Error>) + 'static>(
         &self,
@@ -704,32 +752,28 @@ pub trait FileExtManual: IsA<File> + Sized {
         cancellable: Option<&impl IsA<Cancellable>>,
         progress_callback: Option<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>,
     ) -> Result<(u64, u64, u64), glib::Error> {
-        let progress_callback_data: Box<
-            Option<RefCell<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>>,
-        > = Box::new(progress_callback.map(RefCell::new));
-        unsafe extern "C" fn progress_callback_func(
+        let mut super_callback0 = progress_callback;
+        unsafe extern "C" fn progress_callback_trampoline(
             reporting: glib::ffi::gboolean,
             current_size: u64,
             num_dirs: u64,
             num_files: u64,
             user_data: glib::ffi::gpointer,
         ) {
+            let progress_callback: &mut Box<dyn FnMut(bool, u64, u64, u64) + 'static> =
+                &mut *(user_data as *mut _);
             let reporting = from_glib(reporting);
-            let callback: &Option<RefCell<Box<dyn Fn(bool, u64, u64, u64) + 'static>>> =
-                &*(user_data as *mut _);
-            if let Some(ref callback) = *callback {
-                (*callback.borrow_mut())(reporting, current_size, num_dirs, num_files)
-            } else {
-                panic!("cannot get closure...")
-            };
+            progress_callback(reporting, current_size, num_dirs, num_files);
         }
-        let progress_callback = if progress_callback_data.is_some() {
-            Some(progress_callback_func as _)
+        let progress_callback = if super_callback0.is_some() {
+            Some(progress_callback_trampoline as _)
         } else {
             None
         };
-        let super_callback0: Box<Option<RefCell<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>>> =
-            progress_callback_data;
+        let progress_callback_data = super_callback0
+            .as_mut()
+            .map_or(std::ptr::null_mut(), |data| data as *mut _)
+            as *mut _;
         unsafe {
             let mut disk_usage = mem::MaybeUninit::uninit();
             let mut num_dirs = mem::MaybeUninit::uninit();
@@ -740,7 +784,7 @@ pub trait FileExtManual: IsA<File> + Sized {
                 flags.into_glib(),
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 progress_callback,
-                Box::into_raw(super_callback0) as *mut _,
+                progress_callback_data,
                 disk_usage.as_mut_ptr(),
                 num_dirs.as_mut_ptr(),
                 num_files.as_mut_ptr(),
@@ -908,6 +952,54 @@ pub trait FileExtManual: IsA<File> + Sized {
         ));
 
         (fut, Box::pin(receiver))
+    }
+
+    #[doc(alias = "g_file_move")]
+    #[doc(alias = "move")]
+    fn move_(
+        &self,
+        destination: &impl IsA<File>,
+        flags: FileCopyFlags,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        progress_callback: Option<Box<dyn FnMut(i64, i64) + 'static>>,
+    ) -> Result<(), glib::Error> {
+        let mut super_callback0 = progress_callback;
+        let (progress_callback, progress_callback_data) =
+            super_callback0
+                .as_mut()
+                .map_or((None, std::ptr::null_mut()), |progress_callback| {
+                    unsafe extern "C" fn progress_callback_trampoline(
+                        current_num_bytes: i64,
+                        total_num_bytes: i64,
+                        user_data: glib::ffi::gpointer,
+                    ) {
+                        let progress_callback: &mut Box<dyn FnMut(i64, i64) + 'static> =
+                            &mut *(user_data as *mut _);
+                        progress_callback(current_num_bytes, total_num_bytes);
+                    }
+                    (
+                        Some(progress_callback_trampoline as _),
+                        progress_callback as *mut Box<dyn FnMut(i64, i64) + 'static> as *mut _,
+                    )
+                });
+        unsafe {
+            let mut error = std::ptr::null_mut();
+            let is_ok = ffi::g_file_move(
+                self.as_ref().to_glib_none().0,
+                destination.as_ref().to_glib_none().0,
+                flags.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                progress_callback,
+                progress_callback_data,
+                &mut error,
+            );
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            if error.is_null() {
+                Ok(())
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
     }
 
     #[cfg(feature = "v2_72")]
