@@ -7560,14 +7560,10 @@ extern "C" {
     #[cfg(feature = "v2_78")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_78")))]
     pub fn g_utf8_truncate_middle(string: *const c_char, truncate_length: size_t) -> *mut c_char;
-    pub fn g_utf8_validate(str: *const u8, max_len: ssize_t, end: *mut *const c_char) -> gboolean;
+    pub fn g_utf8_validate(str: *const u8, max_len: ssize_t, end: *mut *const u8) -> gboolean;
     #[cfg(feature = "v2_60")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
-    pub fn g_utf8_validate_len(
-        str: *const u8,
-        max_len: size_t,
-        end: *mut *const c_char,
-    ) -> gboolean;
+    pub fn g_utf8_validate_len(str: *const u8, max_len: size_t, end: *mut *const u8) -> gboolean;
     pub fn g_uuid_string_is_valid(str: *const c_char) -> gboolean;
     pub fn g_uuid_string_random() -> *mut c_char;
     pub fn g_variant_get_gtype() -> GType;
