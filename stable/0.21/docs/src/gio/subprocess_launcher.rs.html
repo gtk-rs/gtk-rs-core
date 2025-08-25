@@ -1,12 +1,85 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subprocess_launcher.rs`."><title>subprocess_launcher.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (de3efa79f 2025-08-08)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>subprocess_launcher.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subprocess_launcher.rs`."><title>subprocess_launcher.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-7dc20aaa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (809200ec9 2025-08-24)" data-channel="nightly" data-search-js="search-5fc2c5c0.js" data-stringdex-js="stringdex-0e748618.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-17c00ba7.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.21" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.21") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>subprocess_launcher.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="attr">#[cfg(any(unix, all(docsrs, unix)))]
-<a href=#4 id=4 data-nosnippet>4</a></span><span class="kw">use </span>std::os::unix::io::{AsFd, AsRawFd, IntoRawFd, OwnedFd};
+<a href=#4 id=4 data-nosnippet>4</a></span><span class="kw">use </span>std::os::unix::io::{<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html">AsFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html">AsRawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>};
 <a href=#5 id=5 data-nosnippet>5</a>
-<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 <a href=#7 id=7 data-nosnippet>7</a>
-<a href=#8 id=8 data-nosnippet>8</a><span class="kw">use </span><span class="kw">crate</span>::ffi;
-<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span><span class="kw">crate</span>::SubprocessLauncher;
+<a href=#8 id=8 data-nosnippet>8</a><span class="kw">use </span><a href="../../gio_sys/index.html"><span class="kw">crate</span>::ffi</a>;
+<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span><a href="auto/subprocess_launcher.rs.html#11-38"><span class="kw">crate</span>::SubprocessLauncher</a>;
 <a href=#10 id=10 data-nosnippet>10</a>
 <a href=#11 id=11 data-nosnippet>11</a><span class="attr">#[cfg(all(docsrs, not(unix)))]
 <a href=#12 id=12 data-nosnippet>12</a></span><span class="kw">pub trait </span>IntoRawFd: Sized {
@@ -15,7 +88,7 @@
 <a href=#15 id=15 data-nosnippet>15</a>    </span>}
 <a href=#16 id=16 data-nosnippet>16</a>}
 <a href=#17 id=17 data-nosnippet>17</a>
-<a href=#18 id=18 data-nosnippet>18</a><span class="kw">impl </span>SubprocessLauncher {
+<a href=#18 id=18 data-nosnippet>18</a><span class="kw">impl </span><a href="auto/subprocess_launcher.rs.html#11-38">SubprocessLauncher</a> {
 <a href=#19 id=19 data-nosnippet>19</a>    <span class="doccomment">/// Replace the entire environment of processes launched from this
 <a href=#20 id=20 data-nosnippet>20</a>    /// launcher with the given 'environ' variable.
 <a href=#21 id=21 data-nosnippet>21</a>    ///
@@ -39,9 +112,9 @@
 <a href=#39 id=39 data-nosnippet>39</a>    ///
 <a href=#40 id=40 data-nosnippet>40</a>    ///     the replacement environment
 <a href=#41 id=41 data-nosnippet>41</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_subprocess_launcher_set_environ"</span>)]
-<a href=#42 id=42 data-nosnippet>42</a>    </span><span class="kw">pub fn </span>set_environ(<span class="kw-2">&amp;</span><span class="self">self</span>, env: <span class="kw-2">&amp;</span>[std::ffi::OsString]) {
+<a href=#42 id=42 data-nosnippet>42</a>    </span><span class="kw">pub fn </span>set_environ(<span class="kw-2">&amp;</span><span class="self">self</span>, env: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">std::ffi::OsString</a>]) {
 <a href=#43 id=43 data-nosnippet>43</a>        <span class="kw">unsafe </span>{
-<a href=#44 id=44 data-nosnippet>44</a>            ffi::g_subprocess_launcher_set_environ(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, env.to_glib_none().<span class="number">0</span>);
+<a href=#44 id=44 data-nosnippet>44</a>            <a href="../../gio_sys/fn.g_subprocess_launcher_set_environ.html">ffi::g_subprocess_launcher_set_environ</a>(<a class="self" href="#42">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#42">env</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
 <a href=#45 id=45 data-nosnippet>45</a>        }
 <a href=#46 id=46 data-nosnippet>46</a>    }
 <a href=#47 id=47 data-nosnippet>47</a>
@@ -64,11 +137,11 @@
 <a href=#64 id=64 data-nosnippet>64</a>    </span><span class="attr">#[cfg(unix)]
 <a href=#65 id=65 data-nosnippet>65</a>    #[cfg_attr(docsrs, doc(cfg(unix)))]
 <a href=#66 id=66 data-nosnippet>66</a>    #[doc(alias = <span class="string">"g_subprocess_launcher_take_fd"</span>)]
-<a href=#67 id=67 data-nosnippet>67</a>    </span><span class="kw">pub fn </span>take_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, source_fd: OwnedFd, target_fd: <span class="kw">impl </span>AsFd) {
-<a href=#68 id=68 data-nosnippet>68</a>        <span class="kw">let </span>source_raw_fd = source_fd.into_raw_fd();
-<a href=#69 id=69 data-nosnippet>69</a>        <span class="kw">let </span>target_raw_fd = target_fd.as_fd().as_raw_fd();
+<a href=#67 id=67 data-nosnippet>67</a>    </span><span class="kw">pub fn </span>take_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, source_fd: <a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>, target_fd: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html">AsFd</a>) {
+<a href=#68 id=68 data-nosnippet>68</a>        <span class="kw">let </span>source_raw_fd = <a href="#67">source_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>();
+<a href=#69 id=69 data-nosnippet>69</a>        <span class="kw">let </span>target_raw_fd = <a href="#67">target_fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html#tymethod.as_fd">as_fd</a>().<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html#tymethod.as_raw_fd">as_raw_fd</a>();
 <a href=#70 id=70 data-nosnippet>70</a>        <span class="kw">unsafe </span>{
-<a href=#71 id=71 data-nosnippet>71</a>            ffi::g_subprocess_launcher_take_fd(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, source_raw_fd, target_raw_fd);
+<a href=#71 id=71 data-nosnippet>71</a>            <a href="../../gio_sys/fn.g_subprocess_launcher_take_fd.html">ffi::g_subprocess_launcher_take_fd</a>(<a class="self" href="#67">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#68">source_raw_fd</a>, <a href="#69">target_raw_fd</a>);
 <a href=#72 id=72 data-nosnippet>72</a>        }
 <a href=#73 id=73 data-nosnippet>73</a>    }
 <a href=#74 id=74 data-nosnippet>74</a>
@@ -93,10 +166,10 @@
 <a href=#93 id=93 data-nosnippet>93</a>    </span><span class="attr">#[cfg(unix)]
 <a href=#94 id=94 data-nosnippet>94</a>    #[cfg_attr(docsrs, doc(cfg(unix)))]
 <a href=#95 id=95 data-nosnippet>95</a>    #[doc(alias = <span class="string">"g_subprocess_launcher_take_stderr_fd"</span>)]
-<a href=#96 id=96 data-nosnippet>96</a>    </span><span class="kw">pub fn </span>take_stderr_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <span class="prelude-ty">Option</span>&lt;OwnedFd&gt;) {
+<a href=#96 id=96 data-nosnippet>96</a>    </span><span class="kw">pub fn </span>take_stderr_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>&gt;) {
 <a href=#97 id=97 data-nosnippet>97</a>        <span class="kw">unsafe </span>{
-<a href=#98 id=98 data-nosnippet>98</a>            <span class="kw">let </span>raw_fd = fd.map_or(-<span class="number">1</span>, |fd| fd.into_raw_fd());
-<a href=#99 id=99 data-nosnippet>99</a>            ffi::g_subprocess_launcher_take_stderr_fd(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, raw_fd);
+<a href=#98 id=98 data-nosnippet>98</a>            <span class="kw">let </span>raw_fd = <a href="#96">fd</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map_or">map_or</a>(-<span class="number">1</span>, |fd| <a href="#98">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
+<a href=#99 id=99 data-nosnippet>99</a>            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stderr_fd.html">ffi::g_subprocess_launcher_take_stderr_fd</a>(<a class="self" href="#96">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#98">raw_fd</a>);
 <a href=#100 id=100 data-nosnippet>100</a>        }
 <a href=#101 id=101 data-nosnippet>101</a>    }
 <a href=#102 id=102 data-nosnippet>102</a>
@@ -123,10 +196,10 @@
 <a href=#123 id=123 data-nosnippet>123</a>    </span><span class="attr">#[cfg(unix)]
 <a href=#124 id=124 data-nosnippet>124</a>    #[cfg_attr(docsrs, doc(cfg(unix)))]
 <a href=#125 id=125 data-nosnippet>125</a>    #[doc(alias = <span class="string">"g_subprocess_launcher_take_stdin_fd"</span>)]
-<a href=#126 id=126 data-nosnippet>126</a>    </span><span class="kw">pub fn </span>take_stdin_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <span class="prelude-ty">Option</span>&lt;OwnedFd&gt;) {
-<a href=#127 id=127 data-nosnippet>127</a>        <span class="kw">let </span>raw_fd = fd.map_or(-<span class="number">1</span>, |fd| fd.into_raw_fd());
+<a href=#126 id=126 data-nosnippet>126</a>    </span><span class="kw">pub fn </span>take_stdin_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>&gt;) {
+<a href=#127 id=127 data-nosnippet>127</a>        <span class="kw">let </span>raw_fd = <a href="#126">fd</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map_or">map_or</a>(-<span class="number">1</span>, |fd| <a href="#127">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
 <a href=#128 id=128 data-nosnippet>128</a>        <span class="kw">unsafe </span>{
-<a href=#129 id=129 data-nosnippet>129</a>            ffi::g_subprocess_launcher_take_stdin_fd(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, raw_fd);
+<a href=#129 id=129 data-nosnippet>129</a>            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stdin_fd.html">ffi::g_subprocess_launcher_take_stdin_fd</a>(<a class="self" href="#126">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#127">raw_fd</a>);
 <a href=#130 id=130 data-nosnippet>130</a>        }
 <a href=#131 id=131 data-nosnippet>131</a>    }
 <a href=#132 id=132 data-nosnippet>132</a>
@@ -152,10 +225,10 @@
 <a href=#152 id=152 data-nosnippet>152</a>    </span><span class="attr">#[cfg(unix)]
 <a href=#153 id=153 data-nosnippet>153</a>    #[cfg_attr(docsrs, doc(cfg(unix)))]
 <a href=#154 id=154 data-nosnippet>154</a>    #[doc(alias = <span class="string">"g_subprocess_launcher_take_stdout_fd"</span>)]
-<a href=#155 id=155 data-nosnippet>155</a>    </span><span class="kw">pub fn </span>take_stdout_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <span class="prelude-ty">Option</span>&lt;OwnedFd&gt;) {
-<a href=#156 id=156 data-nosnippet>156</a>        <span class="kw">let </span>raw_fd = fd.map_or(-<span class="number">1</span>, |fd| fd.into_raw_fd());
+<a href=#155 id=155 data-nosnippet>155</a>    </span><span class="kw">pub fn </span>take_stdout_fd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>&gt;) {
+<a href=#156 id=156 data-nosnippet>156</a>        <span class="kw">let </span>raw_fd = <a href="#155">fd</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map_or">map_or</a>(-<span class="number">1</span>, |fd| <a href="#156">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>());
 <a href=#157 id=157 data-nosnippet>157</a>        <span class="kw">unsafe </span>{
-<a href=#158 id=158 data-nosnippet>158</a>            ffi::g_subprocess_launcher_take_stdout_fd(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, raw_fd);
+<a href=#158 id=158 data-nosnippet>158</a>            <a href="../../gio_sys/fn.g_subprocess_launcher_take_stdout_fd.html">ffi::g_subprocess_launcher_take_stdout_fd</a>(<a class="self" href="#155">self</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#156">raw_fd</a>);
 <a href=#159 id=159 data-nosnippet>159</a>        }
 <a href=#160 id=160 data-nosnippet>160</a>    }
 <a href=#161 id=161 data-nosnippet>161</a>}</code></pre></div></section></main></body></html>

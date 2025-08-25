@@ -1,12 +1,85 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/boxed_derive.rs`."><title>boxed_derive.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (de3efa79f 2025-08-08)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib_macros/</div>boxed_derive.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/boxed_derive.rs`."><title>boxed_derive.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-7dc20aaa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (809200ec9 2025-08-24)" data-channel="nightly" data-search-js="search-5fc2c5c0.js" data-stringdex-js="stringdex-0e748618.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-17c00ba7.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.21" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.21") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib_macros/</div>boxed_derive.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
-<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>proc_macro2::{Ident, TokenStream};
-<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>quote::quote;
+<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>};
+<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span><a href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote::quote</a>;
 <a href=#5 id=5 data-nosnippet>5</a>
-<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span><span class="kw">crate</span>::utils::{crate_ident_new, parse_nested_meta_items, NestedMetaItem};
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span><span class="kw">crate</span>::utils::{<a href="utils.rs.html#188-215">crate_ident_new</a>, <a href="utils.rs.html#150-165">parse_nested_meta_items</a>, <a href="utils.rs.html#19-25">NestedMetaItem</a>};
 <a href=#7 id=7 data-nosnippet>7</a>
-<a href=#8 id=8 data-nosnippet>8</a><span class="kw">fn </span>gen_option_to_ptr() -&gt; TokenStream {
-<a href=#9 id=9 data-nosnippet>9</a>    <span class="macro">quote!</span> {
+<a href=#8 id=8 data-nosnippet>8</a><span class="kw">fn </span>gen_option_to_ptr() -&gt; <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<a href=#9 id=9 data-nosnippet>9</a>    <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#10 id=10 data-nosnippet>10</a>        <span class="kw">match </span>s {
 <a href=#11 id=11 data-nosnippet>11</a>            ::core::option::Option::Some(s) =&gt; ::std::boxed::Box::into_raw(::std::boxed::Box::new(s.clone())),
 <a href=#12 id=12 data-nosnippet>12</a>            ::core::option::Option::None =&gt; ::std::ptr::null_mut(),
@@ -14,8 +87,8 @@
 <a href=#14 id=14 data-nosnippet>14</a>    }
 <a href=#15 id=15 data-nosnippet>15</a>}
 <a href=#16 id=16 data-nosnippet>16</a>
-<a href=#17 id=17 data-nosnippet>17</a><span class="kw">fn </span>gen_impl_from_value_optional(name: <span class="kw-2">&amp;</span>Ident, crate_ident: <span class="kw-2">&amp;</span>TokenStream) -&gt; TokenStream {
-<a href=#18 id=18 data-nosnippet>18</a>    <span class="macro">quote!</span> {
+<a href=#17 id=17 data-nosnippet>17</a><span class="kw">fn </span>gen_impl_from_value_optional(name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">Ident</a>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<a href=#18 id=18 data-nosnippet>18</a>    <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#19 id=19 data-nosnippet>19</a>        <span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; #crate_ident::value::FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span>#name {
 <a href=#20 id=20 data-nosnippet>20</a>            <span class="kw">type </span>Checker = #crate_ident::value::GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
 <a href=#21 id=21 data-nosnippet>21</a>
@@ -40,8 +113,8 @@
 <a href=#40 id=40 data-nosnippet>40</a>    }
 <a href=#41 id=41 data-nosnippet>41</a>}
 <a href=#42 id=42 data-nosnippet>42</a>
-<a href=#43 id=43 data-nosnippet>43</a><span class="kw">fn </span>gen_impl_from_value(name: <span class="kw-2">&amp;</span>Ident, crate_ident: <span class="kw-2">&amp;</span>TokenStream) -&gt; TokenStream {
-<a href=#44 id=44 data-nosnippet>44</a>    <span class="macro">quote!</span> {
+<a href=#43 id=43 data-nosnippet>43</a><span class="kw">fn </span>gen_impl_from_value(name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">Ident</a>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<a href=#44 id=44 data-nosnippet>44</a>    <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#45 id=45 data-nosnippet>45</a>        <span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; #crate_ident::value::FromValue&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span>#name {
 <a href=#46 id=46 data-nosnippet>46</a>            <span class="kw">type </span>Checker = #crate_ident::value::GenericValueTypeChecker&lt;<span class="self">Self</span>&gt;;
 <a href=#47 id=47 data-nosnippet>47</a>
@@ -66,10 +139,10 @@
 <a href=#66 id=66 data-nosnippet>66</a>    }
 <a href=#67 id=67 data-nosnippet>67</a>}
 <a href=#68 id=68 data-nosnippet>68</a>
-<a href=#69 id=69 data-nosnippet>69</a><span class="kw">fn </span>gen_impl_to_value_optional(name: <span class="kw-2">&amp;</span>Ident, crate_ident: <span class="kw-2">&amp;</span>TokenStream) -&gt; TokenStream {
-<a href=#70 id=70 data-nosnippet>70</a>    <span class="kw">let </span>option_to_ptr = gen_option_to_ptr();
+<a href=#69 id=69 data-nosnippet>69</a><span class="kw">fn </span>gen_impl_to_value_optional(name: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.Ident.html">Ident</a>, crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<a href=#70 id=70 data-nosnippet>70</a>    <span class="kw">let </span>option_to_ptr = <a href="#8-15">gen_option_to_ptr</a>();
 <a href=#71 id=71 data-nosnippet>71</a>
-<a href=#72 id=72 data-nosnippet>72</a>    <span class="macro">quote!</span> {
+<a href=#72 id=72 data-nosnippet>72</a>    <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#73 id=73 data-nosnippet>73</a>        <span class="kw">impl </span>#crate_ident::value::ToValueOptional <span class="kw">for </span>#name {
 <a href=#74 id=74 data-nosnippet>74</a>            <span class="attr">#[inline]
 <a href=#75 id=75 data-nosnippet>75</a>            </span><span class="kw">fn </span>to_value_optional(s: ::core::option::Option&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; #crate_ident::Value {
@@ -90,51 +163,51 @@
 <a href=#90 id=90 data-nosnippet>90</a>    }
 <a href=#91 id=91 data-nosnippet>91</a>}
 <a href=#92 id=92 data-nosnippet>92</a>
-<a href=#93 id=93 data-nosnippet>93</a><span class="kw">pub fn </span>impl_boxed(input: <span class="kw-2">&amp;</span>syn::DeriveInput) -&gt; syn::Result&lt;TokenStream&gt; {
-<a href=#94 id=94 data-nosnippet>94</a>    <span class="kw">let </span>name = <span class="kw-2">&amp;</span>input.ident;
+<a href=#93 id=93 data-nosnippet>93</a><span class="kw">pub fn </span>impl_boxed(input: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.104/syn/derive/struct.DeriveInput.html">syn::DeriveInput</a>) -&gt; <a href="https://docs.rs/syn/2.0.104/syn/error/type.Result.html">syn::Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.95/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
+<a href=#94 id=94 data-nosnippet>94</a>    <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a href="#93">input</a>.ident;
 <a href=#95 id=95 data-nosnippet>95</a>
-<a href=#96 id=96 data-nosnippet>96</a>    <span class="kw">let </span><span class="kw-2">mut </span>gtype_name = NestedMetaItem::&lt;syn::LitStr&gt;::new(<span class="string">"name"</span>)
-<a href=#97 id=97 data-nosnippet>97</a>        .required()
-<a href=#98 id=98 data-nosnippet>98</a>        .value_required();
-<a href=#99 id=99 data-nosnippet>99</a>    <span class="kw">let </span><span class="kw-2">mut </span>nullable = NestedMetaItem::&lt;syn::LitBool&gt;::new(<span class="string">"nullable"</span>).value_optional();
+<a href=#96 id=96 data-nosnippet>96</a>    <span class="kw">let </span><span class="kw-2">mut </span>gtype_name = <a href="utils.rs.html#19-25">NestedMetaItem</a>::&lt;<a href="https://docs.rs/syn/2.0.104/syn/lit/struct.LitStr.html">syn::LitStr</a>&gt;::new(<span class="string">"name"</span>)
+<a href=#97 id=97 data-nosnippet>97</a>        .<a href="utils.rs.html#49-52">required</a>()
+<a href=#98 id=98 data-nosnippet>98</a>        .<a href="utils.rs.html#55-58">value_required</a>();
+<a href=#99 id=99 data-nosnippet>99</a>    <span class="kw">let </span><span class="kw-2">mut </span>nullable = <a href="utils.rs.html#19-25">NestedMetaItem</a>::&lt;<a href="https://docs.rs/syn/2.0.104/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"nullable"</span>).<a href="utils.rs.html#59-62">value_optional</a>();
 <a href=#100 id=100 data-nosnippet>100</a>    <span class="kw">let </span><span class="kw-2">mut </span>allow_name_conflict =
-<a href=#101 id=101 data-nosnippet>101</a>        NestedMetaItem::&lt;syn::LitBool&gt;::new(<span class="string">"allow_name_conflict"</span>).value_optional();
+<a href=#101 id=101 data-nosnippet>101</a>        <a href="utils.rs.html#19-25">NestedMetaItem</a>::&lt;<a href="https://docs.rs/syn/2.0.104/syn/lit/struct.LitBool.html">syn::LitBool</a>&gt;::new(<span class="string">"allow_name_conflict"</span>).<a href="utils.rs.html#59-62">value_optional</a>();
 <a href=#102 id=102 data-nosnippet>102</a>
-<a href=#103 id=103 data-nosnippet>103</a>    <span class="kw">let </span>found = parse_nested_meta_items(
-<a href=#104 id=104 data-nosnippet>104</a>        <span class="kw-2">&amp;</span>input.attrs,
+<a href=#103 id=103 data-nosnippet>103</a>    <span class="kw">let </span>found = <a href="utils.rs.html#150-165">parse_nested_meta_items</a>(
+<a href=#104 id=104 data-nosnippet>104</a>        <span class="kw-2">&amp;</span><a href="#93">input</a>.attrs,
 <a href=#105 id=105 data-nosnippet>105</a>        <span class="string">"boxed_type"</span>,
-<a href=#106 id=106 data-nosnippet>106</a>        <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span>gtype_name, <span class="kw-2">&amp;mut </span>nullable, <span class="kw-2">&amp;mut </span>allow_name_conflict],
+<a href=#106 id=106 data-nosnippet>106</a>        <span class="kw-2">&amp;mut </span>[<span class="kw-2">&amp;mut </span><a href="#96">gtype_name</a>, <span class="kw-2">&amp;mut </span><a href="#99">nullable</a>, <span class="kw-2">&amp;mut </span><a href="#100">allow_name_conflict</a>],
 <a href=#107 id=107 data-nosnippet>107</a>    )<span class="question-mark">?</span>;
 <a href=#108 id=108 data-nosnippet>108</a>
-<a href=#109 id=109 data-nosnippet>109</a>    <span class="kw">if </span>found.is_none() {
-<a href=#110 id=110 data-nosnippet>110</a>        <span class="kw">return </span><span class="prelude-val">Err</span>(syn::Error::new_spanned(
-<a href=#111 id=111 data-nosnippet>111</a>            input,
+<a href=#109 id=109 data-nosnippet>109</a>    <span class="kw">if </span><a href="#103">found</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_none">is_none</a>() {
+<a href=#110 id=110 data-nosnippet>110</a>        <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="https://docs.rs/syn/2.0.104/syn/error/struct.Error.html#method.new_spanned">syn::Error::new_spanned</a>(
+<a href=#111 id=111 data-nosnippet>111</a>            <a href="#93">input</a>,
 <a href=#112 id=112 data-nosnippet>112</a>            <span class="string">"#[derive(glib::Boxed)] requires #[boxed_type(name = \"BoxedTypeName\")]"</span>,
 <a href=#113 id=113 data-nosnippet>113</a>        ));
 <a href=#114 id=114 data-nosnippet>114</a>    }
 <a href=#115 id=115 data-nosnippet>115</a>
-<a href=#116 id=116 data-nosnippet>116</a>    <span class="kw">let </span>gtype_name = gtype_name.value.unwrap();
-<a href=#117 id=117 data-nosnippet>117</a>    <span class="kw">let </span>nullable = nullable.found || nullable.value.map(|b| b.value()).unwrap_or(<span class="bool-val">false</span>);
-<a href=#118 id=118 data-nosnippet>118</a>    <span class="kw">let </span>allow_name_conflict = allow_name_conflict.found
-<a href=#119 id=119 data-nosnippet>119</a>        || allow_name_conflict
+<a href=#116 id=116 data-nosnippet>116</a>    <span class="kw">let </span>gtype_name = <a href="#96">gtype_name</a>.value.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>();
+<a href=#117 id=117 data-nosnippet>117</a>    <span class="kw">let </span>nullable = <a href="#99">nullable</a>.found || <a href="#99">nullable</a>.value.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|b| <a href="#117">b</a>.<a href="https://docs.rs/syn/2.0.104/syn/lit/struct.LitBool.html#method.value">value</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<span class="bool-val">false</span>);
+<a href=#118 id=118 data-nosnippet>118</a>    <span class="kw">let </span>allow_name_conflict = <a href="#100">allow_name_conflict</a>.found
+<a href=#119 id=119 data-nosnippet>119</a>        || <a href="#100">allow_name_conflict</a>
 <a href=#120 id=120 data-nosnippet>120</a>            .value
-<a href=#121 id=121 data-nosnippet>121</a>            .map(|b| b.value())
-<a href=#122 id=122 data-nosnippet>122</a>            .unwrap_or(<span class="bool-val">false</span>);
+<a href=#121 id=121 data-nosnippet>121</a>            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|b| <a href="#121">b</a>.<a href="https://docs.rs/syn/2.0.104/syn/lit/struct.LitBool.html#method.value">value</a>())
+<a href=#122 id=122 data-nosnippet>122</a>            .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<span class="bool-val">false</span>);
 <a href=#123 id=123 data-nosnippet>123</a>
-<a href=#124 id=124 data-nosnippet>124</a>    <span class="kw">let </span>crate_ident = crate_ident_new();
+<a href=#124 id=124 data-nosnippet>124</a>    <span class="kw">let </span>crate_ident = <a href="utils.rs.html#188-215">crate_ident_new</a>();
 <a href=#125 id=125 data-nosnippet>125</a>
-<a href=#126 id=126 data-nosnippet>126</a>    <span class="kw">let </span>impl_from_value = <span class="kw">if </span>!nullable {
-<a href=#127 id=127 data-nosnippet>127</a>        gen_impl_from_value(name, <span class="kw-2">&amp;</span>crate_ident)
+<a href=#126 id=126 data-nosnippet>126</a>    <span class="kw">let </span>impl_from_value = <span class="kw">if </span>!<a href="#117">nullable</a> {
+<a href=#127 id=127 data-nosnippet>127</a>        <a href="#43-67">gen_impl_from_value</a>(<a href="#94">name</a>, <span class="kw-2">&amp;</span><a href="#124">crate_ident</a>)
 <a href=#128 id=128 data-nosnippet>128</a>    } <span class="kw">else </span>{
-<a href=#129 id=129 data-nosnippet>129</a>        gen_impl_from_value_optional(name, <span class="kw-2">&amp;</span>crate_ident)
+<a href=#129 id=129 data-nosnippet>129</a>        <a href="#17-41">gen_impl_from_value_optional</a>(<a href="#94">name</a>, <span class="kw-2">&amp;</span><a href="#124">crate_ident</a>)
 <a href=#130 id=130 data-nosnippet>130</a>    };
-<a href=#131 id=131 data-nosnippet>131</a>    <span class="kw">let </span>impl_to_value_optional = <span class="kw">if </span>nullable {
-<a href=#132 id=132 data-nosnippet>132</a>        gen_impl_to_value_optional(name, <span class="kw-2">&amp;</span>crate_ident)
+<a href=#131 id=131 data-nosnippet>131</a>    <span class="kw">let </span>impl_to_value_optional = <span class="kw">if </span><a href="#117">nullable</a> {
+<a href=#132 id=132 data-nosnippet>132</a>        <a href="#69-91">gen_impl_to_value_optional</a>(<a href="#94">name</a>, <span class="kw-2">&amp;</span><a href="#124">crate_ident</a>)
 <a href=#133 id=133 data-nosnippet>133</a>    } <span class="kw">else </span>{
-<a href=#134 id=134 data-nosnippet>134</a>        <span class="macro">quote!</span> {}
+<a href=#134 id=134 data-nosnippet>134</a>        <a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {}
 <a href=#135 id=135 data-nosnippet>135</a>    };
 <a href=#136 id=136 data-nosnippet>136</a>
-<a href=#137 id=137 data-nosnippet>137</a>    <span class="prelude-val">Ok</span>(<span class="macro">quote!</span> {
+<a href=#137 id=137 data-nosnippet>137</a>    <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a class="macro" href="https://docs.rs/quote/1.0.40/quote/macro.quote.html">quote!</a> {
 <a href=#138 id=138 data-nosnippet>138</a>        <span class="kw">impl </span>#crate_ident::subclass::boxed::BoxedType <span class="kw">for </span>#name {
 <a href=#139 id=139 data-nosnippet>139</a>            <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>::core::primitive::str = #gtype_name;
 <a href=#140 id=140 data-nosnippet>140</a>            <span class="kw">const </span>ALLOW_NAME_CONFLICT: bool = #allow_name_conflict;

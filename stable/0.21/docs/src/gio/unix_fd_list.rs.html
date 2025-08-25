@@ -1,16 +1,89 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/unix_fd_list.rs`."><title>unix_fd_list.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (de3efa79f 2025-08-08)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>unix_fd_list.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/unix_fd_list.rs`."><title>unix_fd_list.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-7dc20aaa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (809200ec9 2025-08-24)" data-channel="nightly" data-search-js="search-5fc2c5c0.js" data-stringdex-js="stringdex-0e748618.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-17c00ba7.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.21" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.21") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>unix_fd_list.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="attr">#[cfg(unix)]
-<a href=#4 id=4 data-nosnippet>4</a></span><span class="kw">use </span>std::os::unix::io::{AsFd, AsRawFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>std::{mem, ptr};
+<a href=#4 id=4 data-nosnippet>4</a></span><span class="kw">use </span>std::os::unix::io::{<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html">AsFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html">AsRawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html">FromRawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>, <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
-<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 <a href=#8 id=8 data-nosnippet>8</a><span class="attr">#[cfg(all(not(unix), docsrs))]
 <a href=#9 id=9 data-nosnippet>9</a></span><span class="kw">use </span>socket::{AsFd, AsRawFd, FromRawFd, IntoRawFd, OwnedFd, RawFd};
 <a href=#10 id=10 data-nosnippet>10</a>
-<a href=#11 id=11 data-nosnippet>11</a><span class="kw">use crate</span>::{ffi, UnixFDList};
+<a href=#11 id=11 data-nosnippet>11</a><span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="auto/unix_fd_list.rs.html#8-33">UnixFDList</a>};
 <a href=#12 id=12 data-nosnippet>12</a>
-<a href=#13 id=13 data-nosnippet>13</a><span class="kw">impl </span>UnixFDList {
+<a href=#13 id=13 data-nosnippet>13</a><span class="kw">impl </span><a href="auto/unix_fd_list.rs.html#8-33">UnixFDList</a> {
 <a href=#14 id=14 data-nosnippet>14</a>    <span class="doccomment">/// Creates a new #GUnixFDList containing the file descriptors given in
 <a href=#15 id=15 data-nosnippet>15</a>    /// @fds.  The file descriptors become the property of the new list and
 <a href=#16 id=16 data-nosnippet>16</a>    /// may no longer be used by the caller.  The array itself is owned by
@@ -26,18 +99,18 @@
 <a href=#26 id=26 data-nosnippet>26</a>    ///
 <a href=#27 id=27 data-nosnippet>27</a>    /// a new #GUnixFDList
 <a href=#28 id=28 data-nosnippet>28</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_list_new_from_array"</span>)]
-<a href=#29 id=29 data-nosnippet>29</a>    </span><span class="kw">pub fn </span>from_array(fds: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw">impl </span>IntoRawFd&gt;) -&gt; UnixFDList {
-<a href=#30 id=30 data-nosnippet>30</a>        <span class="kw">let </span>fds = fds.into_iter().map(|t| t.into_raw_fd()).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+<a href=#29 id=29 data-nosnippet>29</a>    </span><span class="kw">pub fn </span>from_array(fds: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">IntoIterator</a>&lt;Item = <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html">IntoRawFd</a>&gt;) -&gt; <a href="auto/unix_fd_list.rs.html#8-33">UnixFDList</a> {
+<a href=#30 id=30 data-nosnippet>30</a>        <span class="kw">let </span>fds = <a href="#29">fds</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|t| <a href="#30">t</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.IntoRawFd.html#tymethod.into_raw_fd">into_raw_fd</a>()).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.collect">collect</a>::&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw">_</span>&gt;&gt;();
 <a href=#31 id=31 data-nosnippet>31</a>        <span class="kw">unsafe </span>{
-<a href=#32 id=32 data-nosnippet>32</a>            from_glib_full(ffi::g_unix_fd_list_new_from_array(
-<a href=#33 id=33 data-nosnippet>33</a>                fds.to_glib_none().<span class="number">0</span>,
-<a href=#34 id=34 data-nosnippet>34</a>                fds.len() <span class="kw">as </span>i32,
+<a href=#32 id=32 data-nosnippet>32</a>            <a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../gio_sys/fn.g_unix_fd_list_new_from_array.html">ffi::g_unix_fd_list_new_from_array</a>(
+<a href=#33 id=33 data-nosnippet>33</a>                <a href="#30">fds</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#34 id=34 data-nosnippet>34</a>                <a href="#30">fds</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#35 id=35 data-nosnippet>35</a>            ))
 <a href=#36 id=36 data-nosnippet>36</a>        }
 <a href=#37 id=37 data-nosnippet>37</a>    }
 <a href=#38 id=38 data-nosnippet>38</a>}
 <a href=#39 id=39 data-nosnippet>39</a>
-<a href=#40 id=40 data-nosnippet>40</a><span class="kw">pub trait </span>UnixFDListExtManual: IsA&lt;UnixFDList&gt; + Sized {
+<a href=#40 id=40 data-nosnippet>40</a><span class="kw">pub trait </span><a href="../../gio/prelude/trait.UnixFDListExtManual.html">UnixFDListExtManual</a>: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/unix_fd_list.rs.html#8-33">UnixFDList</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> {
 <a href=#41 id=41 data-nosnippet>41</a>    <span class="doccomment">/// Adds a file descriptor to @self.
 <a href=#42 id=42 data-nosnippet>42</a>    ///
 <a href=#43 id=43 data-nosnippet>43</a>    /// The file descriptor is duplicated using dup(). You keep your copy
@@ -58,18 +131,18 @@
 <a href=#58 id=58 data-nosnippet>58</a>    /// the index of the appended fd in case of success, else -1
 <a href=#59 id=59 data-nosnippet>59</a>    ///          (and @error is set)
 <a href=#60 id=60 data-nosnippet>60</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_list_append"</span>)]
-<a href=#61 id=61 data-nosnippet>61</a>    </span><span class="kw">fn </span>append(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <span class="kw">impl </span>AsFd) -&gt; <span class="prelude-ty">Result</span>&lt;i32, glib::Error&gt; {
+<a href=#61 id=61 data-nosnippet>61</a>    </span><span class="kw">fn </span>append(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html">AsFd</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
 <a href=#62 id=62 data-nosnippet>62</a>        <span class="kw">unsafe </span>{
-<a href=#63 id=63 data-nosnippet>63</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-<a href=#64 id=64 data-nosnippet>64</a>            <span class="kw">let </span>ret = ffi::g_unix_fd_list_append(
-<a href=#65 id=65 data-nosnippet>65</a>                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-<a href=#66 id=66 data-nosnippet>66</a>                fd.as_fd().as_raw_fd(),
-<a href=#67 id=67 data-nosnippet>67</a>                <span class="kw-2">&amp;mut </span>error,
+<a href=#63 id=63 data-nosnippet>63</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
+<a href=#64 id=64 data-nosnippet>64</a>            <span class="kw">let </span>ret = <a href="../../gio_sys/fn.g_unix_fd_list_append.html">ffi::g_unix_fd_list_append</a>(
+<a href=#65 id=65 data-nosnippet>65</a>                <a class="self" href="#61">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#66 id=66 data-nosnippet>66</a>                <a href="#61">fd</a>.<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/trait.AsFd.html#tymethod.as_fd">as_fd</a>().<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.AsRawFd.html#tymethod.as_raw_fd">as_raw_fd</a>(),
+<a href=#67 id=67 data-nosnippet>67</a>                <span class="kw-2">&amp;mut </span><a href="#63">error</a>,
 <a href=#68 id=68 data-nosnippet>68</a>            );
-<a href=#69 id=69 data-nosnippet>69</a>            <span class="kw">if </span>error.is_null() {
-<a href=#70 id=70 data-nosnippet>70</a>                <span class="prelude-val">Ok</span>(ret)
+<a href=#69 id=69 data-nosnippet>69</a>            <span class="kw">if </span><a href="#63">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
+<a href=#70 id=70 data-nosnippet>70</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#64">ret</a>)
 <a href=#71 id=71 data-nosnippet>71</a>            } <span class="kw">else </span>{
-<a href=#72 id=72 data-nosnippet>72</a>                <span class="prelude-val">Err</span>(from_glib_full(error))
+<a href=#72 id=72 data-nosnippet>72</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#63">error</a>))
 <a href=#73 id=73 data-nosnippet>73</a>            }
 <a href=#74 id=74 data-nosnippet>74</a>        }
 <a href=#75 id=75 data-nosnippet>75</a>    }
@@ -93,16 +166,16 @@
 <a href=#93 id=93 data-nosnippet>93</a>    ///
 <a href=#94 id=94 data-nosnippet>94</a>    /// the file descriptor, or -1 in case of error
 <a href=#95 id=95 data-nosnippet>95</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_list_get"</span>)]
-<a href=#96 id=96 data-nosnippet>96</a>    </span><span class="kw">fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, index_: i32) -&gt; <span class="prelude-ty">Result</span>&lt;OwnedFd, glib::Error&gt; {
+<a href=#96 id=96 data-nosnippet>96</a>    </span><span class="kw">fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, index_: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
 <a href=#97 id=97 data-nosnippet>97</a>        <span class="kw">unsafe </span>{
-<a href=#98 id=98 data-nosnippet>98</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+<a href=#98 id=98 data-nosnippet>98</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
 <a href=#99 id=99 data-nosnippet>99</a>            <span class="kw">let </span>raw_fd =
-<a href=#100 id=100 data-nosnippet>100</a>                ffi::g_unix_fd_list_get(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, index_, <span class="kw-2">&amp;mut </span>error);
-<a href=#101 id=101 data-nosnippet>101</a>            <span class="kw">if </span>error.is_null() {
-<a href=#102 id=102 data-nosnippet>102</a>                <span class="kw">let </span>fd = OwnedFd::from_raw_fd(raw_fd);
-<a href=#103 id=103 data-nosnippet>103</a>                <span class="prelude-val">Ok</span>(fd)
+<a href=#100 id=100 data-nosnippet>100</a>                <a href="../../gio_sys/fn.g_unix_fd_list_get.html">ffi::g_unix_fd_list_get</a>(<a class="self" href="#96">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#96">index_</a>, <span class="kw-2">&amp;mut </span><a href="#98">error</a>);
+<a href=#101 id=101 data-nosnippet>101</a>            <span class="kw">if </span><a href="#98">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
+<a href=#102 id=102 data-nosnippet>102</a>                <span class="kw">let </span>fd = <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">OwnedFd::from_raw_fd</a>(<a href="#99">raw_fd</a>);
+<a href=#103 id=103 data-nosnippet>103</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#102">fd</a>)
 <a href=#104 id=104 data-nosnippet>104</a>            } <span class="kw">else </span>{
-<a href=#105 id=105 data-nosnippet>105</a>                <span class="prelude-val">Err</span>(from_glib_full(error))
+<a href=#105 id=105 data-nosnippet>105</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#98">error</a>))
 <a href=#106 id=106 data-nosnippet>106</a>            }
 <a href=#107 id=107 data-nosnippet>107</a>        }
 <a href=#108 id=108 data-nosnippet>108</a>    }
@@ -126,14 +199,14 @@
 <a href=#126 id=126 data-nosnippet>126</a>    /// an array of file
 <a href=#127 id=127 data-nosnippet>127</a>    ///     descriptors
 <a href=#128 id=128 data-nosnippet>128</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_list_peek_fds"</span>)]
-<a href=#129 id=129 data-nosnippet>129</a>    </span><span class="kw">fn </span>peek_fds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;RawFd&gt; {
+<a href=#129 id=129 data-nosnippet>129</a>    </span><span class="kw">fn </span>peek_fds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>&gt; {
 <a href=#130 id=130 data-nosnippet>130</a>        <span class="kw">unsafe </span>{
-<a href=#131 id=131 data-nosnippet>131</a>            <span class="kw">let </span><span class="kw-2">mut </span>length = mem::MaybeUninit::uninit();
-<a href=#132 id=132 data-nosnippet>132</a>            <span class="kw">let </span>ret = FromGlibContainer::from_glib_none_num(
-<a href=#133 id=133 data-nosnippet>133</a>                ffi::g_unix_fd_list_peek_fds(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, length.as_mut_ptr()),
-<a href=#134 id=134 data-nosnippet>134</a>                length.assume_init() <span class="kw">as </span>usize,
+<a href=#131 id=131 data-nosnippet>131</a>            <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
+<a href=#132 id=132 data-nosnippet>132</a>            <span class="kw">let </span>ret = <a href="../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_none_num">FromGlibContainer::from_glib_none_num</a>(
+<a href=#133 id=133 data-nosnippet>133</a>                <a href="../../gio_sys/fn.g_unix_fd_list_peek_fds.html">ffi::g_unix_fd_list_peek_fds</a>(<a class="self" href="#129">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#131">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>()),
+<a href=#134 id=134 data-nosnippet>134</a>                <a href="#131">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
 <a href=#135 id=135 data-nosnippet>135</a>            );
-<a href=#136 id=136 data-nosnippet>136</a>            ret
+<a href=#136 id=136 data-nosnippet>136</a>            <a href="#132">ret</a>
 <a href=#137 id=137 data-nosnippet>137</a>        }
 <a href=#138 id=138 data-nosnippet>138</a>    }
 <a href=#139 id=139 data-nosnippet>139</a>
@@ -161,16 +234,16 @@
 <a href=#161 id=161 data-nosnippet>161</a>    /// an array of file
 <a href=#162 id=162 data-nosnippet>162</a>    ///     descriptors
 <a href=#163 id=163 data-nosnippet>163</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_unix_fd_list_steal_fds"</span>)]
-<a href=#164 id=164 data-nosnippet>164</a>    </span><span class="kw">fn </span>steal_fds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;RawFd&gt; {
+<a href=#164 id=164 data-nosnippet>164</a>    </span><span class="kw">fn </span>steal_fds(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>&gt; {
 <a href=#165 id=165 data-nosnippet>165</a>        <span class="kw">unsafe </span>{
-<a href=#166 id=166 data-nosnippet>166</a>            <span class="kw">let </span><span class="kw-2">mut </span>length = mem::MaybeUninit::uninit();
-<a href=#167 id=167 data-nosnippet>167</a>            <span class="kw">let </span>ret = FromGlibContainer::from_glib_full_num(
-<a href=#168 id=168 data-nosnippet>168</a>                ffi::g_unix_fd_list_steal_fds(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, length.as_mut_ptr()),
-<a href=#169 id=169 data-nosnippet>169</a>                length.assume_init() <span class="kw">as </span>usize,
+<a href=#166 id=166 data-nosnippet>166</a>            <span class="kw">let </span><span class="kw-2">mut </span>length = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
+<a href=#167 id=167 data-nosnippet>167</a>            <span class="kw">let </span>ret = <a href="../../glib/translate/trait.FromGlibContainer.html#tymethod.from_glib_full_num">FromGlibContainer::from_glib_full_num</a>(
+<a href=#168 id=168 data-nosnippet>168</a>                <a href="../../gio_sys/fn.g_unix_fd_list_steal_fds.html">ffi::g_unix_fd_list_steal_fds</a>(<a class="self" href="#164">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#166">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>()),
+<a href=#169 id=169 data-nosnippet>169</a>                <a href="#166">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
 <a href=#170 id=170 data-nosnippet>170</a>            );
-<a href=#171 id=171 data-nosnippet>171</a>            ret
+<a href=#171 id=171 data-nosnippet>171</a>            <a href="#167">ret</a>
 <a href=#172 id=172 data-nosnippet>172</a>        }
 <a href=#173 id=173 data-nosnippet>173</a>    }
 <a href=#174 id=174 data-nosnippet>174</a>}
 <a href=#175 id=175 data-nosnippet>175</a>
-<a href=#176 id=176 data-nosnippet>176</a><span class="kw">impl</span>&lt;O: IsA&lt;UnixFDList&gt;&gt; UnixFDListExtManual <span class="kw">for </span>O {}</code></pre></div></section></main></body></html>
+<a href=#176 id=176 data-nosnippet>176</a><span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/unix_fd_list.rs.html#8-33">UnixFDList</a>&gt;&gt; <a href="#40-174">UnixFDListExtManual</a> <span class="kw">for </span>O {}</code></pre></div></section></main></body></html>

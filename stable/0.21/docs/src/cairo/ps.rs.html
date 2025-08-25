@@ -1,106 +1,179 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/ps.rs`."><title>ps.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (de3efa79f 2025-08-08)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">cairo/</div>ps.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/ps.rs`."><title>ps.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-7dc20aaa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (809200ec9 2025-08-24)" data-channel="nightly" data-search-js="search-5fc2c5c0.js" data-stringdex-js="stringdex-0e748618.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-17c00ba7.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.21" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.21") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">cairo/</div>ps.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::{
-<a href=#4 id=4 data-nosnippet>4</a>    ffi::{CStr, CString},
-<a href=#5 id=5 data-nosnippet>5</a>    io, mem,
-<a href=#6 id=6 data-nosnippet>6</a>    ops::Deref,
-<a href=#7 id=7 data-nosnippet>7</a>    path::Path,
-<a href=#8 id=8 data-nosnippet>8</a>    ptr,
+<a href=#4 id=4 data-nosnippet>4</a>    ffi::{<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html">CStr</a>, <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html">CString</a>},
+<a href=#5 id=5 data-nosnippet>5</a>    <a href="https://doc.rust-lang.org/nightly/std/io/index.html">io</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>,
+<a href=#6 id=6 data-nosnippet>6</a>    <a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">ops::Deref</a>,
+<a href=#7 id=7 data-nosnippet>7</a>    <a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">path::Path</a>,
+<a href=#8 id=8 data-nosnippet>8</a>    <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>,
 <a href=#9 id=9 data-nosnippet>9</a>};
 <a href=#10 id=10 data-nosnippet>10</a>
 <a href=#11 id=11 data-nosnippet>11</a><span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
-<a href=#12 id=12 data-nosnippet>12</a></span><span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<a href=#12 id=12 data-nosnippet>12</a></span><span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 <a href=#13 id=13 data-nosnippet>13</a>
-<a href=#14 id=14 data-nosnippet>14</a><span class="kw">use crate</span>::{ffi, Error, PsLevel, Surface, SurfaceType};
+<a href=#14 id=14 data-nosnippet>14</a><span class="kw">use crate</span>::{<a href="../../cairo_sys/index.html">ffi</a>, <a href="error.rs.html#9-104">Error</a>, <a href="enums.rs.html#1441-1448">PsLevel</a>, <a href="surface.rs.html#19">Surface</a>, <a href="enums.rs.html#951-1004">SurfaceType</a>};
 <a href=#15 id=15 data-nosnippet>15</a>
-<a href=#16 id=16 data-nosnippet>16</a><span class="kw">impl </span>PsLevel {
-<a href=#17 id=17 data-nosnippet>17</a>    <span class="kw">pub fn </span>as_str(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; {
+<a href=#16 id=16 data-nosnippet>16</a><span class="kw">impl </span><a href="enums.rs.html#1441-1448">PsLevel</a> {
+<a href=#17 id=17 data-nosnippet>17</a>    <span class="kw">pub fn </span>as_str(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
 <a href=#18 id=18 data-nosnippet>18</a>        <span class="kw">unsafe </span>{
-<a href=#19 id=19 data-nosnippet>19</a>            <span class="kw">let </span>res = ffi::cairo_ps_level_to_string(<span class="self">self</span>.into());
-<a href=#20 id=20 data-nosnippet>20</a>            res.as_ref()
-<a href=#21 id=21 data-nosnippet>21</a>                .and_then(|cstr| CStr::from_ptr(cstr <span class="kw">as _</span>).to_str().ok())
+<a href=#19 id=19 data-nosnippet>19</a>            <span class="kw">let </span>res = <a href="../../cairo_sys/fn.cairo_ps_level_to_string.html">ffi::cairo_ps_level_to_string</a>(<a class="self" href="#17">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>());
+<a href=#20 id=20 data-nosnippet>20</a>            <a href="#19">res</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.const_ptr.html#method.as_ref">as_ref</a>()
+<a href=#21 id=21 data-nosnippet>21</a>                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.and_then">and_then</a>(|cstr| <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">CStr::from_ptr</a>(<a href="#21">cstr</a> <span class="kw">as _</span>).<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_str">to_str</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>())
 <a href=#22 id=22 data-nosnippet>22</a>        }
 <a href=#23 id=23 data-nosnippet>23</a>    }
 <a href=#24 id=24 data-nosnippet>24</a>}
 <a href=#25 id=25 data-nosnippet>25</a>
-<a href=#26 id=26 data-nosnippet>26</a><span class="macro">declare_surface!</span>(PsSurface, SurfaceType::Ps);
+<a href=#26 id=26 data-nosnippet>26</a><a class="macro" href="surface_macros.rs.html#4-125">declare_surface!</a>(<a href="../../cairo/struct.PsSurface.html">PsSurface</a>, SurfaceType::Ps);
 <a href=#27 id=27 data-nosnippet>27</a>
-<a href=#28 id=28 data-nosnippet>28</a><span class="kw">impl </span>PsSurface {
+<a href=#28 id=28 data-nosnippet>28</a><span class="kw">impl </span><a href="#26">PsSurface</a> {
 <a href=#29 id=29 data-nosnippet>29</a>    <span class="attr">#[doc(alias = <span class="string">"cairo_ps_surface_create"</span>)]
-<a href=#30 id=30 data-nosnippet>30</a>    </span><span class="kw">pub fn </span>new&lt;P: AsRef&lt;Path&gt;&gt;(width: f64, height: f64, path: P) -&gt; <span class="prelude-ty">Result</span>&lt;PsSurface, Error&gt; {
-<a href=#31 id=31 data-nosnippet>31</a>        <span class="kw">let </span>path = path.as_ref().to_string_lossy().into_owned();
-<a href=#32 id=32 data-nosnippet>32</a>        <span class="kw">let </span>path = CString::new(path).unwrap();
+<a href=#30 id=30 data-nosnippet>30</a>    </span><span class="kw">pub fn </span>new&lt;P: <a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;&gt;(width: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, height: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, path: P) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#26">PsSurface</a>, <a href="error.rs.html#9-104">Error</a>&gt; {
+<a href=#31 id=31 data-nosnippet>31</a>        <span class="kw">let </span>path = <a href="#30">path</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html#method.to_string_lossy">to_string_lossy</a>().<a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#method.into_owned">into_owned</a>();
+<a href=#32 id=32 data-nosnippet>32</a>        <span class="kw">let </span>path = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(<a href="#31">path</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
 <a href=#33 id=33 data-nosnippet>33</a>
-<a href=#34 id=34 data-nosnippet>34</a>        <span class="kw">unsafe </span>{ <span class="self">Self</span>::from_raw_full(ffi::cairo_ps_surface_create(path.as_ptr(), width, height)) }
+<a href=#34 id=34 data-nosnippet>34</a>        <span class="kw">unsafe </span>{ <a href="#26"><span class="self">Self</span>::from_raw_full</a>(<a href="../../cairo_sys/fn.cairo_ps_surface_create.html">ffi::cairo_ps_surface_create</a>(<a href="#32">path</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>(), <a href="#30">width</a>, <a href="#30">height</a>)) }
 <a href=#35 id=35 data-nosnippet>35</a>    }
 <a href=#36 id=36 data-nosnippet>36</a>
-<a href=#37 id=37 data-nosnippet>37</a>    <span class="macro">for_stream_constructors!</span>(cairo_ps_surface_create_for_stream);
+<a href=#37 id=37 data-nosnippet>37</a>    <a class="macro" href="stream.rs.html#17-63">for_stream_constructors!</a>(cairo_ps_surface_create_for_stream);
 <a href=#38 id=38 data-nosnippet>38</a>
 <a href=#39 id=39 data-nosnippet>39</a>    <span class="attr">#[doc(alias = <span class="string">"cairo_ps_get_levels"</span>)]
 <a href=#40 id=40 data-nosnippet>40</a>    #[doc(alias = <span class="string">"get_levels"</span>)]
-<a href=#41 id=41 data-nosnippet>41</a>    </span><span class="kw">pub fn </span>levels() -&gt; <span class="kw">impl </span>Iterator&lt;Item = PsLevel&gt; {
+<a href=#41 id=41 data-nosnippet>41</a>    </span><span class="kw">pub fn </span>levels() -&gt; <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">Iterator</a>&lt;Item = <a href="enums.rs.html#1441-1448">PsLevel</a>&gt; {
 <a href=#42 id=42 data-nosnippet>42</a>        <span class="kw">let </span>lvls_slice = <span class="kw">unsafe </span>{
-<a href=#43 id=43 data-nosnippet>43</a>            <span class="kw">let </span><span class="kw-2">mut </span>vers_ptr = ptr::null_mut();
-<a href=#44 id=44 data-nosnippet>44</a>            <span class="kw">let </span><span class="kw-2">mut </span>num_vers = mem::MaybeUninit::uninit();
-<a href=#45 id=45 data-nosnippet>45</a>            ffi::cairo_ps_get_levels(<span class="kw-2">&amp;mut </span>vers_ptr, num_vers.as_mut_ptr());
+<a href=#43 id=43 data-nosnippet>43</a>            <span class="kw">let </span><span class="kw-2">mut </span>vers_ptr = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
+<a href=#44 id=44 data-nosnippet>44</a>            <span class="kw">let </span><span class="kw-2">mut </span>num_vers = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
+<a href=#45 id=45 data-nosnippet>45</a>            <a href="../../cairo_sys/fn.cairo_ps_get_levels.html">ffi::cairo_ps_get_levels</a>(<span class="kw-2">&amp;mut </span><a href="#43">vers_ptr</a>, <a href="#44">num_vers</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>());
 <a href=#46 id=46 data-nosnippet>46</a>
-<a href=#47 id=47 data-nosnippet>47</a>            <span class="kw">let </span>num_vers = num_vers.assume_init();
-<a href=#48 id=48 data-nosnippet>48</a>            <span class="kw">if </span>num_vers == <span class="number">0 </span>{
+<a href=#47 id=47 data-nosnippet>47</a>            <span class="kw">let </span>num_vers = <a href="#44">num_vers</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>();
+<a href=#48 id=48 data-nosnippet>48</a>            <span class="kw">if </span><a href="#47">num_vers</a> == <span class="number">0 </span>{
 <a href=#49 id=49 data-nosnippet>49</a>                <span class="kw-2">&amp;</span>[]
 <a href=#50 id=50 data-nosnippet>50</a>            } <span class="kw">else </span>{
-<a href=#51 id=51 data-nosnippet>51</a>                std::slice::from_raw_parts(vers_ptr, num_vers <span class="kw">as _</span>)
+<a href=#51 id=51 data-nosnippet>51</a>                <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a href="#43">vers_ptr</a>, <a href="#47">num_vers</a> <span class="kw">as _</span>)
 <a href=#52 id=52 data-nosnippet>52</a>            }
 <a href=#53 id=53 data-nosnippet>53</a>        };
 <a href=#54 id=54 data-nosnippet>54</a>
-<a href=#55 id=55 data-nosnippet>55</a>        lvls_slice.iter().map(|v| PsLevel::from(<span class="kw-2">*</span>v))
+<a href=#55 id=55 data-nosnippet>55</a>        <a href="#42">lvls_slice</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">PsLevel::from</a>(<span class="kw-2">*</span><a href="#55">v</a>))
 <a href=#56 id=56 data-nosnippet>56</a>    }
 <a href=#57 id=57 data-nosnippet>57</a>
 <a href=#58 id=58 data-nosnippet>58</a>    <span class="attr">#[doc(alias = <span class="string">"cairo_ps_surface_restrict_to_level"</span>)]
-<a href=#59 id=59 data-nosnippet>59</a>    </span><span class="kw">pub fn </span>restrict(<span class="kw-2">&amp;</span><span class="self">self</span>, level: PsLevel) {
+<a href=#59 id=59 data-nosnippet>59</a>    </span><span class="kw">pub fn </span>restrict(<span class="kw-2">&amp;</span><span class="self">self</span>, level: <a href="enums.rs.html#1441-1448">PsLevel</a>) {
 <a href=#60 id=60 data-nosnippet>60</a>        <span class="kw">unsafe </span>{
-<a href=#61 id=61 data-nosnippet>61</a>            ffi::cairo_ps_surface_restrict_to_level(<span class="self">self</span>.<span class="number">0</span>.to_raw_none(), level.into());
+<a href=#61 id=61 data-nosnippet>61</a>            <a href="../../cairo_sys/fn.cairo_ps_surface_restrict_to_level.html">ffi::cairo_ps_surface_restrict_to_level</a>(<a class="self" href="#59">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#59">level</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>());
 <a href=#62 id=62 data-nosnippet>62</a>        }
 <a href=#63 id=63 data-nosnippet>63</a>    }
 <a href=#64 id=64 data-nosnippet>64</a>
 <a href=#65 id=65 data-nosnippet>65</a>    <span class="attr">#[doc(alias = <span class="string">"cairo_ps_surface_get_eps"</span>)]
 <a href=#66 id=66 data-nosnippet>66</a>    #[doc(alias = <span class="string">"get_eps"</span>)]
-<a href=#67 id=67 data-nosnippet>67</a>    </span><span class="kw">pub fn </span>is_eps(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-<a href=#68 id=68 data-nosnippet>68</a>        <span class="kw">unsafe </span>{ ffi::cairo_ps_surface_get_eps(<span class="self">self</span>.<span class="number">0</span>.to_raw_none()).as_bool() }
+<a href=#67 id=67 data-nosnippet>67</a>    </span><span class="kw">pub fn </span>is_eps(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+<a href=#68 id=68 data-nosnippet>68</a>        <span class="kw">unsafe </span>{ <a href="../../cairo_sys/fn.cairo_ps_surface_get_eps.html">ffi::cairo_ps_surface_get_eps</a>(<a class="self" href="#67">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>()).<a href="../../cairo_sys/struct.cairo_bool_t.html#method.as_bool">as_bool</a>() }
 <a href=#69 id=69 data-nosnippet>69</a>    }
 <a href=#70 id=70 data-nosnippet>70</a>
 <a href=#71 id=71 data-nosnippet>71</a>    <span class="attr">#[doc(alias = <span class="string">"cairo_ps_surface_set_eps"</span>)]
-<a href=#72 id=72 data-nosnippet>72</a>    </span><span class="kw">pub fn </span>set_eps(<span class="kw-2">&amp;</span><span class="self">self</span>, eps: bool) {
+<a href=#72 id=72 data-nosnippet>72</a>    </span><span class="kw">pub fn </span>set_eps(<span class="kw-2">&amp;</span><span class="self">self</span>, eps: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
 <a href=#73 id=73 data-nosnippet>73</a>        <span class="kw">unsafe </span>{
-<a href=#74 id=74 data-nosnippet>74</a>            ffi::cairo_ps_surface_set_eps(<span class="self">self</span>.<span class="number">0</span>.to_raw_none(), eps.into());
+<a href=#74 id=74 data-nosnippet>74</a>            <a href="../../cairo_sys/fn.cairo_ps_surface_set_eps.html">ffi::cairo_ps_surface_set_eps</a>(<a class="self" href="#72">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#72">eps</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>());
 <a href=#75 id=75 data-nosnippet>75</a>        }
 <a href=#76 id=76 data-nosnippet>76</a>    }
 <a href=#77 id=77 data-nosnippet>77</a>
 <a href=#78 id=78 data-nosnippet>78</a>    <span class="attr">#[doc(alias = <span class="string">"cairo_ps_surface_set_size"</span>)]
-<a href=#79 id=79 data-nosnippet>79</a>    </span><span class="kw">pub fn </span>set_size(<span class="kw-2">&amp;</span><span class="self">self</span>, width: f64, height: f64) {
+<a href=#79 id=79 data-nosnippet>79</a>    </span><span class="kw">pub fn </span>set_size(<span class="kw-2">&amp;</span><span class="self">self</span>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, height: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
 <a href=#80 id=80 data-nosnippet>80</a>        <span class="kw">unsafe </span>{
-<a href=#81 id=81 data-nosnippet>81</a>            ffi::cairo_ps_surface_set_size(<span class="self">self</span>.<span class="number">0</span>.to_raw_none(), width, height);
+<a href=#81 id=81 data-nosnippet>81</a>            <a href="../../cairo_sys/fn.cairo_ps_surface_set_size.html">ffi::cairo_ps_surface_set_size</a>(<a class="self" href="#79">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#79">width</a>, <a href="#79">height</a>);
 <a href=#82 id=82 data-nosnippet>82</a>        }
 <a href=#83 id=83 data-nosnippet>83</a>    }
 <a href=#84 id=84 data-nosnippet>84</a>
 <a href=#85 id=85 data-nosnippet>85</a>    <span class="attr">#[doc(alias = <span class="string">"cairo_ps_surface_dsc_begin_setup"</span>)]
 <a href=#86 id=86 data-nosnippet>86</a>    </span><span class="kw">pub fn </span>dsc_begin_setup(<span class="kw-2">&amp;</span><span class="self">self</span>) {
 <a href=#87 id=87 data-nosnippet>87</a>        <span class="kw">unsafe </span>{
-<a href=#88 id=88 data-nosnippet>88</a>            ffi::cairo_ps_surface_dsc_begin_setup(<span class="self">self</span>.<span class="number">0</span>.to_raw_none());
+<a href=#88 id=88 data-nosnippet>88</a>            <a href="../../cairo_sys/fn.cairo_ps_surface_dsc_begin_setup.html">ffi::cairo_ps_surface_dsc_begin_setup</a>(<a class="self" href="#86">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>());
 <a href=#89 id=89 data-nosnippet>89</a>        }
 <a href=#90 id=90 data-nosnippet>90</a>    }
 <a href=#91 id=91 data-nosnippet>91</a>
 <a href=#92 id=92 data-nosnippet>92</a>    <span class="attr">#[doc(alias = <span class="string">"cairo_ps_surface_dsc_begin_page_setup"</span>)]
 <a href=#93 id=93 data-nosnippet>93</a>    </span><span class="kw">pub fn </span>begin_page_setup(<span class="kw-2">&amp;</span><span class="self">self</span>) {
 <a href=#94 id=94 data-nosnippet>94</a>        <span class="kw">unsafe </span>{
-<a href=#95 id=95 data-nosnippet>95</a>            ffi::cairo_ps_surface_dsc_begin_page_setup(<span class="self">self</span>.<span class="number">0</span>.to_raw_none());
+<a href=#95 id=95 data-nosnippet>95</a>            <a href="../../cairo_sys/fn.cairo_ps_surface_dsc_begin_page_setup.html">ffi::cairo_ps_surface_dsc_begin_page_setup</a>(<a class="self" href="#93">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>());
 <a href=#96 id=96 data-nosnippet>96</a>        }
 <a href=#97 id=97 data-nosnippet>97</a>    }
 <a href=#98 id=98 data-nosnippet>98</a>
 <a href=#99 id=99 data-nosnippet>99</a>    <span class="attr">#[doc(alias = <span class="string">"cairo_ps_surface_dsc_comment"</span>)]
-<a href=#100 id=100 data-nosnippet>100</a>    </span><span class="kw">pub fn </span>dsc_comment(<span class="kw-2">&amp;</span><span class="self">self</span>, comment: <span class="kw-2">&amp;</span>str) {
-<a href=#101 id=101 data-nosnippet>101</a>        <span class="kw">let </span>comment = CString::new(comment).unwrap();
+<a href=#100 id=100 data-nosnippet>100</a>    </span><span class="kw">pub fn </span>dsc_comment(<span class="kw-2">&amp;</span><span class="self">self</span>, comment: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
+<a href=#101 id=101 data-nosnippet>101</a>        <span class="kw">let </span>comment = <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(<a href="#100">comment</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>();
 <a href=#102 id=102 data-nosnippet>102</a>        <span class="kw">unsafe </span>{
-<a href=#103 id=103 data-nosnippet>103</a>            ffi::cairo_ps_surface_dsc_comment(<span class="self">self</span>.<span class="number">0</span>.to_raw_none(), comment.as_ptr());
+<a href=#103 id=103 data-nosnippet>103</a>            <a href="../../cairo_sys/fn.cairo_ps_surface_dsc_comment.html">ffi::cairo_ps_surface_dsc_comment</a>(<a class="self" href="#100">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#101">comment</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>());
 <a href=#104 id=104 data-nosnippet>104</a>        }
 <a href=#105 id=105 data-nosnippet>105</a>    }
 <a href=#106 id=106 data-nosnippet>106</a>}

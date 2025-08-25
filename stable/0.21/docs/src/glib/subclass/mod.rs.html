@@ -1,4 +1,77 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (de3efa79f 2025-08-08)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../../static.files/storage-68b7e25d.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib/subclass/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-7dc20aaa.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (809200ec9 2025-08-24)" data-channel="nightly" data-search-js="search-5fc2c5c0.js" data-stringdex-js="stringdex-0e748618.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-17c00ba7.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.21" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.21") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib/subclass/</div>mod.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="attr">#![allow(clippy::needless_doctest_main)]
 <a href=#4 id=4 data-nosnippet>4</a></span><span class="comment">// rustdoc-stripper-ignore-next
@@ -415,53 +488,53 @@
 <a href=#415 id=415 data-nosnippet>415</a>//! }
 <a href=#416 id=416 data-nosnippet>416</a>//! ```
 <a href=#417 id=417 data-nosnippet>417</a>
-<a href=#418 id=418 data-nosnippet>418</a></span><span class="kw">pub mod </span>basic;
+<a href=#418 id=418 data-nosnippet>418</a></span><span class="kw">pub mod </span><a href="basic.rs.html#4-72">basic</a>;
 <a href=#419 id=419 data-nosnippet>419</a><span class="attr">#[macro_use]
-<a href=#420 id=420 data-nosnippet>420</a></span><span class="kw">pub mod </span>types;
+<a href=#420 id=420 data-nosnippet>420</a></span><span class="kw">pub mod </span><a href="types.rs.html#4-1264">types</a>;
 <a href=#421 id=421 data-nosnippet>421</a>
 <a href=#422 id=422 data-nosnippet>422</a><span class="attr">#[macro_use]
-<a href=#423 id=423 data-nosnippet>423</a></span><span class="kw">pub mod </span>interface;
+<a href=#423 id=423 data-nosnippet>423</a></span><span class="kw">pub mod </span><a href="interface.rs.html#3-321">interface</a>;
 <a href=#424 id=424 data-nosnippet>424</a>
 <a href=#425 id=425 data-nosnippet>425</a><span class="attr">#[macro_use]
-<a href=#426 id=426 data-nosnippet>426</a></span><span class="kw">pub mod </span>object;
+<a href=#426 id=426 data-nosnippet>426</a></span><span class="kw">pub mod </span><a href="object.rs.html#4-961">object</a>;
 <a href=#427 id=427 data-nosnippet>427</a>
 <a href=#428 id=428 data-nosnippet>428</a><span class="attr">#[macro_use]
-<a href=#429 id=429 data-nosnippet>429</a></span><span class="kw">pub mod </span>boxed;
+<a href=#429 id=429 data-nosnippet>429</a></span><span class="kw">pub mod </span><a href="boxed.rs.html#4-143">boxed</a>;
 <a href=#430 id=430 data-nosnippet>430</a>
-<a href=#431 id=431 data-nosnippet>431</a><span class="kw">pub mod </span>shared;
+<a href=#431 id=431 data-nosnippet>431</a><span class="kw">pub mod </span><a href="shared.rs.html#4-337">shared</a>;
 <a href=#432 id=432 data-nosnippet>432</a>
-<a href=#433 id=433 data-nosnippet>433</a><span class="kw">pub mod </span>signal;
+<a href=#433 id=433 data-nosnippet>433</a><span class="kw">pub mod </span><a href="signal.rs.html#3-724">signal</a>;
 <a href=#434 id=434 data-nosnippet>434</a>
-<a href=#435 id=435 data-nosnippet>435</a><span class="kw">mod </span>object_impl_ref;
-<a href=#436 id=436 data-nosnippet>436</a><span class="kw">pub use </span>object_impl_ref::{ObjectImplRef, ObjectImplWeakRef};
+<a href=#435 id=435 data-nosnippet>435</a><span class="kw">mod </span><a href="object_impl_ref.rs.html#3-163">object_impl_ref</a>;
+<a href=#436 id=436 data-nosnippet>436</a><span class="kw">pub use </span>object_impl_ref::{<a href="object_impl_ref.rs.html#17">ObjectImplRef</a>, <a href="object_impl_ref.rs.html#126">ObjectImplWeakRef</a>};
 <a href=#437 id=437 data-nosnippet>437</a>
-<a href=#438 id=438 data-nosnippet>438</a><span class="kw">pub mod </span>type_module;
+<a href=#438 id=438 data-nosnippet>438</a><span class="kw">pub mod </span><a href="type_module.rs.html#3-167">type_module</a>;
 <a href=#439 id=439 data-nosnippet>439</a>
-<a href=#440 id=440 data-nosnippet>440</a><span class="kw">pub mod </span>type_plugin;
+<a href=#440 id=440 data-nosnippet>440</a><span class="kw">pub mod </span><a href="type_plugin.rs.html#3-310">type_plugin</a>;
 <a href=#441 id=441 data-nosnippet>441</a>
-<a href=#442 id=442 data-nosnippet>442</a><span class="kw">pub mod </span>prelude {
+<a href=#442 id=442 data-nosnippet>442</a><span class="kw">pub mod </span><a href="../../../glib/subclass/prelude/index.html">prelude</a> {
 <a href=#443 id=443 data-nosnippet>443</a>    <span class="comment">// rustdoc-stripper-ignore-next
 <a href=#444 id=444 data-nosnippet>444</a>    </span><span class="doccomment">//! Prelude that re-exports all important traits from this crate.
 <a href=#445 id=445 data-nosnippet>445</a>    </span><span class="kw">pub use super</span>::{
-<a href=#446 id=446 data-nosnippet>446</a>        boxed::BoxedType,
-<a href=#447 id=447 data-nosnippet>447</a>        interface::{ObjectInterface, ObjectInterfaceExt, ObjectInterfaceType},
-<a href=#448 id=448 data-nosnippet>448</a>        object::{DerivedObjectProperties, ObjectClassSubclassExt, ObjectImpl, ObjectImplExt},
-<a href=#449 id=449 data-nosnippet>449</a>        shared::{RefCounted, SharedType},
-<a href=#450 id=450 data-nosnippet>450</a>        type_module::{TypeModuleImpl, TypeModuleImplExt},
-<a href=#451 id=451 data-nosnippet>451</a>        type_plugin::{TypePluginImpl, TypePluginImplExt, TypePluginRegisterImpl},
+<a href=#446 id=446 data-nosnippet>446</a>        <a href="boxed.rs.html#17-38">boxed::BoxedType</a>,
+<a href=#447 id=447 data-nosnippet>447</a>        interface::{<a href="interface.rs.html#82-152">ObjectInterface</a>, <a href="interface.rs.html#154-170">ObjectInterfaceExt</a>, <a href="interface.rs.html#64-70">ObjectInterfaceType</a>},
+<a href=#448 id=448 data-nosnippet>448</a>        object::{<a href="object.rs.html#173-193">DerivedObjectProperties</a>, <a href="object.rs.html#199-212">ObjectClassSubclassExt</a>, <a href="object.rs.html#22-87">ObjectImpl</a>, <a href="object.rs.html#256-317">ObjectImplExt</a>},
+<a href=#449 id=449 data-nosnippet>449</a>        shared::{<a href="shared.rs.html#8-28">RefCounted</a>, <a href="shared.rs.html#96-129">SharedType</a>},
+<a href=#450 id=450 data-nosnippet>450</a>        type_module::{<a href="type_module.rs.html#5-22">TypeModuleImpl</a>, <a href="type_module.rs.html#24-27">TypeModuleImplExt</a>},
+<a href=#451 id=451 data-nosnippet>451</a>        type_plugin::{<a href="type_plugin.rs.html#9-25">TypePluginImpl</a>, <a href="type_plugin.rs.html#27-36">TypePluginImplExt</a>, <a href="type_plugin.rs.html#178-212">TypePluginRegisterImpl</a>},
 <a href=#452 id=452 data-nosnippet>452</a>        types::{
-<a href=#453 id=453 data-nosnippet>453</a>            ClassStruct, InstanceStruct, InstanceStructExt, InterfaceStruct, IsImplementable,
-<a href=#454 id=454 data-nosnippet>454</a>            IsSubclassable, IsSubclassableExt, ObjectSubclass, ObjectSubclassExt,
-<a href=#455 id=455 data-nosnippet>455</a>            ObjectSubclassIsExt, ObjectSubclassType,
+<a href=#453 id=453 data-nosnippet>453</a>            <a href="types.rs.html#179-198">ClassStruct</a>, <a href="types.rs.html#51-73">InstanceStruct</a>, <a href="types.rs.html#77-90">InstanceStructExt</a>, <a href="types.rs.html#288-302">InterfaceStruct</a>, <a href="types.rs.html#306-319">IsImplementable</a>,
+<a href=#454 id=454 data-nosnippet>454</a>            <a href="types.rs.html#202-223">IsSubclassable</a>, <a href="types.rs.html#256-263">IsSubclassableExt</a>, <a href="types.rs.html#601-736">ObjectSubclass</a>, <a href="types.rs.html#740-764">ObjectSubclassExt</a>,
+<a href=#455 id=455 data-nosnippet>455</a>            <a href="types.rs.html#155-159">ObjectSubclassIsExt</a>, <a href="types.rs.html#577-588">ObjectSubclassType</a>,
 <a href=#456 id=456 data-nosnippet>456</a>        },
 <a href=#457 id=457 data-nosnippet>457</a>    };
 <a href=#458 id=458 data-nosnippet>458</a>}
 <a href=#459 id=459 data-nosnippet>459</a>
 <a href=#460 id=460 data-nosnippet>460</a><span class="kw">pub use </span><span class="self">self</span>::{
-<a href=#461 id=461 data-nosnippet>461</a>    boxed::register_boxed_type,
-<a href=#462 id=462 data-nosnippet>462</a>    interface::{register_dynamic_interface, register_interface},
+<a href=#461 id=461 data-nosnippet>461</a>    <a href="boxed.rs.html#49-99">boxed::register_boxed_type</a>,
+<a href=#462 id=462 data-nosnippet>462</a>    interface::{<a href="interface.rs.html#277-321">register_dynamic_interface</a>, <a href="interface.rs.html#205-260">register_interface</a>},
 <a href=#463 id=463 data-nosnippet>463</a>    signal::{
-<a href=#464 id=464 data-nosnippet>464</a>        Signal, SignalClassHandlerToken, SignalId, SignalInvocationHint, SignalQuery, SignalType,
+<a href=#464 id=464 data-nosnippet>464</a>        <a href="signal.rs.html#32-38">Signal</a>, <a href="signal.rs.html#42-52">SignalClassHandlerToken</a>, <a href="signal.rs.html#175">SignalId</a>, <a href="signal.rs.html#67">SignalInvocationHint</a>, <a href="signal.rs.html#92">SignalQuery</a>, <a href="signal.rs.html#284">SignalType</a>,
 <a href=#465 id=465 data-nosnippet>465</a>    },
-<a href=#466 id=466 data-nosnippet>466</a>    types::{register_dynamic_type, register_type, InitializingObject, InitializingType, TypeData},
+<a href=#466 id=466 data-nosnippet>466</a>    types::{<a href="types.rs.html#1105-1187">register_dynamic_type</a>, <a href="types.rs.html#1000-1087">register_type</a>, <a href="types.rs.html#831">InitializingObject</a>, <a href="types.rs.html#22">InitializingType</a>, <a href="types.rs.html#439-446">TypeData</a>},
 <a href=#467 id=467 data-nosnippet>467</a>};</code></pre></div></section></main></body></html>

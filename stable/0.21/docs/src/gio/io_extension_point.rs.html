@@ -1,46 +1,119 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/io_extension_point.rs`."><title>io_extension_point.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-069232aa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (de3efa79f 2025-08-08)" data-channel="nightly" data-search-js="search-fa3e91e5.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-68b7e25d.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-eebb9057.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>io_extension_point.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/io_extension_point.rs`."><title>io_extension_point.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-7dc20aaa.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (809200ec9 2025-08-24)" data-channel="nightly" data-search-js="search-5fc2c5c0.js" data-stringdex-js="stringdex-0e748618.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-17c00ba7.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-32bb7600.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.21" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.21") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">gio/</div>io_extension_point.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
-<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::{marker::PhantomData, ptr};
+<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">marker::PhantomData</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>glib::{translate::<span class="kw-2">*</span>, GString, Type};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>glib::{<a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/gstring/struct.GString.html">GString</a>, <a href="../../glib/types/struct.Type.html">Type</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
-<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use crate</span>::{ffi, IOExtension};
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="io_extension.rs.html#15">IOExtension</a>};
 <a href=#8 id=8 data-nosnippet>8</a>
 <a href=#9 id=9 data-nosnippet>9</a><span class="comment">// rustdoc-stripper-ignore-next
 <a href=#10 id=10 data-nosnippet>10</a></span><span class="doccomment">/// Builder for extension points.
 <a href=#11 id=11 data-nosnippet>11</a></span><span class="attr">#[derive(Debug)]
 <a href=#12 id=12 data-nosnippet>12</a>#[must_use = <span class="string">"The builder must be built to be used"</span>]
-<a href=#13 id=13 data-nosnippet>13</a></span><span class="kw">pub struct </span>IOExtensionPointBuilder {
-<a href=#14 id=14 data-nosnippet>14</a>    name: GString,
-<a href=#15 id=15 data-nosnippet>15</a>    required_type: <span class="prelude-ty">Option</span>&lt;Type&gt;,
+<a href=#13 id=13 data-nosnippet>13</a></span><span class="kw">pub struct </span><a href="../../gio/struct.IOExtensionPointBuilder.html">IOExtensionPointBuilder</a> {
+<a href=#14 id=14 data-nosnippet>14</a>    name: <a href="../../glib/gstring/struct.GString.html">GString</a>,
+<a href=#15 id=15 data-nosnippet>15</a>    required_type: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="../../glib/types/struct.Type.html">Type</a>&gt;,
 <a href=#16 id=16 data-nosnippet>16</a>}
 <a href=#17 id=17 data-nosnippet>17</a>
-<a href=#18 id=18 data-nosnippet>18</a><span class="kw">impl </span>IOExtensionPointBuilder {
-<a href=#19 id=19 data-nosnippet>19</a>    <span class="kw">fn </span>new(name: GString) -&gt; <span class="self">Self </span>{
+<a href=#18 id=18 data-nosnippet>18</a><span class="kw">impl </span><a href="#13-16">IOExtensionPointBuilder</a> {
+<a href=#19 id=19 data-nosnippet>19</a>    <span class="kw">fn </span>new(name: <a href="../../glib/gstring/struct.GString.html">GString</a>) -&gt; <span class="self">Self </span>{
 <a href=#20 id=20 data-nosnippet>20</a>        <span class="self">Self </span>{
-<a href=#21 id=21 data-nosnippet>21</a>            name,
-<a href=#22 id=22 data-nosnippet>22</a>            required_type: <span class="prelude-val">None</span>,
+<a href=#21 id=21 data-nosnippet>21</a>            <a href="#19">name</a>,
+<a href=#22 id=22 data-nosnippet>22</a>            required_type: <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
 <a href=#23 id=23 data-nosnippet>23</a>        }
 <a href=#24 id=24 data-nosnippet>24</a>    }
 <a href=#25 id=25 data-nosnippet>25</a>
 <a href=#26 id=26 data-nosnippet>26</a>    <span class="attr">#[doc(alias = <span class="string">"g_io_extension_point_set_required_type"</span>)]
-<a href=#27 id=27 data-nosnippet>27</a>    </span><span class="kw">pub fn </span>required_type(<span class="self">self</span>, required_type: Type) -&gt; <span class="self">Self </span>{
+<a href=#27 id=27 data-nosnippet>27</a>    </span><span class="kw">pub fn </span>required_type(<span class="self">self</span>, required_type: <a href="../../glib/types/struct.Type.html">Type</a>) -&gt; <span class="self">Self </span>{
 <a href=#28 id=28 data-nosnippet>28</a>        <span class="self">Self </span>{
-<a href=#29 id=29 data-nosnippet>29</a>            required_type: <span class="prelude-val">Some</span>(required_type),
-<a href=#30 id=30 data-nosnippet>30</a>            ..<span class="self">self
+<a href=#29 id=29 data-nosnippet>29</a>            required_type: <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#27">required_type</a>),
+<a href=#30 id=30 data-nosnippet>30</a>            ..<span class="self"><a href="#27">self</a>
 <a href=#31 id=31 data-nosnippet>31</a>        </span>}
 <a href=#32 id=32 data-nosnippet>32</a>    }
 <a href=#33 id=33 data-nosnippet>33</a>
 <a href=#34 id=34 data-nosnippet>34</a>    <span class="attr">#[must_use = <span class="string">"Building the object from the builder is usually expensive and is not expected to have side effects"</span>]
-<a href=#35 id=35 data-nosnippet>35</a>    </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; IOExtensionPoint {
+<a href=#35 id=35 data-nosnippet>35</a>    </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; <a href="#110">IOExtensionPoint</a> {
 <a href=#36 id=36 data-nosnippet>36</a>        <span class="kw">unsafe </span>{
-<a href=#37 id=37 data-nosnippet>37</a>            <span class="kw">let </span>ep = IOExtensionPoint::from_glib_none(ffi::g_io_extension_point_register(
-<a href=#38 id=38 data-nosnippet>38</a>                <span class="self">self</span>.name.to_glib_none().<span class="number">0</span>,
+<a href=#37 id=37 data-nosnippet>37</a>            <span class="kw">let </span>ep = <a href="../../glib/translate/trait.FromGlibPtrNone.html#tymethod.from_glib_none">IOExtensionPoint::from_glib_none</a>(<a href="../../gio_sys/fn.g_io_extension_point_register.html">ffi::g_io_extension_point_register</a>(
+<a href=#38 id=38 data-nosnippet>38</a>                <a class="self" href="#35">self</a>.name.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#39 id=39 data-nosnippet>39</a>            ));
-<a href=#40 id=40 data-nosnippet>40</a>            <span class="kw">if let </span><span class="prelude-val">Some</span>(t) = <span class="self">self</span>.required_type {
-<a href=#41 id=41 data-nosnippet>41</a>                ffi::g_io_extension_point_set_required_type(ep.<span class="number">0</span>.as_ptr(), t.into_glib());
+<a href=#40 id=40 data-nosnippet>40</a>            <span class="kw">if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(t) = <a class="self" href="#35">self</a>.required_type {
+<a href=#41 id=41 data-nosnippet>41</a>                <a href="../../gio_sys/fn.g_io_extension_point_set_required_type.html">ffi::g_io_extension_point_set_required_type</a>(<a href="#37">ep</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(), <a href="#40">t</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
 <a href=#42 id=42 data-nosnippet>42</a>            }
-<a href=#43 id=43 data-nosnippet>43</a>            ep
+<a href=#43 id=43 data-nosnippet>43</a>            <a href="#37">ep</a>
 <a href=#44 id=44 data-nosnippet>44</a>        }
 <a href=#45 id=45 data-nosnippet>45</a>    }
 <a href=#46 id=46 data-nosnippet>46</a>}
@@ -107,31 +180,31 @@
 <a href=#107 id=107 data-nosnippet>107</a>///  directory last.
 <a href=#108 id=108 data-nosnippet>108</a></span><span class="attr">#[doc(alias = <span class="string">"GIOExtensionPoint"</span>)]
 <a href=#109 id=109 data-nosnippet>109</a>#[derive(Debug, Copy, Clone, Eq, PartialEq)]
-<a href=#110 id=110 data-nosnippet>110</a></span><span class="kw">pub struct </span>IOExtensionPoint(ptr::NonNull&lt;ffi::GIOExtensionPoint&gt;);
+<a href=#110 id=110 data-nosnippet>110</a></span><span class="kw">pub struct </span><a href="../../gio/struct.IOExtensionPoint.html">IOExtensionPoint</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html">ptr::NonNull</a>&lt;<a href="../../gio_sys/type.GIOExtensionPoint.html">ffi::GIOExtensionPoint</a>&gt;);
 <a href=#111 id=111 data-nosnippet>111</a>
-<a href=#112 id=112 data-nosnippet>112</a><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span>ffi::GIOExtensionPoint&gt; <span class="kw">for </span>IOExtensionPoint {
+<a href=#112 id=112 data-nosnippet>112</a><span class="kw">impl </span><a href="../../glib/translate/trait.FromGlibPtrNone.html">FromGlibPtrNone</a>&lt;<span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtensionPoint.html">ffi::GIOExtensionPoint</a>&gt; <span class="kw">for </span><a href="#110">IOExtensionPoint</a> {
 <a href=#113 id=113 data-nosnippet>113</a>    <span class="attr">#[inline]
-<a href=#114 id=114 data-nosnippet>114</a>    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span>ffi::GIOExtensionPoint) -&gt; <span class="self">Self </span>{
-<a href=#115 id=115 data-nosnippet>115</a>        <span class="macro">debug_assert!</span>(!ptr.is_null());
-<a href=#116 id=116 data-nosnippet>116</a>        IOExtensionPoint(ptr::NonNull::new_unchecked(ptr))
+<a href=#114 id=114 data-nosnippet>114</a>    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtensionPoint.html">ffi::GIOExtensionPoint</a>) -&gt; <span class="self">Self </span>{
+<a href=#115 id=115 data-nosnippet>115</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
+<a href=#116 id=116 data-nosnippet>116</a>        <a href="#110">IOExtensionPoint</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.new_unchecked">ptr::NonNull::new_unchecked</a>(<a href="#114">ptr</a>))
 <a href=#117 id=117 data-nosnippet>117</a>    }
 <a href=#118 id=118 data-nosnippet>118</a>}
 <a href=#119 id=119 data-nosnippet>119</a>
-<a href=#120 id=120 data-nosnippet>120</a><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ToGlibPtr&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>ffi::GIOExtensionPoint&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>IOExtensionPoint {
-<a href=#121 id=121 data-nosnippet>121</a>    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>IOExtensionPoint&gt;;
+<a href=#120 id=120 data-nosnippet>120</a><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="../../glib/translate/trait.ToGlibPtr.html">ToGlibPtr</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtensionPoint.html">ffi::GIOExtensionPoint</a>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#110">IOExtensionPoint</a> {
+<a href=#121 id=121 data-nosnippet>121</a>    <span class="kw">type </span>Storage = <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#110">IOExtensionPoint</a>&gt;;
 <a href=#122 id=122 data-nosnippet>122</a>
 <a href=#123 id=123 data-nosnippet>123</a>    <span class="attr">#[inline]
-<a href=#124 id=124 data-nosnippet>124</a>    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span>ffi::GIOExtensionPoint, <span class="kw-2">&amp;</span><span class="lifetime">'a </span>IOExtensionPoint&gt; {
-<a href=#125 id=125 data-nosnippet>125</a>        Stash(<span class="self">self</span>.<span class="number">0</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>ffi::GIOExtensionPoint, PhantomData)
+<a href=#124 id=124 data-nosnippet>124</a>    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../glib/translate/struct.Stash.html">Stash</a>&lt;<span class="lifetime">'a</span>, <span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtensionPoint.html">ffi::GIOExtensionPoint</a>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#110">IOExtensionPoint</a>&gt; {
+<a href=#125 id=125 data-nosnippet>125</a>        <a href="../../glib/translate/struct.Stash.html">Stash</a>(<a class="self" href="#124">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><a href="../../gio_sys/type.GIOExtensionPoint.html">ffi::GIOExtensionPoint</a>, <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>)
 <a href=#126 id=126 data-nosnippet>126</a>    }
 <a href=#127 id=127 data-nosnippet>127</a>}
 <a href=#128 id=128 data-nosnippet>128</a>
-<a href=#129 id=129 data-nosnippet>129</a><span class="kw">impl </span>IOExtensionPoint {
+<a href=#129 id=129 data-nosnippet>129</a><span class="kw">impl </span><a href="#110">IOExtensionPoint</a> {
 <a href=#130 id=130 data-nosnippet>130</a>    <span class="comment">// rustdoc-stripper-ignore-next
 <a href=#131 id=131 data-nosnippet>131</a>    </span><span class="doccomment">/// Create a new builder for an extension point.
 <a href=#132 id=132 data-nosnippet>132</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_point_register"</span>)]
-<a href=#133 id=133 data-nosnippet>133</a>    </span><span class="kw">pub fn </span>builder(name: <span class="kw">impl </span>Into&lt;GString&gt;) -&gt; IOExtensionPointBuilder {
-<a href=#134 id=134 data-nosnippet>134</a>        IOExtensionPointBuilder::new(name.into())
+<a href=#133 id=133 data-nosnippet>133</a>    </span><span class="kw">pub fn </span>builder(name: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="../../glib/gstring/struct.GString.html">GString</a>&gt;) -&gt; <a href="#13-16">IOExtensionPointBuilder</a> {
+<a href=#134 id=134 data-nosnippet>134</a>        <a href="#19-24">IOExtensionPointBuilder::new</a>(<a href="#133">name</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
 <a href=#135 id=135 data-nosnippet>135</a>    }
 <a href=#136 id=136 data-nosnippet>136</a>
 <a href=#137 id=137 data-nosnippet>137</a>    <span class="doccomment">/// Looks up an existing extension point.
@@ -143,10 +216,10 @@
 <a href=#143 id=143 data-nosnippet>143</a>    /// the #GIOExtensionPoint, or [`None`] if there
 <a href=#144 id=144 data-nosnippet>144</a>    ///    is no registered extension point with the given name.
 <a href=#145 id=145 data-nosnippet>145</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_point_lookup"</span>)]
-<a href=#146 id=146 data-nosnippet>146</a>    </span><span class="kw">pub fn </span>lookup(name: <span class="kw">impl </span>IntoGStr) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
-<a href=#147 id=147 data-nosnippet>147</a>        name.run_with_gstr(|name| <span class="kw">unsafe </span>{
-<a href=#148 id=148 data-nosnippet>148</a>            <span class="kw">let </span>ep = ffi::g_io_extension_point_lookup(name.to_glib_none().<span class="number">0</span>);
-<a href=#149 id=149 data-nosnippet>149</a>            from_glib_none(ep)
+<a href=#146 id=146 data-nosnippet>146</a>    </span><span class="kw">pub fn </span>lookup(name: <span class="kw">impl </span><a href="../../glib/gstring/trait.IntoGStr.html">IntoGStr</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="self">Self</span>&gt; {
+<a href=#147 id=147 data-nosnippet>147</a>        <a href="#146">name</a>.<a href="../../glib/gstring/trait.IntoGStr.html#tymethod.run_with_gstr">run_with_gstr</a>(|name| <span class="kw">unsafe </span>{
+<a href=#148 id=148 data-nosnippet>148</a>            <span class="kw">let </span>ep = <a href="../../gio_sys/fn.g_io_extension_point_lookup.html">ffi::g_io_extension_point_lookup</a>(<a href="#147">name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
+<a href=#149 id=149 data-nosnippet>149</a>            <a href="../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="#148">ep</a>)
 <a href=#150 id=150 data-nosnippet>150</a>        })
 <a href=#151 id=151 data-nosnippet>151</a>    }
 <a href=#152 id=152 data-nosnippet>152</a>
@@ -159,17 +232,17 @@
 <a href=#159 id=159 data-nosnippet>159</a>    ///     #GIOExtensions. The list is owned by GIO and should not be
 <a href=#160 id=160 data-nosnippet>160</a>    ///     modified.
 <a href=#161 id=161 data-nosnippet>161</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_point_get_extensions"</span>)]
-<a href=#162 id=162 data-nosnippet>162</a>    </span><span class="kw">pub fn </span>extensions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;IOExtension&gt; {
-<a href=#163 id=163 data-nosnippet>163</a>        <span class="kw">let </span><span class="kw-2">mut </span>res = Vec::new();
+<a href=#162 id=162 data-nosnippet>162</a>    </span><span class="kw">pub fn </span>extensions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="io_extension.rs.html#15">IOExtension</a>&gt; {
+<a href=#163 id=163 data-nosnippet>163</a>        <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.new">Vec::new</a>();
 <a href=#164 id=164 data-nosnippet>164</a>        <span class="kw">unsafe </span>{
-<a href=#165 id=165 data-nosnippet>165</a>            <span class="kw">let </span><span class="kw-2">mut </span>l = ffi::g_io_extension_point_get_extensions(<span class="self">self</span>.<span class="number">0</span>.as_ptr());
+<a href=#165 id=165 data-nosnippet>165</a>            <span class="kw">let </span><span class="kw-2">mut </span>l = <a href="../../gio_sys/fn.g_io_extension_point_get_extensions.html">ffi::g_io_extension_point_get_extensions</a>(<a class="self" href="#162">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
 <a href=#166 id=166 data-nosnippet>166</a>            <span class="kw">while </span>!l.is_null() {
 <a href=#167 id=167 data-nosnippet>167</a>                <span class="kw">let </span>e: <span class="kw-2">*mut </span>ffi::GIOExtension = Ptr::from((<span class="kw-2">*</span>l).data);
 <a href=#168 id=168 data-nosnippet>168</a>                res.push(from_glib_none(e));
 <a href=#169 id=169 data-nosnippet>169</a>                l = (<span class="kw-2">*</span>l).next;
 <a href=#170 id=170 data-nosnippet>170</a>            }
 <a href=#171 id=171 data-nosnippet>171</a>        }
-<a href=#172 id=172 data-nosnippet>172</a>        res
+<a href=#172 id=172 data-nosnippet>172</a>        <a href="#163">res</a>
 <a href=#173 id=173 data-nosnippet>173</a>    }
 <a href=#174 id=174 data-nosnippet>174</a>
 <a href=#175 id=175 data-nosnippet>175</a>    <span class="doccomment">/// Finds a #GIOExtension for an extension point by name.
@@ -181,13 +254,13 @@
 <a href=#181 id=181 data-nosnippet>181</a>    /// the #GIOExtension for @self that has the
 <a href=#182 id=182 data-nosnippet>182</a>    ///    given name, or [`None`] if there is no extension with that name
 <a href=#183 id=183 data-nosnippet>183</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_point_get_extension_by_name"</span>)]
-<a href=#184 id=184 data-nosnippet>184</a>    </span><span class="kw">pub fn </span>extension_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw">impl </span>IntoGStr) -&gt; <span class="prelude-ty">Option</span>&lt;IOExtension&gt; {
-<a href=#185 id=185 data-nosnippet>185</a>        name.run_with_gstr(|name| <span class="kw">unsafe </span>{
-<a href=#186 id=186 data-nosnippet>186</a>            <span class="kw">let </span>e = ffi::g_io_extension_point_get_extension_by_name(
-<a href=#187 id=187 data-nosnippet>187</a>                <span class="self">self</span>.<span class="number">0</span>.as_ptr(),
-<a href=#188 id=188 data-nosnippet>188</a>                name.to_glib_none().<span class="number">0</span>,
+<a href=#184 id=184 data-nosnippet>184</a>    </span><span class="kw">pub fn </span>extension_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw">impl </span><a href="../../glib/gstring/trait.IntoGStr.html">IntoGStr</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="io_extension.rs.html#15">IOExtension</a>&gt; {
+<a href=#185 id=185 data-nosnippet>185</a>        <a href="#184">name</a>.<a href="../../glib/gstring/trait.IntoGStr.html#tymethod.run_with_gstr">run_with_gstr</a>(|name| <span class="kw">unsafe </span>{
+<a href=#186 id=186 data-nosnippet>186</a>            <span class="kw">let </span>e = <a href="../../gio_sys/fn.g_io_extension_point_get_extension_by_name.html">ffi::g_io_extension_point_get_extension_by_name</a>(
+<a href=#187 id=187 data-nosnippet>187</a>                <a class="self" href="#184">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>(),
+<a href=#188 id=188 data-nosnippet>188</a>                <a href="#185">name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#189 id=189 data-nosnippet>189</a>            );
-<a href=#190 id=190 data-nosnippet>190</a>            from_glib_none(e)
+<a href=#190 id=190 data-nosnippet>190</a>            <a href="../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="#186">e</a>)
 <a href=#191 id=191 data-nosnippet>191</a>        })
 <a href=#192 id=192 data-nosnippet>192</a>    }
 <a href=#193 id=193 data-nosnippet>193</a>
@@ -198,8 +271,8 @@
 <a href=#198 id=198 data-nosnippet>198</a>    /// the #GType that all implementations must have,
 <a href=#199 id=199 data-nosnippet>199</a>    ///   or `G_TYPE_INVALID` if the extension point has no required type
 <a href=#200 id=200 data-nosnippet>200</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_point_get_required_type"</span>)]
-<a href=#201 id=201 data-nosnippet>201</a>    </span><span class="kw">pub fn </span>required_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Type {
-<a href=#202 id=202 data-nosnippet>202</a>        <span class="kw">unsafe </span>{ from_glib(ffi::g_io_extension_point_get_required_type(<span class="self">self</span>.<span class="number">0</span>.as_ptr())) }
+<a href=#201 id=201 data-nosnippet>201</a>    </span><span class="kw">pub fn </span>required_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../glib/types/struct.Type.html">Type</a> {
+<a href=#202 id=202 data-nosnippet>202</a>        <span class="kw">unsafe </span>{ <a href="../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../gio_sys/fn.g_io_extension_point_get_required_type.html">ffi::g_io_extension_point_get_required_type</a>(<a class="self" href="#201">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>())) }
 <a href=#203 id=203 data-nosnippet>203</a>    }
 <a href=#204 id=204 data-nosnippet>204</a>
 <a href=#205 id=205 data-nosnippet>205</a>    <span class="doccomment">/// Registers @type_ as extension for the extension point with name
@@ -221,20 +294,20 @@
 <a href=#221 id=221 data-nosnippet>221</a>    /// a #GIOExtension object for #GType
 <a href=#222 id=222 data-nosnippet>222</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_io_extension_point_implement"</span>)]
 <a href=#223 id=223 data-nosnippet>223</a>    </span><span class="kw">pub fn </span>implement(
-<a href=#224 id=224 data-nosnippet>224</a>        extension_point_name: <span class="kw">impl </span>IntoGStr,
-<a href=#225 id=225 data-nosnippet>225</a>        type_: Type,
-<a href=#226 id=226 data-nosnippet>226</a>        extension_name: <span class="kw">impl </span>IntoGStr,
-<a href=#227 id=227 data-nosnippet>227</a>        priority: i32,
-<a href=#228 id=228 data-nosnippet>228</a>    ) -&gt; <span class="prelude-ty">Option</span>&lt;IOExtension&gt; {
-<a href=#229 id=229 data-nosnippet>229</a>        extension_point_name.run_with_gstr(|extension_point_name| {
-<a href=#230 id=230 data-nosnippet>230</a>            extension_name.run_with_gstr(|extension_name| <span class="kw">unsafe </span>{
-<a href=#231 id=231 data-nosnippet>231</a>                <span class="kw">let </span>e = ffi::g_io_extension_point_implement(
-<a href=#232 id=232 data-nosnippet>232</a>                    extension_point_name.to_glib_none().<span class="number">0</span>,
-<a href=#233 id=233 data-nosnippet>233</a>                    type_.into_glib(),
-<a href=#234 id=234 data-nosnippet>234</a>                    extension_name.to_glib_none().<span class="number">0</span>,
-<a href=#235 id=235 data-nosnippet>235</a>                    priority,
+<a href=#224 id=224 data-nosnippet>224</a>        extension_point_name: <span class="kw">impl </span><a href="../../glib/gstring/trait.IntoGStr.html">IntoGStr</a>,
+<a href=#225 id=225 data-nosnippet>225</a>        type_: <a href="../../glib/types/struct.Type.html">Type</a>,
+<a href=#226 id=226 data-nosnippet>226</a>        extension_name: <span class="kw">impl </span><a href="../../glib/gstring/trait.IntoGStr.html">IntoGStr</a>,
+<a href=#227 id=227 data-nosnippet>227</a>        priority: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+<a href=#228 id=228 data-nosnippet>228</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="io_extension.rs.html#15">IOExtension</a>&gt; {
+<a href=#229 id=229 data-nosnippet>229</a>        <a href="#224">extension_point_name</a>.<a href="../../glib/gstring/trait.IntoGStr.html#tymethod.run_with_gstr">run_with_gstr</a>(|extension_point_name| {
+<a href=#230 id=230 data-nosnippet>230</a>            <a href="#226">extension_name</a>.<a href="../../glib/gstring/trait.IntoGStr.html#tymethod.run_with_gstr">run_with_gstr</a>(|extension_name| <span class="kw">unsafe </span>{
+<a href=#231 id=231 data-nosnippet>231</a>                <span class="kw">let </span>e = <a href="../../gio_sys/fn.g_io_extension_point_implement.html">ffi::g_io_extension_point_implement</a>(
+<a href=#232 id=232 data-nosnippet>232</a>                    <a href="#229">extension_point_name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#233 id=233 data-nosnippet>233</a>                    <a href="#225">type_</a>.<a href="../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
+<a href=#234 id=234 data-nosnippet>234</a>                    <a href="#230">extension_name</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#235 id=235 data-nosnippet>235</a>                    <a href="#227">priority</a>,
 <a href=#236 id=236 data-nosnippet>236</a>                );
-<a href=#237 id=237 data-nosnippet>237</a>                from_glib_none(e)
+<a href=#237 id=237 data-nosnippet>237</a>                <a href="../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="#231">e</a>)
 <a href=#238 id=238 data-nosnippet>238</a>            })
 <a href=#239 id=239 data-nosnippet>239</a>        })
 <a href=#240 id=240 data-nosnippet>240</a>    }
