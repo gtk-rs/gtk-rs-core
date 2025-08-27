@@ -168,7 +168,7 @@ pub trait DataInputStreamExtManual: IsA<DataInputStream> + 'static {
             user_data: glib::ffi::gpointer,
         ) {
             let mut error = ptr::null_mut();
-            let ret = ffi::g_data_input_stream_read_line_finish(
+            let ret = ffi::g_data_input_stream_read_line_finish_utf8(
                 _source_object as *mut _,
                 res,
                 ptr::null_mut(),
