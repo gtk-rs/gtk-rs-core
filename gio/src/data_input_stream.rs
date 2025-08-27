@@ -11,7 +11,7 @@ pub trait DataInputStreamExtManual: IsA<DataInputStream> + 'static {
     fn read_line<P: IsA<Cancellable>>(
         &self,
         cancellable: Option<&P>,
-    ) -> Result<glib::collections::Slice<u8>, glib::Error> {
+    ) -> Result<Option<glib::collections::Slice<u8>>, glib::Error> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();
@@ -21,9 +21,13 @@ pub trait DataInputStreamExtManual: IsA<DataInputStream> + 'static {
                 cancellable.map(|p| p.as_ref()).to_glib_none().0,
                 &mut error,
             );
-            let length = length.assume_init();
             if error.is_null() {
-                Ok(FromGlibContainer::from_glib_full_num(ret, length))
+                if ret.is_null() {
+                    Ok(None)
+                } else {
+                    let length = length.assume_init();
+                    Ok(Some(FromGlibContainer::from_glib_full_num(ret, length)))
+                }
             } else {
                 Err(from_glib_full(error))
             }
@@ -33,7 +37,7 @@ pub trait DataInputStreamExtManual: IsA<DataInputStream> + 'static {
     #[doc(alias = "g_data_input_stream_read_line_async")]
     fn read_line_async<
         P: IsA<Cancellable>,
-        Q: FnOnce(Result<glib::collections::Slice<u8>, glib::Error>) + 'static,
+        Q: FnOnce(Result<Option<glib::collections::Slice<u8>>, glib::Error>) + 'static,
     >(
         &self,
         io_priority: glib::Priority,
@@ -53,7 +57,7 @@ pub trait DataInputStreamExtManual: IsA<DataInputStream> + 'static {
         let user_data: Box_<glib::thread_guard::ThreadGuard<Q>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn read_line_async_trampoline<
-            Q: FnOnce(Result<glib::collections::Slice<u8>, glib::Error>) + 'static,
+            Q: FnOnce(Result<Option<glib::collections::Slice<u8>>, glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
@@ -67,9 +71,13 @@ pub trait DataInputStreamExtManual: IsA<DataInputStream> + 'static {
                 length.as_mut_ptr(),
                 &mut error,
             );
-            let length = length.assume_init();
             let result = if error.is_null() {
-                Ok(FromGlibContainer::from_glib_full_num(ret, length))
+                if ret.is_null() {
+                    Ok(None)
+                } else {
+                    let length = length.assume_init();
+                    Ok(Some(FromGlibContainer::from_glib_full_num(ret, length)))
+                }
             } else {
                 Err(from_glib_full(error))
             };
@@ -95,8 +103,9 @@ pub trait DataInputStreamExtManual: IsA<DataInputStream> + 'static {
         io_priority: glib::Priority,
     ) -> Pin<
         Box_<
-            dyn std::future::Future<Output = Result<glib::collections::Slice<u8>, glib::Error>>
-                + 'static,
+            dyn std::future::Future<
+                    Output = Result<Option<glib::collections::Slice<u8>>, glib::Error>,
+                > + 'static,
         >,
     > {
         Box_::pin(crate::GioFuture::new(
