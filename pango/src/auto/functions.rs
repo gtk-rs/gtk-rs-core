@@ -2,9 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{
-    ffi, AttrIterator, AttrList, Context, Direction, Item, Stretch, Style, Variant, Weight,
-};
+use crate::{ffi, AttrList, Direction, Stretch, Style, Variant, Weight};
 use glib::translate::*;
 
 //#[cfg_attr(feature = "v1_44", deprecated = "Since 1.44")]
@@ -54,50 +52,6 @@ pub fn find_paragraph_boundary(text: &str) -> (i32, i32) {
 #[doc(alias = "pango_is_zero_width")]
 pub fn is_zero_width(ch: char) -> bool {
     unsafe { from_glib(ffi::pango_is_zero_width(ch.into_glib())) }
-}
-
-#[doc(alias = "pango_itemize")]
-pub fn itemize(
-    context: &Context,
-    text: &str,
-    start_index: i32,
-    length: i32,
-    attrs: &AttrList,
-    cached_iter: Option<&AttrIterator>,
-) -> Vec<Item> {
-    unsafe {
-        FromGlibPtrContainer::from_glib_full(ffi::pango_itemize(
-            context.to_glib_none().0,
-            text.to_glib_none().0,
-            start_index,
-            length,
-            attrs.to_glib_none().0,
-            mut_override(cached_iter.to_glib_none().0),
-        ))
-    }
-}
-
-#[doc(alias = "pango_itemize_with_base_dir")]
-pub fn itemize_with_base_dir(
-    context: &Context,
-    base_dir: Direction,
-    text: &str,
-    start_index: i32,
-    length: i32,
-    attrs: &AttrList,
-    cached_iter: Option<&AttrIterator>,
-) -> Vec<Item> {
-    unsafe {
-        FromGlibPtrContainer::from_glib_full(ffi::pango_itemize_with_base_dir(
-            context.to_glib_none().0,
-            base_dir.into_glib(),
-            text.to_glib_none().0,
-            start_index,
-            length,
-            attrs.to_glib_none().0,
-            mut_override(cached_iter.to_glib_none().0),
-        ))
-    }
 }
 
 #[doc(alias = "pango_markup_parser_finish")]
