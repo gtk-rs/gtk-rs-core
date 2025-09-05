@@ -4,7 +4,7 @@ use std::fmt;
 
 use glib::translate::*;
 
-use crate::{ffi, Point3D, Ray, Vec3};
+use crate::{ffi, Box, Point3D, Ray, RayIntersectionKind, Sphere, Triangle, Vec3};
 
 impl Ray {
     #[doc(alias = "graphene_ray_init")]
@@ -33,6 +33,54 @@ impl Ray {
                 direction.to_glib_none().0,
             );
             ray
+        }
+    }
+
+    #[doc(alias = "graphene_ray_intersect_box")]
+    pub fn intersect_box(&self, b: &Box) -> (RayIntersectionKind, Option<f32>) {
+        unsafe {
+            let mut t_out = std::mem::MaybeUninit::uninit();
+            let ret = from_glib(ffi::graphene_ray_intersect_box(
+                self.to_glib_none().0,
+                b.to_glib_none().0,
+                t_out.as_mut_ptr(),
+            ));
+            match ret {
+                RayIntersectionKind::None => (ret, None),
+                _ => (ret, Some(t_out.assume_init())),
+            }
+        }
+    }
+
+    #[doc(alias = "graphene_ray_intersect_sphere")]
+    pub fn intersect_sphere(&self, s: &Sphere) -> (RayIntersectionKind, Option<f32>) {
+        unsafe {
+            let mut t_out = std::mem::MaybeUninit::uninit();
+            let ret = from_glib(ffi::graphene_ray_intersect_sphere(
+                self.to_glib_none().0,
+                s.to_glib_none().0,
+                t_out.as_mut_ptr(),
+            ));
+            match ret {
+                RayIntersectionKind::None => (ret, None),
+                _ => (ret, Some(t_out.assume_init())),
+            }
+        }
+    }
+
+    #[doc(alias = "graphene_ray_intersect_triangle")]
+    pub fn intersect_triangle(&self, t: &Triangle) -> (RayIntersectionKind, Option<f32>) {
+        unsafe {
+            let mut t_out = std::mem::MaybeUninit::uninit();
+            let ret = from_glib(ffi::graphene_ray_intersect_triangle(
+                self.to_glib_none().0,
+                t.to_glib_none().0,
+                t_out.as_mut_ptr(),
+            ));
+            match ret {
+                RayIntersectionKind::None => (ret, None),
+                _ => (ret, Some(t_out.assume_init())),
+            }
         }
     }
 }

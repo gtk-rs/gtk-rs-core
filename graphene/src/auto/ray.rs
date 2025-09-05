@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, Box, Plane, Point3D, RayIntersectionKind, Sphere, Triangle, Vec3};
+use crate::{ffi, Box, Plane, Point3D, Sphere, Triangle, Vec3};
 use glib::translate::*;
 
 glib::wrapper! {
@@ -82,45 +82,6 @@ impl Ray {
                 position.to_glib_none_mut().0,
             );
             position
-        }
-    }
-
-    #[doc(alias = "graphene_ray_intersect_box")]
-    pub fn intersect_box(&self, b: &Box) -> (RayIntersectionKind, f32) {
-        unsafe {
-            let mut t_out = std::mem::MaybeUninit::uninit();
-            let ret = from_glib(ffi::graphene_ray_intersect_box(
-                self.to_glib_none().0,
-                b.to_glib_none().0,
-                t_out.as_mut_ptr(),
-            ));
-            (ret, t_out.assume_init())
-        }
-    }
-
-    #[doc(alias = "graphene_ray_intersect_sphere")]
-    pub fn intersect_sphere(&self, s: &Sphere) -> (RayIntersectionKind, f32) {
-        unsafe {
-            let mut t_out = std::mem::MaybeUninit::uninit();
-            let ret = from_glib(ffi::graphene_ray_intersect_sphere(
-                self.to_glib_none().0,
-                s.to_glib_none().0,
-                t_out.as_mut_ptr(),
-            ));
-            (ret, t_out.assume_init())
-        }
-    }
-
-    #[doc(alias = "graphene_ray_intersect_triangle")]
-    pub fn intersect_triangle(&self, t: &Triangle) -> (RayIntersectionKind, f32) {
-        unsafe {
-            let mut t_out = std::mem::MaybeUninit::uninit();
-            let ret = from_glib(ffi::graphene_ray_intersect_triangle(
-                self.to_glib_none().0,
-                t.to_glib_none().0,
-                t_out.as_mut_ptr(),
-            ));
-            (ret, t_out.assume_init())
         }
     }
 
