@@ -166,7 +166,7 @@ pub fn spawn_async_with_pipes<
         let mut standard_output = mem::MaybeUninit::uninit();
         let mut standard_error = mem::MaybeUninit::uninit();
         let mut error = ptr::null_mut();
-        let _ = ffi::g_spawn_async_with_pipes(
+        let success = ffi::g_spawn_async_with_pipes(
             working_directory.as_ref().to_glib_none().0,
             argv.to_glib_none().0,
             envp.to_glib_none().0,
@@ -179,11 +179,11 @@ pub fn spawn_async_with_pipes<
             standard_error.as_mut_ptr(),
             &mut error,
         );
-        let child_pid = from_glib(child_pid.assume_init());
-        let standard_input = standard_input.assume_init();
-        let standard_output = standard_output.assume_init();
-        let standard_error = standard_error.assume_init();
-        if error.is_null() {
+        if from_glib(success) {
+            let child_pid = from_glib(child_pid.assume_init());
+            let standard_input = standard_input.assume_init();
+            let standard_output = standard_output.assume_init();
+            let standard_error = standard_error.assume_init();
             #[cfg(not(windows))]
             {
                 Ok((
@@ -204,6 +204,8 @@ pub fn spawn_async_with_pipes<
         //     ))
         // }
         } else {
+            // Function failed, output parameters are not initialized
+            // Return the error without calling assume_init()
             Err(from_glib_full(error))
         }
     }

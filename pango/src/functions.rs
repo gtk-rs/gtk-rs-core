@@ -6,7 +6,7 @@ use std::{ffi::c_char, ptr};
 pub use crate::auto::functions::*;
 #[cfg(feature = "v1_44")]
 use crate::ShapeFlags;
-use crate::{ffi, Analysis, GlyphString, Item};
+use crate::{ffi, Analysis, AttrIterator, AttrList, Context, Direction, GlyphString, Item};
 
 #[doc(alias = "pango_reorder_items")]
 pub fn reorder_items(logical_items: &glib::List<Item>) -> glib::List<Item> {
@@ -91,5 +91,67 @@ pub fn extents_to_pixels(
 ) {
     unsafe {
         ffi::pango_extents_to_pixels(inclusive.to_glib_none_mut().0, nearest.to_glib_none_mut().0);
+    }
+}
+
+#[doc(alias = "pango_itemize")]
+pub fn itemize(
+    context: &Context,
+    text: &str,
+    start_index: i32,
+    length: i32,
+    attrs: &AttrList,
+    cached_iter: Option<&AttrIterator>,
+) -> Vec<Item> {
+    let total_length = text.len() as i32;
+    assert!(
+        start_index >= 0 && start_index < total_length,
+        "start_index is out of range"
+    );
+    assert!(
+        length >= 0 && start_index.checked_add(length).unwrap() < total_length,
+        "start_index + length is out of range"
+    );
+    unsafe {
+        FromGlibPtrContainer::from_glib_full(ffi::pango_itemize(
+            context.to_glib_none().0,
+            text.to_glib_none().0,
+            start_index,
+            length,
+            attrs.to_glib_none().0,
+            mut_override(cached_iter.to_glib_none().0),
+        ))
+    }
+}
+
+#[doc(alias = "pango_itemize_with_base_dir")]
+pub fn itemize_with_base_dir(
+    context: &Context,
+    base_dir: Direction,
+    text: &str,
+    start_index: i32,
+    length: i32,
+    attrs: &AttrList,
+    cached_iter: Option<&AttrIterator>,
+) -> Vec<Item> {
+    let total_length = text.len() as i32;
+    assert!(
+        start_index >= 0 && start_index < total_length,
+        "start_index is out of range"
+    );
+    assert!(
+        length >= 0 && start_index.checked_add(length).unwrap() < total_length,
+        "start_index + length is out of range"
+    );
+    unsafe {
+        FromGlibPtrContainer::from_glib_full(ffi::pango_itemize_with_base_dir(
+            context.to_glib_none().0,
+            base_dir.into_glib(),
+            text.to_glib_none().0,
+            start_index,
+            length,
+            attrs.to_glib_none().0,
+            mut_override(cached_iter.to_glib_none().0),
+        ))
     }
 }

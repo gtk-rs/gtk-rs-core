@@ -64,7 +64,12 @@ impl ImageSurface {
             (data.as_mut_ptr(), data.len())
         };
 
-        assert!(len >= (height * stride) as usize);
+        assert!(width >= 0, "width must be non-negative");
+        assert!(height >= 0, "height must be non-negative");
+        assert!(stride >= 0, "stride must be non-negative");
+        
+        // check if there is integer overflow
+        assert!(len >= height.checked_mul(stride).unwrap() as usize);
         let result = unsafe {
             ImageSurface::from_raw_full(ffi::cairo_image_surface_create_for_data(
                 ptr,
