@@ -25,8 +25,8 @@ impl ListStore {
     ) -> u32 {
         unsafe {
             let mut func = compare_func;
-            let func_obj: &mut (dyn FnMut(&Object, &Object) -> Ordering) = &mut func;
-            let func_ptr = &func_obj as *const &mut (dyn FnMut(&Object, &Object) -> Ordering)
+            let func_obj: &mut dyn FnMut(&Object, &Object) -> Ordering = &mut func;
+            let func_ptr = &func_obj as *const &mut dyn FnMut(&Object, &Object) -> Ordering
                 as glib::ffi::gpointer;
 
             ffi::g_list_store_insert_sorted(
@@ -42,8 +42,8 @@ impl ListStore {
     pub fn sort<F: FnMut(&Object, &Object) -> Ordering>(&self, compare_func: F) {
         unsafe {
             let mut func = compare_func;
-            let func_obj: &mut (dyn FnMut(&Object, &Object) -> Ordering) = &mut func;
-            let func_ptr = &func_obj as *const &mut (dyn FnMut(&Object, &Object) -> Ordering)
+            let func_obj: &mut dyn FnMut(&Object, &Object) -> Ordering = &mut func;
+            let func_ptr = &func_obj as *const &mut dyn FnMut(&Object, &Object) -> Ordering
                 as glib::ffi::gpointer;
 
             ffi::g_list_store_sort(
@@ -224,7 +224,7 @@ unsafe extern "C" fn compare_func_trampoline(
     b: glib::ffi::gconstpointer,
     func: glib::ffi::gpointer,
 ) -> i32 {
-    let func = func as *mut &mut (dyn FnMut(&Object, &Object) -> Ordering);
+    let func = func as *mut &mut dyn FnMut(&Object, &Object) -> Ordering;
 
     let a = from_glib_borrow(a as *mut glib::gobject_ffi::GObject);
     let b = from_glib_borrow(b as *mut glib::gobject_ffi::GObject);
