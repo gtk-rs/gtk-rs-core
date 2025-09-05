@@ -176,6 +176,8 @@ impl Region {
     #[doc(alias = "get_rectangle")]
     #[doc(alias = "cairo_region_get_rectangle")]
     pub fn rectangle(&self, nth: i32) -> RectangleInt {
+        let total_rectangles = self.num_rectangles();
+        assert!(nth >= 0 && nth < total_rectangles, "nth is out of range");
         unsafe {
             let rectangle: RectangleInt = ::std::mem::zeroed();
             ffi::cairo_region_get_rectangle(self.0.as_ptr(), nth, rectangle.to_raw_none());
