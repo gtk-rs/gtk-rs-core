@@ -274,7 +274,7 @@ impl Date {
     #[doc(alias = "g_date_subtract_days")]
     pub fn subtract_days(&mut self, n_days: u32) -> Result<(), BoolError> {
         let julian = self.julian();
-        if julian > n_days {
+        if julian < n_days {
             Err(bool_error!("invalid number of days"))
         } else {
             unsafe {
