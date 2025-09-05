@@ -179,11 +179,11 @@ pub fn spawn_async_with_pipes<
             standard_error.as_mut_ptr(),
             &mut error,
         );
-        let child_pid = from_glib(child_pid.assume_init());
-        let standard_input = standard_input.assume_init();
-        let standard_output = standard_output.assume_init();
-        let standard_error = standard_error.assume_init();
         if error.is_null() {
+            let child_pid = from_glib(child_pid.assume_init());
+            let standard_input = standard_input.assume_init();
+            let standard_output = standard_output.assume_init();
+            let standard_error = standard_error.assume_init();
             #[cfg(not(windows))]
             {
                 Ok((
