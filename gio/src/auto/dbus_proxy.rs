@@ -535,11 +535,11 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
 
     #[doc(alias = "g_dbus_proxy_get_cached_property_names")]
     #[doc(alias = "get_cached_property_names")]
-    fn cached_property_names(&self) -> Vec<glib::GString> {
+    fn cached_property_names(&self) -> Option<Vec<glib::GString>> {
         unsafe {
-            FromGlibPtrContainer::from_glib_full(ffi::g_dbus_proxy_get_cached_property_names(
-                self.as_ref().to_glib_none().0,
-            ))
+            MaybeFromGlibPtrContainer::maybe_from_glib_full(
+                ffi::g_dbus_proxy_get_cached_property_names(self.as_ref().to_glib_none().0),
+            )
         }
     }
 
