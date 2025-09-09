@@ -628,17 +628,42 @@ impl<'a> ToGlibContainerFromSlice<'a, *mut ffi::GType> for Type {
     }
 }
 
-impl FromGlibContainerAsVec<Type, *const ffi::GType> for Type {
-    unsafe fn from_glib_none_num_as_vec(ptr: *const ffi::GType, num: usize) -> Vec<Self> {
-        if num == 0 || ptr.is_null() {
-            return Vec::new();
+impl MaybeFromGlibContainerAsVec<Type, *const ffi::GType> for Type {
+    unsafe fn maybe_from_glib_none_num_as_vec(
+        ptr: *const ffi::GType,
+        num: usize,
+    ) -> Option<Vec<Self>> {
+        if ptr.is_null() {
+            return None;
+        }
+        if num == 0 {
+            return Some(Vec::new());
         }
 
         let mut res = Vec::<Self>::with_capacity(num);
         let res_ptr = res.as_mut_ptr() as *mut ffi::GType;
         std::ptr::copy_nonoverlapping(ptr, res_ptr, num);
         res.set_len(num);
-        res
+        Some(res)
+    }
+
+    unsafe fn maybe_from_glib_container_num_as_vec(
+        _: *const ffi::GType,
+        _: usize,
+    ) -> Option<Vec<Self>> {
+        // Can't really free a *const
+        unimplemented!();
+    }
+
+    unsafe fn maybe_from_glib_full_num_as_vec(_: *const ffi::GType, _: usize) -> Option<Vec<Self>> {
+        // Can't really free a *const
+        unimplemented!();
+    }
+}
+
+impl FromGlibContainerAsVec<Type, *const ffi::GType> for Type {
+    unsafe fn from_glib_none_num_as_vec(ptr: *const ffi::GType, num: usize) -> Vec<Self> {
+        MaybeFromGlibContainerAsVec::maybe_from_glib_none_num_as_vec(ptr, num).unwrap_or_default()
     }
 
     unsafe fn from_glib_container_num_as_vec(_: *const ffi::GType, _: usize) -> Vec<Self> {
@@ -652,19 +677,43 @@ impl FromGlibContainerAsVec<Type, *const ffi::GType> for Type {
     }
 }
 
+impl MaybeFromGlibContainerAsVec<Type, *mut ffi::GType> for Type {
+    unsafe fn maybe_from_glib_none_num_as_vec(
+        ptr: *mut ffi::GType,
+        num: usize,
+    ) -> Option<Vec<Self>> {
+        MaybeFromGlibContainerAsVec::maybe_from_glib_none_num_as_vec(ptr as *const _, num)
+    }
+
+    unsafe fn maybe_from_glib_container_num_as_vec(
+        ptr: *mut ffi::GType,
+        num: usize,
+    ) -> Option<Vec<Self>> {
+        let res = MaybeFromGlibContainerAsVec::maybe_from_glib_none_num_as_vec(ptr, num)?;
+        ffi::g_free(ptr as *mut _);
+        Some(res)
+    }
+
+    unsafe fn maybe_from_glib_full_num_as_vec(
+        ptr: *mut ffi::GType,
+        num: usize,
+    ) -> Option<Vec<Self>> {
+        MaybeFromGlibContainerAsVec::maybe_from_glib_container_num_as_vec(ptr, num)
+    }
+}
+
 impl FromGlibContainerAsVec<Type, *mut ffi::GType> for Type {
     unsafe fn from_glib_none_num_as_vec(ptr: *mut ffi::GType, num: usize) -> Vec<Self> {
-        FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr as *const _, num)
+        MaybeFromGlibContainerAsVec::maybe_from_glib_none_num_as_vec(ptr, num).unwrap_or_default()
     }
 
     unsafe fn from_glib_container_num_as_vec(ptr: *mut ffi::GType, num: usize) -> Vec<Self> {
-        let res = FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr, num);
-        ffi::g_free(ptr as *mut _);
-        res
+        MaybeFromGlibContainerAsVec::maybe_from_glib_container_num_as_vec(ptr, num)
+            .unwrap_or_default()
     }
 
     unsafe fn from_glib_full_num_as_vec(ptr: *mut ffi::GType, num: usize) -> Vec<Self> {
-        FromGlibContainerAsVec::from_glib_container_num_as_vec(ptr, num)
+        MaybeFromGlibContainerAsVec::maybe_from_glib_full_num_as_vec(ptr, num).unwrap_or_default()
     }
 }
 

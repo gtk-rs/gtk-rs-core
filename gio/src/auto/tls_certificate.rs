@@ -171,11 +171,11 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + 'static {
     #[doc(alias = "g_tls_certificate_get_dns_names")]
     #[doc(alias = "get_dns_names")]
     #[doc(alias = "dns-names")]
-    fn dns_names(&self) -> Vec<glib::Bytes> {
+    fn dns_names(&self) -> Option<Vec<glib::Bytes>> {
         unsafe {
-            FromGlibPtrContainer::from_glib_container(ffi::g_tls_certificate_get_dns_names(
-                self.as_ref().to_glib_none().0,
-            ))
+            MaybeFromGlibPtrContainer::maybe_from_glib_container(
+                ffi::g_tls_certificate_get_dns_names(self.as_ref().to_glib_none().0),
+            )
         }
     }
 
@@ -184,11 +184,11 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + 'static {
     #[doc(alias = "g_tls_certificate_get_ip_addresses")]
     #[doc(alias = "get_ip_addresses")]
     #[doc(alias = "ip-addresses")]
-    fn ip_addresses(&self) -> Vec<InetAddress> {
+    fn ip_addresses(&self) -> Option<Vec<InetAddress>> {
         unsafe {
-            FromGlibPtrContainer::from_glib_container(ffi::g_tls_certificate_get_ip_addresses(
-                self.as_ref().to_glib_none().0,
-            ))
+            MaybeFromGlibPtrContainer::maybe_from_glib_container(
+                ffi::g_tls_certificate_get_ip_addresses(self.as_ref().to_glib_none().0),
+            )
         }
     }
 
