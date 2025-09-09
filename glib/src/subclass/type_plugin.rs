@@ -149,8 +149,8 @@ unsafe extern "C" fn complete_type_info<T: TypePluginImpl>(
     let instance = &*(type_plugin as *mut T::Instance);
     let imp = instance.imp();
     let type_ = Type::from_glib(gtype);
-    let info = TypeInfo::from_glib_ptr_borrow_mut(info_ptr);
-    let value_table = TypeValueTable::from_glib_ptr_borrow_mut(value_table_ptr);
+    let info = TypeInfo::from_glib_borrow_mut2(&mut *info_ptr);
+    let value_table = TypeValueTable::from_glib_borrow_mut2(&mut *value_table_ptr);
 
     let (info_, value_table_) = imp.complete_type_info(type_);
 
@@ -169,7 +169,7 @@ unsafe extern "C" fn complete_interface_info<T: TypePluginImpl>(
     let imp = instance.imp();
     let instance_type = Type::from_glib(instance_gtype);
     let interface_type = Type::from_glib(interface_gtype);
-    let info = InterfaceInfo::from_glib_ptr_borrow_mut(info_ptr);
+    let info = InterfaceInfo::from_glib_borrow_mut2(&mut *info_ptr);
 
     let info_ = imp.complete_interface_info(instance_type, interface_type);
     *info = info_;
