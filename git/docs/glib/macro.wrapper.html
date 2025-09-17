@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Defines a wrapper type and implements the appropriate traits."><title>wrapper in glib - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-e56847b5.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.91.0-nightly (12eb345e5 2025-09-07)" data-channel="nightly" data-search-js="search-d846cb6c.js" data-stringdex-js="stringdex-5af928a3.js" data-settings-js="settings-c38705f0.js" ><script src="../static.files/storage-e2aeef58.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-6dc2a7f3.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Defines a wrapper type and implements the appropriate traits."><title>wrapper in glib - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-e56847b5.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.92.0-nightly (a9d0a6f15 2025-09-16)" data-channel="nightly" data-search-js="search-cb266a1a.js" data-stringdex-js="stringdex-5af928a3.js" data-settings-js="settings-c38705f0.js" ><script src="../static.files/storage-e2aeef58.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-6dc2a7f3.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -308,8 +308,7 @@ specify all the parent classes of the one you are wrapping. The uppermost parent
     </span><span class="kw">match fn </span>{
         type_ =&gt; || ffi::gtk_button_get_type(),
     }
-}</code></pre></div>
-<h5 id="objects-which-implement-interfaces"><a class="doc-anchor" href="#objects-which-implement-interfaces">§</a>Objects which implement interfaces</h5>
+}</code></pre></div><h5 id="objects-which-implement-interfaces"><a class="doc-anchor" href="#objects-which-implement-interfaces">§</a>Objects which implement interfaces</h5>
 <p>The example above is incomplete, since <code>ffi::GtkButton</code> actually implements two interfaces,
 <code>Buildable</code> and <code>Actionable</code>.  In this case, they must be specified after all the parent classes
 behind the <code>@implements</code> keyword:</p>
@@ -322,8 +321,7 @@ behind the <code>@implements</code> keyword:</p>
     </span><span class="kw">match fn </span>{
         type_ =&gt; || ffi::gtk_button_get_type(),
     }
-}</code></pre></div>
-<h5 id="non-derivable-classes"><a class="doc-anchor" href="#non-derivable-classes">§</a>Non-derivable classes</h5>
+}</code></pre></div><h5 id="non-derivable-classes"><a class="doc-anchor" href="#non-derivable-classes">§</a>Non-derivable classes</h5>
 <p>By convention, GObject implements “final” classes, i.e. those who
 cannot be subclassed, by <em>not</em> exposing a public Class struct.
 This way it is not possible to override any methods, as there are
@@ -333,21 +331,18 @@ specify a FFI class name at all in the <code>Object&lt;&gt;</code> part:</p>
 <div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="macro">wrapper!</span> {
     <span class="kw">pub struct </span>Clipboard(Object&lt;ffi::GtkClipboard&gt;);
     ...
-}</code></pre></div>
-<h5 id="interfaces"><a class="doc-anchor" href="#interfaces">§</a>Interfaces</h5>
+}</code></pre></div><h5 id="interfaces"><a class="doc-anchor" href="#interfaces">§</a>Interfaces</h5>
 <p>Interfaces are passed in the same way to the macro but instead of specifying
 <code>Object</code>, <code>Interface</code> has to be specified:</p>
 
 <div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="macro">wrapper!</span> {
     <span class="kw">pub struct </span>TreeModel(Interface&lt;ffi::GtkTreeModel, ffi::GtkTreeModelIface&gt;);
     ...
-}</code></pre></div>
-<h5 id="interfaces-with-prerequisites"><a class="doc-anchor" href="#interfaces-with-prerequisites">§</a>Interfaces with prerequisites</h5>
+}</code></pre></div><h5 id="interfaces-with-prerequisites"><a class="doc-anchor" href="#interfaces-with-prerequisites">§</a>Interfaces with prerequisites</h5>
 <p>Interfaces can declare prerequisites, i.e. the classes from which types that implement the
 interface have to inherit or interfaces that have to be implemented:</p>
 
 <div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="macro">wrapper!</span> {
     <span class="kw">pub struct </span>TreeSortable(Interface&lt;ffi::GtkTreeSortable, ffi::GtkTreeSortable&gt;) @requires TreeModel;
     ...
-}</code></pre></div>
-</div></details></section></div></main></body></html>
+}</code></pre></div></div></details></section></div></main></body></html>
