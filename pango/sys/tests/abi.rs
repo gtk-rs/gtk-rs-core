@@ -356,6 +356,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "PangoFontColor",
+        Layout {
+            size: size_of::<PangoFontColor>(),
+            alignment: align_of::<PangoFontColor>(),
+        },
+    ),
+    (
         "PangoFontFace",
         Layout {
             size: size_of::<PangoFontFace>(),
@@ -746,6 +753,10 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) PANGO_ELLIPSIZE_MIDDLE", "2"),
     ("(gint) PANGO_ELLIPSIZE_NONE", "0"),
     ("(gint) PANGO_ELLIPSIZE_START", "1"),
+    ("(gint) PANGO_FONT_COLOR_DONT_CARE", "2"),
+    ("(gint) PANGO_FONT_COLOR_FORBIDDEN", "0"),
+    ("(gint) PANGO_FONT_COLOR_REQUIRED", "1"),
+    ("(guint) PANGO_FONT_MASK_COLOR", "512"),
     ("(guint) PANGO_FONT_MASK_FAMILY", "1"),
     ("(guint) PANGO_FONT_MASK_FEATURES", "256"),
     ("(guint) PANGO_FONT_MASK_GRAVITY", "64"),

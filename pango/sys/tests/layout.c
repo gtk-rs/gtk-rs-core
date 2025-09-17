@@ -29,6 +29,7 @@ int main() {
     printf("%s;%zu;%zu\n", "PangoEllipsizeMode", sizeof(PangoEllipsizeMode), alignof(PangoEllipsizeMode));
     printf("%s;%zu;%zu\n", "PangoFont", sizeof(PangoFont), alignof(PangoFont));
     printf("%s;%zu;%zu\n", "PangoFontClass", sizeof(PangoFontClass), alignof(PangoFontClass));
+    printf("%s;%zu;%zu\n", "PangoFontColor", sizeof(PangoFontColor), alignof(PangoFontColor));
     printf("%s;%zu;%zu\n", "PangoFontFace", sizeof(PangoFontFace), alignof(PangoFontFace));
     printf("%s;%zu;%zu\n", "PangoFontFaceClass", sizeof(PangoFontFaceClass), alignof(PangoFontFaceClass));
     printf("%s;%zu;%zu\n", "PangoFontFamily", sizeof(PangoFontFamily), alignof(PangoFontFamily));
