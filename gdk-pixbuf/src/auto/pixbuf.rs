@@ -552,7 +552,7 @@ impl Pixbuf {
     //}
 
     //#[doc(alias = "gdk_pixbuf_save_to_callbackv")]
-    //pub fn save_to_callbackv<P: FnMut(&Vec<u8>, usize, &glib::Error) -> bool>(&self, save_func: P, type_: &str, option_keys: &[&str], option_values: &[&str]) -> Result<(), glib::Error> {
+    //pub fn save_to_callbackv<P: FnMut(&Vec<u8>, usize, &glib::Error) -> bool>(&self, save_func: P, type_: &str, option_keys: Option<&[&str]>, option_values: Option<&[&str]>) -> Result<(), glib::Error> {
     //    unsafe { TODO: call ffi:gdk_pixbuf_save_to_callbackv() }
     //}
 

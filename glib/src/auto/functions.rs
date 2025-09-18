@@ -711,7 +711,7 @@ pub fn spaced_primes_closest(num: u32) -> u32 {
 pub fn spawn_async(
     working_directory: Option<impl AsRef<std::path::Path>>,
     argv: &[&std::path::Path],
-    envp: &[&std::path::Path],
+    envp: Option<&[&std::path::Path]>,
     flags: SpawnFlags,
     child_setup: Option<Box_<dyn FnOnce() + 'static>>,
 ) -> Result<Pid, crate::Error> {
@@ -756,7 +756,7 @@ pub fn spawn_async(
 //#[cfg(feature = "v2_68")]
 //#[cfg_attr(docsrs, doc(cfg(feature = "v2_68")))]
 //#[doc(alias = "g_spawn_async_with_pipes_and_fds")]
-//pub fn spawn_async_with_pipes_and_fds(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, stdin_fd: i32, stdout_fd: i32, stderr_fd: i32, source_fds: &[i32], target_fds: &[i32], n_fds: usize) -> Result<(Pid, i32, i32, i32), crate::Error> {
+//pub fn spawn_async_with_pipes_and_fds(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: Option<&[&std::path::Path]>, flags: SpawnFlags, child_setup: Option<Box_<dyn FnOnce() + 'static>>, stdin_fd: i32, stdout_fd: i32, stderr_fd: i32, source_fds: &[i32], target_fds: &[i32], n_fds: usize) -> Result<(Pid, i32, i32, i32), crate::Error> {
 //    unsafe { TODO: call ffi:g_spawn_async_with_pipes_and_fds() }
 //}
 
@@ -817,7 +817,7 @@ pub fn spawn_command_line_async(
 //}
 
 //#[doc(alias = "g_spawn_sync")]
-//pub fn spawn_sync(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: &[&std::path::Path], flags: SpawnFlags, child_setup: Option<&mut dyn FnMut()>, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
+//pub fn spawn_sync(working_directory: Option<impl AsRef<std::path::Path>>, argv: &[&std::path::Path], envp: Option<&[&std::path::Path]>, flags: SpawnFlags, child_setup: Option<&mut dyn FnMut()>, standard_output: Vec<u8>, standard_error: Vec<u8>) -> Result<i32, crate::Error> {
 //    unsafe { TODO: call ffi:g_spawn_sync() }
 //}
 

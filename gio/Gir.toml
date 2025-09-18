@@ -143,7 +143,6 @@ generate = [
     "Gio.TestDBusFlags",
     "Gio.TlsAuthenticationMode",
     "Gio.TlsBackend",
-    "Gio.TlsCertificate",
     "Gio.TlsCertificateRequestFlags",
     "Gio.TlsChannelBindingError",
     "Gio.TlsClientConnection",
@@ -931,6 +930,11 @@ status = "generate"
     name = "set_attribute_stringv"
     # use strv
     manual = true
+    [[object.function]]
+    name = "list_attributes"
+        [object.function.return]
+        # `NULL` on error it's only used for the case where `FileInfo` is NULL, which is not possible in Rust.
+        nullable = false
 
 [[object]]
 name = "Gio.FilterOutputStream"
@@ -1495,6 +1499,20 @@ status = "generate"
     name = "new"
     # Better to provide None than -1 when you don't want to specify the number of threads
     manual = true
+
+[[object]]
+name = "Gio.TlsCertificate"
+status = "generate"
+    [[object.function]]
+    name = "get_dns_names"
+        [object.function.return]
+        # `NULL` if it’s not available.
+        nullable = true
+    [[object.function]]
+    name = "get_ip_addresses"
+        [object.function.return]
+        # `NULL` if it’s not available.
+        nullable = true
 
 [[object]]
 name = "Gio.TlsCertificateFlags"

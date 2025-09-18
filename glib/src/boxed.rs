@@ -253,10 +253,13 @@ macro_rules! glib_boxed_wrapper {
         }
 
         #[doc(hidden)]
-        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibContainerAsVec<*mut $ffi_name, *mut *mut $ffi_name> for $name $(<$($generic),+>)? {
-            unsafe fn from_glib_none_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> {
-                if num == 0 || ptr.is_null() {
-                    return Vec::new();
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::MaybeFromGlibContainerAsVec<*mut $ffi_name, *mut *mut $ffi_name> for $name $(<$($generic),+>)? {
+            unsafe fn maybe_from_glib_none_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Option<Vec<Self>> {
+                if ptr.is_null() {
+                    return None;
+                }
+                if num == 0 {
+                    return Some(Vec::new());
                 }
 
                 let mut res = Vec::<Self>::with_capacity(num);
@@ -265,19 +268,22 @@ macro_rules! glib_boxed_wrapper {
                     ::std::ptr::write(res_ptr.add(i), $crate::translate::from_glib_none(std::ptr::read(ptr.add(i))));
                 }
                 res.set_len(num);
-                res
+                Some(res)
             }
 
-            unsafe fn from_glib_container_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> {
-                let res = $crate::translate::FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr, num);
+            unsafe fn maybe_from_glib_container_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Option<Vec<Self>> {
+                let res = $crate::translate::MaybeFromGlibContainerAsVec::maybe_from_glib_none_num_as_vec(ptr, num)?;
                 $crate::ffi::g_free(ptr as *mut _);
-                res
+                Some(res)
             }
 
-            unsafe fn from_glib_full_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> {
-                if num == 0 || ptr.is_null() {
+            unsafe fn maybe_from_glib_full_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Option<Vec<Self>> {
+                if ptr.is_null() {
+                    return None;
+                }
+                if num == 0 {
                     $crate::ffi::g_free(ptr as *mut _);
-                    return Vec::new();
+                    return Some(Vec::new());
                 }
 
                 let mut res = Vec::with_capacity(num);
@@ -285,24 +291,55 @@ macro_rules! glib_boxed_wrapper {
                 ::std::ptr::copy_nonoverlapping(ptr as *mut Self, res_ptr, num);
                 res.set_len(num);
                 $crate::ffi::g_free(ptr as *mut _);
-                res
+                Some(res)
+            }
+        }
+
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibContainerAsVec<*mut $ffi_name, *mut *mut $ffi_name> for $name $(<$($generic),+>)? {
+            unsafe fn from_glib_none_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> {
+                $crate::translate::MaybeFromGlibContainerAsVec::maybe_from_glib_none_num_as_vec(ptr, num).unwrap_or_default()
+            }
+
+            unsafe fn from_glib_container_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> {
+                $crate::translate::MaybeFromGlibContainerAsVec::maybe_from_glib_container_num_as_vec(ptr, num).unwrap_or_default()
+            }
+
+            unsafe fn from_glib_full_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> {
+                $crate::translate::MaybeFromGlibContainerAsVec::maybe_from_glib_full_num_as_vec(ptr, num).unwrap_or_default()
+            }
+        }
+
+        #[doc(hidden)]
+        impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::MaybeFromGlibPtrArrayContainerAsVec<*mut $ffi_name, *mut *mut $ffi_name> for $name $(<$($generic),+>)? {
+            unsafe fn maybe_from_glib_none_as_vec(ptr: *mut *mut $ffi_name) -> Option<Vec<Self>> {
+                $crate::translate::MaybeFromGlibContainerAsVec::maybe_from_glib_none_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr)?)
+            }
+
+            unsafe fn maybe_from_glib_container_as_vec(ptr: *mut *mut $ffi_name) -> Option<Vec<Self>> {
+                $crate::translate::MaybeFromGlibContainerAsVec::maybe_from_glib_container_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr)?)
+            }
+
+            unsafe fn maybe_from_glib_full_as_vec(ptr: *mut *mut $ffi_name) -> Option<Vec<Self>> {
+                $crate::translate::MaybeFromGlibContainerAsVec::maybe_from_glib_full_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr)?)
             }
         }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrArrayContainerAsVec<*mut $ffi_name, *mut *mut $ffi_name> for $name $(<$($generic),+>)? {
             unsafe fn from_glib_none_as_vec(ptr: *mut *mut $ffi_name) -> Vec<Self> {
-                $crate::translate::FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr))
+                $crate::translate::MaybeFromGlibContainerAsVec::maybe_from_glib_none_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr).unwrap_or(0)).unwrap_or_default()
             }
 
             unsafe fn from_glib_container_as_vec(ptr: *mut *mut $ffi_name) -> Vec<Self> {
-                $crate::translate::FromGlibContainerAsVec::from_glib_container_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr))
+                $crate::translate::MaybeFromGlibContainerAsVec::maybe_from_glib_container_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr).unwrap_or(0)).unwrap_or_default()
             }
 
             unsafe fn from_glib_full_as_vec(ptr: *mut *mut $ffi_name) -> Vec<Self> {
-                $crate::translate::FromGlibContainerAsVec::from_glib_full_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr))
+                $crate::translate::MaybeFromGlibContainerAsVec::maybe_from_glib_full_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr).unwrap_or(0)).unwrap_or_default()
             }
         }
+
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::IntoGlibPtr<*mut $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
