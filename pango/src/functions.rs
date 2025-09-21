@@ -109,7 +109,7 @@ pub fn itemize(
         "start_index is out of range"
     );
     assert!(
-        length >= 0 && start_index.checked_add(length).unwrap() < total_length,
+        length >= 0 && start_index.checked_add(length).unwrap() <= total_length,
         "start_index + length is out of range"
     );
     unsafe {
@@ -140,7 +140,7 @@ pub fn itemize_with_base_dir(
         "start_index is out of range"
     );
     assert!(
-        length >= 0 && start_index.checked_add(length).unwrap() < total_length,
+        length >= 0 && start_index.checked_add(length).unwrap() <= total_length,
         "start_index + length is out of range"
     );
     unsafe {
