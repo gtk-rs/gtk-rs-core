@@ -9,7 +9,6 @@ use std::{
     thread,
 };
 
-use futures_executor::block_on;
 use glib::clone;
 
 struct State {
@@ -1053,11 +1052,12 @@ fn test_clone_macro_body() {
     assert_eq!(10, *v.lock().expect("failed to lock"));
 }
 
+#[cfg(feature = "futures")]
 #[test]
 fn test_clone_macro_async_kinds() {
     let v = Rc::new(RefCell::new(1));
 
-    block_on(clone!(
+    futures_executor::block_on(clone!(
         #[weak]
         v,
         async move {

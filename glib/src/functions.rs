@@ -283,6 +283,7 @@ pub fn file_open_tmp(
 ///
 /// This can be called from any thread and will execute the future from the thread
 /// where main context is running, e.g. via a `MainLoop`.
+#[cfg(feature = "futures")]
 pub fn spawn_future<R: Send + 'static, F: std::future::Future<Output = R> + Send + 'static>(
     f: F,
 ) -> crate::JoinHandle<R> {
@@ -298,6 +299,7 @@ pub fn spawn_future<R: Send + 'static, F: std::future::Future<Output = R> + Send
 /// This can be called only from the thread where the main context is running, e.g.
 /// from any other `Future` that is executed on this main context, or after calling
 /// `with_thread_default` or `acquire` on the main context.
+#[cfg(feature = "futures")]
 pub fn spawn_future_local<R: 'static, F: std::future::Future<Output = R> + 'static>(
     f: F,
 ) -> crate::JoinHandle<R> {

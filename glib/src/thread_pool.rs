@@ -1,8 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{future::Future, panic, ptr};
+use std::{panic, ptr};
 
+#[cfg(feature = "futures")]
 use futures_channel::oneshot;
+#[cfg(feature = "futures")]
+use std::future::Future;
 
 use crate::{ffi, translate::*};
 
@@ -104,6 +107,7 @@ impl ThreadPool {
         }
     }
 
+    #[cfg(feature = "futures")]
     pub fn push_future<T: Send + 'static, F: FnOnce() -> T + Send + 'static>(
         &self,
         func: F,
@@ -241,6 +245,7 @@ mod tests {
         assert_eq!(receiver.recv(), Ok(true));
     }
 
+    #[cfg(feature = "futures")]
     #[test]
     fn test_push_future() {
         let c = crate::MainContext::new();

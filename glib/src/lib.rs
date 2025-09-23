@@ -231,12 +231,18 @@ pub use self::bridged_logging::{
 #[macro_use]
 pub mod subclass;
 
+#[cfg(feature = "futures")]
 mod main_context_futures;
+#[cfg(feature = "futures")]
 pub use main_context_futures::{JoinError, JoinHandle, SpawnWithinJoinHandle};
+#[cfg(feature = "futures")]
 mod source_futures;
+#[cfg(feature = "futures")]
 pub use self::source_futures::*;
 
+#[cfg(feature = "futures")]
 mod future_with_timeout;
+#[cfg(feature = "futures")]
 pub use self::future_with_timeout::*;
 
 mod thread_pool;

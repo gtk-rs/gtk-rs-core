@@ -19,11 +19,11 @@ name = "glib"
 [dependencies]
 libc.workspace = true
 bitflags.workspace = true
-futures-core = { version = "0.3", default-features = false }
-futures-task = { version = "0.3", default-features = false }
-futures-executor = "0.3"
-futures-channel = "0.3"
-futures-util = "0.3"
+futures-core = { version = "0.3", default-features = false, optional = true }
+futures-task = { version = "0.3", default-features = false, optional = true }
+futures-executor = { version = "0.3", optional = true }
+futures-channel = { version = "0.3", optional = true }
+futures-util = { version = "0.3", optional = true }
 glib-sys.workspace = true
 gobject-sys.workspace = true
 glib-macros = { workspace = true, default-features = false }
@@ -39,7 +39,7 @@ trybuild2 = "1"
 criterion = "0.7.0"
 
 [features]
-default = ["gio"]
+default = ["gio", "futures"]
 v2_58 = ["glib-sys/v2_58", "gobject-sys/v2_58"]
 v2_60 = ["v2_58", "glib-sys/v2_60"]
 v2_62 = ["v2_60", "glib-sys/v2_62", "gobject-sys/v2_62"]
@@ -59,7 +59,8 @@ log = ["rs-log"]
 log_kv = ["log", "rs-log/kv"]
 log_macros = ["log"]
 compiletests = []
-gio = ["gio-sys"]
+gio = ["gio-sys", "futures"]
+futures = ["futures-core", "futures-task", "futures-executor", "futures-channel", "futures-util"]
 
 [[test]]
 name = "subclass_compiletest"
