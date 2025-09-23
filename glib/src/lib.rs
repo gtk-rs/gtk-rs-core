@@ -26,6 +26,9 @@
 //! [`translate`]: mod@translate
 #![doc = include_str!("../README.md")]
 
+// for macros
+extern crate self as glib;
+
 pub use bitflags;
 #[doc(hidden)]
 pub use glib_macros::cstr_bytes;
