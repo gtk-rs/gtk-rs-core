@@ -106,6 +106,7 @@ use std::{
     cmp::Ordering,
     collections::{BTreeMap, HashMap},
     fmt,
+    fmt::Display,
     hash::{BuildHasher, Hash, Hasher},
     mem, ptr, slice, str,
 };
@@ -2018,6 +2019,12 @@ pub struct ObjectPath(String);
 impl ObjectPath {
     pub fn as_str(&self) -> &str {
         &self.0
+    }
+}
+
+impl Display for ObjectPath {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.0.fmt(f)
     }
 }
 
