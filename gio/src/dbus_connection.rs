@@ -6,7 +6,7 @@ use crate::{
     ffi, ActionGroup, DBusConnection, DBusInterfaceInfo, DBusMessage, DBusMethodInvocation,
     DBusSignalFlags, MenuModel,
 };
-use glib::{prelude::*, translate::*};
+use glib::{prelude::*, translate::*, WeakRef};
 
 pub trait DBusMethodCall: Sized {
     fn parse_call(
@@ -117,8 +117,75 @@ pub struct ActionGroupExportId(NonZeroU32);
 pub struct MenuModelExportId(NonZeroU32);
 #[derive(Debug, Eq, PartialEq)]
 pub struct FilterId(NonZeroU32);
+
 #[derive(Debug, Eq, PartialEq)]
 pub struct SignalSubscriptionId(NonZeroU32);
+
+// rustdoc-stripper-ignore-next
+/// A strong subscription to a D-Bus signal.
+///
+/// Keep a reference to a D-Bus connection to maintain a subscription on a
+/// D-Bus signal even if the connection has no other strong reference.
+///
+/// When dropped, unsubscribes from signal on the connection, and then drop the
+/// reference on the connection.  If no other strong reference on the connection
+/// exists the connection is closed and destroyed.
+#[derive(Debug)]
+pub struct SignalSubscription(DBusConnection, Option<SignalSubscriptionId>);
+
+impl SignalSubscription {
+    // rustdoc-stripper-ignore-next
+    /// Downgrade this signal subscription to a weak one.
+    #[must_use]
+    pub fn downgrade(mut self) -> WeakSignalSubscription {
+        WeakSignalSubscription(self.0.downgrade(), self.1.take())
+    }
+}
+
+impl Drop for SignalSubscription {
+    fn drop(&mut self) {
+        if let Some(id) = self.1.take() {
+            #[allow(deprecated)]
+            self.0.signal_unsubscribe(id);
+        }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// A weak subscription to a D-Bus signal.
+///
+/// Like [`SignalSubscription`] but hold only a weak reference to the D-Bus
+/// connection the siganl is subscribed on, i.e. maintain the subscription on
+/// the D-Bus signal only as long as some strong reference exists on the
+/// corresponding D-Bus connection.
+///
+/// When dropped, unsubscribes from signal on the connection if it still exists,
+/// and then drop the reference on the connection.  If no other strong reference
+/// on the connection exists the connection is closed and destroyed.
+#[derive(Debug)]
+pub struct WeakSignalSubscription(WeakRef<DBusConnection>, Option<SignalSubscriptionId>);
+
+impl WeakSignalSubscription {
+    // rustdoc-stripper-ignore-next
+    /// Upgrade this signal subscription to a strong one.
+    #[must_use]
+    pub fn upgrade(mut self) -> Option<SignalSubscription> {
+        self.0
+            .upgrade()
+            .map(|c| SignalSubscription(c, self.1.take()))
+    }
+}
+
+impl Drop for WeakSignalSubscription {
+    fn drop(&mut self) {
+        if let Some(id) = self.1.take() {
+            if let Some(connection) = self.0.upgrade() {
+                #[allow(deprecated)]
+                connection.signal_unsubscribe(id);
+            }
+        }
+    }
+}
 
 // rustdoc-stripper-ignore-next
 /// Build a registered DBus object, by handling different parts of DBus.
@@ -437,8 +504,45 @@ impl DBusConnection {
         }
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Subscribe to a D-Bus signal.
+    ///
+    /// See [`Self::signal_subscribe`] for arguments.
+    ///
+    /// Return a signal subscription which keeps a reference to this D-Bus
+    /// connection and unsubscribes from the signal when dropped.
+    ///
+    /// To avoid reference cycles you may wish to downgrade the returned
+    /// subscription to a weak one with [`SignalSubscription::downgrade`].
+    #[must_use]
+    pub fn subscribe_to_signal<
+        P: Fn(&DBusConnection, &str, &str, &str, &str, &glib::Variant) + 'static,
+    >(
+        &self,
+        sender: Option<&str>,
+        interface_name: Option<&str>,
+        member: Option<&str>,
+        object_path: Option<&str>,
+        arg0: Option<&str>,
+        flags: DBusSignalFlags,
+        callback: P,
+    ) -> SignalSubscription {
+        #[allow(deprecated)]
+        let id = self.signal_subscribe(
+            sender,
+            interface_name,
+            member,
+            object_path,
+            arg0,
+            flags,
+            callback,
+        );
+        SignalSubscription(self.clone(), Some(id))
+    }
+
     #[doc(alias = "g_dbus_connection_signal_subscribe")]
     #[allow(clippy::too_many_arguments)]
+    #[deprecated(note = "Prefer subscribe_to_signal")]
     pub fn signal_subscribe<
         P: Fn(&DBusConnection, &str, &str, &str, &str, &glib::Variant) + 'static,
     >(
@@ -507,6 +611,7 @@ impl DBusConnection {
     }
 
     #[doc(alias = "g_dbus_connection_signal_unsubscribe")]
+    #[deprecated(note = "Prefer subscribe_to_signal")]
     pub fn signal_unsubscribe(&self, subscription_id: SignalSubscriptionId) {
         unsafe {
             ffi::g_dbus_connection_signal_unsubscribe(
