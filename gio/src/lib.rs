@@ -32,7 +32,7 @@ pub use self::dbus::*;
 mod dbus_connection;
 pub use self::dbus_connection::{
     ActionGroupExportId, FilterId, MenuModelExportId, RegistrationBuilder, RegistrationId,
-    SignalSubscriptionId, WatcherId,
+    SignalSubscription, SignalSubscriptionId, WatcherId, WeakSignalSubscription,
 };
 mod dbus_message;
 mod dbus_method_invocation;
