@@ -181,6 +181,23 @@ impl Drop for WeakSignalSubscription {
     }
 }
 
+/// An emitted D-Bus signal.
+#[derive(Debug, Copy, Clone)]
+pub struct DBusSignalRef<'a> {
+    /// The connection the signal was emitted on.
+    pub connection: &'a DBusConnection,
+    /// The bus name of the sender which emitted the signal.
+    pub sender_name: &'a str,
+    /// The path of the object on `sender` the signal was emitted from.
+    pub object_path: &'a str,
+    /// The interface the signal belongs to.
+    pub interface_name: &'a str,
+    /// The name of the emitted signal.
+    pub signal_name: &'a str,
+    /// Parameters the signal was emitted with.
+    pub parameters: &'a glib::Variant,
+}
+
 // rustdoc-stripper-ignore-next
 /// Build a registered DBus object, by handling different parts of DBus.
 #[must_use = "The builder must be built to be used"]
@@ -508,9 +525,7 @@ impl DBusConnection {
     /// To avoid reference cycles you may wish to downgrade the returned
     /// subscription to a weak one with [`SignalSubscription::downgrade`].
     #[must_use]
-    pub fn subscribe_to_signal<
-        P: Fn(&DBusConnection, &str, &str, &str, &str, &glib::Variant) + 'static,
-    >(
+    pub fn subscribe_to_signal<P: Fn(DBusSignalRef) + 'static>(
         &self,
         sender: Option<&str>,
         interface_name: Option<&str>,
@@ -528,7 +543,16 @@ impl DBusConnection {
             object_path,
             arg0,
             flags,
-            callback,
+            move |connection, sender_name, object_path, interface_name, signal_name, parameters| {
+                callback(DBusSignalRef {
+                    connection,
+                    sender_name,
+                    object_path,
+                    interface_name,
+                    signal_name,
+                    parameters,
+                })
+            },
         );
         SignalSubscription(self.clone(), Some(id))
     }
