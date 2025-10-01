@@ -31,8 +31,8 @@ mod dbus;
 pub use self::dbus::*;
 mod dbus_connection;
 pub use self::dbus_connection::{
-    ActionGroupExportId, FilterId, MenuModelExportId, RegistrationBuilder, RegistrationId,
-    SignalSubscription, SignalSubscriptionId, WatcherId, WeakSignalSubscription,
+    ActionGroupExportId, DBusSignalRef, FilterId, MenuModelExportId, RegistrationBuilder,
+    RegistrationId, SignalSubscription, SignalSubscriptionId, WatcherId, WeakSignalSubscription,
 };
 mod dbus_message;
 mod dbus_method_invocation;
