@@ -91,6 +91,7 @@ mod socket_control_message;
 mod socket_listener;
 mod socket_msg_flags;
 pub use socket_msg_flags::SocketMsgFlags;
+mod dbus_object_manager_client;
 mod subprocess;
 mod subprocess_launcher;
 mod threaded_socket_service;
