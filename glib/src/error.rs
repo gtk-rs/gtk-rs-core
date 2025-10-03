@@ -40,6 +40,33 @@ impl Error {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Creates an error with supplied error domain quark, code and message.
+    ///
+    /// This is useful when you need to create an error with the same domain and code
+    /// as an existing error but with a different message.
+    ///
+    /// # Examples
+    ///
+    /// ```ignore
+    /// let original = Error::new(FileError::Failed, "Original message");
+    /// let modified = Error::with_domain(
+    ///     original.domain(),
+    ///     original.code(),
+    ///     "Modified message"
+    /// );
+    /// ```
+    #[doc(alias = "g_error_new_literal")]
+    pub fn with_domain(domain: Quark, code: i32, message: &str) -> Error {
+        unsafe {
+            from_glib_full(ffi::g_error_new_literal(
+                domain.into_glib(),
+                code,
+                message.to_glib_none().0,
+            ))
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Checks if the error domain matches `T`.
     pub fn is<T: ErrorDomain>(&self) -> bool {
         self.inner.domain == T::domain().into_glib()
@@ -49,6 +76,12 @@ impl Error {
     /// Returns the error domain quark
     pub fn domain(&self) -> Quark {
         unsafe { from_glib(self.inner.domain) }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Returns the error code
+    pub fn code(&self) -> i32 {
+        self.inner.code
     }
 
     // rustdoc-stripper-ignore-next
@@ -328,5 +361,20 @@ mod tests {
         let e2 = v.get::<&Error>().unwrap();
 
         assert_eq!(ptr, e2.to_glib_none().0);
+    }
+
+    #[test]
+    fn test_from_quark() {
+        let original = Error::new(crate::FileError::Failed, "Original message");
+        let modified = Error::with_domain(original.domain(), original.code(), "Modified message");
+
+        // Should have same domain and code
+        assert_eq!(original.domain(), modified.domain());
+        assert_eq!(original.code(), modified.code());
+        assert!(modified.matches(crate::FileError::Failed));
+
+        // But different message
+        assert_eq!(modified.message(), "Modified message");
+        assert_ne!(original.message(), modified.message());
     }
 }
