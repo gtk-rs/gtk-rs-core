@@ -34,6 +34,9 @@ impl std::fmt::Display for DBusObjectManagerClient {
     }
 }
 
+unsafe impl Send for DBusObjectManagerClient {}
+unsafe impl Sync for DBusObjectManagerClient {}
+
 pub trait DBusObjectManagerClientExt: IsA<DBusObjectManagerClient> + 'static {
     #[doc(alias = "g_dbus_object_manager_client_get_connection")]
     #[doc(alias = "get_connection")]
@@ -98,14 +101,17 @@ pub trait DBusObjectManagerClientExt: IsA<DBusObjectManagerClient> + 'static {
 
     #[doc(alias = "interface-proxy-signal")]
     fn connect_interface_proxy_signal<
-        F: Fn(&Self, &DBusObjectProxy, &DBusProxy, &str, &str, &glib::Variant) + 'static,
+        F: Fn(&Self, &DBusObjectProxy, &DBusProxy, &str, &str, &glib::Variant) + Send + Sync + 'static,
     >(
         &self,
         f: F,
     ) -> SignalHandlerId {
         unsafe extern "C" fn interface_proxy_signal_trampoline<
             P: IsA<DBusObjectManagerClient>,
-            F: Fn(&P, &DBusObjectProxy, &DBusProxy, &str, &str, &glib::Variant) + 'static,
+            F: Fn(&P, &DBusObjectProxy, &DBusProxy, &str, &str, &glib::Variant)
+                + Send
+                + Sync
+                + 'static,
         >(
             this: *mut ffi::GDBusObjectManagerClient,
             object_proxy: *mut ffi::GDBusObjectProxy,
@@ -139,10 +145,13 @@ pub trait DBusObjectManagerClientExt: IsA<DBusObjectManagerClient> + 'static {
     }
 
     #[doc(alias = "name-owner")]
-    fn connect_name_owner_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_name_owner_notify<F: Fn(&Self) + Send + Sync + 'static>(
+        &self,
+        f: F,
+    ) -> SignalHandlerId {
         unsafe extern "C" fn notify_name_owner_trampoline<
             P: IsA<DBusObjectManagerClient>,
-            F: Fn(&P) + 'static,
+            F: Fn(&P) + Send + Sync + 'static,
         >(
             this: *mut ffi::GDBusObjectManagerClient,
             _param_spec: glib::ffi::gpointer,
