@@ -9,13 +9,17 @@ use glib::translate::{from_glib_borrow, from_glib_full, Borrowed, IntoGlib as _,
 use std::future::Future;
 use std::pin::Pin;
 
-type DBusProxyTypeFn =
-    Box<dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type + 'static>;
+type DBusProxyTypeFn = Box<
+    dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+        + Send
+        + Sync
+        + 'static,
+>;
 
 impl DBusObjectManagerClient {
     #[doc(alias = "g_dbus_object_manager_client_new")]
     #[allow(clippy::new_ret_no_self)]
-    pub fn new<P: FnOnce(Result<DBusObjectManagerClient, glib::Error>) + 'static>(
+    pub fn new<P: FnOnce(Result<DBusObjectManagerClient, glib::Error>) + Send + Sync + 'static>(
         connection: &DBusConnection,
         flags: DBusObjectManagerClientFlags,
         name: &str,
@@ -61,7 +65,7 @@ impl DBusObjectManagerClient {
         }
 
         unsafe extern "C" fn new_trampoline<
-            P: FnOnce(Result<DBusObjectManagerClient, glib::Error>) + 'static,
+            P: FnOnce(Result<DBusObjectManagerClient, glib::Error>) + Send + Sync + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -139,7 +143,9 @@ impl DBusObjectManagerClient {
 
     #[doc(alias = "g_dbus_object_manager_client_new_for_bus")]
     #[allow(clippy::new_ret_no_self)]
-    pub fn new_for_bus<P: FnOnce(Result<DBusObjectManagerClient, glib::Error>) + 'static>(
+    pub fn new_for_bus<
+        P: FnOnce(Result<DBusObjectManagerClient, glib::Error>) + Send + Sync + 'static,
+    >(
         bus_type: BusType,
         flags: DBusObjectManagerClientFlags,
         name: &str,
@@ -185,7 +191,7 @@ impl DBusObjectManagerClient {
         }
 
         unsafe extern "C" fn new_for_bus_trampoline<
-            P: FnOnce(Result<DBusObjectManagerClient, glib::Error>) + 'static,
+            P: FnOnce(Result<DBusObjectManagerClient, glib::Error>) + Send + Sync + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -269,7 +275,10 @@ impl DBusObjectManagerClient {
         object_path: &str,
         get_proxy_type_func: Option<
             Box<
-                dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type + 'static,
+                dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+                    + Send
+                    + Sync
+                    + 'static,
             >,
         >,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -278,6 +287,8 @@ impl DBusObjectManagerClient {
             Option<
                 Box<
                     dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+                        + Send
+                        + Sync
                         + 'static,
                 >,
             >,
@@ -294,6 +305,8 @@ impl DBusObjectManagerClient {
             let callback = &*(data as *mut Option<
                 Box<
                     dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+                        + Send
+                        + Sync
                         + 'static,
                 >,
             >);
@@ -318,6 +331,8 @@ impl DBusObjectManagerClient {
                 data as *mut Option<
                     Box<
                         dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+                            + Send
+                            + Sync
                             + 'static,
                     >,
                 >,
@@ -328,6 +343,8 @@ impl DBusObjectManagerClient {
             Option<
                 Box<
                     dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+                        + Send
+                        + Sync
                         + 'static,
                 >,
             >,
@@ -361,7 +378,10 @@ impl DBusObjectManagerClient {
         object_path: &str,
         get_proxy_type_func: Option<
             Box<
-                dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type + 'static,
+                dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+                    + Send
+                    + Sync
+                    + 'static,
             >,
         >,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -370,6 +390,8 @@ impl DBusObjectManagerClient {
             Option<
                 Box<
                     dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+                        + Send
+                        + Sync
                         + 'static,
                 >,
             >,
@@ -386,6 +408,8 @@ impl DBusObjectManagerClient {
             let callback = &*(data as *mut Option<
                 Box<
                     dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+                        + Send
+                        + Sync
                         + 'static,
                 >,
             >);
@@ -410,6 +434,8 @@ impl DBusObjectManagerClient {
                 data as *mut Option<
                     Box<
                         dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+                            + Send
+                            + Sync
                             + 'static,
                     >,
                 >,
@@ -420,6 +446,8 @@ impl DBusObjectManagerClient {
             Option<
                 Box<
                     dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+                        + Send
+                        + Sync
                         + 'static,
                 >,
             >,
