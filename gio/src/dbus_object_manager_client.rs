@@ -259,9 +259,7 @@ impl DBusObjectManagerClient {
             );
         }))
     }
-}
 
-impl DBusObjectManagerClient {
     #[doc(alias = "g_dbus_object_manager_client_new_for_bus_sync")]
     #[doc(alias = "new_for_bus_sync")]
     pub fn for_bus_sync(
