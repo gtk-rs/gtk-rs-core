@@ -128,6 +128,36 @@ impl DBusObjectManagerClient {
         flags: DBusObjectManagerClientFlags,
         name: &str,
         object_path: &str,
+    ) -> Pin<Box<dyn Future<Output = Result<DBusObjectManagerClient, glib::Error>> + 'static>> {
+        Self::new_future_impl(connection, flags, name, object_path, None)
+    }
+
+    pub fn new_future_with_fn<
+        F: Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+            + Send
+            + Sync
+            + 'static,
+    >(
+        connection: &DBusConnection,
+        flags: DBusObjectManagerClientFlags,
+        name: &str,
+        object_path: &str,
+        get_proxy_type_func: F,
+    ) -> Pin<Box<dyn Future<Output = Result<DBusObjectManagerClient, glib::Error>> + 'static>> {
+        Self::new_future_impl(
+            connection,
+            flags,
+            name,
+            object_path,
+            Some(Box::new(get_proxy_type_func)),
+        )
+    }
+
+    fn new_future_impl(
+        connection: &DBusConnection,
+        flags: DBusObjectManagerClientFlags,
+        name: &str,
+        object_path: &str,
         get_proxy_type_func: Option<DBusProxyTypeFn>,
     ) -> Pin<Box<dyn Future<Output = Result<DBusObjectManagerClient, glib::Error>> + 'static>> {
         let connection = connection.clone();
@@ -250,6 +280,36 @@ impl DBusObjectManagerClient {
     }
 
     pub fn new_for_bus_future(
+        bus_type: BusType,
+        flags: DBusObjectManagerClientFlags,
+        name: &str,
+        object_path: &str,
+    ) -> Pin<Box<dyn Future<Output = Result<DBusObjectManagerClient, glib::Error>> + 'static>> {
+        Self::new_for_bus_future_impl(bus_type, flags, name, object_path, None)
+    }
+
+    pub fn new_for_bus_future_with_fn<
+        F: Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+            + Send
+            + Sync
+            + 'static,
+    >(
+        bus_type: BusType,
+        flags: DBusObjectManagerClientFlags,
+        name: &str,
+        object_path: &str,
+        get_proxy_type_func: F,
+    ) -> Pin<Box<dyn Future<Output = Result<DBusObjectManagerClient, glib::Error>> + 'static>> {
+        Self::new_for_bus_future_impl(
+            bus_type,
+            flags,
+            name,
+            object_path,
+            Some(Box::new(get_proxy_type_func)),
+        )
+    }
+
+    fn new_for_bus_future_impl(
         bus_type: BusType,
         flags: DBusObjectManagerClientFlags,
         name: &str,
