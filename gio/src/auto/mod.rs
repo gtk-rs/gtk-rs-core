@@ -89,6 +89,9 @@ pub use self::dbus_object::DBusObject;
 mod dbus_object_manager;
 pub use self::dbus_object_manager::DBusObjectManager;
 
+mod dbus_object_manager_client;
+pub use self::dbus_object_manager_client::DBusObjectManagerClient;
+
 mod dbus_object_manager_server;
 pub use self::dbus_object_manager_server::DBusObjectManagerServer;
 
@@ -828,6 +831,7 @@ pub(crate) mod traits {
     pub use super::dbus_interface_skeleton::DBusInterfaceSkeletonExt;
     pub use super::dbus_object::DBusObjectExt;
     pub use super::dbus_object_manager::DBusObjectManagerExt;
+    pub use super::dbus_object_manager_client::DBusObjectManagerClientExt;
     pub use super::dbus_object_manager_server::DBusObjectManagerServerExt;
     pub use super::dbus_object_proxy::DBusObjectProxyExt;
     pub use super::dbus_object_skeleton::DBusObjectSkeletonExt;
