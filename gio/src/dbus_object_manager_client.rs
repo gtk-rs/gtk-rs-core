@@ -22,6 +22,8 @@ type DBusProxyTypeFn = Box<
 >;
 
 impl DBusObjectManagerClient {
+    // The checker tries to add a doc alias for `g_dbus_object_manager_client_new_finish`.
+    // checker-ignore-item
     #[doc(alias = "g_dbus_object_manager_client_new")]
     #[allow(clippy::new_ret_no_self)]
     pub fn new<P: FnOnce(Result<DBusObjectManagerClient, glib::Error>) + Send + Sync + 'static>(
