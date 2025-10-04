@@ -36,7 +36,7 @@ pub fn to_value_invariants() {
     );
 }
 
-// Test that `ToValue` and `FromValue` handle nexted boxed values correctly (as per the documentation)
+// Test that `ToValue` and `FromValue` handle nested boxed values correctly (as per the documentation)
 #[test]
 pub fn to_value_boxed() {
     let x = 0i32.to_value();
