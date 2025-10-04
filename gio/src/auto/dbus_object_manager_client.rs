@@ -79,11 +79,6 @@ pub trait DBusObjectManagerClientExt: IsA<DBusObjectManagerClient> + 'static {
         }
     }
 
-    //#[doc(alias = "interface-proxy-properties-changed")]
-    //fn connect_interface_proxy_properties_changed<Unsupported or ignored types>(&self, f: F) -> SignalHandlerId {
-    //    Empty ctype invalidated_properties: *.CArray TypeId { ns_id: 0, id: 28 }
-    //}
-
     #[doc(alias = "interface-proxy-signal")]
     fn connect_interface_proxy_signal<
         F: Fn(&Self, &DBusObjectProxy, &DBusProxy, &str, &str, &glib::Variant) + Send + Sync + 'static,

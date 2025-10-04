@@ -2,10 +2,15 @@
 
 use crate::{
     ffi, BusType, Cancellable, DBusConnection, DBusObjectManagerClient,
-    DBusObjectManagerClientFlags, GioFuture,
+    DBusObjectManagerClientFlags, DBusObjectProxy, DBusProxy, GioFuture,
 };
-use glib::object::IsA;
-use glib::translate::{from_glib_borrow, from_glib_full, Borrowed, IntoGlib as _, ToGlibPtr as _};
+use glib::object::{Cast as _, IsA};
+use glib::signal::connect_raw;
+use glib::translate::{
+    from_glib_borrow, from_glib_full, Borrowed, FromGlibPtrBorrow as _, IntoGlib as _,
+    ToGlibPtr as _,
+};
+use glib::{SignalHandlerId, StrVRef};
 use std::future::Future;
 use std::pin::Pin;
 
@@ -473,3 +478,47 @@ impl DBusObjectManagerClient {
         }
     }
 }
+
+pub trait DBusObjectManagerClientExtManual: IsA<DBusObjectManagerClient> + 'static {
+    #[doc(alias = "interface-proxy-properties-changed")]
+    fn connect_interface_proxy_properties_changed<
+        F: Fn(&Self, &DBusObjectProxy, &DBusProxy, &glib::Variant, &StrVRef) + Send + Sync + 'static,
+    >(
+        &self,
+        f: F,
+    ) -> SignalHandlerId {
+        unsafe extern "C" fn interface_proxy_properties_changed_trampoline<
+            P: IsA<DBusObjectManagerClient>,
+            F: Fn(&P, &DBusObjectProxy, &DBusProxy, &glib::Variant, &StrVRef) + Send + Sync + 'static,
+        >(
+            this: *mut ffi::GDBusObjectManagerClient,
+            object_proxy: *mut ffi::GDBusObjectProxy,
+            interface_proxy: *mut ffi::GDBusProxy,
+            changed_properties: *mut glib::ffi::GVariant,
+            invalidated_properties: *const *const std::ffi::c_char,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(
+                DBusObjectManagerClient::from_glib_borrow(this).unsafe_cast_ref(),
+                &from_glib_borrow(object_proxy),
+                &from_glib_borrow(interface_proxy),
+                &from_glib_borrow(changed_properties),
+                StrVRef::from_glib_borrow(invalidated_properties),
+            )
+        }
+        unsafe {
+            let f: Box<F> = Box::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                c"interface-proxy-properties-changed".as_ptr() as *const _,
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
+                    interface_proxy_properties_changed_trampoline::<Self, F> as *const (),
+                )),
+                Box::into_raw(f),
+            )
+        }
+    }
+}
+
+impl<O: IsA<DBusObjectManagerClient>> DBusObjectManagerClientExtManual for O {}
