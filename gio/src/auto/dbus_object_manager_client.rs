@@ -79,21 +79,6 @@ pub trait DBusObjectManagerClientExt: IsA<DBusObjectManagerClient> + 'static {
         }
     }
 
-    //#[doc(alias = "get-proxy-type-destroy-notify")]
-    //fn get_proxy_type_destroy_notify(&self) -> /*Unimplemented*/Basic: Pointer {
-    //    ObjectExt::property(self.as_ref(), "get-proxy-type-destroy-notify")
-    //}
-
-    //#[doc(alias = "get-proxy-type-func")]
-    //fn get_proxy_type_func(&self) -> /*Unimplemented*/Basic: Pointer {
-    //    ObjectExt::property(self.as_ref(), "get-proxy-type-func")
-    //}
-
-    //#[doc(alias = "get-proxy-type-user-data")]
-    //fn get_proxy_type_user_data(&self) -> /*Unimplemented*/Basic: Pointer {
-    //    ObjectExt::property(self.as_ref(), "get-proxy-type-user-data")
-    //}
-
     //#[doc(alias = "interface-proxy-properties-changed")]
     //fn connect_interface_proxy_properties_changed<Unsupported or ignored types>(&self, f: F) -> SignalHandlerId {
     //    Empty ctype invalidated_properties: *.CArray TypeId { ns_id: 0, id: 28 }
