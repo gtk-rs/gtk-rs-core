@@ -543,12 +543,10 @@ impl<T: TransparentPtrType> FromGlibPtrContainer<<T as GlibPtrDefault>::GlibType
         Self::from_glib_none(ptr)
     }
 
-    #[inline]
     unsafe fn from_glib_container(ptr: *mut ffi::GSList) -> Self {
         Self::from_glib_container(ptr)
     }
 
-    #[inline]
     unsafe fn from_glib_full(ptr: *mut ffi::GSList) -> Self {
         Self::from_glib_full(ptr)
     }
