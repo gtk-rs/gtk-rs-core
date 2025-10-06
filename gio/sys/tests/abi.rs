@@ -14,7 +14,7 @@ use std::process::{Command, Stdio};
 use std::str;
 use tempfile::Builder;
 
-static PACKAGES: &[&str] = &["gio-2.0", "gio-unix-2.0"];
+static PACKAGES: &[&str] = &["gio-2.0"];
 
 #[derive(Clone, Debug)]
 struct Compiler {
@@ -797,20 +797,6 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
-        "GDesktopAppInfoClass",
-        Layout {
-            size: size_of::<GDesktopAppInfoClass>(),
-            alignment: align_of::<GDesktopAppInfoClass>(),
-        },
-    ),
-    (
-        "GDesktopAppInfoLookupIface",
-        Layout {
-            size: size_of::<GDesktopAppInfoLookupIface>(),
-            alignment: align_of::<GDesktopAppInfoLookupIface>(),
-        },
-    ),
-    (
         "GDriveIface",
         Layout {
             size: size_of::<GDriveIface>(),
@@ -920,13 +906,6 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         Layout {
             size: size_of::<GFileCreateFlags>(),
             alignment: align_of::<GFileCreateFlags>(),
-        },
-    ),
-    (
-        "GFileDescriptorBasedIface",
-        Layout {
-            size: size_of::<GFileDescriptorBasedIface>(),
-            alignment: align_of::<GFileDescriptorBasedIface>(),
         },
     ),
     (
@@ -2134,48 +2113,6 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
-        "GUnixFDMessage",
-        Layout {
-            size: size_of::<GUnixFDMessage>(),
-            alignment: align_of::<GUnixFDMessage>(),
-        },
-    ),
-    (
-        "GUnixFDMessageClass",
-        Layout {
-            size: size_of::<GUnixFDMessageClass>(),
-            alignment: align_of::<GUnixFDMessageClass>(),
-        },
-    ),
-    (
-        "GUnixInputStream",
-        Layout {
-            size: size_of::<GUnixInputStream>(),
-            alignment: align_of::<GUnixInputStream>(),
-        },
-    ),
-    (
-        "GUnixInputStreamClass",
-        Layout {
-            size: size_of::<GUnixInputStreamClass>(),
-            alignment: align_of::<GUnixInputStreamClass>(),
-        },
-    ),
-    (
-        "GUnixOutputStream",
-        Layout {
-            size: size_of::<GUnixOutputStream>(),
-            alignment: align_of::<GUnixOutputStream>(),
-        },
-    ),
-    (
-        "GUnixOutputStreamClass",
-        Layout {
-            size: size_of::<GUnixOutputStreamClass>(),
-            alignment: align_of::<GUnixOutputStreamClass>(),
-        },
-    ),
-    (
         "GUnixSocketAddress",
         Layout {
             size: size_of::<GUnixSocketAddress>(),
@@ -2457,10 +2394,6 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     (
         "G_DEBUG_CONTROLLER_EXTENSION_POINT_NAME",
         "gio-debug-controller",
-    ),
-    (
-        "G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME",
-        "gio-desktop-app-info-lookup",
     ),
     ("G_DRIVE_IDENTIFIER_KIND_UNIX_DEVICE", "unix-device"),
     ("(guint) G_DRIVE_START_NONE", "0"),
