@@ -28,7 +28,8 @@ impl DBusObjectManagerClient {
 
     #[doc(alias = "g_dbus_object_manager_client_new_for_bus_sync")]
     #[doc(alias = "new_for_bus_sync")]
-    pub fn for_bus_sync(
+    #[allow(dead_code)]
+    pub(crate) fn for_bus_sync_impl(
         bus_type: BusType,
         flags: DBusObjectManagerClientFlags,
         name: &str,
@@ -120,7 +121,9 @@ impl DBusObjectManagerClient {
     }
 
     #[doc(alias = "g_dbus_object_manager_client_new_sync")]
-    pub fn new_sync(
+    #[doc(alias = "new_sync")]
+    #[allow(dead_code)]
+    pub(crate) fn new_sync_impl(
         connection: &DBusConnection,
         flags: DBusObjectManagerClientFlags,
         name: Option<&str>,
