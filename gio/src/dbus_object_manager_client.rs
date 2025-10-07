@@ -92,11 +92,57 @@ impl DBusObjectManagerClient {
         )
     }
 
-    // The checker tries to add a doc alias for `g_dbus_object_manager_client_new_finish`.
-    // checker-ignore-item
-    #[doc(alias = "g_dbus_object_manager_client_new")]
     #[allow(clippy::new_ret_no_self)]
+    #[doc(alias = "g_dbus_object_manager_client_new")]
     pub fn new<P: FnOnce(Result<DBusObjectManagerClient, glib::Error>) + Send + Sync + 'static>(
+        connection: &DBusConnection,
+        flags: DBusObjectManagerClientFlags,
+        name: &str,
+        object_path: &str,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
+    ) {
+        Self::new_impl(
+            connection,
+            flags,
+            name,
+            object_path,
+            None,
+            cancellable,
+            callback,
+        )
+    }
+
+    #[allow(clippy::new_ret_no_self)]
+    #[doc(alias = "g_dbus_object_manager_client_new")]
+    pub fn new_with_fn<
+        P: FnOnce(Result<DBusObjectManagerClient, glib::Error>) + Send + Sync + 'static,
+        F: Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+            + Send
+            + Sync
+            + 'static,
+    >(
+        connection: &DBusConnection,
+        flags: DBusObjectManagerClientFlags,
+        name: &str,
+        object_path: &str,
+        get_proxy_type_func: F,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
+    ) {
+        Self::new_impl(
+            connection,
+            flags,
+            name,
+            object_path,
+            Some(Box::new(get_proxy_type_func)),
+            cancellable,
+            callback,
+        )
+    }
+
+    #[allow(clippy::new_ret_no_self)]
+    fn new_impl<P: FnOnce(Result<DBusObjectManagerClient, glib::Error>) + Send + Sync + 'static>(
         connection: &DBusConnection,
         flags: DBusObjectManagerClientFlags,
         name: &str,
@@ -234,7 +280,7 @@ impl DBusObjectManagerClient {
         let name = String::from(name);
         let object_path = String::from(object_path);
         Box::pin(GioFuture::new(&(), move |_obj, cancellable, send| {
-            Self::new(
+            Self::new_impl(
                 &connection,
                 flags,
                 &name,
