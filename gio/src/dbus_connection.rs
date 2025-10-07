@@ -6,7 +6,10 @@ use crate::{
     ffi, ActionGroup, DBusConnection, DBusInterfaceInfo, DBusMessage, DBusMethodInvocation,
     DBusSignalFlags, MenuModel,
 };
-use glib::{prelude::*, translate::*};
+use futures_channel::mpsc;
+use futures_core::{FusedStream, Stream};
+use glib::{prelude::*, translate::*, variant::VariantTypeMismatchError, WeakRef};
+use pin_project_lite::pin_project;
 
 pub trait DBusMethodCall: Sized {
     fn parse_call(
@@ -117,8 +120,170 @@ pub struct ActionGroupExportId(NonZeroU32);
 pub struct MenuModelExportId(NonZeroU32);
 #[derive(Debug, Eq, PartialEq)]
 pub struct FilterId(NonZeroU32);
+
 #[derive(Debug, Eq, PartialEq)]
 pub struct SignalSubscriptionId(NonZeroU32);
+
+// rustdoc-stripper-ignore-next
+/// A strong subscription to a D-Bus signal.
+///
+/// Keep a reference to a D-Bus connection to maintain a subscription on a
+/// D-Bus signal even if the connection has no other strong reference.
+///
+/// When dropped, unsubscribes from signal on the connection, and then drop the
+/// reference on the connection.  If no other strong reference on the connection
+/// exists the connection is closed and destroyed.
+#[derive(Debug)]
+pub struct SignalSubscription(DBusConnection, Option<SignalSubscriptionId>);
+
+impl SignalSubscription {
+    // rustdoc-stripper-ignore-next
+    /// Downgrade this signal subscription to a weak one.
+    #[must_use]
+    pub fn downgrade(mut self) -> WeakSignalSubscription {
+        WeakSignalSubscription(self.0.downgrade(), self.1.take())
+    }
+}
+
+impl Drop for SignalSubscription {
+    fn drop(&mut self) {
+        if let Some(id) = self.1.take() {
+            #[allow(deprecated)]
+            self.0.signal_unsubscribe(id);
+        }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// A weak subscription to a D-Bus signal.
+///
+/// Like [`SignalSubscription`] but hold only a weak reference to the D-Bus
+/// connection the siganl is subscribed on, i.e. maintain the subscription on
+/// the D-Bus signal only as long as some strong reference exists on the
+/// corresponding D-Bus connection.
+///
+/// When dropped, unsubscribes from signal on the connection if it still exists,
+/// and then drop the reference on the connection.  If no other strong reference
+/// on the connection exists the connection is closed and destroyed.
+#[derive(Debug)]
+pub struct WeakSignalSubscription(WeakRef<DBusConnection>, Option<SignalSubscriptionId>);
+
+impl WeakSignalSubscription {
+    // rustdoc-stripper-ignore-next
+    /// Upgrade this signal subscription to a strong one.
+    #[must_use]
+    pub fn upgrade(mut self) -> Option<SignalSubscription> {
+        self.0
+            .upgrade()
+            .map(|c| SignalSubscription(c, self.1.take()))
+    }
+}
+
+impl Drop for WeakSignalSubscription {
+    fn drop(&mut self) {
+        if let Some(id) = self.1.take() {
+            if let Some(connection) = self.0.upgrade() {
+                #[allow(deprecated)]
+                connection.signal_unsubscribe(id);
+            }
+        }
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// An emitted D-Bus signal.
+#[derive(Debug, Copy, Clone)]
+pub struct DBusSignalRef<'a> {
+    // rustdoc-stripper-ignore-next
+    /// The connection the signal was emitted on.
+    pub connection: &'a DBusConnection,
+    // rustdoc-stripper-ignore-next
+    /// The bus name of the sender which emitted the signal.
+    pub sender_name: &'a str,
+    // rustdoc-stripper-ignore-next
+    /// The path of the object on `sender` the signal was emitted from.
+    pub object_path: &'a str,
+    // rustdoc-stripper-ignore-next
+    /// The interface the signal belongs to.
+    pub interface_name: &'a str,
+    // rustdoc-stripper-ignore-next
+    /// The name of the emitted signal.
+    pub signal_name: &'a str,
+    // rustdoc-stripper-ignore-next
+    /// Parameters the signal was emitted with.
+    pub parameters: &'a glib::Variant,
+}
+
+pin_project! {
+    // rustdoc-stripper-ignore-next
+    /// A subscribed stream.
+    ///
+    /// A stream which wraps an inner stream of type `S` while holding on to a
+    /// subscription handle `H` to keep a subscription alive.
+    #[derive(Debug)]
+    #[must_use = "streams do nothing unless polled"]
+    pub struct SubscribedSignalStream<H, S> {
+        #[pin]
+        stream: S,
+        subscription: H,
+    }
+}
+
+impl<S> SubscribedSignalStream<SignalSubscription, S> {
+    // rustdoc-stripper-ignore-next
+    /// Downgrade the inner signal subscription to a weak one.
+    ///
+    /// See [`SignalSubscription::downgrade`] and [`WeakSignalSubscription`].
+    pub fn downgrade(self) -> SubscribedSignalStream<WeakSignalSubscription, S> {
+        SubscribedSignalStream {
+            subscription: self.subscription.downgrade(),
+            stream: self.stream,
+        }
+    }
+}
+
+impl<S> SubscribedSignalStream<WeakSignalSubscription, S> {
+    // rustdoc-stripper-ignore-next
+    /// Upgrade the inner signal subscription to a strong one.
+    ///
+    /// See [`WeakSignalSubscription::upgrade`] and [`SignalSubscription`].
+    pub fn downgrade(self) -> Option<SubscribedSignalStream<SignalSubscription, S>> {
+        self.subscription
+            .upgrade()
+            .map(|subscription| SubscribedSignalStream {
+                subscription,
+                stream: self.stream,
+            })
+    }
+}
+
+impl<H, S> Stream for SubscribedSignalStream<H, S>
+where
+    S: Stream,
+{
+    type Item = S::Item;
+
+    fn poll_next(
+        self: std::pin::Pin<&mut Self>,
+        cx: &mut std::task::Context<'_>,
+    ) -> std::task::Poll<Option<Self::Item>> {
+        let this = self.project();
+        this.stream.poll_next(cx)
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.stream.size_hint()
+    }
+}
+
+impl<H, S> FusedStream for SubscribedSignalStream<H, S>
+where
+    S: FusedStream,
+{
+    fn is_terminated(&self) -> bool {
+        self.stream.is_terminated()
+    }
+}
 
 // rustdoc-stripper-ignore-next
 /// Build a registered DBus object, by handling different parts of DBus.
@@ -437,8 +602,52 @@ impl DBusConnection {
         }
     }
 
+    // rustdoc-stripper-ignore-next
+    /// Subscribe to a D-Bus signal.
+    ///
+    /// See [`Self::signal_subscribe`] for arguments.
+    ///
+    /// Return a signal subscription which keeps a reference to this D-Bus
+    /// connection and unsubscribes from the signal when dropped.
+    ///
+    /// To avoid reference cycles you may wish to downgrade the returned
+    /// subscription to a weak one with [`SignalSubscription::downgrade`].
+    #[must_use]
+    pub fn subscribe_to_signal<P: Fn(DBusSignalRef) + 'static>(
+        &self,
+        sender: Option<&str>,
+        interface_name: Option<&str>,
+        member: Option<&str>,
+        object_path: Option<&str>,
+        arg0: Option<&str>,
+        flags: DBusSignalFlags,
+        callback: P,
+    ) -> SignalSubscription {
+        #[allow(deprecated)]
+        let id = self.signal_subscribe(
+            sender,
+            interface_name,
+            member,
+            object_path,
+            arg0,
+            flags,
+            move |connection, sender_name, object_path, interface_name, signal_name, parameters| {
+                callback(DBusSignalRef {
+                    connection,
+                    sender_name,
+                    object_path,
+                    interface_name,
+                    signal_name,
+                    parameters,
+                });
+            },
+        );
+        SignalSubscription(self.clone(), Some(id))
+    }
+
     #[doc(alias = "g_dbus_connection_signal_subscribe")]
     #[allow(clippy::too_many_arguments)]
+    #[deprecated(note = "Prefer subscribe_to_signal")]
     pub fn signal_subscribe<
         P: Fn(&DBusConnection, &str, &str, &str, &str, &glib::Variant) + 'static,
     >(
@@ -507,6 +716,7 @@ impl DBusConnection {
     }
 
     #[doc(alias = "g_dbus_connection_signal_unsubscribe")]
+    #[deprecated(note = "Prefer subscribe_to_signal")]
     pub fn signal_unsubscribe(&self, subscription_id: SignalSubscriptionId) {
         unsafe {
             ffi::g_dbus_connection_signal_unsubscribe(
@@ -514,5 +724,87 @@ impl DBusConnection {
                 subscription_id.0.into(),
             );
         }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Subscribe to a D-Bus signal and receive signal emissions as a stream.
+    ///
+    /// See [`Self::signal_subscribe`] for arguments.  `map_signal` maps the
+    /// received signal to the stream's element.
+    ///
+    /// The returned stream holds a strong reference to this D-Bus connection,
+    /// and unsubscribes from the signal when dropped. To avoid reference cycles
+    /// you may wish to downgrade the returned stream to hold only weak
+    /// reference to the connection using [`SubscribedSignalStream::downgrade`].
+    ///
+    /// After invoking `map_signal` the stream threads incoming signals through
+    /// an unbounded channel.  Hence, memory consumption will keep increasing
+    /// as long as the stream consumer does not keep up with signal emissions.
+    /// If you need to perform expensive processing in response to signals it's
+    /// therefore recommended to insert an extra buffering and if the buffer
+    /// overruns, either fail drop the entire stream, or drop individual signal
+    /// emissions until the buffer has space again.
+    pub fn receive_signal<T: 'static, F: Fn(DBusSignalRef) -> T + 'static>(
+        &self,
+        sender: Option<&str>,
+        interface_name: Option<&str>,
+        member: Option<&str>,
+        object_path: Option<&str>,
+        arg0: Option<&str>,
+        flags: DBusSignalFlags,
+        map_signal: F,
+    ) -> SubscribedSignalStream<SignalSubscription, impl Stream<Item = T> + use<T, F>> {
+        let (tx, rx) = mpsc::unbounded();
+        let subscription = self.subscribe_to_signal(
+            sender,
+            interface_name,
+            member,
+            object_path,
+            arg0,
+            flags,
+            move |signal| {
+                // Just ignore send errors: if the receiver is dropped, the
+                // signal subscription is dropped too, so the callback won't
+                // be invoked anymore.
+                let _ = tx.unbounded_send(map_signal(signal));
+            },
+        );
+        SubscribedSignalStream {
+            subscription,
+            stream: rx,
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Subscribe to a D-Bus signal and receive signal parameters as a stream.
+    ///
+    /// Like [`Self::receive_signal`] (which see for more information), but
+    /// automatically decodes the emitted signal parameters to type `T`.
+    /// If decoding fails the corresponding variant type error is sent
+    /// downstream.
+    pub fn receive_signal_parameters<T>(
+        &self,
+        sender: Option<&str>,
+        interface_name: Option<&str>,
+        member: Option<&str>,
+        object_path: Option<&str>,
+        arg0: Option<&str>,
+        flags: DBusSignalFlags,
+    ) -> SubscribedSignalStream<
+        SignalSubscription,
+        impl Stream<Item = Result<T, VariantTypeMismatchError>> + use<T>,
+    >
+    where
+        T: FromVariant + 'static,
+    {
+        self.receive_signal(
+            sender,
+            interface_name,
+            member,
+            object_path,
+            arg0,
+            flags,
+            |signal| signal.parameters.try_get(),
+        )
     }
 }
