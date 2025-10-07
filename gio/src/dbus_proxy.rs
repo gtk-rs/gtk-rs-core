@@ -7,6 +7,42 @@ use glib::{prelude::*, signal::connect_raw, translate::*, SignalHandlerId};
 use crate::{ffi, DBusProxy};
 
 pub trait DBusProxyExtManual: IsA<DBusProxy> + 'static {
+    #[doc(alias = "g-properties-changed")]
+    fn connect_g_properties_changed<
+        F: Fn(&Self, &glib::Variant, &glib::StrVRef) + Send + Sync + 'static,
+    >(
+        &self,
+        f: F,
+    ) -> SignalHandlerId {
+        unsafe extern "C" fn g_properties_changed_trampoline<
+            P: IsA<DBusProxy>,
+            F: Fn(&P, &glib::Variant, &glib::StrVRef) + Send + Sync + 'static,
+        >(
+            this: *mut ffi::GDBusProxy,
+            changed_properties: *mut glib::ffi::GVariant,
+            invalidated_properties: *const *const libc::c_char,
+            f: glib::ffi::gpointer,
+        ) {
+            let f: &F = &*(f as *const F);
+            f(
+                DBusProxy::from_glib_borrow(this).unsafe_cast_ref(),
+                &from_glib_borrow(changed_properties),
+                glib::StrVRef::from_glib_borrow(invalidated_properties),
+            )
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(
+                self.as_ptr() as *mut _,
+                c"g-properties-changed".as_ptr() as *const _,
+                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
+                    g_properties_changed_trampoline::<Self, F> as *const (),
+                )),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
     #[cfg(feature = "v2_72")]
     #[doc(alias = "g-signal")]
     fn connect_g_signal<
