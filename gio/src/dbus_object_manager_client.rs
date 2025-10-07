@@ -303,6 +303,56 @@ impl DBusObjectManagerClient {
         flags: DBusObjectManagerClientFlags,
         name: &str,
         object_path: &str,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
+    ) {
+        Self::new_for_bus_impl(
+            bus_type,
+            flags,
+            name,
+            object_path,
+            None,
+            cancellable,
+            callback,
+        );
+    }
+
+    #[doc(alias = "g_dbus_object_manager_client_new_for_bus")]
+    #[allow(clippy::new_ret_no_self)]
+    pub fn new_for_bus_with_fn<
+        P: FnOnce(Result<DBusObjectManagerClient, glib::Error>) + Send + Sync + 'static,
+        F: Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+            + Send
+            + Sync
+            + 'static,
+    >(
+        bus_type: BusType,
+        flags: DBusObjectManagerClientFlags,
+        name: &str,
+        object_path: &str,
+        get_proxy_type_func: F,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
+    ) {
+        Self::new_for_bus_impl(
+            bus_type,
+            flags,
+            name,
+            object_path,
+            Some(Box::new(get_proxy_type_func)),
+            cancellable,
+            callback,
+        );
+    }
+
+    #[allow(clippy::new_ret_no_self)]
+    fn new_for_bus_impl<
+        P: FnOnce(Result<DBusObjectManagerClient, glib::Error>) + Send + Sync + 'static,
+    >(
+        bus_type: BusType,
+        flags: DBusObjectManagerClientFlags,
+        name: &str,
+        object_path: &str,
         get_proxy_type_func: Option<DBusProxyTypeFn>,
         cancellable: Option<&impl IsA<Cancellable>>,
         callback: P,
@@ -435,7 +485,7 @@ impl DBusObjectManagerClient {
         let name = String::from(name);
         let object_path = String::from(object_path);
         Box::pin(GioFuture::new(&(), move |_obj, cancellable, send| {
-            Self::new_for_bus(
+            Self::new_for_bus_impl(
                 bus_type,
                 flags,
                 &name,
