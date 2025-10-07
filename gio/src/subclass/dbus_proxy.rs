@@ -4,10 +4,18 @@
 
 use glib::{prelude::*, subclass::prelude::*, translate::*, GString, StrVRef};
 
-use crate::{ffi, subclass::prelude::DBusInterfaceImpl, DBusProxy};
+use crate::{
+    ffi,
+    subclass::prelude::{AsyncInitableImpl, DBusInterfaceImpl, InitableImpl},
+    DBusProxy,
+};
 
 pub trait DBusProxyImpl:
-    ObjectImpl + DBusInterfaceImpl + ObjectSubclass<Type: IsA<DBusProxy>>
+    ObjectImpl
+    + AsyncInitableImpl
+    + DBusInterfaceImpl
+    + InitableImpl
+    + ObjectSubclass<Type: IsA<DBusProxy>>
 {
     fn g_properties_changed(
         &self,
