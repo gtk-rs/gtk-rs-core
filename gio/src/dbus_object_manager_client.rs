@@ -22,6 +22,76 @@ type DBusProxyTypeFn = Box<
 >;
 
 impl DBusObjectManagerClient {
+    #[doc(alias = "g_dbus_object_manager_client_new_sync")]
+    pub fn new_sync(
+        connection: &DBusConnection,
+        flags: DBusObjectManagerClientFlags,
+        name: Option<&str>,
+        object_path: &str,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<DBusObjectManagerClient, glib::Error> {
+        Self::new_sync_impl(connection, flags, name, object_path, None, cancellable)
+    }
+
+    #[doc(alias = "g_dbus_object_manager_client_new_sync")]
+    pub fn new_sync_with_fn<
+        F: Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+            + Send
+            + Sync
+            + 'static,
+    >(
+        connection: &DBusConnection,
+        flags: DBusObjectManagerClientFlags,
+        name: Option<&str>,
+        object_path: &str,
+        get_proxy_type_func: F,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<DBusObjectManagerClient, glib::Error> {
+        Self::new_sync_impl(
+            connection,
+            flags,
+            name,
+            object_path,
+            Some(Box::new(get_proxy_type_func)),
+            cancellable,
+        )
+    }
+
+    #[doc(alias = "g_dbus_object_manager_client_new_for_bus_sync")]
+    pub fn for_bus_sync(
+        bus_type: BusType,
+        flags: DBusObjectManagerClientFlags,
+        name: &str,
+        object_path: &str,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<DBusObjectManagerClient, glib::Error> {
+        Self::for_bus_sync_impl(bus_type, flags, name, object_path, None, cancellable)
+    }
+
+    #[doc(alias = "g_dbus_object_manager_client_new_for_bus_sync")]
+    pub fn for_bus_sync_with_fn<
+        F: Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+            + Send
+            + Sync
+            + 'static,
+    >(
+        bus_type: BusType,
+        flags: DBusObjectManagerClientFlags,
+        name: &str,
+        object_path: &str,
+        get_proxy_type_func: F,
+        cancellable: Option<&impl IsA<Cancellable>>,
+    ) -> Result<DBusObjectManagerClient, glib::Error> {
+        Self::for_bus_sync_impl(
+            bus_type,
+            flags,
+            name,
+            object_path,
+            Some(Box::new(get_proxy_type_func)),
+            cancellable,
+        )
+    }
+
     // The checker tries to add a doc alias for `g_dbus_object_manager_client_new_finish`.
     // checker-ignore-item
     #[doc(alias = "g_dbus_object_manager_client_new")]
