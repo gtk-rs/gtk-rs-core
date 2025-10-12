@@ -36,6 +36,7 @@ pub use self::dbus_connection::{
     RegistrationId, SignalSubscription, SignalSubscriptionId, SubscribedSignalStream, WatcherId,
     WeakSignalSubscription,
 };
+mod dbus_interface_info;
 mod dbus_message;
 mod dbus_method_invocation;
 mod dbus_node_info;
