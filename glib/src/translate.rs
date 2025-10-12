@@ -1587,7 +1587,7 @@ pub trait FromGlibPtrFull<P: Ptr>: Sized {
 }
 
 // rustdoc-stripper-ignore-next
-/// Translate from a pointer type by borrowing, without affecting the refcount.
+/// Translate from a pointer type by borrowing, without affecting the refcount or copying.
 ///
 /// The purpose of this trait is to access values inside callbacks
 /// without changing their reference status.
@@ -1622,6 +1622,64 @@ pub trait FromGlibPtrBorrow<P: Ptr>: Sized {
 }
 
 // rustdoc-stripper-ignore-next
+/// Translate from a pointer type by borrowing, without affecting the refcount or copying.
+///
+/// The purpose of this trait is to access values inside callbacks
+/// without changing their reference status.
+/// The obtained borrow must not be accessed outside of the scope of the callback,
+/// and called procedures must not store any references to the underlying data.
+/// Safe Rust code must never obtain a mutable Rust reference.
+///
+/// <a name="safety_points"></a>
+/// # Safety
+///
+/// The implementation of this trait as well as the returned type
+/// must satisfy the same constraints together.
+/// They must not take ownership of the underlying value, copy it,
+/// and should not change its reference count.
+/// If it does, it must properly release obtained references.
+///
+/// For more information, refer to module level documentation.
+// FIXME: Rename to FromGlibPtrBorrow once all users are gone
+pub trait FromGlibPtrBorrow2<P>: Sized {
+    // rustdoc-stripper-ignore-next
+    /// # Safety
+    ///
+    /// See trait level [notes on safety](#safety_points)
+    unsafe fn from_glib_borrow2(_ptr: &P) -> &Self {
+        unimplemented!();
+    }
+}
+
+// rustdoc-stripper-ignore-next
+/// Translate from a pointer type by borrowing mutably, without affecting the refcount or copying.
+///
+/// The purpose of this trait is to access values inside callbacks
+/// without changing their reference status.
+/// The obtained borrow must not be accessed outside of the scope of the callback,
+/// and called procedures must not store any references to the underlying data.
+///
+/// <a name="safety_points"></a>
+/// # Safety
+///
+/// The implementation of this trait as well as the returned type
+/// must satisfy the same constraints together.
+/// They must not take ownership of the underlying value, copy it,
+/// and should not change its reference count.
+///
+/// For more information, refer to module level documentation.
+// FIXME: Rename to FromGlibPtrBorrowMut once all users are gone
+pub trait FromGlibPtrBorrowMut2<P>: Sized {
+    // rustdoc-stripper-ignore-next
+    /// # Safety
+    ///
+    /// See trait level [notes on safety](#safety_points)
+    unsafe fn from_glib_borrow_mut2(_ptr: &mut P) -> &mut Self {
+        unimplemented!();
+    }
+}
+
+// rustdoc-stripper-ignore-next
 /// Translate from a pointer type, transfer: none.
 ///
 /// See [`FromGlibPtrNone`](trait.FromGlibPtrNone.html).
@@ -1646,6 +1704,24 @@ pub unsafe fn from_glib_full<P: Ptr, T: FromGlibPtrFull<P>>(ptr: P) -> T {
 #[inline]
 pub unsafe fn from_glib_borrow<P: Ptr, T: FromGlibPtrBorrow<P>>(ptr: P) -> Borrowed<T> {
     FromGlibPtrBorrow::from_glib_borrow(ptr)
+}
+
+// rustdoc-stripper-ignore-next
+/// Translate from a pointer type, borrowing the pointer.
+///
+/// See [`FromGlibPtrBorrow2`](trait.FromGlibPtrBorrow2.html).
+#[inline]
+pub unsafe fn from_glib_borrow2<P, T: FromGlibPtrBorrow2<P>>(ptr: &P) -> &T {
+    FromGlibPtrBorrow2::from_glib_borrow2(ptr)
+}
+
+// rustdoc-stripper-ignore-next
+/// Translate from a pointer type, borrowing the pointer mutable.
+///
+/// See [`FromGlibPtrBorrowMut2`](trait.FromGlibPtrBorrowMut2.html).
+#[inline]
+pub unsafe fn from_glib_borrow_mut2<P, T: FromGlibPtrBorrowMut2<P>>(ptr: &mut P) -> &mut T {
+    FromGlibPtrBorrowMut2::from_glib_borrow_mut2(ptr)
 }
 
 impl<P: Ptr, T: FromGlibPtrNone<P>> FromGlibPtrNone<P> for Option<T> {
