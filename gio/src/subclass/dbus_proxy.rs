@@ -2,7 +2,7 @@
 
 #![deny(unsafe_op_in_unsafe_fn)]
 
-use glib::{prelude::*, subclass::prelude::*, translate::*, GString, StrVRef};
+use glib::{prelude::*, subclass::prelude::*, translate::*, GStr, StrVRef, Variant};
 
 use crate::{
     ffi,
@@ -17,15 +17,11 @@ pub trait DBusProxyImpl:
     + InitableImpl
     + ObjectSubclass<Type: IsA<DBusProxy>>
 {
-    fn g_properties_changed(
-        &self,
-        changed_properties: &glib::Variant,
-        invalidated_properties: &StrVRef,
-    ) {
+    fn g_properties_changed(&self, changed_properties: &Variant, invalidated_properties: &StrVRef) {
         self.parent_g_properties_changed(changed_properties, invalidated_properties);
     }
 
-    fn g_signal(&self, sender_name: Option<&str>, signal_name: &str, parameters: &glib::Variant) {
+    fn g_signal(&self, sender_name: Option<&GStr>, signal_name: &GStr, parameters: &Variant) {
         self.parent_g_signal(sender_name, signal_name, parameters);
     }
 }
@@ -33,7 +29,7 @@ pub trait DBusProxyImpl:
 pub trait DBusProxyImplExt: DBusProxyImpl {
     fn parent_g_properties_changed(
         &self,
-        changed_properties: &glib::Variant,
+        changed_properties: &Variant,
         invalidated_properties: &StrVRef,
     ) {
         unsafe {
@@ -52,9 +48,9 @@ pub trait DBusProxyImplExt: DBusProxyImpl {
 
     fn parent_g_signal(
         &self,
-        sender_name: Option<&str>,
-        signal_name: &str,
-        parameters: &glib::Variant,
+        sender_name: Option<&GStr>,
+        signal_name: &GStr,
+        parameters: &Variant,
     ) {
         unsafe {
             let data = Self::type_data();
@@ -105,8 +101,8 @@ unsafe extern "C" fn g_signal<T: DBusProxyImpl>(
     let instance = unsafe { &*(proxy as *mut T::Instance) };
     let imp = instance.imp();
 
-    let sender_name = unsafe { Option::<GString>::from_glib_borrow(sender_name) };
-    let signal_name = unsafe { GString::from_glib_borrow(signal_name) };
+    let sender_name = unsafe { Option::<&GStr>::from_glib_none(sender_name) };
+    let signal_name = unsafe { from_glib_none(signal_name) };
     let parameters = unsafe { from_glib_borrow(parameters) };
-    imp.g_signal(sender_name.as_ref().as_deref(), &signal_name, &parameters);
+    imp.g_signal(sender_name, signal_name, &parameters);
 }
