@@ -31,7 +31,7 @@ pub trait DBusInterfaceExt: IsA<DBusInterface> + 'static {
 
     #[doc(alias = "g_dbus_interface_get_info")]
     #[doc(alias = "get_info")]
-    fn info(&self) -> DBusInterfaceInfo {
+    fn info(&self) -> Option<DBusInterfaceInfo> {
         unsafe {
             from_glib_none(ffi::g_dbus_interface_get_info(
                 self.as_ref().to_glib_none().0,
