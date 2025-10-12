@@ -158,7 +158,7 @@ impl Drop for SignalSubscription {
 /// A weak subscription to a D-Bus signal.
 ///
 /// Like [`SignalSubscription`] but hold only a weak reference to the D-Bus
-/// connection the siganl is subscribed on, i.e. maintain the subscription on
+/// connection the signal is subscribed on, i.e. maintain the subscription on
 /// the D-Bus signal only as long as some strong reference exists on the
 /// corresponding D-Bus connection.
 ///
