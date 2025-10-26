@@ -130,13 +130,6 @@ mod debug_controller_dbus;
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 pub use self::debug_controller_dbus::DebugControllerDBus;
 
-#[cfg(all(not(windows), not(target_os = "macos")))]
-#[cfg_attr(docsrs, doc(cfg(all(not(windows), not(target_os = "macos")))))]
-mod desktop_app_info;
-#[cfg(all(not(windows), not(target_os = "macos")))]
-#[cfg_attr(docsrs, doc(cfg(all(not(windows), not(target_os = "macos")))))]
-pub use self::desktop_app_info::DesktopAppInfo;
-
 mod drive;
 pub use self::drive::Drive;
 
@@ -432,34 +425,6 @@ pub use self::unix_fd_list::UnixFDList;
 
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
-mod unix_fd_message;
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-pub use self::unix_fd_message::UnixFDMessage;
-
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-mod unix_input_stream;
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-pub use self::unix_input_stream::UnixInputStream;
-
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-mod unix_mount_monitor;
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-pub use self::unix_mount_monitor::UnixMountMonitor;
-
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-mod unix_output_stream;
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-pub use self::unix_output_stream::UnixOutputStream;
-
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
 mod unix_socket_address;
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
@@ -518,20 +483,6 @@ pub use self::settings_schema_source::SettingsSchemaSource;
 
 mod srv_target;
 pub use self::srv_target::SrvTarget;
-
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-mod unix_mount_entry;
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-pub use self::unix_mount_entry::UnixMountEntry;
-
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-mod unix_mount_point;
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-pub use self::unix_mount_point::UnixMountPoint;
 
 mod enums;
 pub use self::enums::BusType;
@@ -924,15 +875,6 @@ pub(crate) mod traits {
     #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub use super::unix_fd_list::UnixFDListExt;
-    #[cfg(unix)]
-    #[cfg_attr(docsrs, doc(cfg(unix)))]
-    pub use super::unix_fd_message::UnixFDMessageExt;
-    #[cfg(unix)]
-    #[cfg_attr(docsrs, doc(cfg(unix)))]
-    pub use super::unix_input_stream::UnixInputStreamExt;
-    #[cfg(unix)]
-    #[cfg_attr(docsrs, doc(cfg(unix)))]
-    pub use super::unix_output_stream::UnixOutputStreamExt;
     #[cfg(unix)]
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     pub use super::unix_socket_address::UnixSocketAddressExt;
