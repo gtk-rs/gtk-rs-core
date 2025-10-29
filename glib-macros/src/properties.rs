@@ -5,7 +5,7 @@ use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::format_ident;
 use quote::{quote, quote_spanned};
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 use syn::ext::IdentExt;
 use syn::parenthesized;
 use syn::parse::Parse;
@@ -216,7 +216,7 @@ struct ReceivedAttrs {
     member: Option<syn::Ident>,
     name: Option<syn::LitStr>,
     builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
-    builder_fields: HashMap<syn::Ident, Option<syn::Expr>>,
+    builder_fields: BTreeMap<syn::Ident, Option<syn::Expr>>,
     use_default: bool,
 }
 
@@ -271,7 +271,7 @@ struct PropDesc {
     set: Option<MaybeCustomFn>,
     member: Option<syn::Ident>,
     builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
-    builder_fields: HashMap<syn::Ident, Option<syn::Expr>>,
+    builder_fields: BTreeMap<syn::Ident, Option<syn::Expr>>,
     is_construct_only: bool,
     use_default: bool,
 }
