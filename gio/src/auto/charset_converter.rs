@@ -107,12 +107,6 @@ impl CharsetConverter {
     }
 }
 
-impl Default for CharsetConverter {
-    fn default() -> Self {
-        glib::object::Object::new::<Self>()
-    }
-}
-
 // rustdoc-stripper-ignore-next
 /// A [builder-pattern] type to construct [`CharsetConverter`] objects.
 ///
