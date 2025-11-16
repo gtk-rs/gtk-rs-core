@@ -466,7 +466,7 @@ impl DBusError {
     }
 
     //#[doc(alias = "g_dbus_error_register_error_domain")]
-    //pub fn register_error_domain(error_domain_quark_name: &str, quark_volatile: usize, entries: /*Ignored*/&[DBusErrorEntry]) {
+    //pub fn register_error_domain(error_domain_quark_name: &str, entries: /*Ignored*/&[DBusErrorEntry]) -> usize {
     //    unsafe { TODO: call ffi:g_dbus_error_register_error_domain() }
     //}
 

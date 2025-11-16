@@ -92,8 +92,6 @@ int main() {
     printf("%s;%zu;%zu\n", "GDebugControllerDBus", sizeof(GDebugControllerDBus), alignof(GDebugControllerDBus));
     printf("%s;%zu;%zu\n", "GDebugControllerDBusClass", sizeof(GDebugControllerDBusClass), alignof(GDebugControllerDBusClass));
     printf("%s;%zu;%zu\n", "GDebugControllerInterface", sizeof(GDebugControllerInterface), alignof(GDebugControllerInterface));
-    printf("%s;%zu;%zu\n", "GDesktopAppInfoClass", sizeof(GDesktopAppInfoClass), alignof(GDesktopAppInfoClass));
-    printf("%s;%zu;%zu\n", "GDesktopAppInfoLookupIface", sizeof(GDesktopAppInfoLookupIface), alignof(GDesktopAppInfoLookupIface));
     printf("%s;%zu;%zu\n", "GDriveIface", sizeof(GDriveIface), alignof(GDriveIface));
     printf("%s;%zu;%zu\n", "GDriveStartFlags", sizeof(GDriveStartFlags), alignof(GDriveStartFlags));
     printf("%s;%zu;%zu\n", "GDriveStartStopType", sizeof(GDriveStartStopType), alignof(GDriveStartStopType));
@@ -110,7 +108,6 @@ int main() {
     printf("%s;%zu;%zu\n", "GFileAttributeType", sizeof(GFileAttributeType), alignof(GFileAttributeType));
     printf("%s;%zu;%zu\n", "GFileCopyFlags", sizeof(GFileCopyFlags), alignof(GFileCopyFlags));
     printf("%s;%zu;%zu\n", "GFileCreateFlags", sizeof(GFileCreateFlags), alignof(GFileCreateFlags));
-    printf("%s;%zu;%zu\n", "GFileDescriptorBasedIface", sizeof(GFileDescriptorBasedIface), alignof(GFileDescriptorBasedIface));
     printf("%s;%zu;%zu\n", "GFileEnumerator", sizeof(GFileEnumerator), alignof(GFileEnumerator));
     printf("%s;%zu;%zu\n", "GFileEnumeratorClass", sizeof(GFileEnumeratorClass), alignof(GFileEnumeratorClass));
     printf("%s;%zu;%zu\n", "GFileIOStream", sizeof(GFileIOStream), alignof(GFileIOStream));
@@ -283,12 +280,6 @@ int main() {
     printf("%s;%zu;%zu\n", "GUnixCredentialsMessageClass", sizeof(GUnixCredentialsMessageClass), alignof(GUnixCredentialsMessageClass));
     printf("%s;%zu;%zu\n", "GUnixFDList", sizeof(GUnixFDList), alignof(GUnixFDList));
     printf("%s;%zu;%zu\n", "GUnixFDListClass", sizeof(GUnixFDListClass), alignof(GUnixFDListClass));
-    printf("%s;%zu;%zu\n", "GUnixFDMessage", sizeof(GUnixFDMessage), alignof(GUnixFDMessage));
-    printf("%s;%zu;%zu\n", "GUnixFDMessageClass", sizeof(GUnixFDMessageClass), alignof(GUnixFDMessageClass));
-    printf("%s;%zu;%zu\n", "GUnixInputStream", sizeof(GUnixInputStream), alignof(GUnixInputStream));
-    printf("%s;%zu;%zu\n", "GUnixInputStreamClass", sizeof(GUnixInputStreamClass), alignof(GUnixInputStreamClass));
-    printf("%s;%zu;%zu\n", "GUnixOutputStream", sizeof(GUnixOutputStream), alignof(GUnixOutputStream));
-    printf("%s;%zu;%zu\n", "GUnixOutputStreamClass", sizeof(GUnixOutputStreamClass), alignof(GUnixOutputStreamClass));
     printf("%s;%zu;%zu\n", "GUnixSocketAddress", sizeof(GUnixSocketAddress), alignof(GUnixSocketAddress));
     printf("%s;%zu;%zu\n", "GUnixSocketAddressClass", sizeof(GUnixSocketAddressClass), alignof(GUnixSocketAddressClass));
     printf("%s;%zu;%zu\n", "GUnixSocketAddressType", sizeof(GUnixSocketAddressType), alignof(GUnixSocketAddressType));

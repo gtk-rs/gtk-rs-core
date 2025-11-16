@@ -978,6 +978,8 @@ pub enum UnicodeBreakType {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
     #[doc(alias = "G_UNICODE_BREAK_VIRAMA")]
     Virama,
+    #[doc(alias = "G_UNICODE_BREAK_UNAMBIGUOUS_HYPHEN")]
+    UnambiguousHyphen,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -1041,6 +1043,7 @@ impl IntoGlib for UnicodeBreakType {
             Self::ViramaFinal => ffi::G_UNICODE_BREAK_VIRAMA_FINAL,
             #[cfg(feature = "v2_80")]
             Self::Virama => ffi::G_UNICODE_BREAK_VIRAMA,
+            Self::UnambiguousHyphen => ffi::G_UNICODE_BREAK_UNAMBIGUOUS_HYPHEN,
             Self::__Unknown(value) => value,
         }
     }
@@ -1103,6 +1106,7 @@ impl FromGlib<ffi::GUnicodeBreakType> for UnicodeBreakType {
             ffi::G_UNICODE_BREAK_VIRAMA_FINAL => Self::ViramaFinal,
             #[cfg(feature = "v2_80")]
             ffi::G_UNICODE_BREAK_VIRAMA => Self::Virama,
+            ffi::G_UNICODE_BREAK_UNAMBIGUOUS_HYPHEN => Self::UnambiguousHyphen,
             value => Self::__Unknown(value),
         }
     }
@@ -1542,6 +1546,14 @@ pub enum UnicodeScript {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
     #[doc(alias = "G_UNICODE_SCRIPT_OL_ONAL")]
     OlOnal,
+    #[doc(alias = "G_UNICODE_SCRIPT_SIDETIC")]
+    Sidetic,
+    #[doc(alias = "G_UNICODE_SCRIPT_TOLONG_SIKI")]
+    TolongSiki,
+    #[doc(alias = "G_UNICODE_SCRIPT_TAI_YO")]
+    TaiYo,
+    #[doc(alias = "G_UNICODE_SCRIPT_BERIA_ERFE")]
+    BeriaErfe,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -1752,6 +1764,10 @@ impl IntoGlib for UnicodeScript {
             Self::KiratRai => ffi::G_UNICODE_SCRIPT_KIRAT_RAI,
             #[cfg(feature = "v2_84")]
             Self::OlOnal => ffi::G_UNICODE_SCRIPT_OL_ONAL,
+            Self::Sidetic => ffi::G_UNICODE_SCRIPT_SIDETIC,
+            Self::TolongSiki => ffi::G_UNICODE_SCRIPT_TOLONG_SIKI,
+            Self::TaiYo => ffi::G_UNICODE_SCRIPT_TAI_YO,
+            Self::BeriaErfe => ffi::G_UNICODE_SCRIPT_BERIA_ERFE,
             Self::__Unknown(value) => value,
         }
     }
@@ -1949,6 +1965,10 @@ impl FromGlib<ffi::GUnicodeScript> for UnicodeScript {
             ffi::G_UNICODE_SCRIPT_KIRAT_RAI => Self::KiratRai,
             #[cfg(feature = "v2_84")]
             ffi::G_UNICODE_SCRIPT_OL_ONAL => Self::OlOnal,
+            ffi::G_UNICODE_SCRIPT_SIDETIC => Self::Sidetic,
+            ffi::G_UNICODE_SCRIPT_TOLONG_SIKI => Self::TolongSiki,
+            ffi::G_UNICODE_SCRIPT_TAI_YO => Self::TaiYo,
+            ffi::G_UNICODE_SCRIPT_BERIA_ERFE => Self::BeriaErfe,
             value => Self::__Unknown(value),
         }
     }

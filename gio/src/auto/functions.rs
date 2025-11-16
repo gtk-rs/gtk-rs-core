@@ -589,32 +589,3 @@ pub fn resources_unregister(resource: &Resource) {
         ffi::g_resources_unregister(resource.to_glib_none().0);
     }
 }
-
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-#[doc(alias = "g_unix_is_mount_path_system_internal")]
-pub fn unix_is_mount_path_system_internal(mount_path: impl AsRef<std::path::Path>) -> bool {
-    unsafe {
-        from_glib(ffi::g_unix_is_mount_path_system_internal(
-            mount_path.as_ref().to_glib_none().0,
-        ))
-    }
-}
-
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-#[doc(alias = "g_unix_is_system_device_path")]
-pub fn unix_is_system_device_path(device_path: impl AsRef<std::path::Path>) -> bool {
-    unsafe {
-        from_glib(ffi::g_unix_is_system_device_path(
-            device_path.as_ref().to_glib_none().0,
-        ))
-    }
-}
-
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-#[doc(alias = "g_unix_is_system_fs_type")]
-pub fn unix_is_system_fs_type(fs_type: &str) -> bool {
-    unsafe { from_glib(ffi::g_unix_is_system_fs_type(fs_type.to_glib_none().0)) }
-}
