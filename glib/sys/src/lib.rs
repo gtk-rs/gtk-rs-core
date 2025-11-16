@@ -439,6 +439,7 @@ pub const G_UNICODE_BREAK_AKSARA_PRE_BASE: GUnicodeBreakType = 44;
 pub const G_UNICODE_BREAK_AKSARA_START: GUnicodeBreakType = 45;
 pub const G_UNICODE_BREAK_VIRAMA_FINAL: GUnicodeBreakType = 46;
 pub const G_UNICODE_BREAK_VIRAMA: GUnicodeBreakType = 47;
+pub const G_UNICODE_BREAK_UNAMBIGUOUS_HYPHEN: GUnicodeBreakType = 48;
 
 pub type GUnicodeScript = c_int;
 pub const G_UNICODE_SCRIPT_INVALID_CODE: GUnicodeScript = -1;
@@ -614,6 +615,10 @@ pub const G_UNICODE_SCRIPT_SUNUWAR: GUnicodeScript = 168;
 pub const G_UNICODE_SCRIPT_GURUNG_KHEMA: GUnicodeScript = 169;
 pub const G_UNICODE_SCRIPT_KIRAT_RAI: GUnicodeScript = 170;
 pub const G_UNICODE_SCRIPT_OL_ONAL: GUnicodeScript = 171;
+pub const G_UNICODE_SCRIPT_SIDETIC: GUnicodeScript = 172;
+pub const G_UNICODE_SCRIPT_TOLONG_SIKI: GUnicodeScript = 173;
+pub const G_UNICODE_SCRIPT_TAI_YO: GUnicodeScript = 174;
+pub const G_UNICODE_SCRIPT_BERIA_ERFE: GUnicodeScript = 175;
 
 pub type GUnicodeType = c_int;
 pub const G_UNICODE_CONTROL: GUnicodeType = 0;
@@ -3169,6 +3174,11 @@ extern "C" {
     //=========================================================================
     pub fn g_bytes_get_type() -> GType;
     pub fn g_bytes_new(data: gconstpointer, size: size_t) -> *mut GBytes;
+    pub fn g_bytes_new_from_bytes(
+        bytes: *mut GBytes,
+        offset: size_t,
+        length: size_t,
+    ) -> *mut GBytes;
     pub fn g_bytes_new_static(data: gconstpointer, size: size_t) -> *mut GBytes;
     pub fn g_bytes_new_take(data: gpointer, size: size_t) -> *mut GBytes;
     pub fn g_bytes_new_with_free_func(
@@ -3190,11 +3200,6 @@ extern "C" {
     ) -> gconstpointer;
     pub fn g_bytes_get_size(bytes: *mut GBytes) -> size_t;
     pub fn g_bytes_hash(bytes: gconstpointer) -> c_uint;
-    pub fn g_bytes_new_from_bytes(
-        bytes: *mut GBytes,
-        offset: size_t,
-        length: size_t,
-    ) -> *mut GBytes;
     pub fn g_bytes_ref(bytes: *mut GBytes) -> *mut GBytes;
     pub fn g_bytes_unref(bytes: *mut GBytes);
     pub fn g_bytes_unref_to_array(bytes: *mut GBytes) -> *mut GByteArray;
@@ -4248,6 +4253,9 @@ extern "C" {
     pub fn g_markup_parse_context_get_element_stack(
         context: *mut GMarkupParseContext,
     ) -> *const GSList;
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_markup_parse_context_get_offset(context: *mut GMarkupParseContext) -> size_t;
     pub fn g_markup_parse_context_get_position(
         context: *mut GMarkupParseContext,
         line_number: *mut c_int,
@@ -7472,6 +7480,9 @@ extern "C" {
         user_data: gpointer,
         notify: GDestroyNotify,
     ) -> c_uint;
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_unix_fd_query_path(fd: c_int, error: *mut *mut GError) -> *mut c_char;
     pub fn g_unix_fd_source_new(fd: c_int, condition: GIOCondition) -> *mut GSource;
     #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
