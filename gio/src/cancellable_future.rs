@@ -141,10 +141,25 @@ impl Display for Cancelled {
 
 #[cfg(test)]
 mod tests {
+    use std::future::Future;
     use std::time::Duration;
 
     use super::{Cancellable, CancellableFuture, Cancelled};
     use crate::{prelude::*, spawn_blocking};
+
+    async fn cancel_after_timeout(duration: Duration, cancellable: Cancellable) {
+        glib::timeout_future_with_priority(glib::Priority::default(), duration).await;
+        cancellable.cancel();
+    }
+
+    async fn cancel_after_sleep_in_thread(duration: Duration, cancellable: Cancellable) {
+        spawn_blocking(move || {
+            std::thread::sleep(duration);
+            cancellable.cancel();
+        })
+        .await
+        .unwrap()
+    }
 
     #[test]
     fn cancellable_future_ok() {
@@ -182,5 +197,41 @@ mod tests {
         std::thread::spawn(move || c.cancel()).join().unwrap();
 
         ctx.block_on(future).unwrap();
+    }
+
+    #[test]
+    fn cancellable_future_delayed_cancel_local() {
+        let ctx = glib::MainContext::new();
+        let c = Cancellable::new();
+
+        let (r1, r2) = ctx
+            .block_on(ctx.spawn_local({
+                futures_util::future::join(
+                    CancellableFuture::new(std::future::pending::<()>(), c.clone()),
+                    cancel_after_timeout(Duration::from_millis(300), c.clone()),
+                )
+            }))
+            .expect("futures must be executed");
+
+        assert!(matches!(r1, Err(Cancelled)));
+        assert!(matches!(r2, ()));
+    }
+
+    #[test]
+    fn cancellable_future_delayed_cancel_from_other_thread() {
+        let ctx = glib::MainContext::new();
+        let c = Cancellable::new();
+
+        let (r1, r2) = ctx
+            .block_on(ctx.spawn_local({
+                futures_util::future::join(
+                    CancellableFuture::new(std::future::pending::<()>(), c.clone()),
+                    cancel_after_sleep_in_thread(Duration::from_millis(300), c.clone()),
+                )
+            }))
+            .expect("futures must be executed");
+
+        assert!(matches!(r1, Err(Cancelled)));
+        assert!(matches!(r2, ()));
     }
 }
