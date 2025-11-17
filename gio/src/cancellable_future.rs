@@ -141,52 +141,46 @@ impl Display for Cancelled {
 
 #[cfg(test)]
 mod tests {
-    use futures_channel::oneshot;
+    use std::time::Duration;
 
     use super::{Cancellable, CancellableFuture, Cancelled};
-    use crate::prelude::*;
+    use crate::{prelude::*, spawn_blocking};
 
     #[test]
     fn cancellable_future_ok() {
         let ctx = glib::MainContext::new();
         let c = Cancellable::new();
-        let (tx, rx) = oneshot::channel();
 
-        {
+        let future = {
             ctx.spawn_local(async {
                 let cancellable_future = CancellableFuture::new(async { 42 }, c);
                 assert!(!cancellable_future.is_cancelled());
 
                 let result = cancellable_future.await;
                 assert!(matches!(result, Ok(42)));
+            })
+        };
 
-                tx.send(()).unwrap();
-            });
-        }
-
-        ctx.block_on(rx).unwrap()
+        ctx.block_on(future).unwrap()
     }
 
     #[test]
     fn cancellable_future_cancel() {
         let ctx = glib::MainContext::new();
         let c = Cancellable::new();
-        let (tx, rx) = oneshot::channel();
 
-        {
+        let future = {
             let c = c.clone();
             ctx.spawn_local(async move {
                 let cancellable_future = CancellableFuture::new(std::future::pending::<()>(), c);
 
                 let result = cancellable_future.await;
                 assert!(matches!(result, Err(Cancelled)));
-
-                tx.send(()).unwrap();
-            });
-        }
+            })
+        };
 
         std::thread::spawn(move || c.cancel()).join().unwrap();
 
-        ctx.block_on(rx).unwrap();
+        ctx.block_on(future).unwrap();
     }
 }
