@@ -4,14 +4,13 @@
 use glib::prelude::*;
 use glib::subclass::prelude::*;
 use glib::subclass::Signal;
-use glib::Properties;
+use glib::subclass::object::DerivedObjectSignals;
 use std::cell::RefCell;
-use std::sync::OnceLock;
 
 mod imp {
     use super::*;
 
-    #[derive(Properties, Default)]
+    #[derive(glib::Properties, Default)]
     #[properties(wrapper_type = super::Author)]
     pub struct Author {
         /// The name of the author
@@ -32,11 +31,17 @@ mod imp {
         surname: RefCell<String>,
     }
 
+    #[glib::signals(wrapper_type = super::Author)]
+    impl Author {
+
+        #[signal]
+        fn awarded(&self) {}
+    }
+
     #[glib::derived_properties]
     impl ObjectImpl for Author {
         fn signals() -> &'static [Signal] {
-            static SIGNALS: OnceLock<Vec<Signal>> = OnceLock::new();
-            SIGNALS.get_or_init(|| vec![Signal::builder("awarded").build()])
+            Self::derived_signals()
         }
     }
 
@@ -50,6 +55,7 @@ mod imp {
 glib::wrapper! {
     pub struct Author(ObjectSubclass<imp::Author>);
 }
+
 impl Author {
     pub fn new(name: &str, surname: &str) -> Self {
         glib::Object::builder()
