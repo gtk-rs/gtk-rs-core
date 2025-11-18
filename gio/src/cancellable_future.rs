@@ -171,7 +171,7 @@ where
 
 impl From<Cancelled> for glib::Error {
     fn from(_: Cancelled) -> Self {
-        glib::Error::new(IOErrorEnum::Cancelled, "Task cancelled")
+        glib::Error::new(IOErrorEnum::Cancelled, "Operation was cancelled")
     }
 }
 
@@ -179,7 +179,7 @@ impl std::error::Error for Cancelled {}
 
 impl Debug for Cancelled {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Task cancelled")
+        write!(f, "Operation was cancelled")
     }
 }
 
