@@ -77,10 +77,19 @@ pin_project! {
         #[pin]
         future: F,
 
-        #[pin]
-        waker_handler_cb: Option<CancelledHandlerId>,
-
         cancellable: Cancellable,
+        connection_id: Option<CancelledHandlerId>,
+
+        waker: std::sync::Arc<std::sync::Mutex<Option<std::task::Waker>>>,
+    }
+
+    impl<F> PinnedDrop for CancellableFuture<F> {
+        fn drop(this: Pin<&mut Self>) {
+            let this = this.project();
+            if let Some(connection_id) = this.connection_id.take() {
+                this.cancellable.disconnect_cancelled(connection_id);
+            }
+        }
     }
 }
 
@@ -92,10 +101,22 @@ impl<F> CancellableFuture<F> {
     /// immediately without making any further progress. In such a case, an error
     /// will be returned by this future (i.e., [`Cancelled`]).
     pub fn new(future: F, cancellable: Cancellable) -> Self {
+        let waker = std::sync::Arc::new(std::sync::Mutex::new(None::<std::task::Waker>));
+        let connection_id = cancellable.connect_cancelled(glib::clone!(
+            #[strong]
+            waker,
+            move |_| {
+                if let Some(waker) = waker.lock().unwrap().take() {
+                    waker.wake();
+                }
+            }
+        ));
+
         Self {
             future,
-            waker_handler_cb: None,
             cancellable,
+            connection_id,
+            waker,
         }
     }
 
@@ -128,34 +149,22 @@ where
     type Output = Result<<F as Future>::Output, Cancelled>;
 
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        if self.is_cancelled() {
-            return Poll::Ready(Err(Cancelled));
+        if self.cancellable.is_cancelled() {
+            // XXX: Whenever we want to break the API, we should return here only
+            // self.cancellable.set_error_if_cancelled() value.
+            return std::task::Poll::Ready(Err(Cancelled));
         }
 
-        let mut this = self.as_mut().project();
+        let mut waker = self.waker.lock().unwrap();
+        if waker.is_none() {
+            *waker = Some(cx.waker().clone());
+        }
+        drop(waker);
 
+        let this = self.as_mut().project();
         match this.future.poll(cx) {
             Poll::Ready(out) => Poll::Ready(Ok(out)),
-
-            Poll::Pending => {
-                if let Some(prev_handler) = this.waker_handler_cb.take() {
-                    this.cancellable.disconnect_cancelled(prev_handler);
-                }
-
-                let canceller_handler_id = this.cancellable.connect_cancelled({
-                    let w = cx.waker().clone();
-                    move |_| w.wake()
-                });
-
-                match canceller_handler_id {
-                    Some(canceller_handler_id) => {
-                        *this.waker_handler_cb = Some(canceller_handler_id);
-                        Poll::Pending
-                    }
-
-                    None => Poll::Ready(Err(Cancelled)),
-                }
-            }
+            Poll::Pending => Poll::Pending,
         }
     }
 }
