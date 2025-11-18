@@ -19,6 +19,11 @@ pin_project! {
     // rustdoc-stripper-ignore-next
     /// A future which can be cancelled via [`Cancellable`].
     ///
+    /// It can be used to cancel one or multiple Gio futures that support
+    /// internal cancellation via [`Cancellable`] by using this future to
+    /// execute cancellable promises that are created (implicitly or explicitly)
+    /// via [`GioFuture`].
+    ///
     /// # Examples
     ///
     /// ```
@@ -31,6 +36,42 @@ pin_project! {
     /// l.context().spawn_local(CancellableFuture::new(async { 42 }, c.clone()).map(|_| ()));
     /// c.cancel();
     ///
+    /// ```
+    ///
+    /// As said the [`CancellableFuture`] can be used to handle Gio futures,
+    /// relying on an actual [`Cancellable`] instance or with a new one.
+    ///
+    /// ```no_run
+    /// # use futures::FutureExt;
+    /// # use gio::prelude::*;
+    /// # use gio::CancellableFuture;
+    /// # async {
+    /// CancellableFuture::new(
+    ///   async {
+    ///     let file = gio::File::for_path("/dev/null");
+    ///     let file_info = file
+    ///       .query_info_future(
+    ///         gio::FILE_ATTRIBUTE_STANDARD_NAME,
+    ///         gio::FileQueryInfoFlags::NONE,
+    ///         glib::Priority::default(),
+    ///       )
+    ///       .await?;
+    ///
+    ///     // Sub-cancellable chains are also working as expected.
+    ///     // The new cancellable will have its own scope, but will also be
+    ///     // cancelled when the parent cancellable is cancelled.
+    ///     let io_stream = CancellableFuture::new(
+    ///       file.open_readwrite_future(glib::Priority::default()),
+    ///       gio::Cancellable::new(),
+    ///     )
+    ///     .await??;
+    ///     // [...]
+    ///     Ok::<bool, glib::Error>(true)
+    ///   },
+    ///   gio::Cancellable::new(),
+    /// )
+    /// .await
+    /// # };
     /// ```
     pub struct CancellableFuture<F> {
         #[pin]
