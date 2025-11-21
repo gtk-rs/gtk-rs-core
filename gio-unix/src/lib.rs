@@ -3,6 +3,7 @@
 pub use ffi;
 
 #[allow(unused_imports)]
+#[allow(clippy::derived_hash_with_manual_eq)]
 mod auto;
 pub use auto::*;
 
