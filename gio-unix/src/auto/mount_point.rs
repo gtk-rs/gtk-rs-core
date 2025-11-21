@@ -6,7 +6,7 @@ use crate::ffi;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug, Hash)]
+    #[derive(Debug)]
     pub struct MountPoint(Boxed<ffi::GUnixMountPoint>);
 
     match fn {
@@ -167,3 +167,6 @@ impl Ord for MountPoint {
         self.compare(other).cmp(&0)
     }
 }
+
+unsafe impl Send for MountPoint {}
+unsafe impl Sync for MountPoint {}

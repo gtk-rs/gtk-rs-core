@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::ffi;
-use glib::{prelude::*, translate::*};
+use glib::prelude::*;
 
 glib::wrapper! {
     #[doc(alias = "GFileDescriptorBased")]
@@ -18,12 +18,6 @@ impl FileDescriptorBased {
     pub const NONE: Option<&'static FileDescriptorBased> = None;
 }
 
-pub trait FileDescriptorBasedExt: IsA<FileDescriptorBased> + 'static {
-    #[doc(alias = "g_file_descriptor_based_get_fd")]
-    #[doc(alias = "get_fd")]
-    fn fd(&self) -> i32 {
-        unsafe { ffi::g_file_descriptor_based_get_fd(self.as_ref().to_glib_none().0) }
-    }
-}
+pub trait FileDescriptorBasedExt: IsA<FileDescriptorBased> + 'static {}
 
 impl<O: IsA<FileDescriptorBased>> FileDescriptorBasedExt for O {}

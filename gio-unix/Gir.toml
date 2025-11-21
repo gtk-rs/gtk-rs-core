@@ -14,11 +14,7 @@ deprecate_by_min_version = true
 trust_return_value_nullability = true
 
 generate = [
-    "GioUnix.FDMessage",
-    "GioUnix.FileDescriptorBased",
-    "GioUnix.InputStream",
     "GioUnix.MountMonitor",
-    "GioUnix.OutputStream",
 ]
 
 ignore = [
@@ -52,6 +48,7 @@ status = "generate"
 [[object]]
 name = "GioUnix.DesktopAppInfo"
 status = "generate"
+manual_traits = ["DesktopAppInfoExtManual"]
     [[object.function]]
     name = "get_boolean"
     # Retrieves the boolean value of a key
@@ -66,20 +63,122 @@ status = "generate"
     manual = true
 
 [[object]]
+name = "GioUnix.FDMessage"
+status = "generate"
+manual_traits = ["FDMessageExtManual"]
+
+[[object]]
+name = "GioUnix.FileDescriptorBased"
+status = "generate"
+manual_traits = ["FileDescriptorBasedExtManual"]
+    [[object.function]]
+    name = "get_fd"
+    manual = true
+
+[[object]]
 name = "GioUnix.MountEntry"
 status = "generate"
+concurrency = "send+sync"
 version = "2.84"
     [[object.function]]
     pattern = "*"
         [[object.function.parameter]]
         pattern = "(mount1|mount2|mount_entry)"
         const = true
+    [[object.derive]]
+    name = "Debug"
+    [[object.function]]
+    pattern = "compare|get_device_path|get_fs_type|get_mount_path|guess_can_eject|guess_name|guess_icon|guess_should_display|guess_symbolic_icon|is_readonly|is_system_internal"
+        [[object.function.parameter]]
+        pattern = ".+"
+        const = true
+    [[object.function]]
+    name = "get_options"
+        [[object.function.parameter]]
+        pattern = ".+"
+        const = true
+    [[object.function]]
+    name = "get_root_path"
+        [[object.function.parameter]]
+        pattern = ".+"
+        const = true
+    [[object.function]]
+    name = "at"
+    rename = "for_mount_path"
+    [[object.function]]
+    name = "for"
+    rename = "for_file_path"
 
 [[object]]
 name = "GioUnix.MountPoint"
 status = "generate"
+concurrency = "send+sync"
+    [[object.derive]]
+    name = "Debug"
     [[object.function]]
     pattern = "*"
         [[object.function.parameter]]
         pattern = "(mount1|mount2|mount_point)"
         const = true
+
+[[object]]
+name = "GioUnix.InputStream"
+status = "generate"
+manual_traits = ["InputStreamExtManual"]
+    [[object.function]]
+    name = "new"
+    # has to use RawFd
+    manual = true
+    generate_doc = false
+
+    [[object.function]]
+    name = "set_close_fd"
+    # Can cause file descriptor leaks
+    manual = true
+    generate_doc = false
+
+    [[object.function]]
+    name = "get_fd"
+    # conflicts with as FileDescriptorBased::fd
+    ignore = true
+
+    [[object.property]]
+    name = "fd"
+    # has to use RawFd
+    ignore = true
+
+    [[object.property]]
+    name = "close-fd"
+    ignore = true
+
+
+[[object]]
+name = "GioUnix.OutputStream"
+status = "generate"
+manual_traits = ["OutputStreamExtManual"]
+    [[object.function]]
+    name = "new"
+    # has to use RawFd
+    manual = true
+    generate_doc = false
+
+    [[object.function]]
+    name = "set_close_fd"
+    # Can cause file descriptor leaks
+    manual = true
+    doc_trait_name = "OutputStreamExtManual"
+    generate_doc = false
+
+    [[object.function]]
+    name = "get_fd"
+    # conflicts with as FileDescriptorBased::fd
+    ignore = true
+
+    [[object.property]]
+    name = "fd"
+    # has to use RawFd
+    ignore = true
+
+    [[object.property]]
+    name = "close-fd"
+    ignore = true
