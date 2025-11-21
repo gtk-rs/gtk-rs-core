@@ -9,7 +9,7 @@ use std::mem;
 #[cfg(feature = "v2_58")]
 use std::os::unix::io::{AsFd, AsRawFd};
 #[cfg(not(windows))]
-use std::os::unix::io::{FromRawFd, OwnedFd, RawFd};
+use std::os::unix::io::{FromRawFd, OwnedFd};
 use std::ptr;
 
 // #[cfg(windows)]
@@ -237,24 +237,6 @@ pub fn compute_checksum_for_string(
             str.len() as _,
         ))
     })
-}
-
-#[cfg(unix)]
-#[doc(alias = "g_unix_open_pipe")]
-pub fn unix_open_pipe(flags: i32) -> Result<(RawFd, RawFd), Error> {
-    unsafe {
-        let mut fds = [0, 2];
-        let mut error = ptr::null_mut();
-        let _ = ffi::g_unix_open_pipe(&mut fds, flags, &mut error);
-        if error.is_null() {
-            Ok((
-                FromRawFd::from_raw_fd(fds[0]),
-                FromRawFd::from_raw_fd(fds[1]),
-            ))
-        } else {
-            Err(from_glib_full(error))
-        }
-    }
 }
 
 #[cfg(unix)]

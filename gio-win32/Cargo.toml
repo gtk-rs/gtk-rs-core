@@ -1,0 +1,37 @@
+[package]
+name = "gio-win32"
+documentation = "https://gtk-rs.org/gtk-rs-core/stable/latest/docs/gio-win32/"
+description = "Rust bindings for the GioWin32 library"
+readme = "README.md"
+keywords = ["gio", "gtk-rs", "gnome", "GUI"]
+authors.workspace = true
+edition.workspace = true
+exclude.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+version.workspace = true
+
+
+[dependencies]
+ffi = { package = "gio-win32-sys", path = "./sys"}
+libc.workspace = true
+gio.workspace = true
+
+[dev-dependencies]
+tempfile = "3"
+gir-format-check.workspace = true
+
+[features]
+default = []
+v2_58 = ["ffi/v2_82", "gio/v2_58"]
+v2_60 = ["v2_58", "ffi/v2_60", "gio/v2_60"]
+v2_66 = ["v2_60", "ffi/v2_66", "gio/v2_66"]
+v2_82 = ["v2_66", "ffi/v2_82", "gio/v2_82"]
+v2_84 = ["v2_82", "ffi/v2_84", "gio/v2_84"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustc-args = ["--cfg", "docsrs"]
+rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]
