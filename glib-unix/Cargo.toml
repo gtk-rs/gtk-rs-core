@@ -17,14 +17,15 @@ version.workspace = true
 ffi = { package = "glib-unix-sys", path = "./sys"}
 libc.workspace = true
 glib.workspace = true
-futures-core = { version = "0.3", default-features = false }
+futures-core = { version = "0.3", default-features = false, optional = true}
 
 [dev-dependencies]
 tempfile = "3"
 gir-format-check.workspace = true
 
 [features]
-default = []
+default = ["futures"]
+futures = ["glib/futures", "dep:futures-core"]
 v2_80 = ["ffi/v2_80", "glib/v2_80"]
 
 [package.metadata.docs.rs]

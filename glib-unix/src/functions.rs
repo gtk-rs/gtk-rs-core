@@ -9,8 +9,12 @@ use std::pin::Pin;
 use glib::ffi::gpointer;
 use glib::thread_guard::ThreadGuard;
 use glib::translate::*;
-use glib::{ControlFlow, IOCondition, Priority, Source, SourceFuture, SourceId, SourceStream};
+use glib::{ControlFlow, IOCondition, Priority, Source, SourceId};
 
+#[cfg(feature = "futures")]
+use glib::{SourceFuture, SourceStream};
+
+#[cfg(feature = "futures")]
 use futures_core::stream::Stream;
 
 fn into_raw<F: FnMut() -> ControlFlow + Send + 'static>(func: F) -> gpointer {
@@ -146,6 +150,7 @@ pub fn unix_open_pipe(flags: i32) -> Result<(RawFd, RawFd), glib::Error> {
 /// Create a `Stream` that will provide a value whenever the given UNIX signal is raised
 ///
 /// The `Stream` must be spawned on an `Executor` backed by a `glib::MainContext`.
+#[cfg(feature = "futures")]
 pub fn signal_stream(signum: i32) -> Pin<Box<dyn Stream<Item = ()> + Send + 'static>> {
     signal_stream_with_priority(Priority::default(), signum)
 }
@@ -154,6 +159,7 @@ pub fn signal_stream(signum: i32) -> Pin<Box<dyn Stream<Item = ()> + Send + 'sta
 /// Create a `Stream` that will provide a value whenever the given UNIX signal is raised
 ///
 /// The `Stream` must be spawned on an `Executor` backed by a `glib::MainContext`.
+#[cfg(feature = "futures")]
 pub fn signal_stream_with_priority(
     priority: Priority,
     signum: i32,
@@ -173,6 +179,7 @@ pub fn signal_stream_with_priority(
 /// Create a `Future` that will resolve once the given UNIX signal is raised
 ///
 /// The `Future` must be spawned on an `Executor` backed by a `glib::MainContext`.
+#[cfg(feature = "futures")]
 pub fn signal_future_with_priority(
     priority: Priority,
     signum: i32,
