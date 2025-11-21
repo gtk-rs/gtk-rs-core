@@ -3,12 +3,7 @@
 // DO NOT EDIT
 
 use crate::{ffi, FileDescriptorBased};
-use glib::{
-    prelude::*,
-    signal::{connect_raw, SignalHandlerId},
-    translate::*,
-};
-use std::boxed::Box as Box_;
+use glib::{prelude::*, translate::*};
 
 glib::wrapper! {
     #[doc(alias = "GUnixOutputStream")]
@@ -21,17 +16,6 @@ glib::wrapper! {
 
 impl OutputStream {
     pub const NONE: Option<&'static OutputStream> = None;
-
-    #[doc(alias = "g_unix_output_stream_new")]
-    pub fn new(fd: i32, close_fd: bool) -> OutputStream {
-        unsafe {
-            gio::OutputStream::from_glib_full(ffi::g_unix_output_stream_new(
-                fd,
-                close_fd.into_glib(),
-            ))
-            .unsafe_cast()
-        }
-    }
 }
 
 pub trait OutputStreamExt: IsA<OutputStream> + 'static {
@@ -43,49 +27,6 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
             from_glib(ffi::g_unix_output_stream_get_close_fd(
                 self.as_ref().to_glib_none().0,
             ))
-        }
-    }
-
-    #[doc(alias = "g_unix_output_stream_get_fd")]
-    #[doc(alias = "get_fd")]
-    fn fd(&self) -> i32 {
-        unsafe { ffi::g_unix_output_stream_get_fd(self.as_ref().to_glib_none().0) }
-    }
-
-    #[doc(alias = "g_unix_output_stream_set_close_fd")]
-    #[doc(alias = "close-fd")]
-    fn set_close_fd(&self, close_fd: bool) {
-        unsafe {
-            ffi::g_unix_output_stream_set_close_fd(
-                self.as_ref().to_glib_none().0,
-                close_fd.into_glib(),
-            );
-        }
-    }
-
-    #[doc(alias = "close-fd")]
-    fn connect_close_fd_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        unsafe extern "C" fn notify_close_fd_trampoline<
-            P: IsA<OutputStream>,
-            F: Fn(&P) + 'static,
-        >(
-            this: *mut ffi::GUnixOutputStream,
-            _param_spec: glib::ffi::gpointer,
-            f: glib::ffi::gpointer,
-        ) {
-            let f: &F = &*(f as *const F);
-            f(OutputStream::from_glib_borrow(this).unsafe_cast_ref())
-        }
-        unsafe {
-            let f: Box_<F> = Box_::new(f);
-            connect_raw(
-                self.as_ptr() as *mut _,
-                c"notify::close-fd".as_ptr() as *const _,
-                Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
-                    notify_close_fd_trampoline::<Self, F> as *const (),
-                )),
-                Box_::into_raw(f),
-            )
         }
     }
 }

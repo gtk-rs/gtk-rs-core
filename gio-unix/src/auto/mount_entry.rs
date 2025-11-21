@@ -6,7 +6,7 @@ use crate::ffi;
 use glib::translate::*;
 
 glib::wrapper! {
-    #[derive(Debug, Hash)]
+    #[derive(Debug)]
     pub struct MountEntry(Boxed<ffi::GUnixMountEntry>);
 
     match fn {
@@ -141,7 +141,8 @@ impl MountEntry {
     }
 
     #[doc(alias = "g_unix_mount_entry_at")]
-    pub fn at(mount_path: impl AsRef<std::path::Path>) -> (Option<MountEntry>, u64) {
+    #[doc(alias = "at")]
+    pub fn for_mount_path(mount_path: impl AsRef<std::path::Path>) -> (Option<MountEntry>, u64) {
         unsafe {
             let mut time_read = std::mem::MaybeUninit::uninit();
             let ret = from_glib_full(ffi::g_unix_mount_entry_at(
@@ -154,7 +155,7 @@ impl MountEntry {
 
     #[doc(alias = "g_unix_mount_entry_for")]
     #[doc(alias = "for")]
-    pub fn for_(file_path: impl AsRef<std::path::Path>) -> (Option<MountEntry>, u64) {
+    pub fn for_file_path(file_path: impl AsRef<std::path::Path>) -> (Option<MountEntry>, u64) {
         unsafe {
             let mut time_read = std::mem::MaybeUninit::uninit();
             let ret = from_glib_full(ffi::g_unix_mount_entry_for(
@@ -188,3 +189,6 @@ impl Ord for MountEntry {
         self.compare(other).cmp(&0)
     }
 }
+
+unsafe impl Send for MountEntry {}
+unsafe impl Sync for MountEntry {}
