@@ -1,0 +1,85 @@
+[external_libraries]
+Gio = {min_version = "2.56"}
+
+[options]
+girs_directories = ["../gir-files"]
+library = "GioUnix"
+version = "2.0"
+min_cfg_version = "2.56"
+use_gi_docgen = true
+target_path = "."
+work_mode = "normal"
+single_version_file = true
+deprecate_by_min_version = true
+trust_return_value_nullability = true
+
+generate = [
+    "GioUnix.FDMessage",
+    "GioUnix.FileDescriptorBased",
+    "GioUnix.InputStream",
+    "GioUnix.MountMonitor",
+    "GioUnix.OutputStream",
+]
+
+ignore = [
+]
+
+manual = [
+    "Gio.AppInfo",
+    "Gio.AppLaunchContext",
+    "Gio.Icon",
+    "Gio.InputStream",
+    "Gio.OutputStream",
+    "Gio.PollableInputStream",
+    "Gio.PollableOutputStream",
+    "Gio.SocketControlMessage",
+    "Gio.UnixFDList",
+    "GLib.Error",
+    "GLib.KeyFile",
+    "GLib.SpawnFlags",
+]
+
+[[object]]
+name = "GioUnix.*"
+status = "generate"
+    [[object.function]]
+    pattern = "mount_(at|compare|copy|entries_changed_since|entries_get|entries_get_from_file|for|free|get_device_path|get_fs_type|get_mount_path|get_options|get_root_path|guess_can_eject|guess_icon|guess_name|guess_should_display|guess_symbolic_icon|is_readonly|is_system_internal|points_changed_since|points_get|points_get_from_file)"
+    manual = true # Should be part of MountEntry
+    [[object.function]]
+    pattern = "mounts_(get|get_from_file|changed_since)"
+    manual = true # Should be part of MountEntry
+
+[[object]]
+name = "GioUnix.DesktopAppInfo"
+status = "generate"
+    [[object.function]]
+    name = "get_boolean"
+    # Retrieves the boolean value of a key
+    rename = "boolean"
+    [[object.function]]
+    name = "search"
+    # returns vec of string
+    manual = true
+    [[object.function]]
+    name = "launch_uris_as_manager_with_fds"
+    # has to use RawFd / SOCKET
+    manual = true
+
+[[object]]
+name = "GioUnix.MountEntry"
+status = "generate"
+version = "2.84"
+    [[object.function]]
+    pattern = "*"
+        [[object.function.parameter]]
+        pattern = "(mount1|mount2|mount_entry)"
+        const = true
+
+[[object]]
+name = "GioUnix.MountPoint"
+status = "generate"
+    [[object.function]]
+    pattern = "*"
+        [[object.function.parameter]]
+        pattern = "(mount1|mount2|mount_point)"
+        const = true

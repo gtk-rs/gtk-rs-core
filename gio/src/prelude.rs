@@ -11,22 +11,6 @@ pub use crate::app_info::AppInfoExtManual;
 #[cfg(feature = "v2_72")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 pub use crate::debug_controller_dbus::DebugControllerDBusExtManual;
-#[cfg(feature = "v2_58")]
-#[cfg(all(not(windows), not(target_os = "macos")))]
-#[cfg_attr(docsrs, doc(cfg(all(not(windows), not(target_os = "macos")))))]
-pub use crate::desktop_app_info::DesktopAppInfoExtManual;
-#[cfg(unix)]
-pub use crate::file_descriptor_based::FileDescriptorBasedExtManual;
-#[cfg(unix)]
-pub use crate::unix_fd_list::UnixFDListExtManual;
-#[cfg(unix)]
-pub use crate::unix_fd_message::UnixFDMessageExtManual;
-#[cfg(unix)]
-pub use crate::unix_input_stream::UnixInputStreamExtManual;
-#[cfg(unix)]
-pub use crate::unix_output_stream::UnixOutputStreamExtManual;
-#[cfg(unix)]
-pub use crate::unix_socket_address::{UnixSocketAddressExtManual, UnixSocketAddressPath};
 #[cfg(windows)]
 pub use crate::win32_input_stream::Win32InputStreamExt;
 #[cfg(windows)]

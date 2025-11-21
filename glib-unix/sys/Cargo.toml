@@ -1,0 +1,40 @@
+[package]
+name = "glib-unix-sys"
+build = "build.rs"
+
+[package.version]
+workspace = true
+
+[package.edition]
+workspace = true
+
+[package.metadata.system-deps.glib_2_0]
+name = "glib-2.0"
+version = "2.56"
+
+[package.metadata.system-deps.glib_2_0.v2_80]
+version = "2.80"
+
+[package.metadata.docs.rs]
+rustc-args = ["--cfg", "docsrs"]
+rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]
+all-features = true
+
+[lib]
+name = "glib_unix_sys"
+
+[dependencies]
+libc = "0.2"
+
+[dependencies.glib-sys]
+workspace = true
+
+[build-dependencies]
+system-deps = "7"
+
+[dev-dependencies]
+shell-words = "1.0.0"
+tempfile = "3"
+
+[features]
+v2_80 = []

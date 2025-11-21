@@ -1,0 +1,33 @@
+[package]
+name = "glib-unix"
+documentation = "https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib-unix/"
+description = "Rust bindings for the GLibUnix library"
+readme = "README.md"
+keywords = ["glib", "gtk-rs", "gnome", "GUI"]
+authors.workspace = true
+edition.workspace = true
+exclude.workspace = true
+homepage.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+version.workspace = true
+
+[dependencies]
+ffi = { package = "glib-unix-sys", path = "./sys"}
+libc.workspace = true
+glib.workspace = true
+futures-core = { version = "0.3", default-features = false }
+
+[dev-dependencies]
+tempfile = "3"
+gir-format-check.workspace = true
+
+[features]
+default = []
+v2_80 = ["ffi/v2_80", "glib/v2_80"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustc-args = ["--cfg", "docsrs"]
+rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]

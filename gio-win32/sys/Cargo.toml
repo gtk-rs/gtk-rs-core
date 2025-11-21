@@ -1,0 +1,55 @@
+[package]
+name = "gio-win32-sys"
+build = "build.rs"
+
+[package.version]
+workspace = true
+
+[package.edition]
+workspace = true
+
+[package.metadata.system-deps.gio_windows_2_0]
+name = "gio-windows-2.0"
+version = "2.56"
+
+[package.metadata.system-deps.gio_windows_2_0.v2_78]
+version = "2.78"
+
+[package.metadata.docs.rs]
+rustc-args = ["--cfg", "docsrs"]
+rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]
+all-features = true
+
+[lib]
+name = "gio_win32_sys"
+
+[dependencies]
+libc = "0.2"
+
+[dependencies.glib-sys]
+workspace = true
+
+[dependencies.gobject-sys]
+workspace = true
+
+[dependencies.gio-sys]
+workspace = true
+
+[target."cfg(windows)".dependencies.windows-sys]
+version = ">=0.52, <=0.61"
+features = ["Win32_Networking_WinSock"]
+
+[build-dependencies]
+system-deps = "7"
+
+[dev-dependencies]
+shell-words = "1.0.0"
+tempfile = "3"
+
+[features]
+v2_58 = []
+v2_60 = ["v2_58"]
+v2_66 = ["v2_60"]
+v2_82 = ["v2_66"]
+v2_84 = ["v2_82"]
+v2_78 = []
