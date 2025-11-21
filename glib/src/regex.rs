@@ -102,6 +102,7 @@ impl Regex {
                         match_options.into_glib(),
                         &mut error,
                     );
+                    debug_assert_eq!(ret.is_null(), !error.is_null());
                     if error.is_null() {
                         Ok(from_glib_full(ret))
                     } else {
@@ -211,6 +212,7 @@ impl Regex {
                         match_options.into_glib(),
                         &mut error,
                     );
+                    debug_assert_eq!(ret.is_null(), !error.is_null());
                     if error.is_null() {
                         Ok(from_glib_full(ret))
                     } else {
@@ -251,6 +253,7 @@ impl Regex {
                     max_tokens,
                     &mut error,
                 );
+                debug_assert_eq!(ret.is_null(), !error.is_null());
                 if error.is_null() {
                     Ok(FromGlibPtrContainer::from_glib_full(ret))
                 } else {
