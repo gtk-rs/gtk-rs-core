@@ -75,52 +75,6 @@ pub const G_VARIANT_TYPE_BYTE_STRING: &str = "ay";
 pub const G_VARIANT_TYPE_BYTE_STRING_ARRAY: &str = "aay";
 pub const G_VARIANT_TYPE_VARDICT: &str = "a{sv}";
 
-#[cfg(target_family = "windows")]
-pub use self::win32::*;
-
-#[cfg(target_family = "windows")]
-mod win32 {
-    use libc::{c_char, c_int, c_uint};
-
-    pub type GWin32OSType = c_int;
-    pub const G_WIN32_OS_ANY: GWin32OSType = 0;
-    pub const G_WIN32_OS_WORKSTATION: GWin32OSType = 1;
-    pub const G_WIN32_OS_SERVER: GWin32OSType = 2;
-
-    extern "C" {
-        pub fn g_win32_check_windows_version(
-            major: c_int,
-            minor: c_int,
-            spver: c_int,
-            os_type: GWin32OSType,
-        ) -> crate::gboolean;
-
-        pub fn g_win32_get_command_line() -> *mut *mut c_char;
-
-        pub fn g_win32_error_message(error: c_int) -> *mut c_char;
-
-        pub fn g_win32_getlocale() -> *mut c_char;
-
-        pub fn g_win32_get_package_installation_directory_of_module(
-            hmodule: std::os::windows::raw::HANDLE,
-        ) -> *mut c_char;
-
-        pub fn g_win32_locale_filename_from_utf8(utf8filename: *const c_char) -> *mut c_char;
-
-        pub fn g_win32_ftruncate(f: c_int, size: c_uint) -> c_int;
-        pub fn g_win32_get_package_installation_directory(
-            package: *const c_char,
-            dll_name: *const c_char,
-        ) -> *mut c_char;
-        pub fn g_win32_get_package_installation_subdirectory(
-            package: *const c_char,
-            dll_name: *const c_char,
-            subdir: *const c_char,
-        ) -> *mut c_char;
-        pub fn g_win32_get_windows_version() -> c_uint;
-    }
-}
-
 extern "C" {
     pub fn g_atomic_int_get(atomic: *const c_int) -> c_int;
 }
