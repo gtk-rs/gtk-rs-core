@@ -40,10 +40,6 @@ Currently, the minimum supported Rust version is `1.83.0`.
 
  * **win32-surface** - Microsoft Windows surface support
 
-## Documentation rustdoc attributes
-
- * **docsrs** - Used to keep system dependent items in documentation
-
 ## Using
 
 We recommend using [crates from crates.io](https://crates.io/keywords/gtk-rs),
