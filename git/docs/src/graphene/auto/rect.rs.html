@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `graphene/src/auto/rect.rs`."><title>rect.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e56847b5.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="graphene" data-themes="" data-resource-suffix="" data-rustdoc-version="1.92.0-nightly (caccb4d03 2025-09-24)" data-channel="nightly" data-search-js="search-e256b49e.js" data-stringdex-js="stringdex-061df703.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-ce535bd0.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `graphene/src/auto/rect.rs`."><title>rect.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="graphene" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.0-nightly (c871d09d1 2025-11-24)" data-channel="nightly" data-search-js="search-680b2199.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -78,7 +78,7 @@
 <a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{<a href="../../../graphene_sys/index.html">ffi</a>, <a href="point.rs.html#8-17">Point</a>};
 <a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 <a href=#7 id=7 data-nosnippet>7</a>
-<a href=#8 id=8 data-nosnippet>8</a><a class="macro" href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
+<a href=#8 id=8 data-nosnippet>8</a><a href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
 <a href=#9 id=9 data-nosnippet>9</a>    <span class="doccomment">/// The location and size of a rectangle region.
 <a href=#10 id=10 data-nosnippet>10</a>    ///
 <a href=#11 id=11 data-nosnippet>11</a>    /// The width and height of a [`Rect`][crate::Rect] can be negative; for instance,
@@ -91,7 +91,7 @@
 <a href=#18 id=18 data-nosnippet>18</a>    /// positive values. All functions taking a [`Rect`][crate::Rect] as an argument
 <a href=#19 id=19 data-nosnippet>19</a>    /// will internally operate on a normalized copy; all functions returning a
 <a href=#20 id=20 data-nosnippet>20</a>    /// [`Rect`][crate::Rect] will always return a normalized rectangle.
-<a href=#21 id=21 data-nosnippet>21</a>    </span><span class="kw">pub struct </span><a href="../../../graphene/struct.Rect.html">Rect</a>(BoxedInline&lt;<a href="../../../graphene_sys/struct.graphene_rect_t.html">ffi::graphene_rect_t</a>&gt;);
+<a href=#21 id=21 data-nosnippet>21</a>    </span><span class="kw">pub struct </span><a href="#8-28">Rect</a>(BoxedInline&lt;ffi::<a href="../../../graphene_sys/struct.graphene_rect_t.html">graphene_rect_t</a>&gt;);
 <a href=#22 id=22 data-nosnippet>22</a>
 <a href=#23 id=23 data-nosnippet>23</a>    <span class="kw">match fn </span>{
 <a href=#24 id=24 data-nosnippet>24</a>        copy =&gt; |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_rect_get_type(), ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>) <span class="kw">as </span><span class="kw-2">*mut </span>ffi::graphene_rect_t,
@@ -110,7 +110,7 @@
 <a href=#37 id=37 data-nosnippet>37</a>    /// `true` if the rectangle contains the point
 <a href=#38 id=38 data-nosnippet>38</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_rect_contains_point"</span>)]
 <a href=#39 id=39 data-nosnippet>39</a>    </span><span class="kw">pub fn </span>contains_point(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span><a href="point.rs.html#8-17">Point</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#40 id=40 data-nosnippet>40</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_rect_contains_point.html">ffi::graphene_rect_contains_point</a>(<a class="self" href="#39">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#39">p</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#40 id=40 data-nosnippet>40</a>        <span class="kw">unsafe </span>{ ffi::<a href="../../../graphene_sys/fn.graphene_rect_contains_point.html">graphene_rect_contains_point</a>(<a class="self" href="#39">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#39">p</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
 <a href=#41 id=41 data-nosnippet>41</a>    }
 <a href=#42 id=42 data-nosnippet>42</a>
 <a href=#43 id=43 data-nosnippet>43</a>    <span class="doccomment">/// Checks whether a [`Rect`][crate::Rect] fully contains the given
@@ -123,12 +123,12 @@
 <a href=#50 id=50 data-nosnippet>50</a>    /// `true` if the rectangle `self` fully contains `b`
 <a href=#51 id=51 data-nosnippet>51</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_rect_contains_rect"</span>)]
 <a href=#52 id=52 data-nosnippet>52</a>    </span><span class="kw">pub fn </span>contains_rect(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-28">Rect</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#53 id=53 data-nosnippet>53</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_rect_contains_rect.html">ffi::graphene_rect_contains_rect</a>(<a class="self" href="#52">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#52">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#53 id=53 data-nosnippet>53</a>        <span class="kw">unsafe </span>{ ffi::<a href="../../../graphene_sys/fn.graphene_rect_contains_rect.html">graphene_rect_contains_rect</a>(<a class="self" href="#52">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#52">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
 <a href=#54 id=54 data-nosnippet>54</a>    }
 <a href=#55 id=55 data-nosnippet>55</a>
 <a href=#56 id=56 data-nosnippet>56</a>    <span class="attr">#[doc(alias = <span class="string">"graphene_rect_equal"</span>)]
 <a href=#57 id=57 data-nosnippet>57</a>    </span><span class="kw">fn </span>equal(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-28">Rect</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#58 id=58 data-nosnippet>58</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_rect_equal.html">ffi::graphene_rect_equal</a>(<a class="self" href="#57">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#57">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#58 id=58 data-nosnippet>58</a>        <span class="kw">unsafe </span>{ ffi::<a href="../../../graphene_sys/fn.graphene_rect_equal.html">graphene_rect_equal</a>(<a class="self" href="#57">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#57">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
 <a href=#59 id=59 data-nosnippet>59</a>    }
 <a href=#60 id=60 data-nosnippet>60</a>
 <a href=#61 id=61 data-nosnippet>61</a>    <span class="doccomment">/// Expands a [`Rect`][crate::Rect] to contain the given [`Point`][crate::Point].
@@ -144,8 +144,8 @@
 <a href=#71 id=71 data-nosnippet>71</a>    #[must_use]
 <a href=#72 id=72 data-nosnippet>72</a>    </span><span class="kw">pub fn </span>expand(<span class="kw-2">&amp;</span><span class="self">self</span>, p: <span class="kw-2">&amp;</span><a href="point.rs.html#8-17">Point</a>) -&gt; <a href="#8-28">Rect</a> {
 <a href=#73 id=73 data-nosnippet>73</a>        <span class="kw">unsafe </span>{
-<a href=#74 id=74 data-nosnippet>74</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Rect::uninitialized</a>();
-<a href=#75 id=75 data-nosnippet>75</a>            <a href="../../../graphene_sys/fn.graphene_rect_expand.html">ffi::graphene_rect_expand</a>(
+<a href=#74 id=74 data-nosnippet>74</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="#8-28">Rect</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#75 id=75 data-nosnippet>75</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_expand.html">graphene_rect_expand</a>(
 <a href=#76 id=76 data-nosnippet>76</a>                <a class="self" href="#72">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#77 id=77 data-nosnippet>77</a>                <a href="#72">p</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#78 id=78 data-nosnippet>78</a>                <a href="#74">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
@@ -162,7 +162,7 @@
 <a href=#89 id=89 data-nosnippet>89</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_rect_get_area"</span>)]
 <a href=#90 id=90 data-nosnippet>90</a>    #[doc(alias = <span class="string">"get_area"</span>)]
 <a href=#91 id=91 data-nosnippet>91</a>    </span><span class="kw">pub fn </span>area(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
-<a href=#92 id=92 data-nosnippet>92</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_rect_get_area.html">ffi::graphene_rect_get_area</a>(<a class="self" href="#91">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#92 id=92 data-nosnippet>92</a>        <span class="kw">unsafe </span>{ ffi::<a href="../../../graphene_sys/fn.graphene_rect_get_area.html">graphene_rect_get_area</a>(<a class="self" href="#91">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
 <a href=#93 id=93 data-nosnippet>93</a>    }
 <a href=#94 id=94 data-nosnippet>94</a>
 <a href=#95 id=95 data-nosnippet>95</a>    <span class="doccomment">/// Retrieves the coordinates of the bottom-left corner of the given rectangle.
@@ -176,8 +176,8 @@
 <a href=#103 id=103 data-nosnippet>103</a>    #[doc(alias = <span class="string">"get_bottom_left"</span>)]
 <a href=#104 id=104 data-nosnippet>104</a>    </span><span class="kw">pub fn </span>bottom_left(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="point.rs.html#8-17">Point</a> {
 <a href=#105 id=105 data-nosnippet>105</a>        <span class="kw">unsafe </span>{
-<a href=#106 id=106 data-nosnippet>106</a>            <span class="kw">let </span><span class="kw-2">mut </span>p = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Point::uninitialized</a>();
-<a href=#107 id=107 data-nosnippet>107</a>            <a href="../../../graphene_sys/fn.graphene_rect_get_bottom_left.html">ffi::graphene_rect_get_bottom_left</a>(<a class="self" href="#104">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#106">p</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#106 id=106 data-nosnippet>106</a>            <span class="kw">let </span><span class="kw-2">mut </span>p = <a href="point.rs.html#8-17">Point</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#107 id=107 data-nosnippet>107</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_get_bottom_left.html">graphene_rect_get_bottom_left</a>(<a class="self" href="#104">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#106">p</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
 <a href=#108 id=108 data-nosnippet>108</a>            <a href="#106">p</a>
 <a href=#109 id=109 data-nosnippet>109</a>        }
 <a href=#110 id=110 data-nosnippet>110</a>    }
@@ -193,8 +193,8 @@
 <a href=#120 id=120 data-nosnippet>120</a>    #[doc(alias = <span class="string">"get_bottom_right"</span>)]
 <a href=#121 id=121 data-nosnippet>121</a>    </span><span class="kw">pub fn </span>bottom_right(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="point.rs.html#8-17">Point</a> {
 <a href=#122 id=122 data-nosnippet>122</a>        <span class="kw">unsafe </span>{
-<a href=#123 id=123 data-nosnippet>123</a>            <span class="kw">let </span><span class="kw-2">mut </span>p = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Point::uninitialized</a>();
-<a href=#124 id=124 data-nosnippet>124</a>            <a href="../../../graphene_sys/fn.graphene_rect_get_bottom_right.html">ffi::graphene_rect_get_bottom_right</a>(<a class="self" href="#121">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#123">p</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#123 id=123 data-nosnippet>123</a>            <span class="kw">let </span><span class="kw-2">mut </span>p = <a href="point.rs.html#8-17">Point</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#124 id=124 data-nosnippet>124</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_get_bottom_right.html">graphene_rect_get_bottom_right</a>(<a class="self" href="#121">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#123">p</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
 <a href=#125 id=125 data-nosnippet>125</a>            <a href="#123">p</a>
 <a href=#126 id=126 data-nosnippet>126</a>        }
 <a href=#127 id=127 data-nosnippet>127</a>    }
@@ -210,8 +210,8 @@
 <a href=#137 id=137 data-nosnippet>137</a>    #[doc(alias = <span class="string">"get_center"</span>)]
 <a href=#138 id=138 data-nosnippet>138</a>    </span><span class="kw">pub fn </span>center(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="point.rs.html#8-17">Point</a> {
 <a href=#139 id=139 data-nosnippet>139</a>        <span class="kw">unsafe </span>{
-<a href=#140 id=140 data-nosnippet>140</a>            <span class="kw">let </span><span class="kw-2">mut </span>p = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Point::uninitialized</a>();
-<a href=#141 id=141 data-nosnippet>141</a>            <a href="../../../graphene_sys/fn.graphene_rect_get_center.html">ffi::graphene_rect_get_center</a>(<a class="self" href="#138">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#140">p</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#140 id=140 data-nosnippet>140</a>            <span class="kw">let </span><span class="kw-2">mut </span>p = <a href="point.rs.html#8-17">Point</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#141 id=141 data-nosnippet>141</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_get_center.html">graphene_rect_get_center</a>(<a class="self" href="#138">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#140">p</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
 <a href=#142 id=142 data-nosnippet>142</a>            <a href="#140">p</a>
 <a href=#143 id=143 data-nosnippet>143</a>        }
 <a href=#144 id=144 data-nosnippet>144</a>    }
@@ -224,7 +224,7 @@
 <a href=#151 id=151 data-nosnippet>151</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_rect_get_height"</span>)]
 <a href=#152 id=152 data-nosnippet>152</a>    #[doc(alias = <span class="string">"get_height"</span>)]
 <a href=#153 id=153 data-nosnippet>153</a>    </span><span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
-<a href=#154 id=154 data-nosnippet>154</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_rect_get_height.html">ffi::graphene_rect_get_height</a>(<a class="self" href="#153">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#154 id=154 data-nosnippet>154</a>        <span class="kw">unsafe </span>{ ffi::<a href="../../../graphene_sys/fn.graphene_rect_get_height.html">graphene_rect_get_height</a>(<a class="self" href="#153">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
 <a href=#155 id=155 data-nosnippet>155</a>    }
 <a href=#156 id=156 data-nosnippet>156</a>
 <a href=#157 id=157 data-nosnippet>157</a>    <span class="doccomment">/// Retrieves the coordinates of the top-left corner of the given rectangle.
@@ -238,8 +238,8 @@
 <a href=#165 id=165 data-nosnippet>165</a>    #[doc(alias = <span class="string">"get_top_left"</span>)]
 <a href=#166 id=166 data-nosnippet>166</a>    </span><span class="kw">pub fn </span>top_left(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="point.rs.html#8-17">Point</a> {
 <a href=#167 id=167 data-nosnippet>167</a>        <span class="kw">unsafe </span>{
-<a href=#168 id=168 data-nosnippet>168</a>            <span class="kw">let </span><span class="kw-2">mut </span>p = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Point::uninitialized</a>();
-<a href=#169 id=169 data-nosnippet>169</a>            <a href="../../../graphene_sys/fn.graphene_rect_get_top_left.html">ffi::graphene_rect_get_top_left</a>(<a class="self" href="#166">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#168">p</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#168 id=168 data-nosnippet>168</a>            <span class="kw">let </span><span class="kw-2">mut </span>p = <a href="point.rs.html#8-17">Point</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#169 id=169 data-nosnippet>169</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_get_top_left.html">graphene_rect_get_top_left</a>(<a class="self" href="#166">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#168">p</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
 <a href=#170 id=170 data-nosnippet>170</a>            <a href="#168">p</a>
 <a href=#171 id=171 data-nosnippet>171</a>        }
 <a href=#172 id=172 data-nosnippet>172</a>    }
@@ -255,8 +255,8 @@
 <a href=#182 id=182 data-nosnippet>182</a>    #[doc(alias = <span class="string">"get_top_right"</span>)]
 <a href=#183 id=183 data-nosnippet>183</a>    </span><span class="kw">pub fn </span>top_right(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="point.rs.html#8-17">Point</a> {
 <a href=#184 id=184 data-nosnippet>184</a>        <span class="kw">unsafe </span>{
-<a href=#185 id=185 data-nosnippet>185</a>            <span class="kw">let </span><span class="kw-2">mut </span>p = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Point::uninitialized</a>();
-<a href=#186 id=186 data-nosnippet>186</a>            <a href="../../../graphene_sys/fn.graphene_rect_get_top_right.html">ffi::graphene_rect_get_top_right</a>(<a class="self" href="#183">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#185">p</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#185 id=185 data-nosnippet>185</a>            <span class="kw">let </span><span class="kw-2">mut </span>p = <a href="point.rs.html#8-17">Point</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#186 id=186 data-nosnippet>186</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_get_top_right.html">graphene_rect_get_top_right</a>(<a class="self" href="#183">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#185">p</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
 <a href=#187 id=187 data-nosnippet>187</a>            <a href="#185">p</a>
 <a href=#188 id=188 data-nosnippet>188</a>        }
 <a href=#189 id=189 data-nosnippet>189</a>    }
@@ -269,7 +269,7 @@
 <a href=#196 id=196 data-nosnippet>196</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_rect_get_width"</span>)]
 <a href=#197 id=197 data-nosnippet>197</a>    #[doc(alias = <span class="string">"get_width"</span>)]
 <a href=#198 id=198 data-nosnippet>198</a>    </span><span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
-<a href=#199 id=199 data-nosnippet>199</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_rect_get_width.html">ffi::graphene_rect_get_width</a>(<a class="self" href="#198">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#199 id=199 data-nosnippet>199</a>        <span class="kw">unsafe </span>{ ffi::<a href="../../../graphene_sys/fn.graphene_rect_get_width.html">graphene_rect_get_width</a>(<a class="self" href="#198">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
 <a href=#200 id=200 data-nosnippet>200</a>    }
 <a href=#201 id=201 data-nosnippet>201</a>
 <a href=#202 id=202 data-nosnippet>202</a>    <span class="doccomment">/// Retrieves the normalized X coordinate of the origin of the given
@@ -281,7 +281,7 @@
 <a href=#208 id=208 data-nosnippet>208</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_rect_get_x"</span>)]
 <a href=#209 id=209 data-nosnippet>209</a>    #[doc(alias = <span class="string">"get_x"</span>)]
 <a href=#210 id=210 data-nosnippet>210</a>    </span><span class="kw">pub fn </span>x(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
-<a href=#211 id=211 data-nosnippet>211</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_rect_get_x.html">ffi::graphene_rect_get_x</a>(<a class="self" href="#210">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#211 id=211 data-nosnippet>211</a>        <span class="kw">unsafe </span>{ ffi::<a href="../../../graphene_sys/fn.graphene_rect_get_x.html">graphene_rect_get_x</a>(<a class="self" href="#210">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
 <a href=#212 id=212 data-nosnippet>212</a>    }
 <a href=#213 id=213 data-nosnippet>213</a>
 <a href=#214 id=214 data-nosnippet>214</a>    <span class="doccomment">/// Retrieves the normalized Y coordinate of the origin of the given
@@ -293,7 +293,7 @@
 <a href=#220 id=220 data-nosnippet>220</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_rect_get_y"</span>)]
 <a href=#221 id=221 data-nosnippet>221</a>    #[doc(alias = <span class="string">"get_y"</span>)]
 <a href=#222 id=222 data-nosnippet>222</a>    </span><span class="kw">pub fn </span>y(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
-<a href=#223 id=223 data-nosnippet>223</a>        <span class="kw">unsafe </span>{ <a href="../../../graphene_sys/fn.graphene_rect_get_y.html">ffi::graphene_rect_get_y</a>(<a class="self" href="#222">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
+<a href=#223 id=223 data-nosnippet>223</a>        <span class="kw">unsafe </span>{ ffi::<a href="../../../graphene_sys/fn.graphene_rect_get_y.html">graphene_rect_get_y</a>(<a class="self" href="#222">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>) }
 <a href=#224 id=224 data-nosnippet>224</a>    }
 <a href=#225 id=225 data-nosnippet>225</a>
 <a href=#226 id=226 data-nosnippet>226</a>    <span class="doccomment">/// Changes the given rectangle to be smaller, or larger depending on the
@@ -321,7 +321,7 @@
 <a href=#248 id=248 data-nosnippet>248</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_rect_inset"</span>)]
 <a href=#249 id=249 data-nosnippet>249</a>    </span><span class="kw">pub fn </span>inset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, d_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) {
 <a href=#250 id=250 data-nosnippet>250</a>        <span class="kw">unsafe </span>{
-<a href=#251 id=251 data-nosnippet>251</a>            <a href="../../../graphene_sys/fn.graphene_rect_inset.html">ffi::graphene_rect_inset</a>(<a class="self" href="#249">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#249">d_x</a>, <a href="#249">d_y</a>);
+<a href=#251 id=251 data-nosnippet>251</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_inset.html">graphene_rect_inset</a>(<a class="self" href="#249">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#249">d_x</a>, <a href="#249">d_y</a>);
 <a href=#252 id=252 data-nosnippet>252</a>        }
 <a href=#253 id=253 data-nosnippet>253</a>    }
 <a href=#254 id=254 data-nosnippet>254</a>
@@ -353,8 +353,8 @@
 <a href=#280 id=280 data-nosnippet>280</a>    #[must_use]
 <a href=#281 id=281 data-nosnippet>281</a>    </span><span class="kw">pub fn </span>inset_r(<span class="kw-2">&amp;</span><span class="self">self</span>, d_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, d_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a href="#8-28">Rect</a> {
 <a href=#282 id=282 data-nosnippet>282</a>        <span class="kw">unsafe </span>{
-<a href=#283 id=283 data-nosnippet>283</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Rect::uninitialized</a>();
-<a href=#284 id=284 data-nosnippet>284</a>            <a href="../../../graphene_sys/fn.graphene_rect_inset_r.html">ffi::graphene_rect_inset_r</a>(<a class="self" href="#281">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#281">d_x</a>, <a href="#281">d_y</a>, <a href="#283">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#283 id=283 data-nosnippet>283</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="#8-28">Rect</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#284 id=284 data-nosnippet>284</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_inset_r.html">graphene_rect_inset_r</a>(<a class="self" href="#281">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#281">d_x</a>, <a href="#281">d_y</a>, <a href="#283">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
 <a href=#285 id=285 data-nosnippet>285</a>            <a href="#283">res</a>
 <a href=#286 id=286 data-nosnippet>286</a>        }
 <a href=#287 id=287 data-nosnippet>287</a>    }
@@ -376,8 +376,8 @@
 <a href=#303 id=303 data-nosnippet>303</a>    #[must_use]
 <a href=#304 id=304 data-nosnippet>304</a>    </span><span class="kw">pub fn </span>interpolate(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-28">Rect</a>, factor: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <a href="#8-28">Rect</a> {
 <a href=#305 id=305 data-nosnippet>305</a>        <span class="kw">unsafe </span>{
-<a href=#306 id=306 data-nosnippet>306</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Rect::uninitialized</a>();
-<a href=#307 id=307 data-nosnippet>307</a>            <a href="../../../graphene_sys/fn.graphene_rect_interpolate.html">ffi::graphene_rect_interpolate</a>(
+<a href=#306 id=306 data-nosnippet>306</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="#8-28">Rect</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#307 id=307 data-nosnippet>307</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_interpolate.html">graphene_rect_interpolate</a>(
 <a href=#308 id=308 data-nosnippet>308</a>                <a class="self" href="#304">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#309 id=309 data-nosnippet>309</a>                <a href="#304">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#310 id=310 data-nosnippet>310</a>                <a href="#304">factor</a>,
@@ -408,8 +408,8 @@
 <a href=#335 id=335 data-nosnippet>335</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_rect_intersection"</span>)]
 <a href=#336 id=336 data-nosnippet>336</a>    </span><span class="kw">pub fn </span>intersection(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-28">Rect</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#8-28">Rect</a>&gt; {
 <a href=#337 id=337 data-nosnippet>337</a>        <span class="kw">unsafe </span>{
-<a href=#338 id=338 data-nosnippet>338</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Rect::uninitialized</a>();
-<a href=#339 id=339 data-nosnippet>339</a>            <span class="kw">let </span>ret = <a href="../../../graphene_sys/fn.graphene_rect_intersection.html">ffi::graphene_rect_intersection</a>(
+<a href=#338 id=338 data-nosnippet>338</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="#8-28">Rect</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#339 id=339 data-nosnippet>339</a>            <span class="kw">let </span>ret = ffi::<a href="../../../graphene_sys/fn.graphene_rect_intersection.html">graphene_rect_intersection</a>(
 <a href=#340 id=340 data-nosnippet>340</a>                <a class="self" href="#336">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#341 id=341 data-nosnippet>341</a>                <a href="#336">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#342 id=342 data-nosnippet>342</a>                <a href="#338">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
@@ -417,8 +417,8 @@
 <a href=#344 id=344 data-nosnippet>344</a>            <span class="kw">if </span><a href="#339">ret</a> {
 <a href=#345 id=345 data-nosnippet>345</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#338">res</a>)
 <a href=#346 id=346 data-nosnippet>346</a>            } <span class="kw">else </span>{
-<a href=#347 id=347 data-nosnippet>347</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None"><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
-<a href=#348 id=348 data-nosnippet>348</a>            </a>}
+<a href=#347 id=347 data-nosnippet>347</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+<a href=#348 id=348 data-nosnippet>348</a>            }
 <a href=#349 id=349 data-nosnippet>349</a>        }
 <a href=#350 id=350 data-nosnippet>350</a>    }
 <a href=#351 id=351 data-nosnippet>351</a>
@@ -434,7 +434,7 @@
 <a href=#361 id=361 data-nosnippet>361</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_rect_normalize"</span>)]
 <a href=#362 id=362 data-nosnippet>362</a>    </span><span class="kw">pub fn </span>normalize(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
 <a href=#363 id=363 data-nosnippet>363</a>        <span class="kw">unsafe </span>{
-<a href=#364 id=364 data-nosnippet>364</a>            <a href="../../../graphene_sys/fn.graphene_rect_normalize.html">ffi::graphene_rect_normalize</a>(<a class="self" href="#362">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#364 id=364 data-nosnippet>364</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_normalize.html">graphene_rect_normalize</a>(<a class="self" href="#362">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
 <a href=#365 id=365 data-nosnippet>365</a>        }
 <a href=#366 id=366 data-nosnippet>366</a>    }
 <a href=#367 id=367 data-nosnippet>367</a>
@@ -454,8 +454,8 @@
 <a href=#381 id=381 data-nosnippet>381</a>    #[must_use]
 <a href=#382 id=382 data-nosnippet>382</a>    </span><span class="kw">pub fn </span>normalize_r(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#8-28">Rect</a> {
 <a href=#383 id=383 data-nosnippet>383</a>        <span class="kw">unsafe </span>{
-<a href=#384 id=384 data-nosnippet>384</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Rect::uninitialized</a>();
-<a href=#385 id=385 data-nosnippet>385</a>            <a href="../../../graphene_sys/fn.graphene_rect_normalize_r.html">ffi::graphene_rect_normalize_r</a>(<a class="self" href="#382">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#384">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#384 id=384 data-nosnippet>384</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="#8-28">Rect</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#385 id=385 data-nosnippet>385</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_normalize_r.html">graphene_rect_normalize_r</a>(<a class="self" href="#382">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#384">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
 <a href=#386 id=386 data-nosnippet>386</a>            <a href="#384">res</a>
 <a href=#387 id=387 data-nosnippet>387</a>        }
 <a href=#388 id=388 data-nosnippet>388</a>    }
@@ -474,7 +474,7 @@
 <a href=#401 id=401 data-nosnippet>401</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_rect_offset"</span>)]
 <a href=#402 id=402 data-nosnippet>402</a>    </span><span class="kw">pub fn </span>offset(<span class="kw-2">&amp;mut </span><span class="self">self</span>, d_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, d_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) {
 <a href=#403 id=403 data-nosnippet>403</a>        <span class="kw">unsafe </span>{
-<a href=#404 id=404 data-nosnippet>404</a>            <a href="../../../graphene_sys/fn.graphene_rect_offset.html">ffi::graphene_rect_offset</a>(<a class="self" href="#402">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#402">d_x</a>, <a href="#402">d_y</a>);
+<a href=#404 id=404 data-nosnippet>404</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_offset.html">graphene_rect_offset</a>(<a class="self" href="#402">self</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#402">d_x</a>, <a href="#402">d_y</a>);
 <a href=#405 id=405 data-nosnippet>405</a>        }
 <a href=#406 id=406 data-nosnippet>406</a>    }
 <a href=#407 id=407 data-nosnippet>407</a>
@@ -496,8 +496,8 @@
 <a href=#423 id=423 data-nosnippet>423</a>    #[must_use]
 <a href=#424 id=424 data-nosnippet>424</a>    </span><span class="kw">pub fn </span>offset_r(<span class="kw-2">&amp;</span><span class="self">self</span>, d_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, d_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a href="#8-28">Rect</a> {
 <a href=#425 id=425 data-nosnippet>425</a>        <span class="kw">unsafe </span>{
-<a href=#426 id=426 data-nosnippet>426</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Rect::uninitialized</a>();
-<a href=#427 id=427 data-nosnippet>427</a>            <a href="../../../graphene_sys/fn.graphene_rect_offset_r.html">ffi::graphene_rect_offset_r</a>(<a class="self" href="#424">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#424">d_x</a>, <a href="#424">d_y</a>, <a href="#426">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#426 id=426 data-nosnippet>426</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="#8-28">Rect</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#427 id=427 data-nosnippet>427</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_offset_r.html">graphene_rect_offset_r</a>(<a class="self" href="#424">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#424">d_x</a>, <a href="#424">d_y</a>, <a href="#426">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
 <a href=#428 id=428 data-nosnippet>428</a>            <a href="#426">res</a>
 <a href=#429 id=429 data-nosnippet>429</a>        }
 <a href=#430 id=430 data-nosnippet>430</a>    }
@@ -534,8 +534,8 @@
 <a href=#461 id=461 data-nosnippet>461</a>    #[must_use]
 <a href=#462 id=462 data-nosnippet>462</a>    </span><span class="kw">pub fn </span>round_extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#8-28">Rect</a> {
 <a href=#463 id=463 data-nosnippet>463</a>        <span class="kw">unsafe </span>{
-<a href=#464 id=464 data-nosnippet>464</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Rect::uninitialized</a>();
-<a href=#465 id=465 data-nosnippet>465</a>            <a href="../../../graphene_sys/fn.graphene_rect_round_extents.html">ffi::graphene_rect_round_extents</a>(<a class="self" href="#462">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#464">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#464 id=464 data-nosnippet>464</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="#8-28">Rect</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#465 id=465 data-nosnippet>465</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_round_extents.html">graphene_rect_round_extents</a>(<a class="self" href="#462">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#464">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
 <a href=#466 id=466 data-nosnippet>466</a>            <a href="#464">res</a>
 <a href=#467 id=467 data-nosnippet>467</a>        }
 <a href=#468 id=468 data-nosnippet>468</a>    }
@@ -557,8 +557,8 @@
 <a href=#484 id=484 data-nosnippet>484</a>    #[must_use]
 <a href=#485 id=485 data-nosnippet>485</a>    </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;</span><span class="self">self</span>, s_h: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, s_v: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a href="#8-28">Rect</a> {
 <a href=#486 id=486 data-nosnippet>486</a>        <span class="kw">unsafe </span>{
-<a href=#487 id=487 data-nosnippet>487</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Rect::uninitialized</a>();
-<a href=#488 id=488 data-nosnippet>488</a>            <a href="../../../graphene_sys/fn.graphene_rect_scale.html">ffi::graphene_rect_scale</a>(<a class="self" href="#485">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#485">s_h</a>, <a href="#485">s_v</a>, <a href="#487">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#487 id=487 data-nosnippet>487</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="#8-28">Rect</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#488 id=488 data-nosnippet>488</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_scale.html">graphene_rect_scale</a>(<a class="self" href="#485">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#485">s_h</a>, <a href="#485">s_v</a>, <a href="#487">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
 <a href=#489 id=489 data-nosnippet>489</a>            <a href="#487">res</a>
 <a href=#490 id=490 data-nosnippet>490</a>        }
 <a href=#491 id=491 data-nosnippet>491</a>    }
@@ -580,8 +580,8 @@
 <a href=#507 id=507 data-nosnippet>507</a>    #[must_use]
 <a href=#508 id=508 data-nosnippet>508</a>    </span><span class="kw">pub fn </span>union(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-28">Rect</a>) -&gt; <a href="#8-28">Rect</a> {
 <a href=#509 id=509 data-nosnippet>509</a>        <span class="kw">unsafe </span>{
-<a href=#510 id=510 data-nosnippet>510</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">Rect::uninitialized</a>();
-<a href=#511 id=511 data-nosnippet>511</a>            <a href="../../../graphene_sys/fn.graphene_rect_union.html">ffi::graphene_rect_union</a>(
+<a href=#510 id=510 data-nosnippet>510</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="#8-28">Rect</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#511 id=511 data-nosnippet>511</a>            ffi::<a href="../../../graphene_sys/fn.graphene_rect_union.html">graphene_rect_union</a>(
 <a href=#512 id=512 data-nosnippet>512</a>                <a class="self" href="#508">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#513 id=513 data-nosnippet>513</a>                <a href="#508">b</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#514 id=514 data-nosnippet>514</a>                <a href="#510">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>,
@@ -599,7 +599,7 @@
 <a href=#526 id=526 data-nosnippet>526</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_rect_zero"</span>)]
 <a href=#527 id=527 data-nosnippet>527</a>    </span><span class="kw">pub fn </span>zero() -&gt; <a href="#8-28">Rect</a> {
 <a href=#528 id=528 data-nosnippet>528</a>        <span class="macro">assert_initialized_main_thread!</span>();
-<a href=#529 id=529 data-nosnippet>529</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="../../../graphene_sys/fn.graphene_rect_zero.html">ffi::graphene_rect_zero</a>()) }
+<a href=#529 id=529 data-nosnippet>529</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(ffi::<a href="../../../graphene_sys/fn.graphene_rect_zero.html">graphene_rect_zero</a>()) }
 <a href=#530 id=530 data-nosnippet>530</a>    }
 <a href=#531 id=531 data-nosnippet>531</a>}
 <a href=#532 id=532 data-nosnippet>532</a>
@@ -610,4 +610,5 @@
 <a href=#537 id=537 data-nosnippet>537</a>    }
 <a href=#538 id=538 data-nosnippet>538</a>}
 <a href=#539 id=539 data-nosnippet>539</a>
-<a href=#540 id=540 data-nosnippet>540</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#8-28">Rect</a> {}</code></pre></div></section></main></body></html>
+<a href=#540 id=540 data-nosnippet>540</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#8-28">Rect</a> {}
+</code></pre></div></section></main></body></html>

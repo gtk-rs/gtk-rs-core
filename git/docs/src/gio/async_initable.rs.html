@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/async_initable.rs`."><title>async_initable.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-e56847b5.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.92.0-nightly (caccb4d03 2025-09-24)" data-channel="nightly" data-search-js="search-e256b49e.js" data-stringdex-js="stringdex-061df703.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-ce535bd0.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/async_initable.rs`."><title>async_initable.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.0-nightly (c871d09d1 2025-11-24)" data-channel="nightly" data-search-js="search-680b2199.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -78,7 +78,7 @@
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>futures_util::TryFutureExt;
 <a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>glib::{<a href="../../glib/object/trait.IsClass.html">object::IsClass</a>, <a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/object/struct.Object.html">Object</a>, <a href="../../glib/types/struct.Type.html">Type</a>};
 <a href=#7 id=7 data-nosnippet>7</a>
-<a href=#8 id=8 data-nosnippet>8</a><span class="kw">use crate</span>::{<a href="lib.rs.html#128">prelude</a>::<span class="kw-2">*</span>, <a href="auto/async_initable.rs.html#9-123">AsyncInitable</a>, <a href="auto/cancellable.rs.html#8-86">Cancellable</a>};
+<a href=#8 id=8 data-nosnippet>8</a><span class="kw">use crate</span>::{<a href="lib.rs.html#130">prelude</a>::<span class="kw-2">*</span>, <a href="auto/async_initable.rs.html#9-123">AsyncInitable</a>, <a href="auto/cancellable.rs.html#8-86">Cancellable</a>};
 <a href=#9 id=9 data-nosnippet>9</a>
 <a href=#10 id=10 data-nosnippet>10</a><span class="kw">impl </span><a href="auto/async_initable.rs.html#9-123">AsyncInitable</a> {
 <a href=#11 id=11 data-nosnippet>11</a>    <span class="comment">// rustdoc-stripper-ignore-next
@@ -91,14 +91,14 @@
 <a href=#18 id=18 data-nosnippet>18</a>    #[allow(clippy::new_ret_no_self)]
 <a href=#19 id=19 data-nosnippet>19</a>    </span><span class="kw">pub fn </span>new&lt;
 <a href=#20 id=20 data-nosnippet>20</a>        O: <a href="../../glib/object/trait.IsClass.html">IsClass</a> + <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../glib/object/struct.Object.html">Object</a>&gt; + <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/async_initable.rs.html#9-123">AsyncInitable</a>&gt;,
-<a href=#21 id=21 data-nosnippet>21</a>        Q: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;O, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>,
+<a href=#21 id=21 data-nosnippet>21</a>        Q: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;O, glib::<a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>,
 <a href=#22 id=22 data-nosnippet>22</a>    &gt;(
-<a href=#23 id=23 data-nosnippet>23</a>        io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
+<a href=#23 id=23 data-nosnippet>23</a>        io_priority: glib::<a href="../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#24 id=24 data-nosnippet>24</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
 <a href=#25 id=25 data-nosnippet>25</a>        callback: Q,
 <a href=#26 id=26 data-nosnippet>26</a>    ) {
-<a href=#27 id=27 data-nosnippet>27</a>        <a href="#56-80"><span class="self">Self</span>::with_type</a>(<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">O::static_type</a>(), <a href="#23">io_priority</a>, <a href="#24">cancellable</a>, <span class="kw">move </span>|res| {
-<a href=#28 id=28 data-nosnippet>28</a>            <a href="#25">callback</a>(<a href="#27">res</a>.<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map">map</a>(|o| <span class="kw">unsafe </span>{ <a href="#28">o</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast">unsafe_cast</a>() }))
+<a href=#27 id=27 data-nosnippet>27</a>        <span class="self">Self</span>::<a href="#56-80">with_type</a>(O::<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">static_type</a>(), <a href="#23">io_priority</a>, <a href="#24">cancellable</a>, <span class="kw">move </span>|res| {
+<a href=#28 id=28 data-nosnippet>28</a>            <a href="#25">callback</a>(<a href="#27">res</a>.<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map">map</a>(|o| <span class="kw">unsafe </span>{ <a href="#28">o</a>.<a href="../../glib/object/trait.Cast.html#method.unsafe_cast">unsafe_cast</a>() }))
 <a href=#29 id=29 data-nosnippet>29</a>        })
 <a href=#30 id=30 data-nosnippet>30</a>    }
 <a href=#31 id=31 data-nosnippet>31</a>
@@ -110,11 +110,11 @@
 <a href=#37 id=37 data-nosnippet>37</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_async_initable_new_async"</span>)]
 <a href=#38 id=38 data-nosnippet>38</a>    #[track_caller]
 <a href=#39 id=39 data-nosnippet>39</a>    </span><span class="kw">pub fn </span>new_future&lt;O: <a href="../../glib/object/trait.IsClass.html">IsClass</a> + <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../glib/object/struct.Object.html">Object</a>&gt; + <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/async_initable.rs.html#9-123">AsyncInitable</a>&gt;&gt;(
-<a href=#40 id=40 data-nosnippet>40</a>        io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
-<a href=#41 id=41 data-nosnippet>41</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;O, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
-<a href=#42 id=42 data-nosnippet>42</a>        <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box::pin</a>(
-<a href=#43 id=43 data-nosnippet>43</a>            <a href="#89-116"><span class="self">Self</span>::with_type_future</a>(<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">O::static_type</a>(), <a href="#40">io_priority</a>)
-<a href=#44 id=44 data-nosnippet>44</a>                .map_ok(|o| <span class="kw">unsafe </span>{ <a href="#44">o</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast">unsafe_cast</a>() }),
+<a href=#40 id=40 data-nosnippet>40</a>        io_priority: glib::<a href="../../glib/source/struct.Priority.html">Priority</a>,
+<a href=#41 id=41 data-nosnippet>41</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;O, glib::<a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
+<a href=#42 id=42 data-nosnippet>42</a>        <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">pin</a>(
+<a href=#43 id=43 data-nosnippet>43</a>            <span class="self">Self</span>::<a href="#89-116">with_type_future</a>(O::<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">static_type</a>(), <a href="#40">io_priority</a>)
+<a href=#44 id=44 data-nosnippet>44</a>                .map_ok(|o| <span class="kw">unsafe </span>{ <a href="#44">o</a>.<a href="../../glib/object/trait.Cast.html#method.unsafe_cast">unsafe_cast</a>() }),
 <a href=#45 id=45 data-nosnippet>45</a>        )
 <a href=#46 id=46 data-nosnippet>46</a>    }
 <a href=#47 id=47 data-nosnippet>47</a>
@@ -126,22 +126,22 @@
 <a href=#53 id=53 data-nosnippet>53</a>    /// `AsyncInitable::init` failed.
 <a href=#54 id=54 data-nosnippet>54</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_async_initable_new_async"</span>)]
 <a href=#55 id=55 data-nosnippet>55</a>    #[track_caller]
-<a href=#56 id=56 data-nosnippet>56</a>    </span><span class="kw">pub fn </span>with_type&lt;Q: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="../../glib/object/struct.Object.html">Object</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
+<a href=#56 id=56 data-nosnippet>56</a>    </span><span class="kw">pub fn </span>with_type&lt;Q: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="../../glib/object/struct.Object.html">Object</a>, glib::<a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#57 id=57 data-nosnippet>57</a>        type_: <a href="../../glib/types/struct.Type.html">Type</a>,
-<a href=#58 id=58 data-nosnippet>58</a>        io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
+<a href=#58 id=58 data-nosnippet>58</a>        io_priority: glib::<a href="../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#59 id=59 data-nosnippet>59</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
 <a href=#60 id=60 data-nosnippet>60</a>        callback: Q,
 <a href=#61 id=61 data-nosnippet>61</a>    ) {
-<a href=#62 id=62 data-nosnippet>62</a>        <span class="kw">if </span>!<a href="#57">type_</a>.<a href="../../glib/types/struct.Type.html#method.is_a">is_a</a>(<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">AsyncInitable::static_type</a>()) {
-<a href=#63 id=63 data-nosnippet>63</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Type '{type_}' is not async initable"</span>);
+<a href=#62 id=62 data-nosnippet>62</a>        <span class="kw">if </span>!<a href="#57">type_</a>.<a href="../../glib/types/struct.Type.html#method.is_a">is_a</a>(<a href="auto/async_initable.rs.html#9-123">AsyncInitable</a>::<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">static_type</a>()) {
+<a href=#63 id=63 data-nosnippet>63</a>            <a href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Type '{type_}' is not async initable"</span>);
 <a href=#64 id=64 data-nosnippet>64</a>        }
 <a href=#65 id=65 data-nosnippet>65</a>
 <a href=#66 id=66 data-nosnippet>66</a>        <span class="kw">unsafe </span>{
-<a href=#67 id=67 data-nosnippet>67</a>            <span class="kw">let </span>obj = <a href="../../glib/object/struct.Object.html#method.new_internal">Object::new_internal</a>(<a href="#57">type_</a>, <span class="kw-2">&amp;mut </span>[]);
-<a href=#68 id=68 data-nosnippet>68</a>            <a href="#67">obj</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<span class="self">Self</span>&gt;().<a href="auto/async_initable.rs.html#178-221">init_async</a>(
+<a href=#67 id=67 data-nosnippet>67</a>            <span class="kw">let </span>obj = <a href="../../glib/object/struct.Object.html">Object</a>::<a href="../../glib/object/struct.Object.html#method.new_internal">new_internal</a>(<a href="#57">type_</a>, <span class="kw-2">&amp;mut </span>[]);
+<a href=#68 id=68 data-nosnippet>68</a>            <a href="#67">obj</a>.<a href="../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<span class="self">Self</span>&gt;().<a href="auto/async_initable.rs.html#178-221">init_async</a>(
 <a href=#69 id=69 data-nosnippet>69</a>                <a href="#58">io_priority</a>,
 <a href=#70 id=70 data-nosnippet>70</a>                <a href="#59">cancellable</a>,
-<a href=#71 id=71 data-nosnippet>71</a>                <a class="macro" href="../../glib_macros/macro.clone.html">glib::clone!</a>(
+<a href=#71 id=71 data-nosnippet>71</a>                <a href="../../glib_macros/macro.clone.html">glib::clone!</a>(
 <a href=#72 id=72 data-nosnippet>72</a>                    <span class="attr">#[strong]
 <a href=#73 id=73 data-nosnippet>73</a>                    </span>obj,
 <a href=#74 id=74 data-nosnippet>74</a>                    <span class="kw">move </span>|res| {
@@ -161,21 +161,21 @@
 <a href=#88 id=88 data-nosnippet>88</a>    #[track_caller]
 <a href=#89 id=89 data-nosnippet>89</a>    </span><span class="kw">pub fn </span>with_type_future(
 <a href=#90 id=90 data-nosnippet>90</a>        type_: <a href="../../glib/types/struct.Type.html">Type</a>,
-<a href=#91 id=91 data-nosnippet>91</a>        io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
-<a href=#92 id=92 data-nosnippet>92</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="../../glib/object/struct.Object.html">Object</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
-<a href=#93 id=93 data-nosnippet>93</a>        <span class="kw">if </span>!<a href="#90">type_</a>.<a href="../../glib/types/struct.Type.html#method.is_a">is_a</a>(<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">AsyncInitable::static_type</a>()) {
-<a href=#94 id=94 data-nosnippet>94</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Type '{type_}' is not async initable"</span>);
+<a href=#91 id=91 data-nosnippet>91</a>        io_priority: glib::<a href="../../glib/source/struct.Priority.html">Priority</a>,
+<a href=#92 id=92 data-nosnippet>92</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="../../glib/object/struct.Object.html">Object</a>, glib::<a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
+<a href=#93 id=93 data-nosnippet>93</a>        <span class="kw">if </span>!<a href="#90">type_</a>.<a href="../../glib/types/struct.Type.html#method.is_a">is_a</a>(<a href="auto/async_initable.rs.html#9-123">AsyncInitable</a>::<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">static_type</a>()) {
+<a href=#94 id=94 data-nosnippet>94</a>            <a href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Type '{type_}' is not async initable"</span>);
 <a href=#95 id=95 data-nosnippet>95</a>        }
 <a href=#96 id=96 data-nosnippet>96</a>
 <a href=#97 id=97 data-nosnippet>97</a>        <span class="kw">unsafe </span>{
-<a href=#98 id=98 data-nosnippet>98</a>            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box_::pin</a>(<a href="gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
+<a href=#98 id=98 data-nosnippet>98</a>            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">pin</a>(<span class="kw">crate</span>::<a href="gio_future.rs.html#16-21">GioFuture</a>::<a href="gio_future.rs.html#38-45">new</a>(
 <a href=#99 id=99 data-nosnippet>99</a>                <span class="kw-2">&amp;</span>(),
 <a href=#100 id=100 data-nosnippet>100</a>                <span class="kw">move </span>|_obj, cancellable, send| {
-<a href=#101 id=101 data-nosnippet>101</a>                    <span class="kw">let </span>obj = <a href="../../glib/object/struct.Object.html#method.new_internal">Object::new_internal</a>(<a href="#90">type_</a>, <span class="kw-2">&amp;mut </span>[]);
-<a href=#102 id=102 data-nosnippet>102</a>                    <a href="#101">obj</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<span class="self">Self</span>&gt;().<a href="auto/async_initable.rs.html#178-221">init_async</a>(
+<a href=#101 id=101 data-nosnippet>101</a>                    <span class="kw">let </span>obj = <a href="../../glib/object/struct.Object.html">Object</a>::<a href="../../glib/object/struct.Object.html#method.new_internal">new_internal</a>(<a href="#90">type_</a>, <span class="kw-2">&amp;mut </span>[]);
+<a href=#102 id=102 data-nosnippet>102</a>                    <a href="#101">obj</a>.<a href="../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<span class="self">Self</span>&gt;().<a href="auto/async_initable.rs.html#178-221">init_async</a>(
 <a href=#103 id=103 data-nosnippet>103</a>                        <a href="#91">io_priority</a>,
 <a href=#104 id=104 data-nosnippet>104</a>                        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#100">cancellable</a>),
-<a href=#105 id=105 data-nosnippet>105</a>                        <a class="macro" href="../../glib_macros/macro.clone.html">glib::clone!</a>(
+<a href=#105 id=105 data-nosnippet>105</a>                        <a href="../../glib_macros/macro.clone.html">glib::clone!</a>(
 <a href=#106 id=106 data-nosnippet>106</a>                            <span class="attr">#[strong]
 <a href=#107 id=107 data-nosnippet>107</a>                            </span>obj,
 <a href=#108 id=108 data-nosnippet>108</a>                            <span class="kw">move </span>|res| {
@@ -195,23 +195,23 @@
 <a href=#122 id=122 data-nosnippet>122</a>    /// `AsyncInitable::init` failed.
 <a href=#123 id=123 data-nosnippet>123</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_async_initable_new_async"</span>)]
 <a href=#124 id=124 data-nosnippet>124</a>    #[track_caller]
-<a href=#125 id=125 data-nosnippet>125</a>    </span><span class="kw">pub fn </span>with_mut_values&lt;Q: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="../../glib/object/struct.Object.html">Object</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
+<a href=#125 id=125 data-nosnippet>125</a>    </span><span class="kw">pub fn </span>with_mut_values&lt;Q: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="../../glib/object/struct.Object.html">Object</a>, glib::<a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#126 id=126 data-nosnippet>126</a>        type_: <a href="../../glib/types/struct.Type.html">Type</a>,
-<a href=#127 id=127 data-nosnippet>127</a>        properties: <span class="kw-2">&amp;mut </span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="../../glib/value/struct.Value.html">glib::Value</a>)],
-<a href=#128 id=128 data-nosnippet>128</a>        io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
+<a href=#127 id=127 data-nosnippet>127</a>        properties: <span class="kw-2">&amp;mut </span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, glib::<a href="../../glib/value/struct.Value.html">Value</a>)],
+<a href=#128 id=128 data-nosnippet>128</a>        io_priority: glib::<a href="../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#129 id=129 data-nosnippet>129</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
 <a href=#130 id=130 data-nosnippet>130</a>        callback: Q,
 <a href=#131 id=131 data-nosnippet>131</a>    ) {
-<a href=#132 id=132 data-nosnippet>132</a>        <span class="kw">if </span>!<a href="#126">type_</a>.<a href="../../glib/types/struct.Type.html#method.is_a">is_a</a>(<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">AsyncInitable::static_type</a>()) {
-<a href=#133 id=133 data-nosnippet>133</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Type '{type_}' is not async initable"</span>);
+<a href=#132 id=132 data-nosnippet>132</a>        <span class="kw">if </span>!<a href="#126">type_</a>.<a href="../../glib/types/struct.Type.html#method.is_a">is_a</a>(<a href="auto/async_initable.rs.html#9-123">AsyncInitable</a>::<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">static_type</a>()) {
+<a href=#133 id=133 data-nosnippet>133</a>            <a href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Type '{type_}' is not async initable"</span>);
 <a href=#134 id=134 data-nosnippet>134</a>        }
 <a href=#135 id=135 data-nosnippet>135</a>
 <a href=#136 id=136 data-nosnippet>136</a>        <span class="kw">unsafe </span>{
-<a href=#137 id=137 data-nosnippet>137</a>            <span class="kw">let </span>obj = <a href="../../glib/object/struct.Object.html#method.new_internal">Object::new_internal</a>(<a href="#126">type_</a>, <a href="#127">properties</a>);
-<a href=#138 id=138 data-nosnippet>138</a>            <a href="#137">obj</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<span class="self">Self</span>&gt;().<a href="auto/async_initable.rs.html#178-221">init_async</a>(
+<a href=#137 id=137 data-nosnippet>137</a>            <span class="kw">let </span>obj = <a href="../../glib/object/struct.Object.html">Object</a>::<a href="../../glib/object/struct.Object.html#method.new_internal">new_internal</a>(<a href="#126">type_</a>, <a href="#127">properties</a>);
+<a href=#138 id=138 data-nosnippet>138</a>            <a href="#137">obj</a>.<a href="../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<span class="self">Self</span>&gt;().<a href="auto/async_initable.rs.html#178-221">init_async</a>(
 <a href=#139 id=139 data-nosnippet>139</a>                <a href="#128">io_priority</a>,
 <a href=#140 id=140 data-nosnippet>140</a>                <a href="#129">cancellable</a>,
-<a href=#141 id=141 data-nosnippet>141</a>                <a class="macro" href="../../glib_macros/macro.clone.html">glib::clone!</a>(
+<a href=#141 id=141 data-nosnippet>141</a>                <a href="../../glib_macros/macro.clone.html">glib::clone!</a>(
 <a href=#142 id=142 data-nosnippet>142</a>                    <span class="attr">#[strong]
 <a href=#143 id=143 data-nosnippet>143</a>                    </span>obj,
 <a href=#144 id=144 data-nosnippet>144</a>                    <span class="kw">move </span>|res| {
@@ -231,23 +231,23 @@
 <a href=#158 id=158 data-nosnippet>158</a>    #[track_caller]
 <a href=#159 id=159 data-nosnippet>159</a>    </span><span class="kw">pub fn </span>with_mut_values_future(
 <a href=#160 id=160 data-nosnippet>160</a>        type_: <a href="../../glib/types/struct.Type.html">Type</a>,
-<a href=#161 id=161 data-nosnippet>161</a>        properties: <span class="kw-2">&amp;mut </span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="../../glib/value/struct.Value.html">glib::Value</a>)],
-<a href=#162 id=162 data-nosnippet>162</a>        io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
-<a href=#163 id=163 data-nosnippet>163</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="../../glib/object/struct.Object.html">Object</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
-<a href=#164 id=164 data-nosnippet>164</a>        <span class="kw">if </span>!<a href="#160">type_</a>.<a href="../../glib/types/struct.Type.html#method.is_a">is_a</a>(<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">AsyncInitable::static_type</a>()) {
-<a href=#165 id=165 data-nosnippet>165</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Type '{type_}' is not async initable"</span>);
+<a href=#161 id=161 data-nosnippet>161</a>        properties: <span class="kw-2">&amp;mut </span>[(<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, glib::<a href="../../glib/value/struct.Value.html">Value</a>)],
+<a href=#162 id=162 data-nosnippet>162</a>        io_priority: glib::<a href="../../glib/source/struct.Priority.html">Priority</a>,
+<a href=#163 id=163 data-nosnippet>163</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="../../glib/object/struct.Object.html">Object</a>, glib::<a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
+<a href=#164 id=164 data-nosnippet>164</a>        <span class="kw">if </span>!<a href="#160">type_</a>.<a href="../../glib/types/struct.Type.html#method.is_a">is_a</a>(<a href="auto/async_initable.rs.html#9-123">AsyncInitable</a>::<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">static_type</a>()) {
+<a href=#165 id=165 data-nosnippet>165</a>            <a href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Type '{type_}' is not async initable"</span>);
 <a href=#166 id=166 data-nosnippet>166</a>        }
 <a href=#167 id=167 data-nosnippet>167</a>
 <a href=#168 id=168 data-nosnippet>168</a>        <span class="kw">unsafe </span>{
 <a href=#169 id=169 data-nosnippet>169</a>            <span class="comment">// FIXME: object construction should ideally happen as part of the future
-<a href=#170 id=170 data-nosnippet>170</a>            </span><span class="kw">let </span>obj = <a href="../../glib/object/struct.Object.html#method.new_internal">Object::new_internal</a>(<a href="#160">type_</a>, <a href="#161">properties</a>);
-<a href=#171 id=171 data-nosnippet>171</a>            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box_::pin</a>(<a href="gio_future.rs.html#38-45"><span class="kw">crate</span>::GioFuture::new</a>(
+<a href=#170 id=170 data-nosnippet>170</a>            </span><span class="kw">let </span>obj = <a href="../../glib/object/struct.Object.html">Object</a>::<a href="../../glib/object/struct.Object.html#method.new_internal">new_internal</a>(<a href="#160">type_</a>, <a href="#161">properties</a>);
+<a href=#171 id=171 data-nosnippet>171</a>            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">pin</a>(<span class="kw">crate</span>::<a href="gio_future.rs.html#16-21">GioFuture</a>::<a href="gio_future.rs.html#38-45">new</a>(
 <a href=#172 id=172 data-nosnippet>172</a>                <span class="kw-2">&amp;</span><a href="#170">obj</a>,
 <a href=#173 id=173 data-nosnippet>173</a>                <span class="kw">move </span>|obj, cancellable, send| {
-<a href=#174 id=174 data-nosnippet>174</a>                    <a href="#173">obj</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<span class="self">Self</span>&gt;().<a href="auto/async_initable.rs.html#178-221">init_async</a>(
+<a href=#174 id=174 data-nosnippet>174</a>                    <a href="#173">obj</a>.<a href="../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>::&lt;<span class="self">Self</span>&gt;().<a href="auto/async_initable.rs.html#178-221">init_async</a>(
 <a href=#175 id=175 data-nosnippet>175</a>                        <a href="#162">io_priority</a>,
 <a href=#176 id=176 data-nosnippet>176</a>                        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#173">cancellable</a>),
-<a href=#177 id=177 data-nosnippet>177</a>                        <a class="macro" href="../../glib_macros/macro.clone.html">glib::clone!</a>(
+<a href=#177 id=177 data-nosnippet>177</a>                        <a href="../../glib_macros/macro.clone.html">glib::clone!</a>(
 <a href=#178 id=178 data-nosnippet>178</a>                            <span class="attr">#[strong]
 <a href=#179 id=179 data-nosnippet>179</a>                            </span>obj,
 <a href=#180 id=180 data-nosnippet>180</a>                            <span class="kw">move </span>|res| {
@@ -264,24 +264,24 @@
 <a href=#191 id=191 data-nosnippet>191</a>    </span><span class="doccomment">/// Create a new object builder for a specific type.
 <a href=#192 id=192 data-nosnippet>192</a>    </span><span class="kw">pub fn </span>builder&lt;<span class="lifetime">'a</span>, O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="../../glib/object/struct.Object.html">Object</a>&gt; + <a href="../../glib/object/trait.IsClass.html">IsClass</a> + <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/async_initable.rs.html#9-123">AsyncInitable</a>&gt;&gt;(
 <a href=#193 id=193 data-nosnippet>193</a>    ) -&gt; <a href="#209-213">AsyncInitableBuilder</a>&lt;<span class="lifetime">'a</span>, O&gt; {
-<a href=#194 id=194 data-nosnippet>194</a>        <a href="#217-223">AsyncInitableBuilder::new</a>(<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">O::static_type</a>())
+<a href=#194 id=194 data-nosnippet>194</a>        <a href="#209-213">AsyncInitableBuilder</a>::<a href="#217-223">new</a>(O::<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">static_type</a>())
 <a href=#195 id=195 data-nosnippet>195</a>    }
 <a href=#196 id=196 data-nosnippet>196</a>
 <a href=#197 id=197 data-nosnippet>197</a>    <span class="comment">// rustdoc-stripper-ignore-next
 <a href=#198 id=198 data-nosnippet>198</a>    </span><span class="doccomment">/// Create a new object builder for a specific type.
 <a href=#199 id=199 data-nosnippet>199</a>    </span><span class="kw">pub fn </span>builder_with_type&lt;<span class="lifetime">'a</span>&gt;(type_: <a href="../../glib/types/struct.Type.html">Type</a>) -&gt; <a href="#209-213">AsyncInitableBuilder</a>&lt;<span class="lifetime">'a</span>, <a href="../../glib/object/struct.Object.html">Object</a>&gt; {
-<a href=#200 id=200 data-nosnippet>200</a>        <span class="kw">if </span>!<a href="#199">type_</a>.<a href="../../glib/types/struct.Type.html#method.is_a">is_a</a>(<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">AsyncInitable::static_type</a>()) {
-<a href=#201 id=201 data-nosnippet>201</a>            <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Type '{type_}' is not async initable"</span>);
+<a href=#200 id=200 data-nosnippet>200</a>        <span class="kw">if </span>!<a href="#199">type_</a>.<a href="../../glib/types/struct.Type.html#method.is_a">is_a</a>(<a href="auto/async_initable.rs.html#9-123">AsyncInitable</a>::<a href="../../glib/types/trait.StaticType.html#tymethod.static_type">static_type</a>()) {
+<a href=#201 id=201 data-nosnippet>201</a>            <a href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">"Type '{type_}' is not async initable"</span>);
 <a href=#202 id=202 data-nosnippet>202</a>        }
 <a href=#203 id=203 data-nosnippet>203</a>
-<a href=#204 id=204 data-nosnippet>204</a>        <a href="#217-223">AsyncInitableBuilder::new</a>(<a href="#199">type_</a>)
+<a href=#204 id=204 data-nosnippet>204</a>        <a href="#209-213">AsyncInitableBuilder</a>::<a href="#217-223">new</a>(<a href="#199">type_</a>)
 <a href=#205 id=205 data-nosnippet>205</a>    }
 <a href=#206 id=206 data-nosnippet>206</a>}
 <a href=#207 id=207 data-nosnippet>207</a>
 <a href=#208 id=208 data-nosnippet>208</a><span class="attr">#[must_use = <span class="string">"builder doesn't do anything unless built"</span>]
 <a href=#209 id=209 data-nosnippet>209</a></span><span class="kw">pub struct </span><a href="../../gio/builders/struct.AsyncInitableBuilder.html">AsyncInitableBuilder</a>&lt;<span class="lifetime">'a</span>, O&gt; {
 <a href=#210 id=210 data-nosnippet>210</a>    type_: <a href="../../glib/types/struct.Type.html">Type</a>,
-<a href=#211 id=211 data-nosnippet>211</a>    properties: smallvec::SmallVec&lt;[(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a href="../../glib/value/struct.Value.html">glib::Value</a>); <span class="number">16</span>]&gt;,
+<a href=#211 id=211 data-nosnippet>211</a>    properties: smallvec::SmallVec&lt;[(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, glib::<a href="../../glib/value/struct.Value.html">Value</a>); <span class="number">16</span>]&gt;,
 <a href=#212 id=212 data-nosnippet>212</a>    phantom: <a href="https://doc.rust-lang.org/nightly/core/marker/struct.PhantomData.html">PhantomData</a>&lt;O&gt;,
 <a href=#213 id=213 data-nosnippet>213</a>}
 <a href=#214 id=214 data-nosnippet>214</a>
@@ -305,7 +305,7 @@
 <a href=#232 id=232 data-nosnippet>232</a>    <span class="comment">// rustdoc-stripper-ignore-next
 <a href=#233 id=233 data-nosnippet>233</a>    </span><span class="doccomment">/// Set property `name` to the given value `value`.
 <a href=#234 id=234 data-nosnippet>234</a>    </span><span class="attr">#[inline]
-<a href=#235 id=235 data-nosnippet>235</a>    </span><span class="kw">pub fn </span>property(<span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="../../glib/value/struct.Value.html">glib::Value</a>&gt;) -&gt; <span class="self">Self </span>{
+<a href=#235 id=235 data-nosnippet>235</a>    </span><span class="kw">pub fn </span>property(<span class="self">self</span>, name: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;glib::<a href="../../glib/value/struct.Value.html">Value</a>&gt;) -&gt; <span class="self">Self </span>{
 <a href=#236 id=236 data-nosnippet>236</a>        <span class="kw">let </span><a href="#209-213">AsyncInitableBuilder</a> {
 <a href=#237 id=237 data-nosnippet>237</a>            type_,
 <a href=#238 id=238 data-nosnippet>238</a>            <span class="kw-2">mut </span>properties,
@@ -329,18 +329,18 @@
 <a href=#256 id=256 data-nosnippet>256</a>    /// property values of the wrong type are provided.
 <a href=#257 id=257 data-nosnippet>257</a>    </span><span class="attr">#[track_caller]
 <a href=#258 id=258 data-nosnippet>258</a>    #[inline]
-<a href=#259 id=259 data-nosnippet>259</a>    </span><span class="kw">pub fn </span>build&lt;Q: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;O, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
+<a href=#259 id=259 data-nosnippet>259</a>    </span><span class="kw">pub fn </span>build&lt;Q: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;O, glib::<a href="../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#260 id=260 data-nosnippet>260</a>        <span class="kw-2">mut </span><span class="self">self</span>,
-<a href=#261 id=261 data-nosnippet>261</a>        io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
+<a href=#261 id=261 data-nosnippet>261</a>        io_priority: glib::<a href="../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#262 id=262 data-nosnippet>262</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;,
 <a href=#263 id=263 data-nosnippet>263</a>        callback: Q,
 <a href=#264 id=264 data-nosnippet>264</a>    ) {
-<a href=#265 id=265 data-nosnippet>265</a>        <a href="#125-150">AsyncInitable::with_mut_values</a>(
+<a href=#265 id=265 data-nosnippet>265</a>        <a href="auto/async_initable.rs.html#9-123">AsyncInitable</a>::<a href="#125-150">with_mut_values</a>(
 <a href=#266 id=266 data-nosnippet>266</a>            <a class="self" href="#260">self</a>.type_,
 <a href=#267 id=267 data-nosnippet>267</a>            <span class="kw-2">&amp;mut </span><a class="self" href="#260">self</a>.properties,
 <a href=#268 id=268 data-nosnippet>268</a>            <a href="#261">io_priority</a>,
 <a href=#269 id=269 data-nosnippet>269</a>            <a href="#262">cancellable</a>,
-<a href=#270 id=270 data-nosnippet>270</a>            <span class="kw">move </span>|res| <a href="#263">callback</a>(<a href="#270">res</a>.<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map">map</a>(|o| <span class="kw">unsafe </span>{ <a href="#270">o</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast">unsafe_cast</a>() })),
+<a href=#270 id=270 data-nosnippet>270</a>            <span class="kw">move </span>|res| <a href="#263">callback</a>(<a href="#270">res</a>.<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map">map</a>(|o| <span class="kw">unsafe </span>{ <a href="#270">o</a>.<a href="../../glib/object/trait.Cast.html#method.unsafe_cast">unsafe_cast</a>() })),
 <a href=#271 id=271 data-nosnippet>271</a>        );
 <a href=#272 id=272 data-nosnippet>272</a>    }
 <a href=#273 id=273 data-nosnippet>273</a>
@@ -355,11 +355,12 @@
 <a href=#282 id=282 data-nosnippet>282</a>    #[inline]
 <a href=#283 id=283 data-nosnippet>283</a>    </span><span class="kw">pub fn </span>build_future(
 <a href=#284 id=284 data-nosnippet>284</a>        <span class="kw-2">mut </span><span class="self">self</span>,
-<a href=#285 id=285 data-nosnippet>285</a>        io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
-<a href=#286 id=286 data-nosnippet>286</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;O, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
-<a href=#287 id=287 data-nosnippet>287</a>        <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">Box::pin</a>(
-<a href=#288 id=288 data-nosnippet>288</a>            <a href="#159-188">AsyncInitable::with_mut_values_future</a>(<a class="self" href="#284">self</a>.type_, <span class="kw-2">&amp;mut </span><a class="self" href="#284">self</a>.properties, <a href="#285">io_priority</a>)
-<a href=#289 id=289 data-nosnippet>289</a>                .map_ok(|o| <span class="kw">unsafe </span>{ <a href="#289">o</a>.<a href="../../glib/object/trait.Cast.html#tymethod.unsafe_cast">unsafe_cast</a>() }),
+<a href=#285 id=285 data-nosnippet>285</a>        io_priority: glib::<a href="../../glib/source/struct.Priority.html">Priority</a>,
+<a href=#286 id=286 data-nosnippet>286</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;O, glib::<a href="../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
+<a href=#287 id=287 data-nosnippet>287</a>        <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">pin</a>(
+<a href=#288 id=288 data-nosnippet>288</a>            <a href="auto/async_initable.rs.html#9-123">AsyncInitable</a>::<a href="#159-188">with_mut_values_future</a>(<a class="self" href="#284">self</a>.type_, <span class="kw-2">&amp;mut </span><a class="self" href="#284">self</a>.properties, <a href="#285">io_priority</a>)
+<a href=#289 id=289 data-nosnippet>289</a>                .map_ok(|o| <span class="kw">unsafe </span>{ <a href="#289">o</a>.<a href="../../glib/object/trait.Cast.html#method.unsafe_cast">unsafe_cast</a>() }),
 <a href=#290 id=290 data-nosnippet>290</a>        )
 <a href=#291 id=291 data-nosnippet>291</a>    }
-<a href=#292 id=292 data-nosnippet>292</a>}</code></pre></div></section></main></body></html>
+<a href=#292 id=292 data-nosnippet>292</a>}
+</code></pre></div></section></main></body></html>

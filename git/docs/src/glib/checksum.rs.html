@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/checksum.rs`."><title>checksum.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-e56847b5.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.92.0-nightly (caccb4d03 2025-09-24)" data-channel="nightly" data-search-js="search-e256b49e.js" data-stringdex-js="stringdex-061df703.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-ce535bd0.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/checksum.rs`."><title>checksum.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.0-nightly (c871d09d1 2025-11-24)" data-channel="nightly" data-search-js="search-680b2199.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -75,7 +75,7 @@
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>libc::size_t;
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use crate</span>::{ffi, <a href="lib.rs.html#164">translate</a>::<span class="kw-2">*</span>, <a href="auto/checksum.rs.html#7-49">Checksum</a>};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use crate</span>::{<a href="../../glib_sys/index.html">ffi</a>, <a href="lib.rs.html#167">translate</a>::<span class="kw-2">*</span>, <a href="auto/checksum.rs.html#7-49">Checksum</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="kw">impl </span><a href="auto/checksum.rs.html#7-49">Checksum</a> {
 <a href=#8 id=8 data-nosnippet>8</a>    <span class="doccomment">/// Gets the digest from @self as a raw binary vector and places it
@@ -99,9 +99,9 @@
 <a href=#26 id=26 data-nosnippet>26</a>        <span class="kw">unsafe </span>{
 <a href=#27 id=27 data-nosnippet>27</a>            <span class="comment">//Don't forget update when `ChecksumType` contains type bigger that Sha512.
 <a href=#28 id=28 data-nosnippet>28</a>            </span><span class="kw">let </span><span class="kw-2">mut </span>digest_len: size_t = <span class="number">512 </span>/ <span class="number">8</span>;
-<a href=#29 id=29 data-nosnippet>29</a>            <span class="kw">let </span><span class="kw-2">mut </span>vec = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.with_capacity">Vec::with_capacity</a>(<a href="#28">digest_len</a> <span class="kw">as _</span>);
+<a href=#29 id=29 data-nosnippet>29</a>            <span class="kw">let </span><span class="kw-2">mut </span>vec = <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>::<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.with_capacity">with_capacity</a>(<a href="#28">digest_len</a> <span class="kw">as _</span>);
 <a href=#30 id=30 data-nosnippet>30</a>
-<a href=#31 id=31 data-nosnippet>31</a>            ffi::g_checksum_get_digest(
+<a href=#31 id=31 data-nosnippet>31</a>            ffi::<a href="../../glib_sys/fn.g_checksum_get_digest.html">g_checksum_get_digest</a>(
 <a href=#32 id=32 data-nosnippet>32</a>                <a href="translate.rs.html#202-204">mut_override</a>(<a class="self" href="#25">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>),
 <a href=#33 id=33 data-nosnippet>33</a>                <a href="#29">vec</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.as_mut_ptr">as_mut_ptr</a>(),
 <a href=#34 id=34 data-nosnippet>34</a>                <span class="kw-2">&amp;mut </span><a href="#28">digest_len</a>,
@@ -141,7 +141,7 @@
 <a href=#68 id=68 data-nosnippet>68</a>    #[doc(alias = <span class="string">"get_string"</span>)]
 <a href=#69 id=69 data-nosnippet>69</a>    </span><span class="kw">pub fn </span>string(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
 <a href=#70 id=70 data-nosnippet>70</a>        <span class="kw">unsafe </span>{
-<a href=#71 id=71 data-nosnippet>71</a>            <a href="translate.rs.html#1629-1631">from_glib_none</a>(ffi::g_checksum_get_string(<a href="translate.rs.html#202-204">mut_override</a>(
+<a href=#71 id=71 data-nosnippet>71</a>            <a href="translate.rs.html#1629-1631">from_glib_none</a>(ffi::<a href="../../glib_sys/fn.g_checksum_get_string.html">g_checksum_get_string</a>(<a href="translate.rs.html#202-204">mut_override</a>(
 <a href=#72 id=72 data-nosnippet>72</a>                <a class="self" href="#69">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
 <a href=#73 id=73 data-nosnippet>73</a>            )))
 <a href=#74 id=74 data-nosnippet>74</a>        }
@@ -182,4 +182,5 @@
 <a href=#109 id=109 data-nosnippet>109</a>        <span class="kw">let </span>vec = cs.digest();
 <a href=#110 id=110 data-nosnippet>110</a>        <span class="macro">assert_eq!</span>(vec, CS_SLICE);
 <a href=#111 id=111 data-nosnippet>111</a>    }
-<a href=#112 id=112 data-nosnippet>112</a>}</code></pre></div></section></main></body></html>
+<a href=#112 id=112 data-nosnippet>112</a>}
+</code></pre></div></section></main></body></html>

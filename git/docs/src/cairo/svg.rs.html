@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/svg.rs`."><title>svg.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-e56847b5.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.92.0-nightly (caccb4d03 2025-09-24)" data-channel="nightly" data-search-js="search-e256b49e.js" data-stringdex-js="stringdex-061df703.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-ce535bd0.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/svg.rs`."><title>svg.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.0-nightly (c871d09d1 2025-11-24)" data-channel="nightly" data-search-js="search-680b2199.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -93,14 +93,14 @@
 <a href=#20 id=20 data-nosnippet>20</a><span class="kw">impl </span><a href="enums.rs.html#1401-1408">SvgVersion</a> {
 <a href=#21 id=21 data-nosnippet>21</a>    <span class="kw">pub fn </span>as_str(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
 <a href=#22 id=22 data-nosnippet>22</a>        <span class="kw">unsafe </span>{
-<a href=#23 id=23 data-nosnippet>23</a>            <span class="kw">let </span>res = <a href="../../cairo_sys/fn.cairo_svg_version_to_string.html">ffi::cairo_svg_version_to_string</a>(<a class="self" href="#21">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>());
+<a href=#23 id=23 data-nosnippet>23</a>            <span class="kw">let </span>res = ffi::<a href="../../cairo_sys/fn.cairo_svg_version_to_string.html">cairo_svg_version_to_string</a>(<a class="self" href="#21">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>());
 <a href=#24 id=24 data-nosnippet>24</a>            <a href="#23">res</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.const_ptr.html#method.as_ref">as_ref</a>()
-<a href=#25 id=25 data-nosnippet>25</a>                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.and_then">and_then</a>(|cstr| <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">CStr::from_ptr</a>(<a href="#25">cstr</a> <span class="kw">as _</span>).<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_str">to_str</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>())
+<a href=#25 id=25 data-nosnippet>25</a>                .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.and_then">and_then</a>(|cstr| <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html">CStr</a>::<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">from_ptr</a>(<a href="#25">cstr</a> <span class="kw">as _</span>).<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_str">to_str</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.ok">ok</a>())
 <a href=#26 id=26 data-nosnippet>26</a>        }
 <a href=#27 id=27 data-nosnippet>27</a>    }
 <a href=#28 id=28 data-nosnippet>28</a>}
 <a href=#29 id=29 data-nosnippet>29</a>
-<a href=#30 id=30 data-nosnippet>30</a><a class="macro" href="surface_macros.rs.html#4-125">declare_surface!</a>(<a href="../../cairo/struct.SvgSurface.html">SvgSurface</a>, SurfaceType::Svg);
+<a href=#30 id=30 data-nosnippet>30</a><a href="surface_macros.rs.html#4-125">declare_surface!</a>(<a href="#30">SvgSurface</a>, SurfaceType::Svg);
 <a href=#31 id=31 data-nosnippet>31</a>
 <a href=#32 id=32 data-nosnippet>32</a><span class="kw">impl </span><a href="#30">SvgSurface</a> {
 <a href=#33 id=33 data-nosnippet>33</a>    <span class="attr">#[doc(alias = <span class="string">"cairo_svg_surface_create"</span>)]
@@ -111,7 +111,7 @@
 <a href=#38 id=38 data-nosnippet>38</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#30">SvgSurface</a>, <a href="error.rs.html#9-104">Error</a>&gt; {
 <a href=#39 id=39 data-nosnippet>39</a>        <span class="attr">#[cfg(not(windows))]
 <a href=#40 id=40 data-nosnippet>40</a>        </span><span class="kw">let </span>path = <a href="#37">path</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| {
-<a href=#41 id=41 data-nosnippet>41</a>            <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">CString::new</a>(<a href="#40">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html#method.as_os_str">as_os_str</a>().<a href="https://doc.rust-lang.org/nightly/std/os/unix/ffi/os_str/trait.OsStrExt.html#tymethod.as_bytes">as_bytes</a>()).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Invalid path with NULL bytes"</span>)
+<a href=#41 id=41 data-nosnippet>41</a>            <a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html">CString</a>::<a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html#method.new">new</a>(<a href="#40">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html#method.as_os_str">as_os_str</a>().<a href="https://doc.rust-lang.org/nightly/std/os/unix/ffi/os_str/trait.OsStrExt.html#tymethod.as_bytes">as_bytes</a>()).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Invalid path with NULL bytes"</span>)
 <a href=#42 id=42 data-nosnippet>42</a>        });
 <a href=#43 id=43 data-nosnippet>43</a>        <span class="attr">#[cfg(windows)]
 <a href=#44 id=44 data-nosnippet>44</a>        </span><span class="kw">let </span>path = path.map(|p| {
@@ -129,9 +129,9 @@
 <a href=#56 id=56 data-nosnippet>56</a>        });
 <a href=#57 id=57 data-nosnippet>57</a>
 <a href=#58 id=58 data-nosnippet>58</a>        <span class="kw">unsafe </span>{
-<a href=#59 id=59 data-nosnippet>59</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="self">Self</span>(<a href="surface.rs.html#36-41">Surface::from_raw_full</a>(
-<a href=#60 id=60 data-nosnippet>60</a>                <a href="../../cairo_sys/fn.cairo_svg_surface_create.html">ffi::cairo_svg_surface_create</a>(
-<a href=#61 id=61 data-nosnippet>61</a>                    <a href="#40">path</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#61">p</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null.html">ptr::null</a>()),
+<a href=#59 id=59 data-nosnippet>59</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="self">Self</span>(<a href="surface.rs.html#19">Surface</a>::<a href="surface.rs.html#36-41">from_raw_full</a>(
+<a href=#60 id=60 data-nosnippet>60</a>                ffi::<a href="../../cairo_sys/fn.cairo_svg_surface_create.html">cairo_svg_surface_create</a>(
+<a href=#61 id=61 data-nosnippet>61</a>                    <a href="#40">path</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#61">p</a>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null.html">null</a>()),
 <a href=#62 id=62 data-nosnippet>62</a>                    <a href="#35">width</a>,
 <a href=#63 id=63 data-nosnippet>63</a>                    <a href="#36">height</a>,
 <a href=#64 id=64 data-nosnippet>64</a>                ),
@@ -139,31 +139,31 @@
 <a href=#66 id=66 data-nosnippet>66</a>        }
 <a href=#67 id=67 data-nosnippet>67</a>    }
 <a href=#68 id=68 data-nosnippet>68</a>
-<a href=#69 id=69 data-nosnippet>69</a>    <a class="macro" href="stream.rs.html#17-63">for_stream_constructors!</a>(cairo_svg_surface_create_for_stream);
+<a href=#69 id=69 data-nosnippet>69</a>    <a href="stream.rs.html#17-63">for_stream_constructors!</a>(cairo_svg_surface_create_for_stream);
 <a href=#70 id=70 data-nosnippet>70</a>
 <a href=#71 id=71 data-nosnippet>71</a>    <span class="attr">#[doc(alias = <span class="string">"cairo_svg_get_versions"</span>)]
 <a href=#72 id=72 data-nosnippet>72</a>    #[doc(alias = <span class="string">"get_versions"</span>)]
 <a href=#73 id=73 data-nosnippet>73</a>    </span><span class="kw">pub fn </span>versions() -&gt; <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">Iterator</a>&lt;Item = <a href="enums.rs.html#1401-1408">SvgVersion</a>&gt; {
 <a href=#74 id=74 data-nosnippet>74</a>        <span class="kw">let </span>vers_slice = <span class="kw">unsafe </span>{
-<a href=#75 id=75 data-nosnippet>75</a>            <span class="kw">let </span><span class="kw-2">mut </span>vers_ptr = <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">ptr::null_mut</a>();
-<a href=#76 id=76 data-nosnippet>76</a>            <span class="kw">let </span><span class="kw-2">mut </span>num_vers = <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">mem::MaybeUninit::uninit</a>();
-<a href=#77 id=77 data-nosnippet>77</a>            <a href="../../cairo_sys/fn.cairo_svg_get_versions.html">ffi::cairo_svg_get_versions</a>(<span class="kw-2">&amp;mut </span><a href="#75">vers_ptr</a>, <a href="#76">num_vers</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>());
+<a href=#75 id=75 data-nosnippet>75</a>            <span class="kw">let </span><span class="kw-2">mut </span>vers_ptr = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
+<a href=#76 id=76 data-nosnippet>76</a>            <span class="kw">let </span><span class="kw-2">mut </span>num_vers = mem::<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">MaybeUninit</a>::<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">uninit</a>();
+<a href=#77 id=77 data-nosnippet>77</a>            ffi::<a href="../../cairo_sys/fn.cairo_svg_get_versions.html">cairo_svg_get_versions</a>(<span class="kw-2">&amp;mut </span><a href="#75">vers_ptr</a>, <a href="#76">num_vers</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>());
 <a href=#78 id=78 data-nosnippet>78</a>
 <a href=#79 id=79 data-nosnippet>79</a>            <span class="kw">let </span>num_vers = <a href="#76">num_vers</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>();
 <a href=#80 id=80 data-nosnippet>80</a>            <span class="kw">if </span><a href="#79">num_vers</a> == <span class="number">0 </span>{
 <a href=#81 id=81 data-nosnippet>81</a>                <span class="kw-2">&amp;</span>[]
 <a href=#82 id=82 data-nosnippet>82</a>            } <span class="kw">else </span>{
-<a href=#83 id=83 data-nosnippet>83</a>                <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(<a href="#75">vers_ptr</a>, <a href="#79">num_vers</a> <span class="kw">as _</span>)
+<a href=#83 id=83 data-nosnippet>83</a>                std::slice::<a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">from_raw_parts</a>(<a href="#75">vers_ptr</a>, <a href="#79">num_vers</a> <span class="kw">as _</span>)
 <a href=#84 id=84 data-nosnippet>84</a>            }
 <a href=#85 id=85 data-nosnippet>85</a>        };
 <a href=#86 id=86 data-nosnippet>86</a>
-<a href=#87 id=87 data-nosnippet>87</a>        <a href="#74">vers_slice</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#tymethod.map">map</a>(|v| <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">SvgVersion::from</a>(<span class="kw-2">*</span><a href="#87">v</a>))
+<a href=#87 id=87 data-nosnippet>87</a>        <a href="#74">vers_slice</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.map">map</a>(|v| <a href="enums.rs.html#1401-1408">SvgVersion</a>::<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">from</a>(<span class="kw-2">*</span><a href="#87">v</a>))
 <a href=#88 id=88 data-nosnippet>88</a>    }
 <a href=#89 id=89 data-nosnippet>89</a>
 <a href=#90 id=90 data-nosnippet>90</a>    <span class="attr">#[doc(alias = <span class="string">"cairo_svg_surface_restrict_to_version"</span>)]
 <a href=#91 id=91 data-nosnippet>91</a>    </span><span class="kw">pub fn </span>restrict(<span class="kw-2">&amp;</span><span class="self">self</span>, version: <a href="enums.rs.html#1401-1408">SvgVersion</a>) {
 <a href=#92 id=92 data-nosnippet>92</a>        <span class="kw">unsafe </span>{
-<a href=#93 id=93 data-nosnippet>93</a>            <a href="../../cairo_sys/fn.cairo_svg_surface_restrict_to_version.html">ffi::cairo_svg_surface_restrict_to_version</a>(<a class="self" href="#91">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#91">version</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>());
+<a href=#93 id=93 data-nosnippet>93</a>            ffi::<a href="../../cairo_sys/fn.cairo_svg_surface_restrict_to_version.html">cairo_svg_surface_restrict_to_version</a>(<a class="self" href="#91">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#91">version</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>());
 <a href=#94 id=94 data-nosnippet>94</a>        }
 <a href=#95 id=95 data-nosnippet>95</a>    }
 <a href=#96 id=96 data-nosnippet>96</a>
@@ -172,7 +172,7 @@
 <a href=#99 id=99 data-nosnippet>99</a>    #[doc(alias = <span class="string">"cairo_svg_surface_set_document_unit"</span>)]
 <a href=#100 id=100 data-nosnippet>100</a>    </span><span class="kw">pub fn </span>set_document_unit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, unit: <a href="enums.rs.html#1085-1108">SvgUnit</a>) {
 <a href=#101 id=101 data-nosnippet>101</a>        <span class="kw">unsafe </span>{
-<a href=#102 id=102 data-nosnippet>102</a>            <a href="../../cairo_sys/fn.cairo_svg_surface_set_document_unit.html">ffi::cairo_svg_surface_set_document_unit</a>(<a class="self" href="#100">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#100">unit</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>());
+<a href=#102 id=102 data-nosnippet>102</a>            ffi::<a href="../../cairo_sys/fn.cairo_svg_surface_set_document_unit.html">cairo_svg_surface_set_document_unit</a>(<a class="self" href="#100">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#100">unit</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>());
 <a href=#103 id=103 data-nosnippet>103</a>        }
 <a href=#104 id=104 data-nosnippet>104</a>    }
 <a href=#105 id=105 data-nosnippet>105</a>
@@ -182,7 +182,7 @@
 <a href=#109 id=109 data-nosnippet>109</a>    #[doc(alias = <span class="string">"get_document_unit"</span>)]
 <a href=#110 id=110 data-nosnippet>110</a>    </span><span class="kw">pub fn </span>document_unit(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#1085-1108">SvgUnit</a> {
 <a href=#111 id=111 data-nosnippet>111</a>        <span class="kw">unsafe </span>{
-<a href=#112 id=112 data-nosnippet>112</a>            <a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">SvgUnit::from</a>(<a href="../../cairo_sys/fn.cairo_svg_surface_get_document_unit.html">ffi::cairo_svg_surface_get_document_unit</a>(
+<a href=#112 id=112 data-nosnippet>112</a>            <a href="enums.rs.html#1085-1108">SvgUnit</a>::<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">from</a>(ffi::<a href="../../cairo_sys/fn.cairo_svg_surface_get_document_unit.html">cairo_svg_surface_get_document_unit</a>(
 <a href=#113 id=113 data-nosnippet>113</a>                <a class="self" href="#110">self</a>.<span class="number">0</span>.<a href="surface.rs.html#44-46">to_raw_none</a>(),
 <a href=#114 id=114 data-nosnippet>114</a>            ))
 <a href=#115 id=115 data-nosnippet>115</a>        }
@@ -340,4 +340,5 @@
 <a href=#267 id=267 data-nosnippet>267</a>    </span><span class="kw">fn </span>finish_stream_propagates_panic() {
 <a href=#268 id=268 data-nosnippet>268</a>        <span class="kw">let _ </span>= with_panicky_stream().finish_output_stream();
 <a href=#269 id=269 data-nosnippet>269</a>    }
-<a href=#270 id=270 data-nosnippet>270</a>}</code></pre></div></section></main></body></html>
+<a href=#270 id=270 data-nosnippet>270</a>}
+</code></pre></div></section></main></body></html>
