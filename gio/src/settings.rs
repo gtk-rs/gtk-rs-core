@@ -242,11 +242,13 @@ mod test {
 
     fn set_env() {
         INIT.call_once(|| {
+            let tmp_dir = glib::mkdtemp("gio-rs-test-schemas-XXXXXX").unwrap();
+
             let output = Command::new("glib-compile-schemas")
                 .args([
                     &format!("{}/tests", env!("CARGO_MANIFEST_DIR")),
                     "--targetdir",
-                    env!("OUT_DIR"),
+                    tmp_dir.to_str().unwrap(),
                 ])
                 .output()
                 .unwrap();
@@ -264,7 +266,7 @@ mod test {
                 panic!("Can't test without GSchemas!");
             }
 
-            set_var("GSETTINGS_SCHEMA_DIR", env!("OUT_DIR"));
+            set_var("GSETTINGS_SCHEMA_DIR", tmp_dir);
             set_var("GSETTINGS_BACKEND", "memory");
         });
     }
