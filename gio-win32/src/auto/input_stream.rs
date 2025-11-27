@@ -21,11 +21,6 @@ glib::wrapper! {
 
 impl InputStream {
     pub const NONE: Option<&'static InputStream> = None;
-
-    //#[doc(alias = "g_win32_input_stream_new")]
-    //pub fn new(handle: /*Unimplemented*/Option<Basic: Pointer>, close_handle: bool) -> InputStream {
-    //    unsafe { TODO: call ffi:g_win32_input_stream_new() }
-    //}
 }
 
 pub trait InputStreamExt: IsA<InputStream> + 'static {
@@ -40,21 +35,13 @@ pub trait InputStreamExt: IsA<InputStream> + 'static {
         }
     }
 
-    //#[doc(alias = "g_win32_input_stream_get_handle")]
-    //#[doc(alias = "get_handle")]
-    //fn handle(&self) -> /*Unimplemented*/Option<Basic: Pointer> {
-    //    unsafe { TODO: call ffi:g_win32_input_stream_get_handle() }
-    //}
-
     #[doc(alias = "g_win32_input_stream_set_close_handle")]
     #[doc(alias = "close-handle")]
-    fn set_close_handle(&self, close_handle: bool) {
-        unsafe {
-            ffi::g_win32_input_stream_set_close_handle(
-                self.as_ref().to_glib_none().0,
-                close_handle.into_glib(),
-            );
-        }
+    unsafe fn set_close_handle(&self, close_handle: bool) {
+        ffi::g_win32_input_stream_set_close_handle(
+            self.as_ref().to_glib_none().0,
+            close_handle.into_glib(),
+        );
     }
 
     #[doc(alias = "close-handle")]

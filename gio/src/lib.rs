@@ -132,13 +132,3 @@ mod write_output_stream;
 pub use crate::write_output_stream::WriteOutputStream;
 mod dbus_proxy;
 mod tls_connection;
-
-#[cfg(windows)]
-mod win32_input_stream;
-#[cfg(windows)]
-pub use self::win32_input_stream::Win32InputStream;
-
-#[cfg(windows)]
-mod win32_output_stream;
-#[cfg(windows)]
-pub use self::win32_output_stream::Win32OutputStream;
