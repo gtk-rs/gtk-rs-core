@@ -652,16 +652,6 @@ pub const G_UNICODE_LINE_SEPARATOR: GUnicodeType = 27;
 pub const G_UNICODE_PARAGRAPH_SEPARATOR: GUnicodeType = 28;
 pub const G_UNICODE_SPACE_SEPARATOR: GUnicodeType = 29;
 
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-pub type GUnixPipeEnd = c_int;
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-pub const G_UNIX_PIPE_END_READ: GUnixPipeEnd = 0;
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-pub const G_UNIX_PIPE_END_WRITE: GUnixPipeEnd = 1;
-
 pub type GUriError = c_int;
 pub const G_URI_ERROR_FAILED: GUriError = 0;
 pub const G_URI_ERROR_BAD_SCHEME: GUriError = 1;
@@ -2533,24 +2523,6 @@ impl ::std::fmt::Debug for GTuples {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("GTuples @ {self:p}"))
             .field("len", &self.len)
-            .finish()
-    }
-}
-
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct GUnixPipe {
-    pub fds: [c_int; 2],
-}
-
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-impl ::std::fmt::Debug for GUnixPipe {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixPipe @ {self:p}"))
-            .field("fds", &self.fds)
             .finish()
     }
 }

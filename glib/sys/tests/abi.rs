@@ -922,24 +922,6 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
             alignment: align_of::<GUnicodeType>(),
         },
     ),
-    #[cfg(unix)]
-    #[cfg_attr(docsrs, doc(cfg(unix)))]
-    (
-        "GUnixPipe",
-        Layout {
-            size: size_of::<GUnixPipe>(),
-            alignment: align_of::<GUnixPipe>(),
-        },
-    ),
-    #[cfg(unix)]
-    #[cfg_attr(docsrs, doc(cfg(unix)))]
-    (
-        "GUnixPipeEnd",
-        Layout {
-            size: size_of::<GUnixPipeEnd>(),
-            alignment: align_of::<GUnixPipeEnd>(),
-        },
-    ),
     (
         "GUriError",
         Layout {
@@ -1803,8 +1785,6 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_UNICODE_TITLECASE_LETTER", "8"),
     ("(gint) G_UNICODE_UNASSIGNED", "2"),
     ("(gint) G_UNICODE_UPPERCASE_LETTER", "9"),
-    ("(gint) G_UNIX_PIPE_END_READ", "0"),
-    ("(gint) G_UNIX_PIPE_END_WRITE", "1"),
     ("(gint) G_URI_ERROR_BAD_AUTH_PARAMS", "4"),
     ("(gint) G_URI_ERROR_BAD_FRAGMENT", "9"),
     ("(gint) G_URI_ERROR_BAD_HOST", "5"),
