@@ -244,10 +244,6 @@ pub const G_IO_ERROR_MESSAGE_TOO_LARGE: GIOErrorEnum = 46;
 pub const G_IO_ERROR_NO_SUCH_DEVICE: GIOErrorEnum = 47;
 pub const G_IO_ERROR_DESTINATION_UNSET: GIOErrorEnum = 48;
 
-pub type GIOModuleScopeFlags = c_int;
-pub const G_IO_MODULE_SCOPE_NONE: GIOModuleScopeFlags = 0;
-pub const G_IO_MODULE_SCOPE_BLOCK_DUPLICATES: GIOModuleScopeFlags = 1;
-
 pub type GMemoryMonitorWarningLevel = c_int;
 pub const G_MEMORY_MONITOR_WARNING_LEVEL_LOW: GMemoryMonitorWarningLevel = 50;
 pub const G_MEMORY_MONITOR_WARNING_LEVEL_MEDIUM: GMemoryMonitorWarningLevel = 100;
@@ -331,9 +327,6 @@ pub const G_TLS_AUTHENTICATION_NONE: GTlsAuthenticationMode = 0;
 pub const G_TLS_AUTHENTICATION_REQUESTED: GTlsAuthenticationMode = 1;
 pub const G_TLS_AUTHENTICATION_REQUIRED: GTlsAuthenticationMode = 2;
 
-pub type GTlsCertificateRequestFlags = c_int;
-pub const G_TLS_CERTIFICATE_REQUEST_NONE: GTlsCertificateRequestFlags = 0;
-
 pub type GTlsChannelBindingError = c_int;
 pub const G_TLS_CHANNEL_BINDING_ERROR_NOT_IMPLEMENTED: GTlsChannelBindingError = 0;
 pub const G_TLS_CHANNEL_BINDING_ERROR_INVALID_STATE: GTlsChannelBindingError = 1;
@@ -345,10 +338,6 @@ pub type GTlsChannelBindingType = c_int;
 pub const G_TLS_CHANNEL_BINDING_TLS_UNIQUE: GTlsChannelBindingType = 0;
 pub const G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT: GTlsChannelBindingType = 1;
 pub const G_TLS_CHANNEL_BINDING_TLS_EXPORTER: GTlsChannelBindingType = 2;
-
-pub type GTlsDatabaseLookupFlags = c_int;
-pub const G_TLS_DATABASE_LOOKUP_NONE: GTlsDatabaseLookupFlags = 0;
-pub const G_TLS_DATABASE_LOOKUP_KEYPAIR: GTlsDatabaseLookupFlags = 1;
 
 pub type GTlsError = c_int;
 pub const G_TLS_ERROR_UNAVAILABLE: GTlsError = 0;
@@ -678,6 +667,10 @@ pub type GFileQueryInfoFlags = c_uint;
 pub const G_FILE_QUERY_INFO_NONE: GFileQueryInfoFlags = 0;
 pub const G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS: GFileQueryInfoFlags = 1;
 
+pub type GIOModuleScopeFlags = c_uint;
+pub const G_IO_MODULE_SCOPE_NONE: GIOModuleScopeFlags = 0;
+pub const G_IO_MODULE_SCOPE_BLOCK_DUPLICATES: GIOModuleScopeFlags = 1;
+
 pub type GIOStreamSpliceFlags = c_uint;
 pub const G_IO_STREAM_SPLICE_NONE: GIOStreamSpliceFlags = 0;
 pub const G_IO_STREAM_SPLICE_CLOSE_STREAM1: GIOStreamSpliceFlags = 1;
@@ -741,6 +734,13 @@ pub const G_TLS_CERTIFICATE_REVOKED: GTlsCertificateFlags = 16;
 pub const G_TLS_CERTIFICATE_INSECURE: GTlsCertificateFlags = 32;
 pub const G_TLS_CERTIFICATE_GENERIC_ERROR: GTlsCertificateFlags = 64;
 pub const G_TLS_CERTIFICATE_VALIDATE_ALL: GTlsCertificateFlags = 127;
+
+pub type GTlsCertificateRequestFlags = c_uint;
+pub const G_TLS_CERTIFICATE_REQUEST_NONE: GTlsCertificateRequestFlags = 0;
+
+pub type GTlsDatabaseLookupFlags = c_uint;
+pub const G_TLS_DATABASE_LOOKUP_NONE: GTlsDatabaseLookupFlags = 0;
+pub const G_TLS_DATABASE_LOOKUP_KEYPAIR: GTlsDatabaseLookupFlags = 1;
 
 pub type GTlsDatabaseVerifyFlags = c_uint;
 pub const G_TLS_DATABASE_VERIFY_NONE: GTlsDatabaseVerifyFlags = 0;
@@ -9216,11 +9216,6 @@ extern "C" {
     pub fn g_io_error_enum_get_type() -> GType;
 
     //=========================================================================
-    // GIOModuleScopeFlags
-    //=========================================================================
-    pub fn g_io_module_scope_flags_get_type() -> GType;
-
-    //=========================================================================
     // GMemoryMonitorWarningLevel
     //=========================================================================
     #[cfg(feature = "v2_64")]
@@ -9302,11 +9297,6 @@ extern "C" {
     pub fn g_tls_authentication_mode_get_type() -> GType;
 
     //=========================================================================
-    // GTlsCertificateRequestFlags
-    //=========================================================================
-    pub fn g_tls_certificate_request_flags_get_type() -> GType;
-
-    //=========================================================================
     // GTlsChannelBindingError
     //=========================================================================
     #[cfg(feature = "v2_66")]
@@ -9322,11 +9312,6 @@ extern "C" {
     #[cfg(feature = "v2_66")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
     pub fn g_tls_channel_binding_type_get_type() -> GType;
-
-    //=========================================================================
-    // GTlsDatabaseLookupFlags
-    //=========================================================================
-    pub fn g_tls_database_lookup_flags_get_type() -> GType;
 
     //=========================================================================
     // GTlsError
@@ -9487,6 +9472,11 @@ extern "C" {
     pub fn g_file_query_info_flags_get_type() -> GType;
 
     //=========================================================================
+    // GIOModuleScopeFlags
+    //=========================================================================
+    pub fn g_io_module_scope_flags_get_type() -> GType;
+
+    //=========================================================================
     // GIOStreamSpliceFlags
     //=========================================================================
     pub fn g_io_stream_splice_flags_get_type() -> GType;
@@ -9547,6 +9537,16 @@ extern "C" {
     // GTlsCertificateFlags
     //=========================================================================
     pub fn g_tls_certificate_flags_get_type() -> GType;
+
+    //=========================================================================
+    // GTlsCertificateRequestFlags
+    //=========================================================================
+    pub fn g_tls_certificate_request_flags_get_type() -> GType;
+
+    //=========================================================================
+    // GTlsDatabaseLookupFlags
+    //=========================================================================
+    pub fn g_tls_database_lookup_flags_get_type() -> GType;
 
     //=========================================================================
     // GTlsDatabaseVerifyFlags
