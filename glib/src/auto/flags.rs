@@ -400,14 +400,8 @@ bitflags! {
         const NEWLINE_CR = ffi::G_REGEX_NEWLINE_CR as _;
         #[doc(alias = "G_REGEX_NEWLINE_LF")]
         const NEWLINE_LF = ffi::G_REGEX_NEWLINE_LF as _;
-        #[doc(alias = "G_REGEX_NEWLINE_CRLF")]
-        const NEWLINE_CRLF = ffi::G_REGEX_NEWLINE_CRLF as _;
-        #[doc(alias = "G_REGEX_NEWLINE_ANYCRLF")]
-        const NEWLINE_ANYCRLF = ffi::G_REGEX_NEWLINE_ANYCRLF as _;
-        #[doc(alias = "G_REGEX_BSR_ANYCRLF")]
-        const BSR_ANYCRLF = ffi::G_REGEX_BSR_ANYCRLF as _;
-        #[doc(alias = "G_REGEX_JAVASCRIPT_COMPAT")]
-        const JAVASCRIPT_COMPAT = ffi::G_REGEX_JAVASCRIPT_COMPAT as _;
+        #[doc(alias = "G_REGEX_NEWLINE_RESERVED1")]
+        const NEWLINE_RESERVED1 = ffi::G_REGEX_NEWLINE_RESERVED1 as _;
     }
 }
 

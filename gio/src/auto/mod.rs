@@ -502,7 +502,6 @@ pub use self::enums::FileMonitorEvent;
 pub use self::enums::FileType;
 pub use self::enums::FilesystemPreviewType;
 pub use self::enums::IOErrorEnum;
-pub use self::enums::IOModuleScopeFlags;
 #[cfg(feature = "v2_64")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 pub use self::enums::MemoryMonitorWarningLevel;
@@ -522,14 +521,12 @@ pub use self::enums::SocketListenerEvent;
 pub use self::enums::SocketProtocol;
 pub use self::enums::SocketType;
 pub use self::enums::TlsAuthenticationMode;
-pub use self::enums::TlsCertificateRequestFlags;
 #[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 pub use self::enums::TlsChannelBindingError;
 #[cfg(feature = "v2_66")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 pub use self::enums::TlsChannelBindingType;
-pub use self::enums::TlsDatabaseLookupFlags;
 pub use self::enums::TlsError;
 pub use self::enums::TlsInteractionResult;
 #[cfg(feature = "v2_70")]
@@ -568,6 +565,7 @@ pub use self::flags::FileCreateFlags;
 pub use self::flags::FileMeasureFlags;
 pub use self::flags::FileMonitorFlags;
 pub use self::flags::FileQueryInfoFlags;
+pub use self::flags::IOModuleScopeFlags;
 pub use self::flags::IOStreamSpliceFlags;
 pub use self::flags::MountMountFlags;
 pub use self::flags::MountUnmountFlags;
@@ -581,6 +579,8 @@ pub use self::flags::SettingsBindFlags;
 pub use self::flags::SubprocessFlags;
 pub use self::flags::TestDBusFlags;
 pub use self::flags::TlsCertificateFlags;
+pub use self::flags::TlsCertificateRequestFlags;
+pub use self::flags::TlsDatabaseLookupFlags;
 pub use self::flags::TlsDatabaseVerifyFlags;
 pub use self::flags::TlsPasswordFlags;
 

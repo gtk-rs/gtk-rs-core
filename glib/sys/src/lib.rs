@@ -840,7 +840,7 @@ pub const G_FORMAT_SIZE_ONLY_UNIT: GFormatSizeFlags = 16;
 pub type GHookFlagMask = c_uint;
 pub const G_HOOK_FLAG_ACTIVE: GHookFlagMask = 1;
 pub const G_HOOK_FLAG_IN_CALL: GHookFlagMask = 2;
-pub const G_HOOK_FLAG_MASK: GHookFlagMask = 15;
+pub const G_HOOK_FLAG_RESERVED1: GHookFlagMask = 4;
 
 pub type GIOCondition = c_uint;
 pub const G_IO_IN: GIOCondition = 1;
@@ -926,10 +926,7 @@ pub const G_REGEX_FIRSTLINE: GRegexCompileFlags = 262144;
 pub const G_REGEX_DUPNAMES: GRegexCompileFlags = 524288;
 pub const G_REGEX_NEWLINE_CR: GRegexCompileFlags = 1048576;
 pub const G_REGEX_NEWLINE_LF: GRegexCompileFlags = 2097152;
-pub const G_REGEX_NEWLINE_CRLF: GRegexCompileFlags = 3145728;
-pub const G_REGEX_NEWLINE_ANYCRLF: GRegexCompileFlags = 5242880;
-pub const G_REGEX_BSR_ANYCRLF: GRegexCompileFlags = 8388608;
-pub const G_REGEX_JAVASCRIPT_COMPAT: GRegexCompileFlags = 33554432;
+pub const G_REGEX_NEWLINE_RESERVED1: GRegexCompileFlags = 4194304;
 
 pub type GRegexMatchFlags = c_uint;
 pub const G_REGEX_MATCH_DEFAULT: GRegexMatchFlags = 0;
@@ -975,6 +972,7 @@ pub const G_TEST_SUBPROCESS_DEFAULT: GTestSubprocessFlags = 0;
 pub const G_TEST_SUBPROCESS_INHERIT_STDIN: GTestSubprocessFlags = 1;
 pub const G_TEST_SUBPROCESS_INHERIT_STDOUT: GTestSubprocessFlags = 2;
 pub const G_TEST_SUBPROCESS_INHERIT_STDERR: GTestSubprocessFlags = 4;
+pub const G_TEST_SUBPROCESS_INHERIT_DESCRIPTORS: GTestSubprocessFlags = 8;
 
 pub type GTestTrapFlags = c_uint;
 pub const G_TEST_TRAP_DEFAULT: GTestTrapFlags = 0;

@@ -61,27 +61,27 @@ extern "C" {
     //=========================================================================
     #[cfg(feature = "v2_80")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
-    pub fn g_unix_pipe_clear(self_: *mut glib::GUnixPipe);
+    pub fn g_unix_pipe_clear(self_: *mut GUnixPipe);
     #[cfg(feature = "v2_80")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
     pub fn g_unix_pipe_close(
-        self_: *mut glib::GUnixPipe,
-        end: glib::GUnixPipeEnd,
+        self_: *mut GUnixPipe,
+        end: GUnixPipeEnd,
         error: *mut *mut glib::GError,
     ) -> gboolean;
     #[cfg(feature = "v2_80")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
-    pub fn g_unix_pipe_get(self_: *mut glib::GUnixPipe, end: glib::GUnixPipeEnd) -> c_int;
+    pub fn g_unix_pipe_get(self_: *mut GUnixPipe, end: GUnixPipeEnd) -> c_int;
     #[cfg(feature = "v2_80")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
     pub fn g_unix_pipe_open(
-        self_: *mut glib::GUnixPipe,
+        self_: *mut GUnixPipe,
         flags: c_int,
         error: *mut *mut glib::GError,
     ) -> gboolean;
     #[cfg(feature = "v2_80")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
-    pub fn g_unix_pipe_steal(self_: *mut glib::GUnixPipe, end: glib::GUnixPipeEnd) -> c_int;
+    pub fn g_unix_pipe_steal(self_: *mut GUnixPipe, end: GUnixPipeEnd) -> c_int;
 
     //=========================================================================
     // Other functions
