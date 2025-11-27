@@ -11,10 +11,6 @@ pub use crate::app_info::AppInfoExtManual;
 #[cfg(feature = "v2_72")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
 pub use crate::debug_controller_dbus::DebugControllerDBusExtManual;
-#[cfg(windows)]
-pub use crate::win32_input_stream::Win32InputStreamExt;
-#[cfg(windows)]
-pub use crate::win32_output_stream::Win32OutputStreamExt;
 pub use crate::{
     action_map::ActionMapExtManual, application::ApplicationExtManual,
     application_command_line::ApplicationCommandLineExtManual, auto::traits::*,

@@ -5,6 +5,9 @@ pub use ffi;
 mod auto;
 pub use auto::*;
 
+mod input_stream;
+mod output_stream;
+
 pub mod functions {
     pub use super::auto::functions::*;
 }
