@@ -1,11 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-#[cfg(unix)]
 use std::{cell::RefCell, mem::transmute, num::NonZeroU32, time::Duration};
 
 use crate::ffi::{self, gboolean, gpointer};
-#[cfg(all(not(unix), docsrs))]
-use libc::c_int as RawFd;
 
 use crate::{thread_guard::ThreadGuard, translate::*, ControlFlow, MainContext, Source};
 
