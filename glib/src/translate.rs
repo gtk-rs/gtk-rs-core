@@ -136,7 +136,6 @@ use std::{
     borrow::Cow,
     char,
     cmp::Ordering,
-    collections::HashMap,
     error::Error,
     ffi::{CStr, CString, OsStr, OsString},
     fmt,
@@ -1276,45 +1275,6 @@ impl<'a, P: Ptr, T: ToGlibContainerFromSlice<'a, P>> ToGlibPtr<'a, P> for [T] {
     #[inline]
     fn to_glib_full(&self) -> P {
         ToGlibContainerFromSlice::to_glib_full_from_slice(self)
-    }
-}
-
-#[allow(clippy::implicit_hasher)]
-impl<'a> ToGlibPtr<'a, *mut ffi::GHashTable> for HashMap<String, String> {
-    type Storage = HashTable;
-
-    #[inline]
-    fn to_glib_none(&self) -> Stash<'a, *mut ffi::GHashTable, Self> {
-        let ptr = self.to_glib_full();
-        Stash(ptr, HashTable(unsafe { ptr::NonNull::new_unchecked(ptr) }))
-    }
-
-    #[inline]
-    fn to_glib_full(&self) -> *mut ffi::GHashTable {
-        unsafe {
-            let ptr = ffi::g_hash_table_new_full(
-                Some(ffi::g_str_hash),
-                Some(ffi::g_str_equal),
-                Some(ffi::g_free),
-                Some(ffi::g_free),
-            );
-            for (k, v) in self {
-                let k: *mut c_char = k.to_glib_full();
-                let v: *mut c_char = v.to_glib_full();
-                ffi::g_hash_table_insert(ptr, k as *mut _, v as *mut _);
-            }
-            ptr
-        }
-    }
-}
-
-#[doc(alias = "GHashTable")]
-pub struct HashTable(ptr::NonNull<ffi::GHashTable>);
-
-impl Drop for HashTable {
-    #[inline]
-    fn drop(&mut self) {
-        unsafe { ffi::g_hash_table_unref(self.0.as_ptr()) }
     }
 }
 
@@ -2472,55 +2432,6 @@ where
     }
 }
 
-#[allow(clippy::implicit_hasher)]
-impl FromGlibContainer<*const c_char, *mut ffi::GHashTable> for HashMap<String, String> {
-    unsafe fn from_glib_none_num(ptr: *mut ffi::GHashTable, _: usize) -> Self {
-        FromGlibPtrContainer::from_glib_none(ptr)
-    }
-
-    unsafe fn from_glib_container_num(ptr: *mut ffi::GHashTable, _: usize) -> Self {
-        FromGlibPtrContainer::from_glib_full(ptr)
-    }
-
-    unsafe fn from_glib_full_num(ptr: *mut ffi::GHashTable, _: usize) -> Self {
-        FromGlibPtrContainer::from_glib_full(ptr)
-    }
-}
-
-#[allow(clippy::implicit_hasher)]
-impl FromGlibPtrContainer<*const c_char, *mut ffi::GHashTable> for HashMap<String, String> {
-    unsafe fn from_glib_none(ptr: *mut ffi::GHashTable) -> Self {
-        unsafe extern "C" fn read_string_hash_table(
-            key: ffi::gpointer,
-            value: ffi::gpointer,
-            hash_map: ffi::gpointer,
-        ) {
-            let key: String = from_glib_none(key as *const c_char);
-            let value: String = from_glib_none(value as *const c_char);
-            let hash_map: &mut HashMap<String, String> =
-                &mut *(hash_map as *mut HashMap<String, String>);
-            hash_map.insert(key, value);
-        }
-        let mut map = HashMap::with_capacity(ffi::g_hash_table_size(ptr) as usize);
-        ffi::g_hash_table_foreach(
-            ptr,
-            Some(read_string_hash_table),
-            &mut map as *mut HashMap<String, String> as *mut _,
-        );
-        map
-    }
-
-    unsafe fn from_glib_container(ptr: *mut ffi::GHashTable) -> Self {
-        FromGlibPtrContainer::from_glib_full(ptr)
-    }
-
-    unsafe fn from_glib_full(ptr: *mut ffi::GHashTable) -> Self {
-        let map = FromGlibPtrContainer::from_glib_none(ptr);
-        ffi::g_hash_table_unref(ptr);
-        map
-    }
-}
-
 impl<T> FromGlibContainerAsVec<<T as GlibPtrDefault>::GlibType, *mut ffi::GPtrArray> for T
 where
     T: GlibPtrDefault
@@ -2657,7 +2568,7 @@ unsafe impl<T: TransparentPtrType> TransparentType for T {
 
 #[cfg(test)]
 mod tests {
-    use std::{collections::HashMap, fs};
+    use std::fs;
 
     use tempfile::tempdir;
 
@@ -2709,19 +2620,6 @@ mod tests {
 
         assert_eq!(s, unsafe { String::from_glib_none(ptr) });
         assert_eq!(owned, unsafe { String::from_glib_full(ptr) });
-    }
-
-    #[test]
-    fn string_hash_map() {
-        let mut map = HashMap::new();
-        map.insert("A".into(), "1".into());
-        map.insert("B".into(), "2".into());
-        map.insert("C".into(), "3".into());
-        let ptr: *mut ffi::GHashTable = map.to_glib_full();
-        let map = unsafe { HashMap::from_glib_full(ptr) };
-        assert_eq!(map.get("A"), Some(&"1".into()));
-        assert_eq!(map.get("B"), Some(&"2".into()));
-        assert_eq!(map.get("C"), Some(&"3".into()));
     }
 
     #[test]

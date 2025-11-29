@@ -14,3 +14,6 @@ pub use slist::SList;
 
 pub mod strv;
 pub use strv::{StrV, StrVRef};
+
+pub mod hashtable;
+pub use hashtable::HashTable;
