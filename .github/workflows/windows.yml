@@ -7,73 +7,142 @@ on:
 name: Windows
 
 jobs:
-
-  gvsbuild:
-    name: build GTK binaries with gvsbuild
-    runs-on: windows-2022
-
-    env:
-      # git revision of gvsbuild we use for to build GLib and the other dependencies
-      gvsbuildref: 230e1074047b9654b76217c5d48b10c726fbe0f6
-
-      # bump this number if you want to force a rebuild of gvsbuild with the same revision
-      gvsbuildupdate: 1
-
-    outputs:
-      cachekey: ${{ steps.output.outputs.cachekey }}
+  build-deps:
+    name: Build dependencies with MSVC
+    runs-on: windows-latest
 
     steps:
-      # this is needed for the cache restore to work
-      - name: (GTK binaries) create dir
-        run: mkdir C:\gtk-build\gtk\x64\release
-
-      - name: (GTK binaries) get from cache
-        uses: actions/cache@v4
+      - uses: actions/cache@v4
         id: cache
         with:
-          path: C:\gtk-build\gtk\x64\release\**
-          key: gvsbuild-${{ env.gvsbuildupdate }}-${{ env.gvsbuildref }}
+          path: c:/gnome
+          key: ${{ runner.os }}-gtk-rs-core-msvc-20
+          restore-keys: |
+            ${{ runner.os }}-gtk-rs-core-msvc-20
 
-      - name: (GTK binaries) checkout gvsbuild
+      - name: Set up the PATH environment
+        run: |
+          echo "C:\pkg-config-lite-0.28-1\bin" >> $GITHUB_PATH
+          echo "C:\gnome\bin" >> $GITHUB_PATH
+        shell: bash
+
+      - name: Install pkgconfig-lite
+        run: |
+          Invoke-WebRequest -UserAgent "Wget" -Uri https://downloads.sourceforge.net/project/pkgconfiglite/0.28-1/pkg-config-lite-0.28-1_bin-win32.zip -OutFile /pkg_config_lite.zip -MaximumRetryCount 5
+          Expand-Archive /pkg_config_lite.zip -DestinationPath C:\
+          pkg-config --version
+
+      - name: Clone dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions/checkout@v6
+        shell: bash
+        run: |
+          cd /c
+          git clone https://github.com/madler/zlib.git --depth 1
+          git clone https://github.com/pnggroup/libpng.git --depth 1 --branch libpng16
+          git clone https://gitlab.freedesktop.org/pixman/pixman.git --depth 1
+          git clone https://gitlab.freedesktop.org/freetype/freetype.git --depth 1
+          git clone https://gitlab.gnome.org/GNOME/glib.git --depth 1
+          git clone https://github.com/harfbuzz/harfbuzz.git --depth 1
+          git clone https://gitlab.freedesktop.org/cairo/cairo.git --depth 1
+          git clone https://github.com/fribidi/fribidi.git --depth 1
+          git clone https://gitlab.gnome.org/GNOME/pango.git --depth 1
+          git clone https://gitlab.gnome.org/GNOME/gdk-pixbuf.git --depth 1
+          git clone https://github.com/ebassi/graphene.git --depth 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          repository: wingtk/gvsbuild
-          ref: ${{ env.gvsbuildref }}
-          path: gvsbuild
+          python-version: "3.x"
 
-      # Temporarily move the preinstalled git, it causes errors related to cygwin.
-      - name: (GTK binaries) move git binary
-        if: steps.cache.outputs.cache-hit != 'true'
+      - name: Install Python Dependencies
+        run: pip install meson ninja setuptools packaging
+
+      - name: Setup MSVC
+        uses: bus1/cabuild/action/msdevshell@v1
+        with:
+          architecture: x64
+
+      - name: Set PKG_CONFIG_PATH
+        shell: bash
         run: |
-          move "C:\Program Files\Git\usr\bin" "C:\Program Files\Git\usr\notbin"
-          move "C:\Program Files\Git\bin" "C:\Program Files\Git\notbin"
-        shell: cmd
+          echo "PKG_CONFIG_PATH=C:/gnome/lib/pkgconfig" >> $GITHUB_ENV
 
-      - name: (GTK binaries) install gvsbuild
+      - name: Remove conflicting link.exe from Git
         if: steps.cache.outputs.cache-hit != 'true'
-        working-directory: gvsbuild
-        run: python -m pip install .
-
-      - name: (GTK binaries) run gvsbuild
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: gvsbuild build --platform=x64 --vs-ver=17 --msys-dir=C:\msys64 gtk3 graphene
-
-      - name: (GTK binaries) restore git binary
-        if: steps.cache.outputs.cache-hit != 'true'
+        shell: bash
         run: |
-          move "C:\Program Files\Git\usr\notbin" "C:\Program Files\Git\usr\bin"
-          move "C:\Program Files\Git\notbin" "C:\Program Files\Git\bin"
-        shell: cmd
+          rm -f "/c/Program Files/Git/usr/bin/link.exe"
 
-      - name: (GTK binaries) output cache key
-        id: output
-        run: echo "::set-output name=cachekey::gvsbuild-${{ env.gvsbuildupdate }}-${{ env.gvsbuildref }}"
+      - name: Build and install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          # Build zlib
+          cd /c/zlib
+          cmake -S . -B builddir -DCMAKE_INSTALL_PREFIX=C:/gnome -DCMAKE_BUILD_TYPE=Release
+          cmake --build builddir --config Release
+          cmake --install builddir --config Release
+
+          # Build libpng
+          cd /c/libpng
+          cmake -S . -B builddir -DCMAKE_INSTALL_PREFIX=C:/gnome -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=C:/gnome -DPNG_TESTS=OFF
+          cmake --build builddir --config Release
+          cmake --install builddir --config Release
+
+          # Build pixman
+          cd /c/pixman
+          meson setup builddir --prefix=C:/gnome -Dtests=disabled
+          meson install -C builddir
+
+          # Build FreeType (without HarfBuzz first)
+          cd /c/freetype
+          meson setup builddir --prefix=C:/gnome -Dharfbuzz=disabled -Dpng=enabled -Dzlib=enabled
+          meson install -C builddir
+
+          # Build GLib
+          cd /c/glib
+          meson setup builddir --prefix=C:/gnome -Dtests=false -Dsysprof=disabled
+          meson install -C builddir
+
+          # Build HarfBuzz
+          cd /c/harfbuzz
+          meson setup builddir --prefix=C:/gnome -Dtests=disabled -Ddocs=disabled -Dcairo=disabled -Dglib=enabled -Dfreetype=enabled
+          meson install -C builddir
+
+          # Rebuild FreeType with HarfBuzz
+          cd /c/freetype
+          meson setup builddir --prefix=C:/gnome -Dharfbuzz=enabled -Dpng=enabled -Dzlib=enabled --wipe
+          meson install -C builddir
+
+          # Build cairo
+          cd /c/cairo
+          meson setup builddir --prefix=C:/gnome -Dtests=disabled -Dglib=enabled
+          meson install -C builddir
+
+          # Build Fribidi
+          cd /c/fribidi
+          meson setup builddir --prefix=C:/gnome -Dtests=false -Ddocs=false
+          meson install -C builddir
+
+          # Build Pango
+          cd /c/pango
+          meson setup builddir --prefix=C:/gnome -Dintrospection=disabled -Dbuild-testsuite=false -Dbuild-examples=false
+          meson install -C builddir
+
+          # Build gdk-pixbuf
+          cd /c/gdk-pixbuf
+          meson setup builddir --prefix=C:/gnome -Dtests=false -Dintrospection=disabled -Dman=false
+          meson install -C builddir
+
+          # Build graphene
+          cd /c/graphene
+          meson setup builddir --prefix=C:/gnome -Dtests=false -Dintrospection=disabled
+          meson install -C builddir
 
   build:
-    name: build gtk-rs on Windows
-    runs-on: windows-2022
-    needs: gvsbuild
+    name: Build gtk-rs on Windows
+    runs-on: windows-latest
+    needs: build-deps
 
     strategy:
       matrix:
@@ -89,25 +158,28 @@ jobs:
           - { name: "examples", test: false, args: "--bins --examples --all-features" }
 
     steps:
+      - uses: actions/checkout@v6
 
-      # this is needed for the cache restore to work
-      - name: Create GTK binaries dir
-        run: mkdir C:\gtk-build\gtk\x64\release
-
-      - name: Get GTK binaries from cache
-        uses: actions/cache@v4
+      - uses: actions/cache@v4
         id: cache
         with:
-          path: C:\gtk-build\gtk\x64\release\**
-          key: ${{needs.gvsbuild.outputs.cachekey}}
+          path: c:/gnome
+          key: ${{ runner.os }}-gtk-rs-core-msvc-20
+          restore-keys: |
+            ${{ runner.os }}-gtk-rs-core-msvc-20
 
       - name: Set up env
         run: |
-          echo "PKG_CONFIG=C:\gtk-build\gtk\x64\release\bin\pkgconf.exe" >> $GITHUB_ENV
-          echo "C:\gtk-build\gtk\x64\release\bin" >> $GITHUB_PATH
+          echo "PKG_CONFIG=C:\pkg-config-lite-0.28-1\bin\pkg-config.exe" >> $GITHUB_ENV
+          echo "PKG_CONFIG_PATH=C:/gnome/lib/pkgconfig" >> $GITHUB_ENV
+          echo "C:\pkg-config-lite-0.28-1\bin" >> $GITHUB_PATH
+          echo "C:\gnome\bin" >> $GITHUB_PATH
         shell: bash
 
-      - uses: actions/checkout@v6
+      - name: Install pkgconfig-lite
+        run: |
+          Invoke-WebRequest -UserAgent "Wget" -Uri https://downloads.sourceforge.net/project/pkgconfiglite/0.28-1/pkg-config-lite-0.28-1_bin-win32.zip -OutFile /pkg_config_lite.zip -MaximumRetryCount 5
+          Expand-Archive /pkg_config_lite.zip -DestinationPath C:\
 
       - uses: actions-rs/toolchain@v1
         with:
