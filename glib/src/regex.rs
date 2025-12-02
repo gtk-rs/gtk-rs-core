@@ -286,7 +286,6 @@ impl Regex {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::RegexCompileFlags;
 
     #[test]
     fn test_replace_literal() {
@@ -327,17 +326,12 @@ mod tests {
 
     #[test]
     fn test_match() {
-        let regex = glib::Regex::new(
-            r"\d",
-            glib::RegexCompileFlags::DEFAULT,
-            glib::RegexMatchFlags::DEFAULT,
-        )
-        .expect("Regex new")
-        .expect("Null regex");
+        let regex = Regex::new(r"\d", RegexCompileFlags::DEFAULT, RegexMatchFlags::DEFAULT)
+            .expect("Regex new")
+            .expect("Null regex");
 
-        // This works (matches)
-        let input = glib::GString::from("87");
-        let m = regex.match_(input.as_gstr(), glib::RegexMatchFlags::DEFAULT);
+        let input = crate::GString::from("87");
+        let m = regex.match_(input.as_gstr(), RegexMatchFlags::DEFAULT);
         let m = m.unwrap();
         assert!(m.matches());
         assert_eq!(m.match_count(), 1);
@@ -347,8 +341,8 @@ mod tests {
         assert!(!m.next().unwrap());
         assert!(m.fetch(0).is_none());
 
-        let input = glib::GString::from("a");
-        let m = regex.match_(input.as_gstr(), glib::RegexMatchFlags::DEFAULT);
+        let input = crate::GString::from("a");
+        let m = regex.match_(input.as_gstr(), RegexMatchFlags::DEFAULT);
         let m = m.unwrap();
         assert!(!m.matches());
         assert_eq!(m.match_count(), 0);
