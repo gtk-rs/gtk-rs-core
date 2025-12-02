@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/file_monitor.rs`."><title>file_monitor.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e56847b5.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.92.0-nightly (dd7fda570 2025-09-20)" data-channel="nightly" data-search-js="search-e256b49e.js" data-stringdex-js="stringdex-061df703.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-6dc2a7f3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/file_monitor.rs`."><title>file_monitor.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.0-nightly (1d60f9e07 2025-12-01)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -84,7 +84,7 @@
 <a href=#11 id=11 data-nosnippet>11</a>};
 <a href=#12 id=12 data-nosnippet>12</a><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 <a href=#13 id=13 data-nosnippet>13</a>
-<a href=#14 id=14 data-nosnippet>14</a><a class="macro" href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
+<a href=#14 id=14 data-nosnippet>14</a><a href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
 <a href=#15 id=15 data-nosnippet>15</a>    <span class="doccomment">/// Monitors a file or directory for changes.
 <a href=#16 id=16 data-nosnippet>16</a>    ///
 <a href=#17 id=17 data-nosnippet>17</a>    /// To obtain a `GFileMonitor` for a file or directory, use
@@ -154,7 +154,7 @@
 <a href=#81 id=81 data-nosnippet>81</a>    ///
 <a href=#82 id=82 data-nosnippet>82</a>    /// [`FileMonitorExt`][trait@crate::prelude::FileMonitorExt], [`trait@glib::ObjectExt`]
 <a href=#83 id=83 data-nosnippet>83</a>    </span><span class="attr">#[doc(alias = <span class="string">"GFileMonitor"</span>)]
-<a href=#84 id=84 data-nosnippet>84</a>    </span><span class="kw">pub struct </span><a href="../../../gio/struct.FileMonitor.html">FileMonitor</a>(Object&lt;<a href="../../../gio_sys/struct.GFileMonitor.html">ffi::GFileMonitor</a>, <a href="../../../gio_sys/struct.GFileMonitorClass.html">ffi::GFileMonitorClass</a>&gt;);
+<a href=#84 id=84 data-nosnippet>84</a>    </span><span class="kw">pub struct </span><a href="#14-89">FileMonitor</a>(Object&lt;ffi::<a href="../../../gio_sys/struct.GFileMonitor.html">GFileMonitor</a>, ffi::<a href="../../../gio_sys/struct.GFileMonitorClass.html">GFileMonitorClass</a>&gt;);
 <a href=#85 id=85 data-nosnippet>85</a>
 <a href=#86 id=86 data-nosnippet>86</a>    <span class="kw">match fn </span>{
 <a href=#87 id=87 data-nosnippet>87</a>        type_ =&gt; || ffi::g_file_monitor_get_type(),
@@ -178,7 +178,7 @@
 <a href=#105 id=105 data-nosnippet>105</a>    /// always [`true`]
 <a href=#106 id=106 data-nosnippet>106</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_monitor_cancel"</span>)]
 <a href=#107 id=107 data-nosnippet>107</a>    </span><span class="kw">fn </span>cancel(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#108 id=108 data-nosnippet>108</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_file_monitor_cancel.html">ffi::g_file_monitor_cancel</a>(<a class="self" href="#107">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
+<a href=#108 id=108 data-nosnippet>108</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(ffi::<a href="../../../gio_sys/fn.g_file_monitor_cancel.html">g_file_monitor_cancel</a>(<a class="self" href="#107">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 <a href=#109 id=109 data-nosnippet>109</a>    }
 <a href=#110 id=110 data-nosnippet>110</a>
 <a href=#111 id=111 data-nosnippet>111</a>    <span class="doccomment">/// Emits the #GFileMonitor::changed signal if a change
@@ -202,7 +202,7 @@
 <a href=#129 id=129 data-nosnippet>129</a>        event_type: <a href="enums.rs.html#1781-1824">FileMonitorEvent</a>,
 <a href=#130 id=130 data-nosnippet>130</a>    ) {
 <a href=#131 id=131 data-nosnippet>131</a>        <span class="kw">unsafe </span>{
-<a href=#132 id=132 data-nosnippet>132</a>            <a href="../../../gio_sys/fn.g_file_monitor_emit_event.html">ffi::g_file_monitor_emit_event</a>(
+<a href=#132 id=132 data-nosnippet>132</a>            ffi::<a href="../../../gio_sys/fn.g_file_monitor_emit_event.html">g_file_monitor_emit_event</a>(
 <a href=#133 id=133 data-nosnippet>133</a>                <a class="self" href="#126">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#134 id=134 data-nosnippet>134</a>                <a href="#127">child</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#135 id=135 data-nosnippet>135</a>                <a href="#128">other_file</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#135">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -220,7 +220,7 @@
 <a href=#147 id=147 data-nosnippet>147</a>    #[doc(alias = <span class="string">"cancelled"</span>)]
 <a href=#148 id=148 data-nosnippet>148</a>    </span><span class="kw">fn </span>is_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
 <a href=#149 id=149 data-nosnippet>149</a>        <span class="kw">unsafe </span>{
-<a href=#150 id=150 data-nosnippet>150</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_file_monitor_is_cancelled.html">ffi::g_file_monitor_is_cancelled</a>(
+<a href=#150 id=150 data-nosnippet>150</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(ffi::<a href="../../../gio_sys/fn.g_file_monitor_is_cancelled.html">g_file_monitor_is_cancelled</a>(
 <a href=#151 id=151 data-nosnippet>151</a>                <a class="self" href="#148">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#152 id=152 data-nosnippet>152</a>            ))
 <a href=#153 id=153 data-nosnippet>153</a>        }
@@ -235,14 +235,14 @@
 <a href=#162 id=162 data-nosnippet>162</a>    #[doc(alias = <span class="string">"rate-limit"</span>)]
 <a href=#163 id=163 data-nosnippet>163</a>    </span><span class="kw">fn </span>set_rate_limit(<span class="kw-2">&amp;</span><span class="self">self</span>, limit_msecs: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
 <a href=#164 id=164 data-nosnippet>164</a>        <span class="kw">unsafe </span>{
-<a href=#165 id=165 data-nosnippet>165</a>            <a href="../../../gio_sys/fn.g_file_monitor_set_rate_limit.html">ffi::g_file_monitor_set_rate_limit</a>(<a class="self" href="#163">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#163">limit_msecs</a>);
+<a href=#165 id=165 data-nosnippet>165</a>            ffi::<a href="../../../gio_sys/fn.g_file_monitor_set_rate_limit.html">g_file_monitor_set_rate_limit</a>(<a class="self" href="#163">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#163">limit_msecs</a>);
 <a href=#166 id=166 data-nosnippet>166</a>        }
 <a href=#167 id=167 data-nosnippet>167</a>    }
 <a href=#168 id=168 data-nosnippet>168</a>
 <a href=#169 id=169 data-nosnippet>169</a>    <span class="doccomment">/// The limit of the monitor to watch for changes, in milliseconds.
 <a href=#170 id=170 data-nosnippet>170</a>    </span><span class="attr">#[doc(alias = <span class="string">"rate-limit"</span>)]
 <a href=#171 id=171 data-nosnippet>171</a>    </span><span class="kw">fn </span>rate_limit(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-<a href=#172 id=172 data-nosnippet>172</a>        <a href="../../../glib/object/trait.ObjectExt.html#tymethod.property">ObjectExt::property</a>(<a class="self" href="#171">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>(), <span class="string">"rate-limit"</span>)
+<a href=#172 id=172 data-nosnippet>172</a>        ObjectExt::<a href="../../../glib/object/trait.ObjectExt.html#tymethod.property">property</a>(<a class="self" href="#171">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>(), <span class="string">"rate-limit"</span>)
 <a href=#173 id=173 data-nosnippet>173</a>    }
 <a href=#174 id=174 data-nosnippet>174</a>
 <a href=#175 id=175 data-nosnippet>175</a>    <span class="doccomment">/// Emitted when @file has been changed.
@@ -288,31 +288,31 @@
 <a href=#215 id=215 data-nosnippet>215</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#14-89">FileMonitor</a>&gt;,
 <a href=#216 id=216 data-nosnippet>216</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P, <span class="kw-2">&amp;</span><a href="file.rs.html#14-116">File</a>, <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="file.rs.html#14-116">File</a>&gt;, <a href="enums.rs.html#1781-1824">FileMonitorEvent</a>) + <span class="lifetime">'static</span>,
 <a href=#217 id=217 data-nosnippet>217</a>        &gt;(
-<a href=#218 id=218 data-nosnippet>218</a>            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GFileMonitor.html">ffi::GFileMonitor</a>,
-<a href=#219 id=219 data-nosnippet>219</a>            file: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GFile.html">ffi::GFile</a>,
-<a href=#220 id=220 data-nosnippet>220</a>            other_file: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GFile.html">ffi::GFile</a>,
-<a href=#221 id=221 data-nosnippet>221</a>            event_type: <a href="../../../gio_sys/type.GFileMonitorEvent.html">ffi::GFileMonitorEvent</a>,
-<a href=#222 id=222 data-nosnippet>222</a>            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+<a href=#218 id=218 data-nosnippet>218</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFileMonitor.html">GFileMonitor</a>,
+<a href=#219 id=219 data-nosnippet>219</a>            file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
+<a href=#220 id=220 data-nosnippet>220</a>            other_file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
+<a href=#221 id=221 data-nosnippet>221</a>            event_type: ffi::<a href="../../../gio_sys/type.GFileMonitorEvent.html">GFileMonitorEvent</a>,
+<a href=#222 id=222 data-nosnippet>222</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
 <a href=#223 id=223 data-nosnippet>223</a>        ) {
 <a href=#224 id=224 data-nosnippet>224</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#222">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
 <a href=#225 id=225 data-nosnippet>225</a>            <a href="#224">f</a>(
-<a href=#226 id=226 data-nosnippet>226</a>                <a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">FileMonitor::from_glib_borrow</a>(<a href="#218">this</a>).<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>(),
+<a href=#226 id=226 data-nosnippet>226</a>                <a href="#14-89">FileMonitor</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#218">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>(),
 <a href=#227 id=227 data-nosnippet>227</a>                <span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#219">file</a>),
-<a href=#228 id=228 data-nosnippet>228</a>                <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>::&lt;<a href="file.rs.html#14-116">File</a>&gt;::from_glib_borrow(<a href="#220">other_file</a>)
+<a href=#228 id=228 data-nosnippet>228</a>                <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>::&lt;<a href="file.rs.html#14-116">File</a>&gt;::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#220">other_file</a>)
 <a href=#229 id=229 data-nosnippet>229</a>                    .<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()
 <a href=#230 id=230 data-nosnippet>230</a>                    .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>(),
 <a href=#231 id=231 data-nosnippet>231</a>                <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#221">event_type</a>),
 <a href=#232 id=232 data-nosnippet>232</a>            )
 <a href=#233 id=233 data-nosnippet>233</a>        }
 <a href=#234 id=234 data-nosnippet>234</a>        <span class="kw">unsafe </span>{
-<a href=#235 id=235 data-nosnippet>235</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#212">f</a>);
+<a href=#235 id=235 data-nosnippet>235</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#212">f</a>);
 <a href=#236 id=236 data-nosnippet>236</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
 <a href=#237 id=237 data-nosnippet>237</a>                <a class="self" href="#211">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
 <a href=#238 id=238 data-nosnippet>238</a>                <span class="string">c"changed"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#239 id=239 data-nosnippet>239</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">std::mem::transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#239 id=239 data-nosnippet>239</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
 <a href=#240 id=240 data-nosnippet>240</a>                    <a href="#214-233">changed_trampoline</a>::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
 <a href=#241 id=241 data-nosnippet>241</a>                )),
-<a href=#242 id=242 data-nosnippet>242</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#235">f</a>),
+<a href=#242 id=242 data-nosnippet>242</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#235">f</a>),
 <a href=#243 id=243 data-nosnippet>243</a>            )
 <a href=#244 id=244 data-nosnippet>244</a>        }
 <a href=#245 id=245 data-nosnippet>245</a>    }
@@ -323,22 +323,22 @@
 <a href=#250 id=250 data-nosnippet>250</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#14-89">FileMonitor</a>&gt;,
 <a href=#251 id=251 data-nosnippet>251</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
 <a href=#252 id=252 data-nosnippet>252</a>        &gt;(
-<a href=#253 id=253 data-nosnippet>253</a>            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GFileMonitor.html">ffi::GFileMonitor</a>,
-<a href=#254 id=254 data-nosnippet>254</a>            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
-<a href=#255 id=255 data-nosnippet>255</a>            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+<a href=#253 id=253 data-nosnippet>253</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFileMonitor.html">GFileMonitor</a>,
+<a href=#254 id=254 data-nosnippet>254</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#255 id=255 data-nosnippet>255</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
 <a href=#256 id=256 data-nosnippet>256</a>        ) {
 <a href=#257 id=257 data-nosnippet>257</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#255">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#258 id=258 data-nosnippet>258</a>            <a href="#257">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">FileMonitor::from_glib_borrow</a>(<a href="#253">this</a>).<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#258 id=258 data-nosnippet>258</a>            <a href="#257">f</a>(<a href="#14-89">FileMonitor</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#253">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
 <a href=#259 id=259 data-nosnippet>259</a>        }
 <a href=#260 id=260 data-nosnippet>260</a>        <span class="kw">unsafe </span>{
-<a href=#261 id=261 data-nosnippet>261</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#248">f</a>);
+<a href=#261 id=261 data-nosnippet>261</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#248">f</a>);
 <a href=#262 id=262 data-nosnippet>262</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
 <a href=#263 id=263 data-nosnippet>263</a>                <a class="self" href="#248">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
 <a href=#264 id=264 data-nosnippet>264</a>                <span class="string">c"notify::cancelled"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#265 id=265 data-nosnippet>265</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">std::mem::transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#265 id=265 data-nosnippet>265</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
 <a href=#266 id=266 data-nosnippet>266</a>                    <a href="#249-259">notify_cancelled_trampoline</a>::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
 <a href=#267 id=267 data-nosnippet>267</a>                )),
-<a href=#268 id=268 data-nosnippet>268</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#261">f</a>),
+<a href=#268 id=268 data-nosnippet>268</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#261">f</a>),
 <a href=#269 id=269 data-nosnippet>269</a>            )
 <a href=#270 id=270 data-nosnippet>270</a>        }
 <a href=#271 id=271 data-nosnippet>271</a>    }
@@ -349,25 +349,26 @@
 <a href=#276 id=276 data-nosnippet>276</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#14-89">FileMonitor</a>&gt;,
 <a href=#277 id=277 data-nosnippet>277</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
 <a href=#278 id=278 data-nosnippet>278</a>        &gt;(
-<a href=#279 id=279 data-nosnippet>279</a>            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GFileMonitor.html">ffi::GFileMonitor</a>,
-<a href=#280 id=280 data-nosnippet>280</a>            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
-<a href=#281 id=281 data-nosnippet>281</a>            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+<a href=#279 id=279 data-nosnippet>279</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFileMonitor.html">GFileMonitor</a>,
+<a href=#280 id=280 data-nosnippet>280</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#281 id=281 data-nosnippet>281</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
 <a href=#282 id=282 data-nosnippet>282</a>        ) {
 <a href=#283 id=283 data-nosnippet>283</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#281">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#284 id=284 data-nosnippet>284</a>            <a href="#283">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">FileMonitor::from_glib_borrow</a>(<a href="#279">this</a>).<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#284 id=284 data-nosnippet>284</a>            <a href="#283">f</a>(<a href="#14-89">FileMonitor</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#279">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
 <a href=#285 id=285 data-nosnippet>285</a>        }
 <a href=#286 id=286 data-nosnippet>286</a>        <span class="kw">unsafe </span>{
-<a href=#287 id=287 data-nosnippet>287</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#274">f</a>);
+<a href=#287 id=287 data-nosnippet>287</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#274">f</a>);
 <a href=#288 id=288 data-nosnippet>288</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
 <a href=#289 id=289 data-nosnippet>289</a>                <a class="self" href="#274">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
 <a href=#290 id=290 data-nosnippet>290</a>                <span class="string">c"notify::rate-limit"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#291 id=291 data-nosnippet>291</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">std::mem::transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#291 id=291 data-nosnippet>291</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
 <a href=#292 id=292 data-nosnippet>292</a>                    <a href="#275-285">notify_rate_limit_trampoline</a>::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
 <a href=#293 id=293 data-nosnippet>293</a>                )),
-<a href=#294 id=294 data-nosnippet>294</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#287">f</a>),
+<a href=#294 id=294 data-nosnippet>294</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#287">f</a>),
 <a href=#295 id=295 data-nosnippet>295</a>            )
 <a href=#296 id=296 data-nosnippet>296</a>        }
 <a href=#297 id=297 data-nosnippet>297</a>    }
 <a href=#298 id=298 data-nosnippet>298</a>}
 <a href=#299 id=299 data-nosnippet>299</a>
-<a href=#300 id=300 data-nosnippet>300</a><span class="kw">impl</span>&lt;O: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#14-89">FileMonitor</a>&gt;&gt; <a href="#100-298">FileMonitorExt</a> <span class="kw">for </span>O {}</code></pre></div></section></main></body></html>
+<a href=#300 id=300 data-nosnippet>300</a><span class="kw">impl</span>&lt;O: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#14-89">FileMonitor</a>&gt;&gt; <a href="#100-298">FileMonitorExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

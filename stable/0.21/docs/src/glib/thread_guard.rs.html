@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/thread_guard.rs`."><title>thread_guard.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-e56847b5.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.92.0-nightly (dd7fda570 2025-09-20)" data-channel="nightly" data-search-js="search-e256b49e.js" data-stringdex-js="stringdex-061df703.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-6dc2a7f3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/thread_guard.rs`."><title>thread_guard.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.0-nightly (1d60f9e07 2025-12-01)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -78,8 +78,8 @@
 <a href=#5 id=5 data-nosnippet>5</a>    sync::atomic::{<a href="https://doc.rust-lang.org/nightly/core/sync/atomic/struct.AtomicUsize.html">AtomicUsize</a>, <a href="https://doc.rust-lang.org/nightly/core/sync/atomic/enum.Ordering.html">Ordering</a>},
 <a href=#6 id=6 data-nosnippet>6</a>};
 <a href=#7 id=7 data-nosnippet>7</a><span class="kw">fn </span>next_thread_id() -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
-<a href=#8 id=8 data-nosnippet>8</a>    <span class="kw">static </span>COUNTER: <a href="https://doc.rust-lang.org/nightly/core/sync/atomic/struct.AtomicUsize.html">AtomicUsize</a> = <a href="https://doc.rust-lang.org/nightly/core/sync/atomic/struct.AtomicUsize.html#method.new">AtomicUsize::new</a>(<span class="number">0</span>);
-<a href=#9 id=9 data-nosnippet>9</a>    <a href="#8">COUNTER</a>.<a href="https://doc.rust-lang.org/nightly/core/sync/atomic/struct.AtomicUsize.html#method.fetch_add">fetch_add</a>(<span class="number">1</span>, <a href="https://doc.rust-lang.org/nightly/core/sync/atomic/enum.Ordering.html#variant.SeqCst">Ordering::SeqCst</a>)
+<a href=#8 id=8 data-nosnippet>8</a>    <span class="kw">static </span>COUNTER: <a href="https://doc.rust-lang.org/nightly/core/sync/atomic/struct.AtomicUsize.html">AtomicUsize</a> = <a href="https://doc.rust-lang.org/nightly/core/sync/atomic/struct.AtomicUsize.html">AtomicUsize</a>::<a href="https://doc.rust-lang.org/nightly/core/sync/atomic/struct.AtomicUsize.html#method.new">new</a>(<span class="number">0</span>);
+<a href=#9 id=9 data-nosnippet>9</a>    <a href="#8">COUNTER</a>.<a href="https://doc.rust-lang.org/nightly/core/sync/atomic/struct.AtomicUsize.html#method.fetch_add">fetch_add</a>(<span class="number">1</span>, Ordering::<a href="https://doc.rust-lang.org/nightly/core/sync/atomic/enum.Ordering.html#variant.SeqCst">SeqCst</a>)
 <a href=#10 id=10 data-nosnippet>10</a>}
 <a href=#11 id=11 data-nosnippet>11</a>
 <a href=#12 id=12 data-nosnippet>12</a><span class="comment">// rustdoc-stripper-ignore-next
@@ -88,7 +88,7 @@
 <a href=#15 id=15 data-nosnippet>15</a>/// Actual thread IDs can be reused by the OS once the old thread finished.
 <a href=#16 id=16 data-nosnippet>16</a>/// This works around ambiguity created by ID reuse by using a separate TLS counter for threads.
 <a href=#17 id=17 data-nosnippet>17</a></span><span class="kw">pub fn </span><a href="../../glib/thread_guard/fn.thread_id.html">thread_id</a>() -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
-<a href=#18 id=18 data-nosnippet>18</a>    <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.thread_local.html">thread_local!</a>(<span class="kw">static </span>THREAD_ID: usize = next_thread_id());
+<a href=#18 id=18 data-nosnippet>18</a>    <a href="https://doc.rust-lang.org/nightly/std/macro.thread_local.html">thread_local!</a>(<span class="kw">static </span>THREAD_ID: usize = next_thread_id());
 <a href=#19 id=19 data-nosnippet>19</a>    <a href="#18">THREAD_ID</a>.<a href="https://doc.rust-lang.org/nightly/std/thread/local/struct.LocalKey.html#method.with">with</a>(|<span class="kw-2">&amp;</span>x| <a href="#19">x</a>)
 <a href=#20 id=20 data-nosnippet>20</a>}
 <a href=#21 id=21 data-nosnippet>21</a>
@@ -113,7 +113,7 @@
 <a href=#40 id=40 data-nosnippet>40</a>    </span><span class="kw">pub fn </span>new(value: T) -&gt; <span class="self">Self </span>{
 <a href=#41 id=41 data-nosnippet>41</a>        <span class="self">Self </span>{
 <a href=#42 id=42 data-nosnippet>42</a>            thread_id: <a href="#17-20">thread_id</a>(),
-<a href=#43 id=43 data-nosnippet>43</a>            value: <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">ManuallyDrop::new</a>(<a href="#40">value</a>),
+<a href=#43 id=43 data-nosnippet>43</a>            value: <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html">ManuallyDrop</a>::<a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">new</a>(<a href="#40">value</a>),
 <a href=#44 id=44 data-nosnippet>44</a>        }
 <a href=#45 id=45 data-nosnippet>45</a>    }
 <a href=#46 id=46 data-nosnippet>46</a>
@@ -126,7 +126,7 @@
 <a href=#53 id=53 data-nosnippet>53</a>    /// created.
 <a href=#54 id=54 data-nosnippet>54</a>    </span><span class="attr">#[inline]
 <a href=#55 id=55 data-nosnippet>55</a>    </span><span class="kw">pub fn </span>get_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T {
-<a href=#56 id=56 data-nosnippet>56</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
+<a href=#56 id=56 data-nosnippet>56</a>        <a href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
 <a href=#57 id=57 data-nosnippet>57</a>            <span class="self">self</span>.thread_id == thread_id(),
 <a href=#58 id=58 data-nosnippet>58</a>            <span class="string">"Value accessed from different thread than where it was created"
 <a href=#59 id=59 data-nosnippet>59</a>        </span>);
@@ -143,7 +143,7 @@
 <a href=#70 id=70 data-nosnippet>70</a>    /// created.
 <a href=#71 id=71 data-nosnippet>71</a>    </span><span class="attr">#[inline]
 <a href=#72 id=72 data-nosnippet>72</a>    </span><span class="kw">pub fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>T {
-<a href=#73 id=73 data-nosnippet>73</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
+<a href=#73 id=73 data-nosnippet>73</a>        <a href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
 <a href=#74 id=74 data-nosnippet>74</a>            <span class="self">self</span>.thread_id == thread_id(),
 <a href=#75 id=75 data-nosnippet>75</a>            <span class="string">"Value accessed from different thread than where it was created"
 <a href=#76 id=76 data-nosnippet>76</a>        </span>);
@@ -161,15 +161,15 @@
 <a href=#88 id=88 data-nosnippet>88</a>    </span><span class="attr">#[inline]
 <a href=#89 id=89 data-nosnippet>89</a>    </span><span class="kw">pub fn </span>into_inner(<span class="self">self</span>) -&gt; T {
 <a href=#90 id=90 data-nosnippet>90</a>        <span class="comment">// We wrap `self` in `ManuallyDrop` to defuse `ThreadGuard`'s `Drop` impl.
-<a href=#91 id=91 data-nosnippet>91</a>        </span><span class="kw">let </span><span class="kw-2">mut </span>this = <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">ManuallyDrop::new</a>(<a class="self" href="#89">self</a>);
+<a href=#91 id=91 data-nosnippet>91</a>        </span><span class="kw">let </span><span class="kw-2">mut </span>this = <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html">ManuallyDrop</a>::<a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.new">new</a>(<a class="self" href="#89">self</a>);
 <a href=#92 id=92 data-nosnippet>92</a>
-<a href=#93 id=93 data-nosnippet>93</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
+<a href=#93 id=93 data-nosnippet>93</a>        <a href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
 <a href=#94 id=94 data-nosnippet>94</a>            this.thread_id == thread_id(),
 <a href=#95 id=95 data-nosnippet>95</a>            <span class="string">"Value accessed from different thread than where it was created"
 <a href=#96 id=96 data-nosnippet>96</a>        </span>);
 <a href=#97 id=97 data-nosnippet>97</a>
 <a href=#98 id=98 data-nosnippet>98</a>        <span class="comment">// SAFETY: We are on the right thread, and this.value will not be touched after this
-<a href=#99 id=99 data-nosnippet>99</a>        </span><span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.take">ManuallyDrop::take</a>(<span class="kw-2">&amp;mut </span><a href="#91">this</a>.value) }
+<a href=#99 id=99 data-nosnippet>99</a>        </span><span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html">ManuallyDrop</a>::<a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.take">take</a>(<span class="kw-2">&amp;mut </span><a href="#91">this</a>.value) }
 <a href=#100 id=100 data-nosnippet>100</a>    }
 <a href=#101 id=101 data-nosnippet>101</a>
 <a href=#102 id=102 data-nosnippet>102</a>    <span class="comment">// rustdoc-stripper-ignore-next
@@ -183,13 +183,13 @@
 <a href=#110 id=110 data-nosnippet>110</a><span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#24-29">ThreadGuard</a>&lt;T&gt; {
 <a href=#111 id=111 data-nosnippet>111</a>    <span class="attr">#[inline]
 <a href=#112 id=112 data-nosnippet>112</a>    </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-<a href=#113 id=113 data-nosnippet>113</a>        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
+<a href=#113 id=113 data-nosnippet>113</a>        <a href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
 <a href=#114 id=114 data-nosnippet>114</a>            <span class="self">self</span>.thread_id == thread_id(),
 <a href=#115 id=115 data-nosnippet>115</a>            <span class="string">"Value dropped on a different thread than where it was created"
 <a href=#116 id=116 data-nosnippet>116</a>        </span>);
 <a href=#117 id=117 data-nosnippet>117</a>
 <a href=#118 id=118 data-nosnippet>118</a>        <span class="comment">// SAFETY: We are on the right thread, and self.value will not be touched after this
-<a href=#119 id=119 data-nosnippet>119</a>        </span><span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.drop">ManuallyDrop::drop</a>(<span class="kw-2">&amp;mut </span><a class="self" href="#112">self</a>.value) }
+<a href=#119 id=119 data-nosnippet>119</a>        </span><span class="kw">unsafe </span>{ <a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html">ManuallyDrop</a>::<a href="https://doc.rust-lang.org/nightly/core/mem/manually_drop/struct.ManuallyDrop.html#method.drop">drop</a>(<span class="kw-2">&amp;mut </span><a class="self" href="#112">self</a>.value) }
 <a href=#120 id=120 data-nosnippet>120</a>    }
 <a href=#121 id=121 data-nosnippet>121</a>}
 <a href=#122 id=122 data-nosnippet>122</a>
@@ -208,4 +208,5 @@
 <a href=#135 id=135 data-nosnippet>135</a>    <span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Target {
 <a href=#136 id=136 data-nosnippet>136</a>        <a class="self" href="#135">self</a>.<a href="#72-79">get_mut</a>()
 <a href=#137 id=137 data-nosnippet>137</a>    }
-<a href=#138 id=138 data-nosnippet>138</a>}</code></pre></div></section></main></body></html>
+<a href=#138 id=138 data-nosnippet>138</a>}
+</code></pre></div></section></main></body></html>

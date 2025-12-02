@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/dbus_object_manager_server.rs`."><title>dbus_object_manager_server.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e56847b5.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.92.0-nightly (dd7fda570 2025-09-20)" data-channel="nightly" data-search-js="search-e256b49e.js" data-stringdex-js="stringdex-061df703.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-6dc2a7f3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/dbus_object_manager_server.rs`."><title>dbus_object_manager_server.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.0-nightly (1d60f9e07 2025-12-01)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -83,7 +83,7 @@
 <a href=#10 id=10 data-nosnippet>10</a>};
 <a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 <a href=#12 id=12 data-nosnippet>12</a>
-<a href=#13 id=13 data-nosnippet>13</a><a class="macro" href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
+<a href=#13 id=13 data-nosnippet>13</a><a href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
 <a href=#14 id=14 data-nosnippet>14</a>    <span class="doccomment">/// `GDBusObjectManagerServer` is used to export [`DBusObject`][crate::DBusObject] instances
 <a href=#15 id=15 data-nosnippet>15</a>    /// using the standardized
 <a href=#16 id=16 data-nosnippet>16</a>    /// [`org.freedesktop.DBus.ObjectManager`](http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager)
@@ -102,7 +102,7 @@
 <a href=#29 id=29 data-nosnippet>29</a>    /// It is supported, but not recommended, to export an object manager at the root
 <a href=#30 id=30 data-nosnippet>30</a>    /// path, `/`.
 <a href=#31 id=31 data-nosnippet>31</a>    ///
-<a href=#32 id=32 data-nosnippet>32</a>    /// See `Gio::DBusObjectManagerClient` for the client-side code that is
+<a href=#32 id=32 data-nosnippet>32</a>    /// See [`DBusObjectManagerClient`][crate::DBusObjectManagerClient] for the client-side code that is
 <a href=#33 id=33 data-nosnippet>33</a>    /// intended to be used with `GDBusObjectManagerServer` or any D-Bus
 <a href=#34 id=34 data-nosnippet>34</a>    /// object implementing the `org.freedesktop.DBus.ObjectManager` interface.
 <a href=#35 id=35 data-nosnippet>35</a>    ///
@@ -124,7 +124,7 @@
 <a href=#51 id=51 data-nosnippet>51</a>    ///
 <a href=#52 id=52 data-nosnippet>52</a>    /// [`DBusObjectManagerServerExt`][trait@crate::prelude::DBusObjectManagerServerExt], [`trait@glib::ObjectExt`], [`DBusObjectManagerExt`][trait@crate::prelude::DBusObjectManagerExt]
 <a href=#53 id=53 data-nosnippet>53</a>    </span><span class="attr">#[doc(alias = <span class="string">"GDBusObjectManagerServer"</span>)]
-<a href=#54 id=54 data-nosnippet>54</a>    </span><span class="kw">pub struct </span><a href="../../../gio/struct.DBusObjectManagerServer.html">DBusObjectManagerServer</a>(Object&lt;<a href="../../../gio_sys/struct.GDBusObjectManagerServer.html">ffi::GDBusObjectManagerServer</a>, <a href="../../../gio_sys/struct.GDBusObjectManagerServerClass.html">ffi::GDBusObjectManagerServerClass</a>&gt;) @implements <a href="dbus_object_manager.rs.html#14-64">DBusObjectManager</a>;
+<a href=#54 id=54 data-nosnippet>54</a>    </span><span class="kw">pub struct </span><a href="#13-59">DBusObjectManagerServer</a>(Object&lt;ffi::<a href="../../../gio_sys/struct.GDBusObjectManagerServer.html">GDBusObjectManagerServer</a>, ffi::<a href="../../../gio_sys/struct.GDBusObjectManagerServerClass.html">GDBusObjectManagerServerClass</a>&gt;) @implements <a href="dbus_object_manager.rs.html#14-64">DBusObjectManager</a>;
 <a href=#55 id=55 data-nosnippet>55</a>
 <a href=#56 id=56 data-nosnippet>56</a>    <span class="kw">match fn </span>{
 <a href=#57 id=57 data-nosnippet>57</a>        type_ =&gt; || ffi::g_dbus_object_manager_server_get_type(),
@@ -150,7 +150,7 @@
 <a href=#77 id=77 data-nosnippet>77</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_object_manager_server_new"</span>)]
 <a href=#78 id=78 data-nosnippet>78</a>    </span><span class="kw">pub fn </span>new(object_path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="#13-59">DBusObjectManagerServer</a> {
 <a href=#79 id=79 data-nosnippet>79</a>        <span class="kw">unsafe </span>{
-<a href=#80 id=80 data-nosnippet>80</a>            <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_dbus_object_manager_server_new.html">ffi::g_dbus_object_manager_server_new</a>(
+<a href=#80 id=80 data-nosnippet>80</a>            <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(ffi::<a href="../../../gio_sys/fn.g_dbus_object_manager_server_new.html">g_dbus_object_manager_server_new</a>(
 <a href=#81 id=81 data-nosnippet>81</a>                <a href="#78">object_path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#82 id=82 data-nosnippet>82</a>            ))
 <a href=#83 id=83 data-nosnippet>83</a>        }
@@ -178,7 +178,7 @@
 <a href=#105 id=105 data-nosnippet>105</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_object_manager_server_export"</span>)]
 <a href=#106 id=106 data-nosnippet>106</a>    </span><span class="kw">fn </span>export(<span class="kw-2">&amp;</span><span class="self">self</span>, object: <span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="dbus_object_skeleton.rs.html#14-67">DBusObjectSkeleton</a>&gt;) {
 <a href=#107 id=107 data-nosnippet>107</a>        <span class="kw">unsafe </span>{
-<a href=#108 id=108 data-nosnippet>108</a>            <a href="../../../gio_sys/fn.g_dbus_object_manager_server_export.html">ffi::g_dbus_object_manager_server_export</a>(
+<a href=#108 id=108 data-nosnippet>108</a>            ffi::<a href="../../../gio_sys/fn.g_dbus_object_manager_server_export.html">g_dbus_object_manager_server_export</a>(
 <a href=#109 id=109 data-nosnippet>109</a>                <a class="self" href="#106">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#110 id=110 data-nosnippet>110</a>                <a href="#106">object</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#111 id=111 data-nosnippet>111</a>            );
@@ -194,7 +194,7 @@
 <a href=#121 id=121 data-nosnippet>121</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_object_manager_server_export_uniquely"</span>)]
 <a href=#122 id=122 data-nosnippet>122</a>    </span><span class="kw">fn </span>export_uniquely(<span class="kw-2">&amp;</span><span class="self">self</span>, object: <span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="dbus_object_skeleton.rs.html#14-67">DBusObjectSkeleton</a>&gt;) {
 <a href=#123 id=123 data-nosnippet>123</a>        <span class="kw">unsafe </span>{
-<a href=#124 id=124 data-nosnippet>124</a>            <a href="../../../gio_sys/fn.g_dbus_object_manager_server_export_uniquely.html">ffi::g_dbus_object_manager_server_export_uniquely</a>(
+<a href=#124 id=124 data-nosnippet>124</a>            ffi::<a href="../../../gio_sys/fn.g_dbus_object_manager_server_export_uniquely.html">g_dbus_object_manager_server_export_uniquely</a>(
 <a href=#125 id=125 data-nosnippet>125</a>                <a class="self" href="#122">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#126 id=126 data-nosnippet>126</a>                <a href="#122">object</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#127 id=127 data-nosnippet>127</a>            );
@@ -212,7 +212,7 @@
 <a href=#139 id=139 data-nosnippet>139</a>    #[doc(alias = <span class="string">"get_connection"</span>)]
 <a href=#140 id=140 data-nosnippet>140</a>    </span><span class="kw">fn </span>connection(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="dbus_connection.rs.html#22-200">DBusConnection</a>&gt; {
 <a href=#141 id=141 data-nosnippet>141</a>        <span class="kw">unsafe </span>{
-<a href=#142 id=142 data-nosnippet>142</a>            <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="../../../gio_sys/fn.g_dbus_object_manager_server_get_connection.html">ffi::g_dbus_object_manager_server_get_connection</a>(
+<a href=#142 id=142 data-nosnippet>142</a>            <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(ffi::<a href="../../../gio_sys/fn.g_dbus_object_manager_server_get_connection.html">g_dbus_object_manager_server_get_connection</a>(
 <a href=#143 id=143 data-nosnippet>143</a>                <a class="self" href="#140">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#144 id=144 data-nosnippet>144</a>            ))
 <a href=#145 id=145 data-nosnippet>145</a>        }
@@ -228,7 +228,7 @@
 <a href=#155 id=155 data-nosnippet>155</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_object_manager_server_is_exported"</span>)]
 <a href=#156 id=156 data-nosnippet>156</a>    </span><span class="kw">fn </span>is_exported(<span class="kw-2">&amp;</span><span class="self">self</span>, object: <span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="dbus_object_skeleton.rs.html#14-67">DBusObjectSkeleton</a>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
 <a href=#157 id=157 data-nosnippet>157</a>        <span class="kw">unsafe </span>{
-<a href=#158 id=158 data-nosnippet>158</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_dbus_object_manager_server_is_exported.html">ffi::g_dbus_object_manager_server_is_exported</a>(
+<a href=#158 id=158 data-nosnippet>158</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(ffi::<a href="../../../gio_sys/fn.g_dbus_object_manager_server_is_exported.html">g_dbus_object_manager_server_is_exported</a>(
 <a href=#159 id=159 data-nosnippet>159</a>                <a class="self" href="#156">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#160 id=160 data-nosnippet>160</a>                <a href="#156">object</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#161 id=161 data-nosnippet>161</a>            ))
@@ -243,7 +243,7 @@
 <a href=#170 id=170 data-nosnippet>170</a>    #[doc(alias = <span class="string">"connection"</span>)]
 <a href=#171 id=171 data-nosnippet>171</a>    </span><span class="kw">fn </span>set_connection(<span class="kw-2">&amp;</span><span class="self">self</span>, connection: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="dbus_connection.rs.html#22-200">DBusConnection</a>&gt;) {
 <a href=#172 id=172 data-nosnippet>172</a>        <span class="kw">unsafe </span>{
-<a href=#173 id=173 data-nosnippet>173</a>            <a href="../../../gio_sys/fn.g_dbus_object_manager_server_set_connection.html">ffi::g_dbus_object_manager_server_set_connection</a>(
+<a href=#173 id=173 data-nosnippet>173</a>            ffi::<a href="../../../gio_sys/fn.g_dbus_object_manager_server_set_connection.html">g_dbus_object_manager_server_set_connection</a>(
 <a href=#174 id=174 data-nosnippet>174</a>                <a class="self" href="#171">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#175 id=175 data-nosnippet>175</a>                <a href="#171">connection</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#176 id=176 data-nosnippet>176</a>            );
@@ -264,7 +264,7 @@
 <a href=#191 id=191 data-nosnippet>191</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_object_manager_server_unexport"</span>)]
 <a href=#192 id=192 data-nosnippet>192</a>    </span><span class="kw">fn </span>unexport(<span class="kw-2">&amp;</span><span class="self">self</span>, object_path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
 <a href=#193 id=193 data-nosnippet>193</a>        <span class="kw">unsafe </span>{
-<a href=#194 id=194 data-nosnippet>194</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="../../../gio_sys/fn.g_dbus_object_manager_server_unexport.html">ffi::g_dbus_object_manager_server_unexport</a>(
+<a href=#194 id=194 data-nosnippet>194</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(ffi::<a href="../../../gio_sys/fn.g_dbus_object_manager_server_unexport.html">g_dbus_object_manager_server_unexport</a>(
 <a href=#195 id=195 data-nosnippet>195</a>                <a class="self" href="#192">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#196 id=196 data-nosnippet>196</a>                <a href="#192">object_path</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#197 id=197 data-nosnippet>197</a>            ))
@@ -277,25 +277,26 @@
 <a href=#204 id=204 data-nosnippet>204</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#13-59">DBusObjectManagerServer</a>&gt;,
 <a href=#205 id=205 data-nosnippet>205</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
 <a href=#206 id=206 data-nosnippet>206</a>        &gt;(
-<a href=#207 id=207 data-nosnippet>207</a>            this: <span class="kw-2">*mut </span><a href="../../../gio_sys/struct.GDBusObjectManagerServer.html">ffi::GDBusObjectManagerServer</a>,
-<a href=#208 id=208 data-nosnippet>208</a>            _param_spec: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
-<a href=#209 id=209 data-nosnippet>209</a>            f: <a href="../../../glib_sys/type.gpointer.html">glib::ffi::gpointer</a>,
+<a href=#207 id=207 data-nosnippet>207</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GDBusObjectManagerServer.html">GDBusObjectManagerServer</a>,
+<a href=#208 id=208 data-nosnippet>208</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#209 id=209 data-nosnippet>209</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
 <a href=#210 id=210 data-nosnippet>210</a>        ) {
 <a href=#211 id=211 data-nosnippet>211</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#209">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#212 id=212 data-nosnippet>212</a>            <a href="#211">f</a>(<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#tymethod.from_glib_borrow">DBusObjectManagerServer::from_glib_borrow</a>(<a href="#207">this</a>).<a href="../../../glib/object/trait.Cast.html#tymethod.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#212 id=212 data-nosnippet>212</a>            <a href="#211">f</a>(<a href="#13-59">DBusObjectManagerServer</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#207">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
 <a href=#213 id=213 data-nosnippet>213</a>        }
 <a href=#214 id=214 data-nosnippet>214</a>        <span class="kw">unsafe </span>{
-<a href=#215 id=215 data-nosnippet>215</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">Box_::new</a>(<a href="#202">f</a>);
+<a href=#215 id=215 data-nosnippet>215</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#202">f</a>);
 <a href=#216 id=216 data-nosnippet>216</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
 <a href=#217 id=217 data-nosnippet>217</a>                <a class="self" href="#202">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
 <a href=#218 id=218 data-nosnippet>218</a>                <span class="string">c"notify::connection"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#219 id=219 data-nosnippet>219</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">std::mem::transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#219 id=219 data-nosnippet>219</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
 <a href=#220 id=220 data-nosnippet>220</a>                    <a href="#203-213">notify_connection_trampoline</a>::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
 <a href=#221 id=221 data-nosnippet>221</a>                )),
-<a href=#222 id=222 data-nosnippet>222</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">Box_::into_raw</a>(<a href="#215">f</a>),
+<a href=#222 id=222 data-nosnippet>222</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#215">f</a>),
 <a href=#223 id=223 data-nosnippet>223</a>            )
 <a href=#224 id=224 data-nosnippet>224</a>        }
 <a href=#225 id=225 data-nosnippet>225</a>    }
 <a href=#226 id=226 data-nosnippet>226</a>}
 <a href=#227 id=227 data-nosnippet>227</a>
-<a href=#228 id=228 data-nosnippet>228</a><span class="kw">impl</span>&lt;O: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#13-59">DBusObjectManagerServer</a>&gt;&gt; <a href="#92-226">DBusObjectManagerServerExt</a> <span class="kw">for </span>O {}</code></pre></div></section></main></body></html>
+<a href=#228 id=228 data-nosnippet>228</a><span class="kw">impl</span>&lt;O: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#13-59">DBusObjectManagerServer</a>&gt;&gt; <a href="#92-226">DBusObjectManagerServerExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>
