@@ -1,0 +1,51 @@
+[options]
+girs_directories = ["../gir-files"]
+library = "GLibUnix"
+version = "2.0"
+min_cfg_version = "2.56"
+use_gi_docgen = true
+target_path = "."
+work_mode = "normal"
+single_version_file = true
+deprecate_by_min_version = true
+trust_return_value_nullability = true
+
+generate = [
+    #"GLibUnix.Pipe",
+    #"GLibUnix.PipeEnd"
+]
+
+ignore = [
+]
+
+manual = [
+    "GLib.Error",
+    "GLib.IOCondition",
+    "GLib.Quark",
+    "GLib.Source",
+]
+
+[[object]]
+name = "GLibUnix.*"
+status = "generate"
+    [[object.function]]
+    name = "signal_add"
+    ignore = true
+    [[object.function]]
+    name = "signal_add_full"
+    ignore = true
+    [[object.function]]
+    name = "set_fd_nonblocking"
+    # Need manual binding for RawFd
+    ignore = true
+    [[object.function]]
+    pattern = "fd.*"
+    # Need manual binding for RawFd
+    ignore = true
+    [[object.function]]
+    name = "signal_source_new"
+    # Need manual bindings to be useful
+    ignore = true
+    [[object.function]]
+    name = "open_pipe"
+    manual = true

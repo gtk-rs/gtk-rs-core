@@ -826,15 +826,6 @@ pub fn spawn_command_line_async(
 //    unsafe { TODO: call ffi:g_stat() }
 //}
 
-//#[cfg(unix)]
-//#[cfg_attr(docsrs, doc(cfg(unix)))]
-//#[cfg(feature = "v2_64")]
-//#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
-//#[doc(alias = "g_unix_get_passwd_entry")]
-//pub fn unix_get_passwd_entry(user_name: &str) -> Result</*Unimplemented*/Option<Basic: Pointer>, crate::Error> {
-//    unsafe { TODO: call ffi:g_unix_get_passwd_entry() }
-//}
-
 #[doc(alias = "g_unlink")]
 pub fn unlink(filename: impl AsRef<std::path::Path>) -> i32 {
     unsafe { ffi::g_unlink(filename.as_ref().to_glib_none().0) }

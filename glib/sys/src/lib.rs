@@ -439,6 +439,7 @@ pub const G_UNICODE_BREAK_AKSARA_PRE_BASE: GUnicodeBreakType = 44;
 pub const G_UNICODE_BREAK_AKSARA_START: GUnicodeBreakType = 45;
 pub const G_UNICODE_BREAK_VIRAMA_FINAL: GUnicodeBreakType = 46;
 pub const G_UNICODE_BREAK_VIRAMA: GUnicodeBreakType = 47;
+pub const G_UNICODE_BREAK_UNAMBIGUOUS_HYPHEN: GUnicodeBreakType = 48;
 
 pub type GUnicodeScript = c_int;
 pub const G_UNICODE_SCRIPT_INVALID_CODE: GUnicodeScript = -1;
@@ -614,6 +615,10 @@ pub const G_UNICODE_SCRIPT_SUNUWAR: GUnicodeScript = 168;
 pub const G_UNICODE_SCRIPT_GURUNG_KHEMA: GUnicodeScript = 169;
 pub const G_UNICODE_SCRIPT_KIRAT_RAI: GUnicodeScript = 170;
 pub const G_UNICODE_SCRIPT_OL_ONAL: GUnicodeScript = 171;
+pub const G_UNICODE_SCRIPT_SIDETIC: GUnicodeScript = 172;
+pub const G_UNICODE_SCRIPT_TOLONG_SIKI: GUnicodeScript = 173;
+pub const G_UNICODE_SCRIPT_TAI_YO: GUnicodeScript = 174;
+pub const G_UNICODE_SCRIPT_BERIA_ERFE: GUnicodeScript = 175;
 
 pub type GUnicodeType = c_int;
 pub const G_UNICODE_CONTROL: GUnicodeType = 0;
@@ -646,16 +651,6 @@ pub const G_UNICODE_OTHER_SYMBOL: GUnicodeType = 26;
 pub const G_UNICODE_LINE_SEPARATOR: GUnicodeType = 27;
 pub const G_UNICODE_PARAGRAPH_SEPARATOR: GUnicodeType = 28;
 pub const G_UNICODE_SPACE_SEPARATOR: GUnicodeType = 29;
-
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-pub type GUnixPipeEnd = c_int;
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-pub const G_UNIX_PIPE_END_READ: GUnixPipeEnd = 0;
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-pub const G_UNIX_PIPE_END_WRITE: GUnixPipeEnd = 1;
 
 pub type GUriError = c_int;
 pub const G_URI_ERROR_FAILED: GUriError = 0;
@@ -845,7 +840,7 @@ pub const G_FORMAT_SIZE_ONLY_UNIT: GFormatSizeFlags = 16;
 pub type GHookFlagMask = c_uint;
 pub const G_HOOK_FLAG_ACTIVE: GHookFlagMask = 1;
 pub const G_HOOK_FLAG_IN_CALL: GHookFlagMask = 2;
-pub const G_HOOK_FLAG_MASK: GHookFlagMask = 15;
+pub const G_HOOK_FLAG_RESERVED1: GHookFlagMask = 4;
 
 pub type GIOCondition = c_uint;
 pub const G_IO_IN: GIOCondition = 1;
@@ -931,10 +926,7 @@ pub const G_REGEX_FIRSTLINE: GRegexCompileFlags = 262144;
 pub const G_REGEX_DUPNAMES: GRegexCompileFlags = 524288;
 pub const G_REGEX_NEWLINE_CR: GRegexCompileFlags = 1048576;
 pub const G_REGEX_NEWLINE_LF: GRegexCompileFlags = 2097152;
-pub const G_REGEX_NEWLINE_CRLF: GRegexCompileFlags = 3145728;
-pub const G_REGEX_NEWLINE_ANYCRLF: GRegexCompileFlags = 5242880;
-pub const G_REGEX_BSR_ANYCRLF: GRegexCompileFlags = 8388608;
-pub const G_REGEX_JAVASCRIPT_COMPAT: GRegexCompileFlags = 33554432;
+pub const G_REGEX_NEWLINE_RESERVED1: GRegexCompileFlags = 4194304;
 
 pub type GRegexMatchFlags = c_uint;
 pub const G_REGEX_MATCH_DEFAULT: GRegexMatchFlags = 0;
@@ -980,6 +972,7 @@ pub const G_TEST_SUBPROCESS_DEFAULT: GTestSubprocessFlags = 0;
 pub const G_TEST_SUBPROCESS_INHERIT_STDIN: GTestSubprocessFlags = 1;
 pub const G_TEST_SUBPROCESS_INHERIT_STDOUT: GTestSubprocessFlags = 2;
 pub const G_TEST_SUBPROCESS_INHERIT_STDERR: GTestSubprocessFlags = 4;
+pub const G_TEST_SUBPROCESS_INHERIT_DESCRIPTORS: GTestSubprocessFlags = 8;
 
 pub type GTestTrapFlags = c_uint;
 pub const G_TEST_TRAP_DEFAULT: GTestTrapFlags = 0;
@@ -2532,24 +2525,6 @@ impl ::std::fmt::Debug for GTuples {
     }
 }
 
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct GUnixPipe {
-    pub fds: [c_int; 2],
-}
-
-#[cfg(unix)]
-#[cfg_attr(docsrs, doc(cfg(unix)))]
-impl ::std::fmt::Debug for GUnixPipe {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("GUnixPipe @ {self:p}"))
-            .field("fds", &self.fds)
-            .finish()
-    }
-}
-
 #[repr(C)]
 #[allow(dead_code)]
 pub struct GUri {
@@ -3169,6 +3144,11 @@ extern "C" {
     //=========================================================================
     pub fn g_bytes_get_type() -> GType;
     pub fn g_bytes_new(data: gconstpointer, size: size_t) -> *mut GBytes;
+    pub fn g_bytes_new_from_bytes(
+        bytes: *mut GBytes,
+        offset: size_t,
+        length: size_t,
+    ) -> *mut GBytes;
     pub fn g_bytes_new_static(data: gconstpointer, size: size_t) -> *mut GBytes;
     pub fn g_bytes_new_take(data: gpointer, size: size_t) -> *mut GBytes;
     pub fn g_bytes_new_with_free_func(
@@ -3190,11 +3170,6 @@ extern "C" {
     ) -> gconstpointer;
     pub fn g_bytes_get_size(bytes: *mut GBytes) -> size_t;
     pub fn g_bytes_hash(bytes: gconstpointer) -> c_uint;
-    pub fn g_bytes_new_from_bytes(
-        bytes: *mut GBytes,
-        offset: size_t,
-        length: size_t,
-    ) -> *mut GBytes;
     pub fn g_bytes_ref(bytes: *mut GBytes) -> *mut GBytes;
     pub fn g_bytes_unref(bytes: *mut GBytes);
     pub fn g_bytes_unref_to_array(bytes: *mut GBytes) -> *mut GByteArray;
@@ -4248,6 +4223,9 @@ extern "C" {
     pub fn g_markup_parse_context_get_element_stack(
         context: *mut GMarkupParseContext,
     ) -> *const GSList;
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_markup_parse_context_get_offset(context: *mut GMarkupParseContext) -> size_t;
     pub fn g_markup_parse_context_get_position(
         context: *mut GMarkupParseContext,
         line_number: *mut c_int,
@@ -7472,6 +7450,9 @@ extern "C" {
         user_data: gpointer,
         notify: GDestroyNotify,
     ) -> c_uint;
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_unix_fd_query_path(fd: c_int, error: *mut *mut GError) -> *mut c_char;
     pub fn g_unix_fd_source_new(fd: c_int, condition: GIOCondition) -> *mut GSource;
     #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]

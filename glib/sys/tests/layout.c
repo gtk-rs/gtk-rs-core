@@ -110,8 +110,6 @@ int main() {
     printf("%s;%zu;%zu\n", "GUnicodeBreakType", sizeof(GUnicodeBreakType), alignof(GUnicodeBreakType));
     printf("%s;%zu;%zu\n", "GUnicodeScript", sizeof(GUnicodeScript), alignof(GUnicodeScript));
     printf("%s;%zu;%zu\n", "GUnicodeType", sizeof(GUnicodeType), alignof(GUnicodeType));
-    printf("%s;%zu;%zu\n", "GUnixPipe", sizeof(GUnixPipe), alignof(GUnixPipe));
-    printf("%s;%zu;%zu\n", "GUnixPipeEnd", sizeof(GUnixPipeEnd), alignof(GUnixPipeEnd));
     printf("%s;%zu;%zu\n", "GUriError", sizeof(GUriError), alignof(GUriError));
     printf("%s;%zu;%zu\n", "GUriFlags", sizeof(GUriFlags), alignof(GUriFlags));
     printf("%s;%zu;%zu\n", "GUriHideFlags", sizeof(GUriHideFlags), alignof(GUriHideFlags));

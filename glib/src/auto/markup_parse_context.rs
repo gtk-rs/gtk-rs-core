@@ -55,6 +55,14 @@ impl MarkupParseContext {
         }
     }
 
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    #[doc(alias = "g_markup_parse_context_get_offset")]
+    #[doc(alias = "get_offset")]
+    pub fn offset(&self) -> usize {
+        unsafe { ffi::g_markup_parse_context_get_offset(self.to_glib_none().0) }
+    }
+
     #[doc(alias = "g_markup_parse_context_get_position")]
     #[doc(alias = "get_position")]
     pub fn position(&self) -> (i32, i32) {

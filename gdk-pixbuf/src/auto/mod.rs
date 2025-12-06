@@ -5,7 +5,9 @@
 mod pixbuf;
 pub use self::pixbuf::Pixbuf;
 
+#[cfg_attr(feature = "v2_44", deprecated = "Since 2.44")]
 mod pixbuf_animation;
+#[cfg_attr(feature = "v2_44", deprecated = "Since 2.44")]
 pub use self::pixbuf_animation::PixbufAnimation;
 
 mod pixbuf_loader;
@@ -32,6 +34,7 @@ mod flags;
 pub use self::flags::PixbufFormatFlags;
 
 pub(crate) mod traits {
+    #[cfg_attr(feature = "v2_44", deprecated = "Since 2.44")]
     pub use super::pixbuf_animation::PixbufAnimationExt;
     pub use super::pixbuf_loader::PixbufLoaderExt;
 }

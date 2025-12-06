@@ -3,18 +3,6 @@
 #include <glib.h>
 #include <glib-object.h>
 
-#ifndef G_PLATFORM_WIN32
-// glib-unix.h is not included automatically
-#include <glib-unix.h>
-// polyfill the WIN32 constants on non-Win32 platforms
-typedef enum
-{
-  G_WIN32_OS_ANY,
-  G_WIN32_OS_WORKSTATION,
-  G_WIN32_OS_SERVER,
-} GWin32OSType;
-#endif
-
 // polyfill when the platform doesn't define tracing macros
 #ifndef G_TRACE_CURRENT_TIME
 #define G_TRACE_CURRENT_TIME 0

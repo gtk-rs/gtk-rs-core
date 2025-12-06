@@ -255,9 +255,3 @@ pub mod thread_guard;
 /// logger (it prints to stdout by default), you can set your own logger using the corresponding
 /// `log` functions.
 pub const CLONE_MACRO_LOG_DOMAIN: &str = "glib-rs-clone";
-
-#[cfg(target_family = "windows")]
-mod win32;
-
-#[cfg(target_family = "windows")]
-pub use self::win32::*;
