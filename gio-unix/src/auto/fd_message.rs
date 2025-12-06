@@ -43,21 +43,6 @@ impl Default for FDMessage {
 }
 
 pub trait FDMessageExt: IsA<FDMessage> + 'static {
-    #[doc(alias = "g_unix_fd_message_append_fd")]
-    fn append_fd(&self, fd: i32) -> Result<(), glib::Error> {
-        unsafe {
-            let mut error = std::ptr::null_mut();
-            let is_ok =
-                ffi::g_unix_fd_message_append_fd(self.as_ref().to_glib_none().0, fd, &mut error);
-            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
-            if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            }
-        }
-    }
-
     #[doc(alias = "g_unix_fd_message_get_fd_list")]
     #[doc(alias = "get_fd_list")]
     #[doc(alias = "fd-list")]
@@ -66,21 +51,6 @@ pub trait FDMessageExt: IsA<FDMessage> + 'static {
             from_glib_none(ffi::g_unix_fd_message_get_fd_list(
                 self.as_ref().to_glib_none().0,
             ))
-        }
-    }
-
-    #[doc(alias = "g_unix_fd_message_steal_fds")]
-    fn steal_fds(&self) -> Vec<i32> {
-        unsafe {
-            let mut length = std::mem::MaybeUninit::uninit();
-            let ret = FromGlibContainer::from_glib_full_num(
-                ffi::g_unix_fd_message_steal_fds(
-                    self.as_ref().to_glib_none().0,
-                    length.as_mut_ptr(),
-                ),
-                length.assume_init() as _,
-            );
-            ret
         }
     }
 }
