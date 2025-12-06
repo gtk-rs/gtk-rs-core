@@ -16,5 +16,9 @@ pub mod functions {
 }
 
 pub mod prelude {
+    pub use gio::prelude::*;
+
     pub use super::auto::traits::*;
+    pub use super::input_stream::Win32InputStreamExtManual;
+    pub use super::output_stream::Win32OutputStreamExtManual;
 }

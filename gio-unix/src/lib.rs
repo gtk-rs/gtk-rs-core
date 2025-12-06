@@ -25,6 +25,8 @@ pub mod functions {
 }
 
 pub mod prelude {
+    pub use gio::prelude::*;
+
     pub use super::auto::traits::*;
 
     #[cfg(feature = "v2_58")]
@@ -32,6 +34,6 @@ pub mod prelude {
 
     pub use crate::fd_message::FDMessageExtManual;
     pub use crate::file_descriptor_based::FileDescriptorBasedExtManual;
-    pub use crate::input_stream::InputStreamExtManual;
-    pub use crate::output_stream::OutputStreamExtManual;
+    pub use crate::input_stream::UnixInputStreamExtManual;
+    pub use crate::output_stream::UnixOutputStreamExtManual;
 }

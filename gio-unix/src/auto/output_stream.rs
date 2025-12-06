@@ -18,7 +18,7 @@ impl OutputStream {
     pub const NONE: Option<&'static OutputStream> = None;
 }
 
-pub trait OutputStreamExt: IsA<OutputStream> + 'static {
+pub trait UnixOutputStreamExt: IsA<OutputStream> + 'static {
     #[doc(alias = "g_unix_output_stream_get_close_fd")]
     #[doc(alias = "get_close_fd")]
     #[doc(alias = "close-fd")]
@@ -31,4 +31,4 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
     }
 }
 
-impl<O: IsA<OutputStream>> OutputStreamExt for O {}
+impl<O: IsA<OutputStream>> UnixOutputStreamExt for O {}

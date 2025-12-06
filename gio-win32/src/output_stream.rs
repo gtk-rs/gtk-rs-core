@@ -12,7 +12,7 @@ impl OutputStream {
     /// Creates a new [`Self`] that takes ownership of the passed in handle.
     ///
     /// # Safety
-    /// You must not close the handle unless you've previously called [`OutputStreamExtManual::set_close_handle`]
+    /// You must not close the handle unless you've previously called [`Win32OutputStreamExtManual::set_close_handle`]
     /// with `true` on this stream. At which point you may only do so when all references to this
     /// stream have been dropped.
     #[doc(alias = "g_win32_output_stream_new")]
@@ -49,7 +49,7 @@ impl AsRawHandle for OutputStream {
     }
 }
 
-pub trait OutputStreamExtManual: IsA<OutputStream> + Sized {
+pub trait Win32OutputStreamExtManual: IsA<OutputStream> + Sized {
     #[doc(alias = "g_win32_output_stream_get_handle")]
     #[doc(alias = "get_handle")]
     #[cfg(windows)]
@@ -63,4 +63,4 @@ pub trait OutputStreamExtManual: IsA<OutputStream> + Sized {
     }
 }
 
-impl<O: IsA<OutputStream>> OutputStreamExtManual for O {}
+impl<O: IsA<OutputStream>> Win32OutputStreamExtManual for O {}

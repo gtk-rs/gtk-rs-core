@@ -35,6 +35,6 @@ pub(crate) mod functions;
 pub(crate) mod traits {
     pub use super::fd_message::FDMessageExt;
     pub use super::file_descriptor_based::FileDescriptorBasedExt;
-    pub use super::input_stream::InputStreamExt;
-    pub use super::output_stream::OutputStreamExt;
+    pub use super::input_stream::UnixInputStreamExt;
+    pub use super::output_stream::UnixOutputStreamExt;
 }

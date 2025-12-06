@@ -1,5 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
+#[cfg(windows)]
 use glib::translate::*;
+#[cfg(windows)]
 use std::path::PathBuf;
 
 #[doc(alias = "g_win32_get_package_installation_directory_of_module")]
