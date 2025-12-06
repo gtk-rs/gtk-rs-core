@@ -10,3 +10,7 @@ mod functions;
 
 pub use auto::functions::*;
 pub use functions::*;
+
+pub mod prelude {
+    pub use glib::prelude::*;
+}

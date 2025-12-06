@@ -47,7 +47,7 @@ impl AsFd for InputStream {
     }
 }
 
-pub trait InputStreamExtManual: IsA<InputStream> + Sized {
+pub trait UnixInputStreamExtManual: IsA<InputStream> + Sized {
     // rustdoc-stripper-ignore-next
     /// Sets whether the fd of this stream will be closed when the stream is closed.
     ///
@@ -60,4 +60,4 @@ pub trait InputStreamExtManual: IsA<InputStream> + Sized {
     }
 }
 
-impl<O: IsA<InputStream>> InputStreamExtManual for O {}
+impl<O: IsA<InputStream>> UnixInputStreamExtManual for O {}

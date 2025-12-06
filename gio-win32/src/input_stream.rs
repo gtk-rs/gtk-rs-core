@@ -49,7 +49,7 @@ impl AsRawHandle for InputStream {
     }
 }
 
-pub trait InputStreamExtManual: IsA<InputStream> + Sized {
+pub trait Win32InputStreamExtManual: IsA<InputStream> + Sized {
     #[doc(alias = "g_win32_input_stream_get_handle")]
     #[doc(alias = "get_handle")]
     #[cfg(windows)]
@@ -63,4 +63,4 @@ pub trait InputStreamExtManual: IsA<InputStream> + Sized {
     }
 }
 
-impl<O: IsA<InputStream>> InputStreamExtManual for O {}
+impl<O: IsA<InputStream>> Win32InputStreamExtManual for O {}

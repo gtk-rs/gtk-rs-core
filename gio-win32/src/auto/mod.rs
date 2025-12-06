@@ -11,6 +11,6 @@ pub use self::output_stream::OutputStream;
 pub(crate) mod functions;
 
 pub(crate) mod traits {
-    pub use super::input_stream::InputStreamExt;
-    pub use super::output_stream::OutputStreamExt;
+    pub use super::input_stream::Win32InputStreamExt;
+    pub use super::output_stream::Win32OutputStreamExt;
 }

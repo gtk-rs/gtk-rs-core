@@ -23,7 +23,7 @@ impl OutputStream {
     pub const NONE: Option<&'static OutputStream> = None;
 }
 
-pub trait OutputStreamExt: IsA<OutputStream> + 'static {
+pub trait Win32OutputStreamExt: IsA<OutputStream> + 'static {
     #[doc(alias = "g_win32_output_stream_get_close_handle")]
     #[doc(alias = "get_close_handle")]
     #[doc(alias = "close-handle")]
@@ -71,4 +71,4 @@ pub trait OutputStreamExt: IsA<OutputStream> + 'static {
     }
 }
 
-impl<O: IsA<OutputStream>> OutputStreamExt for O {}
+impl<O: IsA<OutputStream>> Win32OutputStreamExt for O {}
