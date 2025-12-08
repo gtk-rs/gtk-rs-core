@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/socket.rs`."><title>socket.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.93.0-nightly (1d60f9e07 2025-12-01)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/socket.rs`."><title>socket.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (ba2142a19 2025-12-07)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -87,7 +87,7 @@
 <a href=#14 id=14 data-nosnippet>14</a><span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/collections/slice/struct.Slice.html">Slice</a>};
 <a href=#15 id=15 data-nosnippet>15</a>
 <a href=#16 id=16 data-nosnippet>16</a><span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
-<a href=#17 id=17 data-nosnippet>17</a></span><span class="kw">use </span><a href="auto/enums.rs.html#3221-3233"><span class="kw">crate</span>::PollableReturn</a>;
+<a href=#17 id=17 data-nosnippet>17</a></span><span class="kw">use </span><a href="auto/enums.rs.html#3124-3136"><span class="kw">crate</span>::PollableReturn</a>;
 <a href=#18 id=18 data-nosnippet>18</a><span class="kw">use crate</span>::{<a href="../../gio_sys/index.html">ffi</a>, <a href="auto/cancellable.rs.html#8-86">Cancellable</a>, <a href="auto/socket.rs.html#16-185">Socket</a>, <a href="auto/socket_address.rs.html#13-38">SocketAddress</a>, <a href="auto/socket_control_message.rs.html#8-41">SocketControlMessage</a>};
 <a href=#19 id=19 data-nosnippet>19</a>
 <a href=#20 id=20 data-nosnippet>20</a><span class="kw">impl </span><a href="auto/socket.rs.html#16-185">Socket</a> {
@@ -990,7 +990,7 @@
 <a href=#917 id=917 data-nosnippet>917</a>        flags: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#918 id=918 data-nosnippet>918</a>        timeout: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html">Duration</a>&gt;,
 <a href=#919 id=919 data-nosnippet>919</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>C&gt;,
-<a href=#920 id=920 data-nosnippet>920</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="auto/enums.rs.html#3221-3233">PollableReturn</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), glib::<a href="../../glib/error/struct.Error.html">Error</a>&gt; {
+<a href=#920 id=920 data-nosnippet>920</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="auto/enums.rs.html#3124-3136">PollableReturn</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), glib::<a href="../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#921 id=921 data-nosnippet>921</a>        <span class="kw">let </span>cancellable = <a href="#919">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|c| <a href="#921">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>());
 <a href=#922 id=922 data-nosnippet>922</a>        <span class="kw">unsafe </span>{
 <a href=#923 id=923 data-nosnippet>923</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
@@ -1364,135 +1364,68 @@
 <a href=#1291 id=1291 data-nosnippet>1291</a></span><span class="kw">mod </span>tests {
 <a href=#1292 id=1292 data-nosnippet>1292</a>    <span class="attr">#[test]
 <a href=#1293 id=1293 data-nosnippet>1293</a>    #[cfg(unix)]
-<a href=#1294 id=1294 data-nosnippet>1294</a>    </span><span class="kw">fn </span>socket_messages() {
-<a href=#1295 id=1295 data-nosnippet>1295</a>        <span class="kw">use </span>std::{
-<a href=#1296 id=1296 data-nosnippet>1296</a>            io,
-<a href=#1297 id=1297 data-nosnippet>1297</a>            os::unix::io::{AsRawFd, FromRawFd, OwnedFd},
-<a href=#1298 id=1298 data-nosnippet>1298</a>        };
+<a href=#1294 id=1294 data-nosnippet>1294</a>    </span><span class="kw">fn </span>dgram_socket_messages() {
+<a href=#1295 id=1295 data-nosnippet>1295</a>        <span class="kw">use </span><span class="kw">super</span>::Socket;
+<a href=#1296 id=1296 data-nosnippet>1296</a>        <span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, Cancellable};
+<a href=#1297 id=1297 data-nosnippet>1297</a>
+<a href=#1298 id=1298 data-nosnippet>1298</a>        <span class="kw">let </span>addr = <span class="kw">crate</span>::InetSocketAddress::from_string(<span class="string">"127.0.0.1"</span>, <span class="number">28351</span>).unwrap();
 <a href=#1299 id=1299 data-nosnippet>1299</a>
-<a href=#1300 id=1300 data-nosnippet>1300</a>        <span class="kw">use </span><span class="kw">super</span>::Socket;
-<a href=#1301 id=1301 data-nosnippet>1301</a>        <span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, Cancellable, UnixFDMessage};
-<a href=#1302 id=1302 data-nosnippet>1302</a>
-<a href=#1303 id=1303 data-nosnippet>1303</a>        <span class="kw">let </span><span class="kw-2">mut </span>fds = [<span class="number">0 </span><span class="kw">as </span>libc::c_int; <span class="number">2</span>];
-<a href=#1304 id=1304 data-nosnippet>1304</a>        <span class="kw">let </span>(out_sock, in_sock) = <span class="kw">unsafe </span>{
-<a href=#1305 id=1305 data-nosnippet>1305</a>            <span class="kw">let </span>ret = libc::socketpair(libc::AF_UNIX, libc::SOCK_STREAM, <span class="number">0</span>, fds.as_mut_ptr());
-<a href=#1306 id=1306 data-nosnippet>1306</a>            <span class="kw">if </span><span class="macro">ret !</span>= <span class="number">0 </span>{
-<a href=#1307 id=1307 data-nosnippet>1307</a>                <span class="macro">panic!</span>(<span class="string">"{}"</span>, io::Error::last_os_error());
-<a href=#1308 id=1308 data-nosnippet>1308</a>            }
-<a href=#1309 id=1309 data-nosnippet>1309</a>            (
-<a href=#1310 id=1310 data-nosnippet>1310</a>                Socket::from_fd(OwnedFd::from_raw_fd(fds[<span class="number">0</span>])).unwrap(),
-<a href=#1311 id=1311 data-nosnippet>1311</a>                Socket::from_fd(OwnedFd::from_raw_fd(fds[<span class="number">1</span>])).unwrap(),
-<a href=#1312 id=1312 data-nosnippet>1312</a>            )
-<a href=#1313 id=1313 data-nosnippet>1313</a>        };
-<a href=#1314 id=1314 data-nosnippet>1314</a>
-<a href=#1315 id=1315 data-nosnippet>1315</a>        <span class="kw">let </span>fd_msg = UnixFDMessage::new();
-<a href=#1316 id=1316 data-nosnippet>1316</a>        fd_msg.append_fd(out_sock.as_raw_fd()).unwrap();
-<a href=#1317 id=1317 data-nosnippet>1317</a>        <span class="kw">let </span>vs = [<span class="kw">super</span>::OutputVector::new(<span class="kw-2">&amp;</span>[<span class="number">0</span>])];
-<a href=#1318 id=1318 data-nosnippet>1318</a>        <span class="kw">let </span>ctrl_msgs = [fd_msg.upcast()];
-<a href=#1319 id=1319 data-nosnippet>1319</a>        <span class="kw">let </span><span class="kw-2">mut </span>out_msg = [<span class="kw">super</span>::OutputMessage::new(
-<a href=#1320 id=1320 data-nosnippet>1320</a>            <span class="kw">crate</span>::SocketAddress::NONE,
-<a href=#1321 id=1321 data-nosnippet>1321</a>            vs.as_slice(),
-<a href=#1322 id=1322 data-nosnippet>1322</a>            ctrl_msgs.as_slice(),
-<a href=#1323 id=1323 data-nosnippet>1323</a>        )];
-<a href=#1324 id=1324 data-nosnippet>1324</a>        <span class="kw">let </span>written = <span class="kw">super</span>::SocketExtManual::send_messages(
-<a href=#1325 id=1325 data-nosnippet>1325</a>            <span class="kw-2">&amp;</span>out_sock,
-<a href=#1326 id=1326 data-nosnippet>1326</a>            out_msg.as_mut_slice(),
-<a href=#1327 id=1327 data-nosnippet>1327</a>            <span class="number">0</span>,
-<a href=#1328 id=1328 data-nosnippet>1328</a>            Cancellable::NONE,
-<a href=#1329 id=1329 data-nosnippet>1329</a>        )
-<a href=#1330 id=1330 data-nosnippet>1330</a>        .unwrap();
-<a href=#1331 id=1331 data-nosnippet>1331</a>        <span class="macro">assert_eq!</span>(written, <span class="number">1</span>);
-<a href=#1332 id=1332 data-nosnippet>1332</a>        <span class="macro">assert_eq!</span>(out_msg[<span class="number">0</span>].bytes_sent(), <span class="number">1</span>);
-<a href=#1333 id=1333 data-nosnippet>1333</a>
-<a href=#1334 id=1334 data-nosnippet>1334</a>        <span class="kw">let </span><span class="kw-2">mut </span>v = [<span class="number">0u8</span>];
-<a href=#1335 id=1335 data-nosnippet>1335</a>        <span class="kw">let </span><span class="kw-2">mut </span>vs = [<span class="kw">super</span>::InputVector::new(v.as_mut_slice())];
-<a href=#1336 id=1336 data-nosnippet>1336</a>        <span class="kw">let </span><span class="kw-2">mut </span>ctrl_msgs = <span class="kw">super</span>::SocketControlMessages::new();
-<a href=#1337 id=1337 data-nosnippet>1337</a>        <span class="kw">let </span><span class="kw-2">mut </span>in_msg = [<span class="kw">super</span>::InputMessage::new(
+<a href=#1300 id=1300 data-nosnippet>1300</a>        <span class="kw">let </span>out_sock = Socket::new(
+<a href=#1301 id=1301 data-nosnippet>1301</a>            <span class="kw">crate</span>::SocketFamily::Ipv4,
+<a href=#1302 id=1302 data-nosnippet>1302</a>            <span class="kw">crate</span>::SocketType::Datagram,
+<a href=#1303 id=1303 data-nosnippet>1303</a>            <span class="kw">crate</span>::SocketProtocol::Udp,
+<a href=#1304 id=1304 data-nosnippet>1304</a>        )
+<a href=#1305 id=1305 data-nosnippet>1305</a>        .unwrap();
+<a href=#1306 id=1306 data-nosnippet>1306</a>        <span class="kw">let </span>in_sock = Socket::new(
+<a href=#1307 id=1307 data-nosnippet>1307</a>            <span class="kw">crate</span>::SocketFamily::Ipv4,
+<a href=#1308 id=1308 data-nosnippet>1308</a>            <span class="kw">crate</span>::SocketType::Datagram,
+<a href=#1309 id=1309 data-nosnippet>1309</a>            <span class="kw">crate</span>::SocketProtocol::Udp,
+<a href=#1310 id=1310 data-nosnippet>1310</a>        )
+<a href=#1311 id=1311 data-nosnippet>1311</a>        .unwrap();
+<a href=#1312 id=1312 data-nosnippet>1312</a>        in_sock.bind(<span class="kw-2">&amp;</span>addr, <span class="bool-val">true</span>).unwrap();
+<a href=#1313 id=1313 data-nosnippet>1313</a>
+<a href=#1314 id=1314 data-nosnippet>1314</a>        <span class="kw">const </span>DATA: [u8; std::mem::size_of::&lt;u64&gt;()] = <span class="number">1234u64</span>.to_be_bytes();
+<a href=#1315 id=1315 data-nosnippet>1315</a>        <span class="kw">let </span>out_vec = DATA;
+<a href=#1316 id=1316 data-nosnippet>1316</a>        <span class="kw">let </span>out_vecs = [<span class="kw">super</span>::OutputVector::new(out_vec.as_slice())];
+<a href=#1317 id=1317 data-nosnippet>1317</a>        <span class="kw">let </span><span class="kw-2">mut </span>out_msg = [<span class="kw">super</span>::OutputMessage::new(
+<a href=#1318 id=1318 data-nosnippet>1318</a>            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>addr),
+<a href=#1319 id=1319 data-nosnippet>1319</a>            out_vecs.as_slice(),
+<a href=#1320 id=1320 data-nosnippet>1320</a>            <span class="kw-2">&amp;</span>[],
+<a href=#1321 id=1321 data-nosnippet>1321</a>        )];
+<a href=#1322 id=1322 data-nosnippet>1322</a>        <span class="kw">let </span>written = <span class="kw">super</span>::SocketExtManual::send_messages(
+<a href=#1323 id=1323 data-nosnippet>1323</a>            <span class="kw-2">&amp;</span>out_sock,
+<a href=#1324 id=1324 data-nosnippet>1324</a>            out_msg.as_mut_slice(),
+<a href=#1325 id=1325 data-nosnippet>1325</a>            <span class="number">0</span>,
+<a href=#1326 id=1326 data-nosnippet>1326</a>            Cancellable::NONE,
+<a href=#1327 id=1327 data-nosnippet>1327</a>        )
+<a href=#1328 id=1328 data-nosnippet>1328</a>        .unwrap();
+<a href=#1329 id=1329 data-nosnippet>1329</a>        <span class="macro">assert_eq!</span>(written, <span class="number">1</span>);
+<a href=#1330 id=1330 data-nosnippet>1330</a>        <span class="macro">assert_eq!</span>(out_msg[<span class="number">0</span>].bytes_sent() <span class="kw">as </span>usize, out_vec.len());
+<a href=#1331 id=1331 data-nosnippet>1331</a>
+<a href=#1332 id=1332 data-nosnippet>1332</a>        <span class="kw">let </span><span class="kw-2">mut </span>in_addr = <span class="prelude-val">None</span>;
+<a href=#1333 id=1333 data-nosnippet>1333</a>        <span class="kw">let </span><span class="kw-2">mut </span>in_vec = [<span class="number">0u8</span>; DATA.len()];
+<a href=#1334 id=1334 data-nosnippet>1334</a>        <span class="kw">let </span><span class="kw-2">mut </span>in_vecs = [<span class="kw">super</span>::InputVector::new(in_vec.as_mut_slice())];
+<a href=#1335 id=1335 data-nosnippet>1335</a>        <span class="kw">let </span><span class="kw-2">mut </span>in_msg = [<span class="kw">super</span>::InputMessage::new(
+<a href=#1336 id=1336 data-nosnippet>1336</a>            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut </span>in_addr),
+<a href=#1337 id=1337 data-nosnippet>1337</a>            in_vecs.as_mut_slice(),
 <a href=#1338 id=1338 data-nosnippet>1338</a>            <span class="prelude-val">None</span>,
-<a href=#1339 id=1339 data-nosnippet>1339</a>            vs.as_mut_slice(),
-<a href=#1340 id=1340 data-nosnippet>1340</a>            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut </span>ctrl_msgs),
-<a href=#1341 id=1341 data-nosnippet>1341</a>        )];
-<a href=#1342 id=1342 data-nosnippet>1342</a>        <span class="kw">let </span>received = <span class="kw">super</span>::SocketExtManual::receive_messages(
-<a href=#1343 id=1343 data-nosnippet>1343</a>            <span class="kw-2">&amp;</span>in_sock,
-<a href=#1344 id=1344 data-nosnippet>1344</a>            in_msg.as_mut_slice(),
-<a href=#1345 id=1345 data-nosnippet>1345</a>            <span class="number">0</span>,
-<a href=#1346 id=1346 data-nosnippet>1346</a>            Cancellable::NONE,
-<a href=#1347 id=1347 data-nosnippet>1347</a>        )
-<a href=#1348 id=1348 data-nosnippet>1348</a>        .unwrap();
-<a href=#1349 id=1349 data-nosnippet>1349</a>
-<a href=#1350 id=1350 data-nosnippet>1350</a>        <span class="macro">assert_eq!</span>(received, <span class="number">1</span>);
-<a href=#1351 id=1351 data-nosnippet>1351</a>        <span class="macro">assert_eq!</span>(in_msg[<span class="number">0</span>].bytes_received(), <span class="number">1</span>);
-<a href=#1352 id=1352 data-nosnippet>1352</a>        <span class="macro">assert_eq!</span>(ctrl_msgs.len(), <span class="number">1</span>);
-<a href=#1353 id=1353 data-nosnippet>1353</a>        <span class="kw">let </span>fds = ctrl_msgs[<span class="number">0</span>]
-<a href=#1354 id=1354 data-nosnippet>1354</a>            .downcast_ref::&lt;UnixFDMessage&gt;()
-<a href=#1355 id=1355 data-nosnippet>1355</a>            .unwrap()
-<a href=#1356 id=1356 data-nosnippet>1356</a>            .fd_list();
-<a href=#1357 id=1357 data-nosnippet>1357</a>        <span class="macro">assert_eq!</span>(fds.length(), <span class="number">1</span>);
-<a href=#1358 id=1358 data-nosnippet>1358</a>    }
-<a href=#1359 id=1359 data-nosnippet>1359</a>    <span class="attr">#[test]
-<a href=#1360 id=1360 data-nosnippet>1360</a>    #[cfg(unix)]
-<a href=#1361 id=1361 data-nosnippet>1361</a>    </span><span class="kw">fn </span>dgram_socket_messages() {
-<a href=#1362 id=1362 data-nosnippet>1362</a>        <span class="kw">use </span><span class="kw">super</span>::Socket;
-<a href=#1363 id=1363 data-nosnippet>1363</a>        <span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, Cancellable};
-<a href=#1364 id=1364 data-nosnippet>1364</a>
-<a href=#1365 id=1365 data-nosnippet>1365</a>        <span class="kw">let </span>addr = <span class="kw">crate</span>::InetSocketAddress::from_string(<span class="string">"127.0.0.1"</span>, <span class="number">28351</span>).unwrap();
-<a href=#1366 id=1366 data-nosnippet>1366</a>
-<a href=#1367 id=1367 data-nosnippet>1367</a>        <span class="kw">let </span>out_sock = Socket::new(
-<a href=#1368 id=1368 data-nosnippet>1368</a>            <span class="kw">crate</span>::SocketFamily::Ipv4,
-<a href=#1369 id=1369 data-nosnippet>1369</a>            <span class="kw">crate</span>::SocketType::Datagram,
-<a href=#1370 id=1370 data-nosnippet>1370</a>            <span class="kw">crate</span>::SocketProtocol::Udp,
-<a href=#1371 id=1371 data-nosnippet>1371</a>        )
-<a href=#1372 id=1372 data-nosnippet>1372</a>        .unwrap();
-<a href=#1373 id=1373 data-nosnippet>1373</a>        <span class="kw">let </span>in_sock = Socket::new(
-<a href=#1374 id=1374 data-nosnippet>1374</a>            <span class="kw">crate</span>::SocketFamily::Ipv4,
-<a href=#1375 id=1375 data-nosnippet>1375</a>            <span class="kw">crate</span>::SocketType::Datagram,
-<a href=#1376 id=1376 data-nosnippet>1376</a>            <span class="kw">crate</span>::SocketProtocol::Udp,
-<a href=#1377 id=1377 data-nosnippet>1377</a>        )
-<a href=#1378 id=1378 data-nosnippet>1378</a>        .unwrap();
-<a href=#1379 id=1379 data-nosnippet>1379</a>        in_sock.bind(<span class="kw-2">&amp;</span>addr, <span class="bool-val">true</span>).unwrap();
-<a href=#1380 id=1380 data-nosnippet>1380</a>
-<a href=#1381 id=1381 data-nosnippet>1381</a>        <span class="kw">const </span>DATA: [u8; std::mem::size_of::&lt;u64&gt;()] = <span class="number">1234u64</span>.to_be_bytes();
-<a href=#1382 id=1382 data-nosnippet>1382</a>        <span class="kw">let </span>out_vec = DATA;
-<a href=#1383 id=1383 data-nosnippet>1383</a>        <span class="kw">let </span>out_vecs = [<span class="kw">super</span>::OutputVector::new(out_vec.as_slice())];
-<a href=#1384 id=1384 data-nosnippet>1384</a>        <span class="kw">let </span><span class="kw-2">mut </span>out_msg = [<span class="kw">super</span>::OutputMessage::new(
-<a href=#1385 id=1385 data-nosnippet>1385</a>            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>addr),
-<a href=#1386 id=1386 data-nosnippet>1386</a>            out_vecs.as_slice(),
-<a href=#1387 id=1387 data-nosnippet>1387</a>            <span class="kw-2">&amp;</span>[],
-<a href=#1388 id=1388 data-nosnippet>1388</a>        )];
-<a href=#1389 id=1389 data-nosnippet>1389</a>        <span class="kw">let </span>written = <span class="kw">super</span>::SocketExtManual::send_messages(
-<a href=#1390 id=1390 data-nosnippet>1390</a>            <span class="kw-2">&amp;</span>out_sock,
-<a href=#1391 id=1391 data-nosnippet>1391</a>            out_msg.as_mut_slice(),
-<a href=#1392 id=1392 data-nosnippet>1392</a>            <span class="number">0</span>,
-<a href=#1393 id=1393 data-nosnippet>1393</a>            Cancellable::NONE,
-<a href=#1394 id=1394 data-nosnippet>1394</a>        )
-<a href=#1395 id=1395 data-nosnippet>1395</a>        .unwrap();
-<a href=#1396 id=1396 data-nosnippet>1396</a>        <span class="macro">assert_eq!</span>(written, <span class="number">1</span>);
-<a href=#1397 id=1397 data-nosnippet>1397</a>        <span class="macro">assert_eq!</span>(out_msg[<span class="number">0</span>].bytes_sent() <span class="kw">as </span>usize, out_vec.len());
-<a href=#1398 id=1398 data-nosnippet>1398</a>
-<a href=#1399 id=1399 data-nosnippet>1399</a>        <span class="kw">let </span><span class="kw-2">mut </span>in_addr = <span class="prelude-val">None</span>;
-<a href=#1400 id=1400 data-nosnippet>1400</a>        <span class="kw">let </span><span class="kw-2">mut </span>in_vec = [<span class="number">0u8</span>; DATA.len()];
-<a href=#1401 id=1401 data-nosnippet>1401</a>        <span class="kw">let </span><span class="kw-2">mut </span>in_vecs = [<span class="kw">super</span>::InputVector::new(in_vec.as_mut_slice())];
-<a href=#1402 id=1402 data-nosnippet>1402</a>        <span class="kw">let </span><span class="kw-2">mut </span>in_msg = [<span class="kw">super</span>::InputMessage::new(
-<a href=#1403 id=1403 data-nosnippet>1403</a>            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut </span>in_addr),
-<a href=#1404 id=1404 data-nosnippet>1404</a>            in_vecs.as_mut_slice(),
-<a href=#1405 id=1405 data-nosnippet>1405</a>            <span class="prelude-val">None</span>,
-<a href=#1406 id=1406 data-nosnippet>1406</a>        )];
-<a href=#1407 id=1407 data-nosnippet>1407</a>        <span class="kw">let </span>received = <span class="kw">super</span>::SocketExtManual::receive_messages(
-<a href=#1408 id=1408 data-nosnippet>1408</a>            <span class="kw-2">&amp;</span>in_sock,
-<a href=#1409 id=1409 data-nosnippet>1409</a>            in_msg.as_mut_slice(),
-<a href=#1410 id=1410 data-nosnippet>1410</a>            <span class="number">0</span>,
-<a href=#1411 id=1411 data-nosnippet>1411</a>            Cancellable::NONE,
-<a href=#1412 id=1412 data-nosnippet>1412</a>        )
-<a href=#1413 id=1413 data-nosnippet>1413</a>        .unwrap();
-<a href=#1414 id=1414 data-nosnippet>1414</a>
-<a href=#1415 id=1415 data-nosnippet>1415</a>        <span class="macro">assert_eq!</span>(received, <span class="number">1</span>);
-<a href=#1416 id=1416 data-nosnippet>1416</a>        <span class="macro">assert_eq!</span>(in_msg[<span class="number">0</span>].bytes_received(), in_vec.len());
-<a href=#1417 id=1417 data-nosnippet>1417</a>        <span class="macro">assert_eq!</span>(in_vec, out_vec);
-<a href=#1418 id=1418 data-nosnippet>1418</a>        <span class="kw">let </span>in_addr = in_addr
-<a href=#1419 id=1419 data-nosnippet>1419</a>            .unwrap()
-<a href=#1420 id=1420 data-nosnippet>1420</a>            .downcast::&lt;<span class="kw">crate</span>::InetSocketAddress&gt;()
-<a href=#1421 id=1421 data-nosnippet>1421</a>            .unwrap();
-<a href=#1422 id=1422 data-nosnippet>1422</a>        <span class="macro">assert_eq!</span>(in_addr.address().to_str(), addr.address().to_str());
-<a href=#1423 id=1423 data-nosnippet>1423</a>    }
-<a href=#1424 id=1424 data-nosnippet>1424</a>}
+<a href=#1339 id=1339 data-nosnippet>1339</a>        )];
+<a href=#1340 id=1340 data-nosnippet>1340</a>        <span class="kw">let </span>received = <span class="kw">super</span>::SocketExtManual::receive_messages(
+<a href=#1341 id=1341 data-nosnippet>1341</a>            <span class="kw-2">&amp;</span>in_sock,
+<a href=#1342 id=1342 data-nosnippet>1342</a>            in_msg.as_mut_slice(),
+<a href=#1343 id=1343 data-nosnippet>1343</a>            <span class="number">0</span>,
+<a href=#1344 id=1344 data-nosnippet>1344</a>            Cancellable::NONE,
+<a href=#1345 id=1345 data-nosnippet>1345</a>        )
+<a href=#1346 id=1346 data-nosnippet>1346</a>        .unwrap();
+<a href=#1347 id=1347 data-nosnippet>1347</a>
+<a href=#1348 id=1348 data-nosnippet>1348</a>        <span class="macro">assert_eq!</span>(received, <span class="number">1</span>);
+<a href=#1349 id=1349 data-nosnippet>1349</a>        <span class="macro">assert_eq!</span>(in_msg[<span class="number">0</span>].bytes_received(), in_vec.len());
+<a href=#1350 id=1350 data-nosnippet>1350</a>        <span class="macro">assert_eq!</span>(in_vec, out_vec);
+<a href=#1351 id=1351 data-nosnippet>1351</a>        <span class="kw">let </span>in_addr = in_addr
+<a href=#1352 id=1352 data-nosnippet>1352</a>            .unwrap()
+<a href=#1353 id=1353 data-nosnippet>1353</a>            .downcast::&lt;<span class="kw">crate</span>::InetSocketAddress&gt;()
+<a href=#1354 id=1354 data-nosnippet>1354</a>            .unwrap();
+<a href=#1355 id=1355 data-nosnippet>1355</a>        <span class="macro">assert_eq!</span>(in_addr.address().to_str(), addr.address().to_str());
+<a href=#1356 id=1356 data-nosnippet>1356</a>    }
+<a href=#1357 id=1357 data-nosnippet>1357</a>}
 </code></pre></div></section></main></body></html>

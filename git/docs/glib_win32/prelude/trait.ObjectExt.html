@@ -1,0 +1,557 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `ObjectExt` trait in crate `glib_win32`."><title>ObjectExt in glib_win32::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_win32" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (ba2142a19 2025-12-07)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("main" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "main") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<rustdoc-topbar><h2><a href="#">ObjectExt</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../glib_win32/index.html">glib_<wbr>win32</a><span class="version">0.22.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Object<wbr>Ext</a></h2><h3><a href="#required-methods">Required Methods</a></h3><ul class="block"><li><a href="#tymethod.add_weak_ref_notify" title="add_weak_ref_notify">add_weak_ref_notify</a></li><li><a href="#tymethod.add_weak_ref_notify_local" title="add_weak_ref_notify_local">add_weak_ref_notify_local</a></li><li><a href="#tymethod.bind_property" title="bind_property">bind_property</a></li><li><a href="#tymethod.block_signal" title="block_signal">block_signal</a></li><li><a href="#tymethod.class" title="class">class</a></li><li><a href="#tymethod.class_of" title="class_of">class_of</a></li><li><a href="#tymethod.connect" title="connect">connect</a></li><li><a href="#tymethod.connect_closure" title="connect_closure">connect_closure</a></li><li><a href="#tymethod.connect_closure_id" title="connect_closure_id">connect_closure_id</a></li><li><a href="#tymethod.connect_id" title="connect_id">connect_id</a></li><li><a href="#tymethod.connect_local" title="connect_local">connect_local</a></li><li><a href="#tymethod.connect_local_id" title="connect_local_id">connect_local_id</a></li><li><a href="#tymethod.connect_notify" title="connect_notify">connect_notify</a></li><li><a href="#tymethod.connect_notify_local" title="connect_notify_local">connect_notify_local</a></li><li><a href="#tymethod.connect_notify_unsafe" title="connect_notify_unsafe">connect_notify_unsafe</a></li><li><a href="#tymethod.connect_unsafe" title="connect_unsafe">connect_unsafe</a></li><li><a href="#tymethod.connect_unsafe_id" title="connect_unsafe_id">connect_unsafe_id</a></li><li><a href="#tymethod.data" title="data">data</a></li><li><a href="#tymethod.disconnect" title="disconnect">disconnect</a></li><li><a href="#tymethod.downgrade" title="downgrade">downgrade</a></li><li><a href="#tymethod.emit" title="emit">emit</a></li><li><a href="#tymethod.emit_by_name" title="emit_by_name">emit_by_name</a></li><li><a href="#tymethod.emit_by_name_with_details" title="emit_by_name_with_details">emit_by_name_with_details</a></li><li><a href="#tymethod.emit_by_name_with_details_and_values" title="emit_by_name_with_details_and_values">emit_by_name_with_details_and_values</a></li><li><a href="#tymethod.emit_by_name_with_values" title="emit_by_name_with_values">emit_by_name_with_values</a></li><li><a href="#tymethod.emit_with_details" title="emit_with_details">emit_with_details</a></li><li><a href="#tymethod.emit_with_details_and_values" title="emit_with_details_and_values">emit_with_details_and_values</a></li><li><a href="#tymethod.emit_with_values" title="emit_with_values">emit_with_values</a></li><li><a href="#tymethod.find_property" title="find_property">find_property</a></li><li><a href="#tymethod.freeze_notify" title="freeze_notify">freeze_notify</a></li><li><a href="#tymethod.has_property" title="has_property">has_property</a></li><li><a href="#tymethod.has_property_with_type" title="has_property_with_type">has_property_with_type</a></li><li><a href="#tymethod.interface" title="interface">interface</a></li><li><a href="#tymethod.is" title="is">is</a></li><li><a href="#tymethod.list_properties" title="list_properties">list_properties</a></li><li><a href="#tymethod.notify" title="notify">notify</a></li><li><a href="#tymethod.notify_by_pspec" title="notify_by_pspec">notify_by_pspec</a></li><li><a href="#tymethod.object_class" title="object_class">object_class</a></li><li><a href="#tymethod.property" title="property">property</a></li><li><a href="#tymethod.property_type" title="property_type">property_type</a></li><li><a href="#tymethod.property_value" title="property_value">property_value</a></li><li><a href="#tymethod.qdata" title="qdata">qdata</a></li><li><a href="#tymethod.ref_count" title="ref_count">ref_count</a></li><li><a href="#tymethod.run_dispose" title="run_dispose">run_dispose</a></li><li><a href="#tymethod.set_data" title="set_data">set_data</a></li><li><a href="#tymethod.set_properties" title="set_properties">set_properties</a></li><li><a href="#tymethod.set_properties_from_value" title="set_properties_from_value">set_properties_from_value</a></li><li><a href="#tymethod.set_property" title="set_property">set_property</a></li><li><a href="#tymethod.set_property_from_value" title="set_property_from_value">set_property_from_value</a></li><li><a href="#tymethod.set_qdata" title="set_qdata">set_qdata</a></li><li><a href="#tymethod.steal_data" title="steal_data">steal_data</a></li><li><a href="#tymethod.steal_qdata" title="steal_qdata">steal_qdata</a></li><li><a href="#tymethod.stop_signal_emission" title="stop_signal_emission">stop_signal_emission</a></li><li><a href="#tymethod.stop_signal_emission_by_name" title="stop_signal_emission_by_name">stop_signal_emission_by_name</a></li><li><a href="#tymethod.type_" title="type_">type_</a></li><li><a href="#tymethod.unblock_signal" title="unblock_signal">unblock_signal</a></li><li><a href="#tymethod.watch_closure" title="watch_closure">watch_closure</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In glib_<wbr>win32::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">glib_win32</a>::<wbr><a href="index.html">prelude</a></div><h1>Trait <span class="trait">Object<wbr>Ext</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/glib/object.rs.html#1656">Source</a> </span></div><pre class="rust item-decl"><code>pub trait ObjectExt: <a class="trait" href="trait.ObjectType.html" title="trait glib_win32::prelude::ObjectType">ObjectType</a> {
+<details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 57 methods</span></summary>    // Required methods
+    fn <a href="#tymethod.is" class="fn">is</a>&lt;T&gt;(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>
+       <span class="where">where T: <a class="trait" href="trait.StaticType.html" title="trait glib_win32::prelude::StaticType">StaticType</a></span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.type_" class="fn">type_</a>(&amp;self) -&gt; <a class="struct" href="../../glib/types/struct.Type.html" title="struct glib::types::Type">Type</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.object_class" class="fn">object_class</a>(&amp;self) -&gt; &amp;<a class="struct" href="../../glib/object/struct.Class.html" title="struct glib::object::Class">Class</a>&lt;<a class="struct" href="../../glib/object/struct.Object.html" title="struct glib::object::Object">Object</a>&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.class" class="fn">class</a>(&amp;self) -&gt; &amp;<a class="struct" href="../../glib/object/struct.Class.html" title="struct glib::object::Class">Class</a>&lt;Self&gt;
+       <span class="where">where Self: <a class="trait" href="../../glib/object/trait.IsClass.html" title="trait glib::object::IsClass">IsClass</a></span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.class_of" class="fn">class_of</a>&lt;T&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../../glib/object/struct.Class.html" title="struct glib::object::Class">Class</a>&lt;T&gt;&gt;
+       <span class="where">where T: <a class="trait" href="../../glib/object/trait.IsClass.html" title="trait glib::object::IsClass">IsClass</a></span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.interface" class="fn">interface</a>&lt;T&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/object/struct.InterfaceRef.html" title="struct glib::object::InterfaceRef">InterfaceRef</a>&lt;'_, T&gt;&gt;
+       <span class="where">where T: <a class="trait" href="../../glib/object/trait.IsInterface.html" title="trait glib::object::IsInterface">IsInterface</a></span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.set_property" class="fn">set_property</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html" title="trait core::convert::Into">Into</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt;);
+<span class="item-spacer"></span>    fn <a href="#tymethod.set_property_from_value" class="fn">set_property_from_value</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: &amp;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>);
+<span class="item-spacer"></span>    fn <a href="#tymethod.set_properties" class="fn">set_properties</a>(&amp;self, property_values: &amp;[(&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, &amp;dyn <a class="trait" href="trait.ToValue.html" title="trait glib_win32::prelude::ToValue">ToValue</a>)]);
+<span class="item-spacer"></span>    fn <a href="#tymethod.set_properties_from_value" class="fn">set_properties_from_value</a>(&amp;self, property_values: &amp;[(&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>)]);
+<span class="item-spacer"></span>    fn <a href="#tymethod.property" class="fn">property</a>&lt;V&gt;(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; V
+       <span class="where">where V: for&lt;'b&gt; <a class="trait" href="../../glib/value/trait.FromValue.html" title="trait glib::value::FromValue">FromValue</a>&lt;'b&gt; + 'static</span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.property_value" class="fn">property_value</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.has_property" class="fn">has_property</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.has_property_with_type" class="fn">has_property_with_type</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, type_: <a class="struct" href="../../glib/types/struct.Type.html" title="struct glib::types::Type">Type</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.property_type" class="fn">property_type</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/types/struct.Type.html" title="struct glib::types::Type">Type</a>&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.find_property" class="fn">find_property</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/param_spec/struct.ParamSpec.html" title="struct glib::param_spec::ParamSpec">ParamSpec</a>&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.list_properties" class="fn">list_properties</a>(&amp;self) -&gt; <a class="struct" href="../../glib/collections/ptr_slice/struct.PtrSlice.html" title="struct glib::collections::ptr_slice::PtrSlice">PtrSlice</a>&lt;<a class="struct" href="../../glib/param_spec/struct.ParamSpec.html" title="struct glib::param_spec::ParamSpec">ParamSpec</a>&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.freeze_notify" class="fn">freeze_notify</a>(&amp;self) -&gt; <a class="struct" href="../../glib/object/struct.PropertyNotificationFreezeGuard.html" title="struct glib::object::PropertyNotificationFreezeGuard">PropertyNotificationFreezeGuard</a>;
+<span class="item-spacer"></span>    unsafe fn <a href="#tymethod.set_qdata" class="fn">set_qdata</a>&lt;QD&gt;(&amp;self, key: <a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>, value: QD)
+       <span class="where">where QD: 'static</span>;
+<span class="item-spacer"></span>    unsafe fn <a href="#tymethod.qdata" class="fn">qdata</a>&lt;QD&gt;(&amp;self, key: <a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html" title="struct core::ptr::non_null::NonNull">NonNull</a>&lt;QD&gt;&gt;
+       <span class="where">where QD: 'static</span>;
+<span class="item-spacer"></span>    unsafe fn <a href="#tymethod.steal_qdata" class="fn">steal_qdata</a>&lt;QD&gt;(&amp;self, key: <a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;QD&gt;
+       <span class="where">where QD: 'static</span>;
+<span class="item-spacer"></span>    unsafe fn <a href="#tymethod.set_data" class="fn">set_data</a>&lt;QD&gt;(&amp;self, key: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: QD)
+       <span class="where">where QD: 'static</span>;
+<span class="item-spacer"></span>    unsafe fn <a href="#tymethod.data" class="fn">data</a>&lt;QD&gt;(&amp;self, key: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html" title="struct core::ptr::non_null::NonNull">NonNull</a>&lt;QD&gt;&gt;
+       <span class="where">where QD: 'static</span>;
+<span class="item-spacer"></span>    unsafe fn <a href="#tymethod.steal_data" class="fn">steal_data</a>&lt;QD&gt;(&amp;self, key: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;QD&gt;
+       <span class="where">where QD: 'static</span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.block_signal" class="fn">block_signal</a>(&amp;self, handler_id: &amp;<a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>);
+<span class="item-spacer"></span>    fn <a href="#tymethod.unblock_signal" class="fn">unblock_signal</a>(&amp;self, handler_id: &amp;<a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>);
+<span class="item-spacer"></span>    fn <a href="#tymethod.stop_signal_emission" class="fn">stop_signal_emission</a>(&amp;self, signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>, detail: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>&gt;);
+<span class="item-spacer"></span>    fn <a href="#tymethod.stop_signal_emission_by_name" class="fn">stop_signal_emission_by_name</a>(&amp;self, signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>);
+<span class="item-spacer"></span>    fn <a href="#tymethod.connect" class="fn">connect</a>&lt;F&gt;(
+        &amp;self,
+        signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        callback: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>]) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + 'static</span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.connect_id" class="fn">connect_id</a>&lt;F&gt;(
+        &amp;self,
+        signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>,
+        details: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>&gt;,
+        after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        callback: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>]) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + 'static</span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.connect_local" class="fn">connect_local</a>&lt;F&gt;(
+        &amp;self,
+        signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        callback: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>]) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt; + 'static</span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.connect_local_id" class="fn">connect_local_id</a>&lt;F&gt;(
+        &amp;self,
+        signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>,
+        details: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>&gt;,
+        after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        callback: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>]) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt; + 'static</span>;
+<span class="item-spacer"></span>    unsafe fn <a href="#tymethod.connect_unsafe" class="fn">connect_unsafe</a>&lt;F&gt;(
+        &amp;self,
+        signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        callback: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>]) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt;</span>;
+<span class="item-spacer"></span>    unsafe fn <a href="#tymethod.connect_unsafe_id" class="fn">connect_unsafe_id</a>&lt;F&gt;(
+        &amp;self,
+        signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>,
+        details: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>&gt;,
+        after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        callback: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>]) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt;</span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.connect_closure" class="fn">connect_closure</a>(
+        &amp;self,
+        signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        closure: <a class="struct" href="../../glib/closure/struct.RustClosure.html" title="struct glib::closure::RustClosure">RustClosure</a>,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.connect_closure_id" class="fn">connect_closure_id</a>(
+        &amp;self,
+        signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>,
+        details: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>&gt;,
+        after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        closure: <a class="struct" href="../../glib/closure/struct.RustClosure.html" title="struct glib::closure::RustClosure">RustClosure</a>,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.watch_closure" class="fn">watch_closure</a>(&amp;self, closure: &amp;impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="../../glib/closure/struct.Closure.html" title="struct glib::closure::Closure">Closure</a>&gt;);
+<span class="item-spacer"></span>    fn <a href="#tymethod.emit" class="fn">emit</a>&lt;R&gt;(&amp;self, signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>, args: &amp;[&amp;dyn <a class="trait" href="trait.ToValue.html" title="trait glib_win32::prelude::ToValue">ToValue</a>]) -&gt; R
+       <span class="where">where R: <a class="trait" href="../../glib/closure/trait.TryFromClosureReturnValue.html" title="trait glib::closure::TryFromClosureReturnValue">TryFromClosureReturnValue</a></span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.emit_with_values" class="fn">emit_with_values</a>(
+        &amp;self,
+        signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>,
+        args: &amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>],
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.emit_by_name" class="fn">emit_by_name</a>&lt;R&gt;(&amp;self, signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, args: &amp;[&amp;dyn <a class="trait" href="trait.ToValue.html" title="trait glib_win32::prelude::ToValue">ToValue</a>]) -&gt; R
+       <span class="where">where R: <a class="trait" href="../../glib/closure/trait.TryFromClosureReturnValue.html" title="trait glib::closure::TryFromClosureReturnValue">TryFromClosureReturnValue</a></span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.emit_by_name_with_values" class="fn">emit_by_name_with_values</a>(
+        &amp;self,
+        signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        args: &amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>],
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.emit_by_name_with_details" class="fn">emit_by_name_with_details</a>&lt;R&gt;(
+        &amp;self,
+        signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        details: <a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>,
+        args: &amp;[&amp;dyn <a class="trait" href="trait.ToValue.html" title="trait glib_win32::prelude::ToValue">ToValue</a>],
+    ) -&gt; R
+       <span class="where">where R: <a class="trait" href="../../glib/closure/trait.TryFromClosureReturnValue.html" title="trait glib::closure::TryFromClosureReturnValue">TryFromClosureReturnValue</a></span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.emit_by_name_with_details_and_values" class="fn">emit_by_name_with_details_and_values</a>(
+        &amp;self,
+        signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        details: <a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>,
+        args: &amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>],
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.emit_with_details" class="fn">emit_with_details</a>&lt;R&gt;(
+        &amp;self,
+        signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>,
+        details: <a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>,
+        args: &amp;[&amp;dyn <a class="trait" href="trait.ToValue.html" title="trait glib_win32::prelude::ToValue">ToValue</a>],
+    ) -&gt; R
+       <span class="where">where R: <a class="trait" href="../../glib/closure/trait.TryFromClosureReturnValue.html" title="trait glib::closure::TryFromClosureReturnValue">TryFromClosureReturnValue</a></span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.emit_with_details_and_values" class="fn">emit_with_details_and_values</a>(
+        &amp;self,
+        signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>,
+        details: <a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>,
+        args: &amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>],
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.disconnect" class="fn">disconnect</a>(&amp;self, handler_id: <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>);
+<span class="item-spacer"></span>    fn <a href="#tymethod.connect_notify" class="fn">connect_notify</a>&lt;F&gt;(&amp;self, name: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, &amp;<a class="struct" href="../../glib/param_spec/struct.ParamSpec.html" title="struct glib::param_spec::ParamSpec">ParamSpec</a>) + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + 'static</span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.connect_notify_local" class="fn">connect_notify_local</a>&lt;F&gt;(
+        &amp;self,
+        name: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, &amp;<a class="struct" href="../../glib/param_spec/struct.ParamSpec.html" title="struct glib::param_spec::ParamSpec">ParamSpec</a>) + 'static</span>;
+<span class="item-spacer"></span>    unsafe fn <a href="#tymethod.connect_notify_unsafe" class="fn">connect_notify_unsafe</a>&lt;F&gt;(
+        &amp;self,
+        name: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, &amp;<a class="struct" href="../../glib/param_spec/struct.ParamSpec.html" title="struct glib::param_spec::ParamSpec">ParamSpec</a>)</span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.notify" class="fn">notify</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>);
+<span class="item-spacer"></span>    fn <a href="#tymethod.notify_by_pspec" class="fn">notify_by_pspec</a>(&amp;self, pspec: &amp;<a class="struct" href="../../glib/param_spec/struct.ParamSpec.html" title="struct glib::param_spec::ParamSpec">ParamSpec</a>);
+<span class="item-spacer"></span>    fn <a href="#tymethod.downgrade" class="fn">downgrade</a>(&amp;self) -&gt; <a class="struct" href="../../glib/object/struct.WeakRef.html" title="struct glib::object::WeakRef">WeakRef</a>&lt;Self&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.add_weak_ref_notify" class="fn">add_weak_ref_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/object/struct.WeakRefNotify.html" title="struct glib::object::WeakRefNotify">WeakRefNotify</a>&lt;Self&gt;
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>() + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static</span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.add_weak_ref_notify_local" class="fn">add_weak_ref_notify_local</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/object/struct.WeakRefNotify.html" title="struct glib::object::WeakRefNotify">WeakRefNotify</a>&lt;Self&gt;
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>() + 'static</span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.bind_property" class="fn">bind_property</a>&lt;'a, 'f, 't, O&gt;(
+        &amp;'a self,
+        source_property: &amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        target: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;'a O</a>,
+        target_property: &amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    ) -&gt; <a class="struct" href="../../glib/object/struct.BindingBuilder.html" title="struct glib::object::BindingBuilder">BindingBuilder</a>&lt;'a, 'f, 't&gt;
+       <span class="where">where O: <a class="trait" href="trait.ObjectType.html" title="trait glib_win32::prelude::ObjectType">ObjectType</a></span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.ref_count" class="fn">ref_count</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>;
+<span class="item-spacer"></span>    unsafe fn <a href="#tymethod.run_dispose" class="fn">run_dispose</a>(&amp;self);
+</details>}</code></pre><h2 id="required-methods" class="section-header">Required Methods<a href="#required-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="tymethod.is" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1659">Source</a><h4 class="code-header">fn <a href="#tymethod.is" class="fn">is</a>&lt;T&gt;(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a><div class="where">where
+    T: <a class="trait" href="trait.StaticType.html" title="trait glib_win32::prelude::StaticType">StaticType</a>,</div></h4></section></summary><div class="docblock"><p>Returns <code>true</code> if the object is an instance of (can be cast to) <code>T</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.type_" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1664">Source</a><h4 class="code-header">fn <a href="#tymethod.type_" class="fn">type_</a>(&amp;self) -&gt; <a class="struct" href="../../glib/types/struct.Type.html" title="struct glib::types::Type">Type</a></h4></section></summary><div class="docblock"><p>Returns the type of the object.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.object_class" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1671">Source</a><h4 class="code-header">fn <a href="#tymethod.object_class" class="fn">object_class</a>(&amp;self) -&gt; &amp;<a class="struct" href="../../glib/object/struct.Class.html" title="struct glib::object::Class">Class</a>&lt;<a class="struct" href="../../glib/object/struct.Object.html" title="struct glib::object::Object">Object</a>&gt;</h4></section></summary><div class="docblock"><p>Returns the <a href="../../glib/object/type.ObjectClass.html" title="type glib::object::ObjectClass"><code>ObjectClass</code></a> of the object.</p>
+<p>This is equivalent to calling <code>obj.class().upcast_ref::&lt;ObjectClass&gt;()</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.class" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1675-1677">Source</a><h4 class="code-header">fn <a href="#tymethod.class" class="fn">class</a>(&amp;self) -&gt; &amp;<a class="struct" href="../../glib/object/struct.Class.html" title="struct glib::object::Class">Class</a>&lt;Self&gt;<div class="where">where
+    Self: <a class="trait" href="../../glib/object/trait.IsClass.html" title="trait glib::object::IsClass">IsClass</a>,</div></h4></section></summary><div class="docblock"><p>Returns the class of the object.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.class_of" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1684">Source</a><h4 class="code-header">fn <a href="#tymethod.class_of" class="fn">class_of</a>&lt;T&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../../glib/object/struct.Class.html" title="struct glib::object::Class">Class</a>&lt;T&gt;&gt;<div class="where">where
+    T: <a class="trait" href="../../glib/object/trait.IsClass.html" title="trait glib::object::IsClass">IsClass</a>,</div></h4></section></summary><div class="docblock"><p>Returns the class of the object in the given type <code>T</code>.</p>
+<p><code>None</code> is returned if the object is not a subclass of <code>T</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.interface" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1691">Source</a><h4 class="code-header">fn <a href="#tymethod.interface" class="fn">interface</a>&lt;T&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/object/struct.InterfaceRef.html" title="struct glib::object::InterfaceRef">InterfaceRef</a>&lt;'_, T&gt;&gt;<div class="where">where
+    T: <a class="trait" href="../../glib/object/trait.IsInterface.html" title="trait glib::object::IsInterface">IsInterface</a>,</div></h4></section></summary><div class="docblock"><p>Returns the interface <code>T</code> of the object.</p>
+<p><code>None</code> is returned if the object does not implement the interface <code>T</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.set_property" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1701">Source</a><h4 class="code-header">fn <a href="#tymethod.set_property" class="fn">set_property</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html" title="trait core::convert::Into">Into</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt;)</h4></section></summary><div class="docblock"><p>Sets the property <code>property_name</code> of the object to value <code>value</code>.</p>
+<h5 id="panics"><a class="doc-anchor" href="#panics">§</a>Panics</h5>
+<p>If the property does not exist, if the type of the property is different than
+the provided value, or if the property is not writable.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.set_property_from_value" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1711">Source</a><h4 class="code-header">fn <a href="#tymethod.set_property_from_value" class="fn">set_property_from_value</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: &amp;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>)</h4></section></summary><div class="docblock"><p>Sets the property <code>property_name</code> of the object to value <code>value</code>.</p>
+<h5 id="panics-1"><a class="doc-anchor" href="#panics-1">§</a>Panics</h5>
+<p>If the property does not exist, the type of the property is different than the
+provided value, or if the property is not writable.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.set_properties" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1721">Source</a><h4 class="code-header">fn <a href="#tymethod.set_properties" class="fn">set_properties</a>(&amp;self, property_values: &amp;[(&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, &amp;dyn <a class="trait" href="trait.ToValue.html" title="trait glib_win32::prelude::ToValue">ToValue</a>)])</h4></section></summary><div class="docblock"><p>Sets multiple properties of the object at once.</p>
+<h5 id="panics-2"><a class="doc-anchor" href="#panics-2">§</a>Panics</h5>
+<p>This does not set any properties if one or more properties don’t exist, values of the wrong
+type are provided, or if any of the properties is not writable.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.set_properties_from_value" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1731">Source</a><h4 class="code-header">fn <a href="#tymethod.set_properties_from_value" class="fn">set_properties_from_value</a>(&amp;self, property_values: &amp;[(&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>)])</h4></section></summary><div class="docblock"><p>Sets multiple properties of the object at once.</p>
+<h5 id="panics-3"><a class="doc-anchor" href="#panics-3">§</a>Panics</h5>
+<p>This does not set any properties if one or more properties don’t exist, values of the wrong
+type are provided, or if any of the properties is not writable.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.property" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1741">Source</a><h4 class="code-header">fn <a href="#tymethod.property" class="fn">property</a>&lt;V&gt;(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; V<div class="where">where
+    V: for&lt;'b&gt; <a class="trait" href="../../glib/value/trait.FromValue.html" title="trait glib::value::FromValue">FromValue</a>&lt;'b&gt; + 'static,</div></h4></section></summary><div class="docblock"><p>Gets the property <code>property_name</code> of the object and cast it to the type V.</p>
+<h5 id="panics-4"><a class="doc-anchor" href="#panics-4">§</a>Panics</h5>
+<p>If the property doesn’t exist or is not readable or of a different type than V.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.property_value" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1751">Source</a><h4 class="code-header">fn <a href="#tymethod.property_value" class="fn">property_value</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a></h4></section></summary><div class="docblock"><p>Gets the property <code>property_name</code> of the object.</p>
+<h5 id="panics-5"><a class="doc-anchor" href="#panics-5">§</a>Panics</h5>
+<p>If the property does not exist or is not writable.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.has_property" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1755">Source</a><h4 class="code-header">fn <a href="#tymethod.has_property" class="fn">has_property</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Check if the object has a property <code>property_name</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.has_property_with_type" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1759">Source</a><h4 class="code-header">fn <a href="#tymethod.has_property_with_type" class="fn">has_property_with_type</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, type_: <a class="struct" href="../../glib/types/struct.Type.html" title="struct glib::types::Type">Type</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Check if the object has a property <code>property_name</code> of the given <code>type_</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.property_type" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1766">Source</a><h4 class="code-header">fn <a href="#tymethod.property_type" class="fn">property_type</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/types/struct.Type.html" title="struct glib::types::Type">Type</a>&gt;</h4></section></summary><div class="docblock"><p>Get the type of the property <code>property_name</code> of this object.</p>
+<p>This returns <code>None</code> if the property does not exist.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.find_property" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1770">Source</a><h4 class="code-header">fn <a href="#tymethod.find_property" class="fn">find_property</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/param_spec/struct.ParamSpec.html" title="struct glib::param_spec::ParamSpec">ParamSpec</a>&gt;</h4></section></summary><div class="docblock"><p>Get the <a href="../../glib/param_spec/struct.ParamSpec.html" title="struct glib::param_spec::ParamSpec"><code>ParamSpec</code></a> of the property <code>property_name</code> of this object.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.list_properties" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1774">Source</a><h4 class="code-header">fn <a href="#tymethod.list_properties" class="fn">list_properties</a>(&amp;self) -&gt; <a class="struct" href="../../glib/collections/ptr_slice/struct.PtrSlice.html" title="struct glib::collections::ptr_slice::PtrSlice">PtrSlice</a>&lt;<a class="struct" href="../../glib/param_spec/struct.ParamSpec.html" title="struct glib::param_spec::ParamSpec">ParamSpec</a>&gt;</h4></section></summary><div class="docblock"><p>Return all <a href="../../glib/param_spec/struct.ParamSpec.html" title="struct glib::param_spec::ParamSpec"><code>ParamSpec</code></a> of the properties of this object.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.freeze_notify" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1781">Source</a><h4 class="code-header">fn <a href="#tymethod.freeze_notify" class="fn">freeze_notify</a>(&amp;self) -&gt; <a class="struct" href="../../glib/object/struct.PropertyNotificationFreezeGuard.html" title="struct glib::object::PropertyNotificationFreezeGuard">PropertyNotificationFreezeGuard</a></h4></section></summary><div class="docblock"><p>Freeze all property notifications until the return guard object is dropped.</p>
+<p>This prevents the <code>notify</code> signal for all properties of this object to be emitted.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.set_qdata" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1789">Source</a><h4 class="code-header">unsafe fn <a href="#tymethod.set_qdata" class="fn">set_qdata</a>&lt;QD&gt;(&amp;self, key: <a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>, value: QD)<div class="where">where
+    QD: 'static,</div></h4></section></summary><div class="docblock"><p>Set arbitrary data on this object with the given <code>key</code>.</p>
+<h5 id="safety"><a class="doc-anchor" href="#safety">§</a>Safety</h5>
+<p>This function doesn’t store type information</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.qdata" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1801">Source</a><h4 class="code-header">unsafe fn <a href="#tymethod.qdata" class="fn">qdata</a>&lt;QD&gt;(&amp;self, key: <a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html" title="struct core::ptr::non_null::NonNull">NonNull</a>&lt;QD&gt;&gt;<div class="where">where
+    QD: 'static,</div></h4></section></summary><div class="docblock"><p>Return previously set arbitrary data of this object with the given <code>key</code>.</p>
+<h5 id="safety-1"><a class="doc-anchor" href="#safety-1">§</a>Safety</h5>
+<p>The returned pointer can become invalid by a call to
+<code>set_qdata</code>, <code>steal_qdata</code>, <code>set_data</code> or <code>steal_data</code>.</p>
+<p>The caller is responsible for ensuring the returned value is of a suitable type</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.steal_qdata" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1811">Source</a><h4 class="code-header">unsafe fn <a href="#tymethod.steal_qdata" class="fn">steal_qdata</a>&lt;QD&gt;(&amp;self, key: <a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;QD&gt;<div class="where">where
+    QD: 'static,</div></h4></section></summary><div class="docblock"><p>Retrieve previously set arbitrary data of this object with the given <code>key</code>.</p>
+<p>The data is not set on the object anymore afterwards.</p>
+<h5 id="safety-2"><a class="doc-anchor" href="#safety-2">§</a>Safety</h5>
+<p>The caller is responsible for ensuring the returned value is of a suitable type</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.set_data" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1819">Source</a><h4 class="code-header">unsafe fn <a href="#tymethod.set_data" class="fn">set_data</a>&lt;QD&gt;(&amp;self, key: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: QD)<div class="where">where
+    QD: 'static,</div></h4></section></summary><div class="docblock"><p>Set arbitrary data on this object with the given <code>key</code>.</p>
+<h5 id="safety-3"><a class="doc-anchor" href="#safety-3">§</a>Safety</h5>
+<p>This function doesn’t store type information</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.data" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1831">Source</a><h4 class="code-header">unsafe fn <a href="#tymethod.data" class="fn">data</a>&lt;QD&gt;(&amp;self, key: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html" title="struct core::ptr::non_null::NonNull">NonNull</a>&lt;QD&gt;&gt;<div class="where">where
+    QD: 'static,</div></h4></section></summary><div class="docblock"><p>Return previously set arbitrary data of this object with the given <code>key</code>.</p>
+<h5 id="safety-4"><a class="doc-anchor" href="#safety-4">§</a>Safety</h5>
+<p>The returned pointer can become invalid by a call to
+<code>set_qdata</code>, <code>steal_qdata</code>, <code>set_data</code> or <code>steal_data</code>.</p>
+<p>The caller is responsible for ensuring the returned value is of a suitable type</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.steal_data" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1841">Source</a><h4 class="code-header">unsafe fn <a href="#tymethod.steal_data" class="fn">steal_data</a>&lt;QD&gt;(&amp;self, key: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;QD&gt;<div class="where">where
+    QD: 'static,</div></h4></section></summary><div class="docblock"><p>Retrieve previously set arbitrary data of this object with the given <code>key</code>.</p>
+<p>The data is not set on the object anymore afterwards.</p>
+<h5 id="safety-5"><a class="doc-anchor" href="#safety-5">§</a>Safety</h5>
+<p>The caller is responsible for ensuring the returned value is of a suitable type</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.block_signal" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1848">Source</a><h4 class="code-header">fn <a href="#tymethod.block_signal" class="fn">block_signal</a>(&amp;self, handler_id: &amp;<a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>)</h4></section></summary><div class="docblock"><p>Block a given signal handler.</p>
+<p>It will not be called again during signal emissions until it is unblocked.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.unblock_signal" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1853">Source</a><h4 class="code-header">fn <a href="#tymethod.unblock_signal" class="fn">unblock_signal</a>(&amp;self, handler_id: &amp;<a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>)</h4></section></summary><div class="docblock"><p>Unblock a given signal handler.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.stop_signal_emission" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1858">Source</a><h4 class="code-header">fn <a href="#tymethod.stop_signal_emission" class="fn">stop_signal_emission</a>(&amp;self, signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>, detail: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>&gt;)</h4></section></summary><div class="docblock"><p>Stop emission of the currently emitted signal.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.stop_signal_emission_by_name" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1863">Source</a><h4 class="code-header">fn <a href="#tymethod.stop_signal_emission_by_name" class="fn">stop_signal_emission_by_name</a>(&amp;self, signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)</h4></section></summary><div class="docblock"><p>Stop emission of the currently emitted signal by the (possibly detailed) signal name.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.connect" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1874-1876">Source</a><h4 class="code-header">fn <a href="#tymethod.connect" class="fn">connect</a>&lt;F&gt;(
+    &amp;self,
+    signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    callback: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>]) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + 'static,</div></h4></section></summary><div class="docblock"><p>Connect to the signal <code>signal_name</code> on this object.</p>
+<p>If <code>after</code> is set to <code>true</code> then the callback will be called after the default class
+handler of the signal is emitted, otherwise before.</p>
+<h5 id="panics-6"><a class="doc-anchor" href="#panics-6">§</a>Panics</h5>
+<p>If the signal does not exist.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.connect_id" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1889-1897">Source</a><h4 class="code-header">fn <a href="#tymethod.connect_id" class="fn">connect_id</a>&lt;F&gt;(
+    &amp;self,
+    signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>,
+    details: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>&gt;,
+    after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    callback: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>]) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + 'static,</div></h4></section></summary><div class="docblock"><p>Connect to the signal <code>signal_id</code> on this object.</p>
+<p>If <code>after</code> is set to <code>true</code> then the callback will be called after the default class
+handler of the signal is emitted, otherwise before.</p>
+<p>Same as <a href="trait.ObjectExt.html#tymethod.connect" title="method glib::object::ObjectExt::connect::connect"><code>Self::connect</code></a> but takes a <code>SignalId</code> instead of a signal name.</p>
+<h5 id="panics-7"><a class="doc-anchor" href="#panics-7">§</a>Panics</h5>
+<p>If the signal does not exist.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.connect_local" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1911-1913">Source</a><h4 class="code-header">fn <a href="#tymethod.connect_local" class="fn">connect_local</a>&lt;F&gt;(
+    &amp;self,
+    signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    callback: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>]) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt; + 'static,</div></h4></section></summary><div class="docblock"><p>Connect to the signal <code>signal_name</code> on this object.</p>
+<p>If <code>after</code> is set to <code>true</code> then the callback will be called after the default class
+handler of the signal is emitted, otherwise before.</p>
+<p>Same as <a href="trait.ObjectExt.html#tymethod.connect" title="method glib::object::ObjectExt::connect::connect"><code>Self::connect</code></a> but takes a non-<code>Send+Sync</code> closure. If the signal is emitted from a
+different thread than it was connected to then the signal emission will panic.</p>
+<h5 id="panics-8"><a class="doc-anchor" href="#panics-8">§</a>Panics</h5>
+<p>If the signal does not exist.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.connect_local_id" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1927-1935">Source</a><h4 class="code-header">fn <a href="#tymethod.connect_local_id" class="fn">connect_local_id</a>&lt;F&gt;(
+    &amp;self,
+    signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>,
+    details: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>&gt;,
+    after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    callback: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>]) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt; + 'static,</div></h4></section></summary><div class="docblock"><p>Connect to the signal <code>signal_id</code> on this object.</p>
+<p>If <code>after</code> is set to <code>true</code> then the callback will be called after the default class
+handler of the signal is emitted, otherwise before.</p>
+<p>Same as <a href="trait.ObjectExt.html#tymethod.connect_id" title="method glib::object::ObjectExt::connect_id::connect_id"><code>Self::connect_id</code></a> but takes a non-<code>Send+Sync</code> closure. If the signal is emitted from a
+different thread than it was connected to then the signal emission will panic.</p>
+<h5 id="panics-9"><a class="doc-anchor" href="#panics-9">§</a>Panics</h5>
+<p>This panics if the signal does not exist.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.connect_unsafe" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1954-1961">Source</a><h4 class="code-header">unsafe fn <a href="#tymethod.connect_unsafe" class="fn">connect_unsafe</a>&lt;F&gt;(
+    &amp;self,
+    signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    callback: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>]) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt;,</div></h4></section></summary><div class="docblock"><p>Connect to the signal <code>signal_name</code> on this object.</p>
+<p>If <code>after</code> is set to <code>true</code> then the callback will be called after the default class
+handler of the signal is emitted, otherwise before.</p>
+<p>Same as <a href="trait.ObjectExt.html#tymethod.connect" title="method glib::object::ObjectExt::connect::connect"><code>Self::connect</code></a> but takes a non-<code>Send+Sync</code> and non-<code>'static'</code> closure. No runtime checks
+are performed for ensuring that the closure is called correctly.</p>
+<h5 id="safety-6"><a class="doc-anchor" href="#safety-6">§</a>Safety</h5>
+<p>The provided closure must be valid until the signal handler is disconnected, and it must
+be allowed to call the closure from the threads the signal is emitted from.</p>
+<h5 id="panics-10"><a class="doc-anchor" href="#panics-10">§</a>Panics</h5>
+<p>If the signal does not exist.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.connect_unsafe_id" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#1981-1989">Source</a><h4 class="code-header">unsafe fn <a href="#tymethod.connect_unsafe_id" class="fn">connect_unsafe_id</a>&lt;F&gt;(
+    &amp;self,
+    signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>,
+    details: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>&gt;,
+    after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    callback: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>]) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt;,</div></h4></section></summary><div class="docblock"><p>Connect to the signal <code>signal_id</code> on this object.</p>
+<p>If <code>after</code> is set to <code>true</code> then the callback will be called after the default class
+handler of the signal is emitted, otherwise before.</p>
+<p>Same as <a href="trait.ObjectExt.html#tymethod.connect_id" title="method glib::object::ObjectExt::connect_id::connect_id"><code>Self::connect_id</code></a> but takes a non-<code>Send+Sync</code> and non-<code>'static'</code> closure. No runtime checks
+are performed for ensuring that the closure is called correctly.</p>
+<h5 id="safety-7"><a class="doc-anchor" href="#safety-7">§</a>Safety</h5>
+<p>The provided closure must be valid until the signal handler is disconnected, and it must
+be allowed to call the closure from the threads the signal is emitted from.</p>
+<h5 id="panics-11"><a class="doc-anchor" href="#panics-11">§</a>Panics</h5>
+<p>If the signal does not exist.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.connect_closure" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2007-2012">Source</a><h4 class="code-header">fn <a href="#tymethod.connect_closure" class="fn">connect_closure</a>(
+    &amp;self,
+    signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    closure: <a class="struct" href="../../glib/closure/struct.RustClosure.html" title="struct glib::closure::RustClosure">RustClosure</a>,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section></summary><div class="docblock"><p>Connect a closure to the signal <code>signal_name</code> on this object.</p>
+<p>If <code>after</code> is set to <code>true</code> then the callback will be called after the default class
+handler of the signal is emitted, otherwise before.</p>
+<p>This panics if the signal does not exist.</p>
+<p>A recurring case is connecting a handler which will be automatically disconnected
+when an object it refers to is destroyed, as it happens with <code>g_signal_connect_object</code>
+in C. This can be achieved with a closure that watches an object: see the documentation
+of the <a href="../../glib_macros/macro.closure.html" title="macro glib_macros::closure"><code>closure!</code></a> macro for more details.</p>
+<p>Same as <a href="trait.ObjectExt.html#tymethod.connect" title="method glib::object::ObjectExt::connect::connect"><code>Self::connect</code></a> but takes a <a href="../../glib/closure/struct.Closure.html" title="struct glib::closure::Closure"><code>Closure</code></a> instead of a <code>Fn</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.connect_closure_id" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2025-2031">Source</a><h4 class="code-header">fn <a href="#tymethod.connect_closure_id" class="fn">connect_closure_id</a>(
+    &amp;self,
+    signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>,
+    details: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>&gt;,
+    after: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    closure: <a class="struct" href="../../glib/closure/struct.RustClosure.html" title="struct glib::closure::RustClosure">RustClosure</a>,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section></summary><div class="docblock"><p>Connect a closure to the signal <code>signal_id</code> on this object.</p>
+<p>If <code>after</code> is set to <code>true</code> then the callback will be called after the default class
+handler of the signal is emitted, otherwise before.</p>
+<p>This panics if the signal does not exist.</p>
+<p>Same as <a href="trait.ObjectExt.html#tymethod.connect_closure" title="method glib::object::ObjectExt::connect_closure::connect_closure"><code>Self::connect_closure</code></a> but takes a
+<a href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId"><code>SignalId</code></a> instead of a signal name.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.watch_closure" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2040">Source</a><h4 class="code-header">fn <a href="#tymethod.watch_closure" class="fn">watch_closure</a>(&amp;self, closure: &amp;impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="../../glib/closure/struct.Closure.html" title="struct glib::closure::Closure">Closure</a>&gt;)</h4></section></summary><div class="docblock"><p>Limits the lifetime of <code>closure</code> to the lifetime of the object. When
+the object’s reference count drops to zero, the closure will be
+invalidated. An invalidated closure will ignore any calls to
+<a href="../../glib/closure/struct.Closure.html#method.invoke_with_values" title="method glib::closure::Closure::invoke_with_values"><code>invoke_with_values</code></a>, or
+<a href="../../glib/closure/struct.RustClosure.html#method.invoke" title="method glib::closure::RustClosure::invoke"><code>invoke</code></a> when using Rust closures.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.emit" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2052">Source</a><h4 class="code-header">fn <a href="#tymethod.emit" class="fn">emit</a>&lt;R&gt;(&amp;self, signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>, args: &amp;[&amp;dyn <a class="trait" href="trait.ToValue.html" title="trait glib_win32::prelude::ToValue">ToValue</a>]) -&gt; R<div class="where">where
+    R: <a class="trait" href="../../glib/closure/trait.TryFromClosureReturnValue.html" title="trait glib::closure::TryFromClosureReturnValue">TryFromClosureReturnValue</a>,</div></h4></section></summary><div class="docblock"><p>Emit signal by signal id.</p>
+<p>If the signal has a return value then this is returned here.</p>
+<h5 id="panics-12"><a class="doc-anchor" href="#panics-12">§</a>Panics</h5>
+<p>If the wrong number of arguments is provided, or arguments of the wrong types
+were provided.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.emit_with_values" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2056">Source</a><h4 class="code-header">fn <a href="#tymethod.emit_with_values" class="fn">emit_with_values</a>(&amp;self, signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>, args: &amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>]) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt;</h4></section></summary><div class="docblock"><p>Same as <a href="trait.ObjectExt.html#tymethod.emit" title="method glib::object::ObjectExt::emit::emit"><code>Self::emit</code></a> but takes <code>Value</code> for the arguments.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.emit_by_name" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2068-2072">Source</a><h4 class="code-header">fn <a href="#tymethod.emit_by_name" class="fn">emit_by_name</a>&lt;R&gt;(&amp;self, signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, args: &amp;[&amp;dyn <a class="trait" href="trait.ToValue.html" title="trait glib_win32::prelude::ToValue">ToValue</a>]) -&gt; R<div class="where">where
+    R: <a class="trait" href="../../glib/closure/trait.TryFromClosureReturnValue.html" title="trait glib::closure::TryFromClosureReturnValue">TryFromClosureReturnValue</a>,</div></h4></section></summary><div class="docblock"><p>Emit signal by its name.</p>
+<p>If the signal has a return value then this is returned here.</p>
+<h5 id="panics-13"><a class="doc-anchor" href="#panics-13">§</a>Panics</h5>
+<p>If the signal does not exist, the wrong number of arguments is provided, or
+arguments of the wrong types were provided.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.emit_by_name_with_values" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2083">Source</a><h4 class="code-header">fn <a href="#tymethod.emit_by_name_with_values" class="fn">emit_by_name_with_values</a>(
+    &amp;self,
+    signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    args: &amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>],
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt;</h4></section></summary><div class="docblock"><p>Emit signal by its name.</p>
+<p>If the signal has a return value then this is returned here.</p>
+<h5 id="panics-14"><a class="doc-anchor" href="#panics-14">§</a>Panics</h5>
+<p>If the signal does not exist, the wrong number of arguments is provided, or
+arguments of the wrong types were provided.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.emit_by_name_with_details" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2094-2099">Source</a><h4 class="code-header">fn <a href="#tymethod.emit_by_name_with_details" class="fn">emit_by_name_with_details</a>&lt;R&gt;(
+    &amp;self,
+    signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    details: <a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>,
+    args: &amp;[&amp;dyn <a class="trait" href="trait.ToValue.html" title="trait glib_win32::prelude::ToValue">ToValue</a>],
+) -&gt; R<div class="where">where
+    R: <a class="trait" href="../../glib/closure/trait.TryFromClosureReturnValue.html" title="trait glib::closure::TryFromClosureReturnValue">TryFromClosureReturnValue</a>,</div></h4></section></summary><div class="docblock"><p>Emit signal by its name with details.</p>
+<p>If the signal has a return value then this is returned here.</p>
+<h5 id="panics-15"><a class="doc-anchor" href="#panics-15">§</a>Panics</h5>
+<p>If the wrong number of arguments is provided, or arguments of the wrong types
+were provided.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.emit_by_name_with_details_and_values" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2110-2115">Source</a><h4 class="code-header">fn <a href="#tymethod.emit_by_name_with_details_and_values" class="fn">emit_by_name_with_details_and_values</a>(
+    &amp;self,
+    signal_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    details: <a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>,
+    args: &amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>],
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt;</h4></section></summary><div class="docblock"><p>Emit signal by its name with details.</p>
+<p>If the signal has a return value then this is returned here.</p>
+<h5 id="panics-16"><a class="doc-anchor" href="#panics-16">§</a>Panics</h5>
+<p>If the wrong number of arguments is provided, or arguments of the wrong types
+were provided.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.emit_with_details" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2126-2131">Source</a><h4 class="code-header">fn <a href="#tymethod.emit_with_details" class="fn">emit_with_details</a>&lt;R&gt;(
+    &amp;self,
+    signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>,
+    details: <a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>,
+    args: &amp;[&amp;dyn <a class="trait" href="trait.ToValue.html" title="trait glib_win32::prelude::ToValue">ToValue</a>],
+) -&gt; R<div class="where">where
+    R: <a class="trait" href="../../glib/closure/trait.TryFromClosureReturnValue.html" title="trait glib::closure::TryFromClosureReturnValue">TryFromClosureReturnValue</a>,</div></h4></section></summary><div class="docblock"><p>Emit signal by signal id with details.</p>
+<p>If the signal has a return value then this is returned here.</p>
+<h5 id="panics-17"><a class="doc-anchor" href="#panics-17">§</a>Panics</h5>
+<p>If the wrong number of arguments is provided, or arguments of the wrong types
+were provided.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.emit_with_details_and_values" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2142-2147">Source</a><h4 class="code-header">fn <a href="#tymethod.emit_with_details_and_values" class="fn">emit_with_details_and_values</a>(
+    &amp;self,
+    signal_id: <a class="struct" href="../../glib/subclass/signal/struct.SignalId.html" title="struct glib::subclass::signal::SignalId">SignalId</a>,
+    details: <a class="struct" href="../../glib/quark/struct.Quark.html" title="struct glib::quark::Quark">Quark</a>,
+    args: &amp;[<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>],
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/value/struct.Value.html" title="struct glib::value::Value">Value</a>&gt;</h4></section></summary><div class="docblock"><p>Emit signal by signal id with details.</p>
+<p>If the signal has a return value then this is returned here.</p>
+<h5 id="panics-18"><a class="doc-anchor" href="#panics-18">§</a>Panics</h5>
+<p>If the wrong number of arguments is provided, or arguments of the wrong types
+were provided.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.disconnect" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2152">Source</a><h4 class="code-header">fn <a href="#tymethod.disconnect" class="fn">disconnect</a>(&amp;self, handler_id: <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>)</h4></section></summary><div class="docblock"><p>Disconnect a previously connected signal handler.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.connect_notify" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2159-2163">Source</a><h4 class="code-header">fn <a href="#tymethod.connect_notify" class="fn">connect_notify</a>&lt;F&gt;(&amp;self, name: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, &amp;<a class="struct" href="../../glib/param_spec/struct.ParamSpec.html" title="struct glib::param_spec::ParamSpec">ParamSpec</a>) + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + 'static,</div></h4></section></summary><div class="docblock"><p>Connect to the <code>notify</code> signal of the object.</p>
+<p>This is emitted whenever a property is changed. If <code>name</code> is provided then the signal
+handler is only called for this specific property.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.connect_notify_local" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2173-2177">Source</a><h4 class="code-header">fn <a href="#tymethod.connect_notify_local" class="fn">connect_notify_local</a>&lt;F&gt;(&amp;self, name: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, &amp;<a class="struct" href="../../glib/param_spec/struct.ParamSpec.html" title="struct glib::param_spec::ParamSpec">ParamSpec</a>) + 'static,</div></h4></section></summary><div class="docblock"><p>Connect to the <code>notify</code> signal of the object.</p>
+<p>This is emitted whenever a property is changed. If <code>name</code> is provided then the signal
+handler is only called for this specific property.</p>
+<p>This is like <code>connect_notify</code> but doesn’t require a <code>Send+Sync</code> closure. Signal emission
+will panic if the signal is emitted from the wrong thread.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.connect_notify_unsafe" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2192-2196">Source</a><h4 class="code-header">unsafe fn <a href="#tymethod.connect_notify_unsafe" class="fn">connect_notify_unsafe</a>&lt;F&gt;(
+    &amp;self,
+    name: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, &amp;<a class="struct" href="../../glib/param_spec/struct.ParamSpec.html" title="struct glib::param_spec::ParamSpec">ParamSpec</a>),</div></h4></section></summary><div class="docblock"><p>Connect to the <code>notify</code> signal of the object.</p>
+<p>This is emitted whenever a property is changed. If <code>name</code> is provided then the signal
+handler is only called for this specific property.</p>
+<p>This is like <code>connect_notify</code> but doesn’t require a <code>Send+Sync</code> or <code>'static</code> closure. No
+runtime checks for wrongly calling the closure are performed.</p>
+<h5 id="safety-8"><a class="doc-anchor" href="#safety-8">§</a>Safety</h5>
+<p>The provided closure must be valid until the signal handler is disconnected, and it must
+be allowed to call the closure from the threads the signal is emitted from.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.notify" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2203">Source</a><h4 class="code-header">fn <a href="#tymethod.notify" class="fn">notify</a>(&amp;self, property_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)</h4></section></summary><div class="docblock"><p>Notify that the given property has changed its value.</p>
+<p>This emits the <code>notify</code> signal.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.notify_by_pspec" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2210">Source</a><h4 class="code-header">fn <a href="#tymethod.notify_by_pspec" class="fn">notify_by_pspec</a>(&amp;self, pspec: &amp;<a class="struct" href="../../glib/param_spec/struct.ParamSpec.html" title="struct glib::param_spec::ParamSpec">ParamSpec</a>)</h4></section></summary><div class="docblock"><p>Notify that the given property has changed its value.</p>
+<p>This emits the <code>notify</code> signal.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.downgrade" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2214">Source</a><h4 class="code-header">fn <a href="#tymethod.downgrade" class="fn">downgrade</a>(&amp;self) -&gt; <a class="struct" href="../../glib/object/struct.WeakRef.html" title="struct glib::object::WeakRef">WeakRef</a>&lt;Self&gt;</h4></section></summary><div class="docblock"><p>Downgrade this object to a weak reference.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.add_weak_ref_notify" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2220">Source</a><h4 class="code-header">fn <a href="#tymethod.add_weak_ref_notify" class="fn">add_weak_ref_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/object/struct.WeakRefNotify.html" title="struct glib::object::WeakRefNotify">WeakRefNotify</a>&lt;Self&gt;<div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>() + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static,</div></h4></section></summary><div class="docblock"><p>Add a callback to be notified when the Object is disposed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.add_weak_ref_notify_local" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2229">Source</a><h4 class="code-header">fn <a href="#tymethod.add_weak_ref_notify_local" class="fn">add_weak_ref_notify_local</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/object/struct.WeakRefNotify.html" title="struct glib::object::WeakRefNotify">WeakRefNotify</a>&lt;Self&gt;<div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>() + 'static,</div></h4></section></summary><div class="docblock"><p>Add a callback to be notified when the Object is disposed.</p>
+<p>This is like <a href="trait.ObjectExt.html#tymethod.add_weak_ref_notify" title="method glib_win32::prelude::ObjectExt::add_weak_ref_notify"><code>add_weak_ref_notify</code></a> but doesn’t require the closure to be <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send"><code>Send</code></a>.
+Object dispose will panic if the object is disposed from the wrong thread.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.bind_property" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2238-2243">Source</a><h4 class="code-header">fn <a href="#tymethod.bind_property" class="fn">bind_property</a>&lt;'a, 'f, 't, O&gt;(
+    &amp;'a self,
+    source_property: &amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    target: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;'a O</a>,
+    target_property: &amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+) -&gt; <a class="struct" href="../../glib/object/struct.BindingBuilder.html" title="struct glib::object::BindingBuilder">BindingBuilder</a>&lt;'a, 'f, 't&gt;<div class="where">where
+    O: <a class="trait" href="trait.ObjectType.html" title="trait glib_win32::prelude::ObjectType">ObjectType</a>,</div></h4></section></summary><div class="docblock"><p>Bind property <code>source_property</code> on this object to the <code>target_property</code> on the <code>target</code> object.</p>
+<p>This allows keeping the properties of both objects in sync.</p>
+<p>The binding can be unidirectional or bidirectional and optionally it is possible to
+transform the property values before they’re passed to the other object.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.ref_count" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2247">Source</a><h4 class="code-header">fn <a href="#tymethod.ref_count" class="fn">ref_count</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></h4></section></summary><div class="docblock"><p>Returns the strong reference count of this object.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.run_dispose" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#2261">Source</a><h4 class="code-header">unsafe fn <a href="#tymethod.run_dispose" class="fn">run_dispose</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Runs the dispose mechanism of the object.</p>
+<p>This will dispose of any references the object has to other objects, and among other things
+will disconnect all signal handlers.</p>
+<h5 id="safety-9"><a class="doc-anchor" href="#safety-9">§</a>Safety</h5>
+<p>Theoretically this is safe to run and afterwards the object is simply in a non-functional
+state, however many object implementations in C end up with memory safety issues if the
+object is used after disposal.</p>
+</div></details></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><section id="impl-ObjectExt-for-T" class="impl"><a class="src rightside" href="../../src/glib/object.rs.html#2264">Source</a><a href="#impl-ObjectExt-for-T" class="anchor">§</a><h3 class="code-header">impl&lt;T&gt; <a class="trait" href="trait.ObjectExt.html" title="trait glib_win32::prelude::ObjectExt">ObjectExt</a> for T<div class="where">where
+    T: <a class="trait" href="trait.ObjectType.html" title="trait glib_win32::prelude::ObjectType">ObjectType</a>,</div></h3></section></div><script src="../../trait.impl/glib/object/trait.ObjectExt.js" async></script></section></div></main></body></html>

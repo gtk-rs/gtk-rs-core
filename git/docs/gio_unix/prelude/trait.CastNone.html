@@ -1,0 +1,127 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Convenience trait mirroring `Cast`, implemented on `Option&#60;Object&#62;` types."><title>CastNone in gio_unix::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio_unix" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (ba2142a19 2025-12-07)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("main" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "main") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<rustdoc-topbar><h2><a href="#">CastNone</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../gio_unix/index.html">gio_<wbr>unix</a><span class="version">0.22.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Cast<wbr>None</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#warning" title="Warning">Warning</a></li><li><a href="#example" title="Example">Example</a></li></ul><h3><a href="#required-associated-types">Required Associated Types</a></h3><ul class="block"><li><a href="#associatedtype.Inner" title="Inner">Inner</a></li></ul><h3><a href="#required-methods">Required Methods</a></h3><ul class="block"><li><a href="#tymethod.and_downcast" title="and_downcast">and_downcast</a></li><li><a href="#tymethod.and_downcast_ref" title="and_downcast_ref">and_downcast_ref</a></li><li><a href="#tymethod.and_dynamic_cast" title="and_dynamic_cast">and_dynamic_cast</a></li><li><a href="#tymethod.and_dynamic_cast_ref" title="and_dynamic_cast_ref">and_dynamic_cast_ref</a></li><li><a href="#tymethod.and_upcast" title="and_upcast">and_upcast</a></li><li><a href="#tymethod.and_upcast_ref" title="and_upcast_ref">and_upcast_ref</a></li></ul><h3><a href="#foreign-impls">Implementations on Foreign Types</a></h3><ul class="block"><li><a href="#impl-CastNone-for-Option%3CI%3E" title="Option&#60;I&#62;">Option&#60;I&#62;</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In gio_<wbr>unix::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">gio_unix</a>::<wbr><a href="index.html">prelude</a></div><h1>Trait <span class="trait">Cast<wbr>None</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/glib/object.rs.html#308">Source</a> </span></div><pre class="rust item-decl"><code>pub trait CastNone: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a> {
+    type <a href="#associatedtype.Inner" class="associatedtype">Inner</a>;
+
+    // Required methods
+    fn <a href="#tymethod.and_downcast" class="fn">and_downcast</a>&lt;T&gt;(self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,
+             Self::<a class="associatedtype" href="trait.CastNone.html#associatedtype.Inner" title="type gio_unix::prelude::CastNone::Inner">Inner</a>: <a class="trait" href="../../glib/object/trait.MayDowncastTo.html" title="trait glib::object::MayDowncastTo">MayDowncastTo</a>&lt;T&gt;</span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.and_downcast_ref" class="fn">and_downcast_ref</a>&lt;T&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;T</a>&gt;
+       <span class="where">where T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,
+             Self::<a class="associatedtype" href="trait.CastNone.html#associatedtype.Inner" title="type gio_unix::prelude::CastNone::Inner">Inner</a>: <a class="trait" href="../../glib/object/trait.MayDowncastTo.html" title="trait glib::object::MayDowncastTo">MayDowncastTo</a>&lt;T&gt;</span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.and_upcast" class="fn">and_upcast</a>&lt;T&gt;(self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;T&gt;
+       <span class="where">where T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,
+             Self::<a class="associatedtype" href="trait.CastNone.html#associatedtype.Inner" title="type gio_unix::prelude::CastNone::Inner">Inner</a>: <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;T&gt;</span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.and_upcast_ref" class="fn">and_upcast_ref</a>&lt;T&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;T</a>&gt;
+       <span class="where">where T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,
+             Self::<a class="associatedtype" href="trait.CastNone.html#associatedtype.Inner" title="type gio_unix::prelude::CastNone::Inner">Inner</a>: <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;T&gt;</span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.and_dynamic_cast" class="fn">and_dynamic_cast</a>&lt;T&gt;(self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;T, Self&gt;
+       <span class="where">where T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a></span>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.and_dynamic_cast_ref" class="fn">and_dynamic_cast_ref</a>&lt;T&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;T</a>&gt;
+       <span class="where">where T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a></span>;
+}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Convenience trait mirroring <code>Cast</code>, implemented on <code>Option&lt;Object&gt;</code> types.</p>
+<h2 id="warning"><a class="doc-anchor" href="#warning">§</a>Warning</h2>
+<p>Inevitably this trait will discard information about a downcast failure:
+you don’t know if the object was not of the expected type, or if it was <code>None</code>.
+If you need to handle the downcast error, use <code>Cast</code> over a <code>glib::Object</code>.</p>
+<h2 id="example"><a class="doc-anchor" href="#example">§</a>Example</h2>
+<div class="example-wrap ignore"><a href="#" class="tooltip" title="This example is not tested">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">let </span>widget: <span class="prelude-ty">Option</span>&lt;Widget&gt; = list_item.child();
+
+<span class="comment">// Without using `CastNone`
+</span><span class="kw">let </span>label = widget.unwrap().downcast::&lt;gtk::Label&gt;().unwrap();
+
+<span class="comment">// Using `CastNone` we can avoid the first `unwrap()` call
+</span><span class="kw">let </span>label = widget.and_downcast::&lt;gtk::Label&gt;().unwrap();</code></pre></div></div></details><h2 id="required-associated-types" class="section-header">Required Associated Types<a href="#required-associated-types" class="anchor">§</a></h2><div class="methods"><section id="associatedtype.Inner" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#309">Source</a><h4 class="code-header">type <a href="#associatedtype.Inner" class="associatedtype">Inner</a></h4></section></div><h2 id="required-methods" class="section-header">Required Methods<a href="#required-methods" class="anchor">§</a></h2><div class="methods"><section id="tymethod.and_downcast" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#310-312">Source</a><h4 class="code-header">fn <a href="#tymethod.and_downcast" class="fn">and_downcast</a>&lt;T&gt;(self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,
+    Self::<a class="associatedtype" href="trait.CastNone.html#associatedtype.Inner" title="type gio_unix::prelude::CastNone::Inner">Inner</a>: <a class="trait" href="../../glib/object/trait.MayDowncastTo.html" title="trait glib::object::MayDowncastTo">MayDowncastTo</a>&lt;T&gt;,</div></h4></section><section id="tymethod.and_downcast_ref" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#313-315">Source</a><h4 class="code-header">fn <a href="#tymethod.and_downcast_ref" class="fn">and_downcast_ref</a>&lt;T&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;T</a>&gt;<div class="where">where
+    T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,
+    Self::<a class="associatedtype" href="trait.CastNone.html#associatedtype.Inner" title="type gio_unix::prelude::CastNone::Inner">Inner</a>: <a class="trait" href="../../glib/object/trait.MayDowncastTo.html" title="trait glib::object::MayDowncastTo">MayDowncastTo</a>&lt;T&gt;,</div></h4></section><section id="tymethod.and_upcast" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#316-318">Source</a><h4 class="code-header">fn <a href="#tymethod.and_upcast" class="fn">and_upcast</a>&lt;T&gt;(self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,
+    Self::<a class="associatedtype" href="trait.CastNone.html#associatedtype.Inner" title="type gio_unix::prelude::CastNone::Inner">Inner</a>: <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;T&gt;,</div></h4></section><section id="tymethod.and_upcast_ref" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#319-321">Source</a><h4 class="code-header">fn <a href="#tymethod.and_upcast_ref" class="fn">and_upcast_ref</a>&lt;T&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;T</a>&gt;<div class="where">where
+    T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,
+    Self::<a class="associatedtype" href="trait.CastNone.html#associatedtype.Inner" title="type gio_unix::prelude::CastNone::Inner">Inner</a>: <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;T&gt;,</div></h4></section><section id="tymethod.and_dynamic_cast" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#322">Source</a><h4 class="code-header">fn <a href="#tymethod.and_dynamic_cast" class="fn">and_dynamic_cast</a>&lt;T&gt;(self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;T, Self&gt;<div class="where">where
+    T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,</div></h4></section><section id="tymethod.and_dynamic_cast_ref" class="method"><a class="src rightside" href="../../src/glib/object.rs.html#323">Source</a><h4 class="code-header">fn <a href="#tymethod.and_dynamic_cast_ref" class="fn">and_dynamic_cast_ref</a>&lt;T&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;T</a>&gt;<div class="where">where
+    T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,</div></h4></section></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="foreign-impls" class="section-header">Implementations on Foreign Types<a href="#foreign-impls" class="anchor">§</a></h2><details class="toggle implementors-toggle"><summary><section id="impl-CastNone-for-Option%3CI%3E" class="impl"><a class="src rightside" href="../../src/glib/object.rs.html#325">Source</a><a href="#impl-CastNone-for-Option%3CI%3E" class="anchor">§</a><h3 class="code-header">impl&lt;I&gt; <a class="trait" href="trait.CastNone.html" title="trait gio_unix::prelude::CastNone">CastNone</a> for <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;I&gt;<div class="where">where
+    I: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,</div></h3></section></summary><div class="impl-items"><section id="associatedtype.Inner-1" class="associatedtype trait-impl"><a class="src rightside" href="../../src/glib/object.rs.html#326">Source</a><a href="#associatedtype.Inner-1" class="anchor">§</a><h4 class="code-header">type <a href="#associatedtype.Inner" class="associatedtype">Inner</a> = I</h4></section><section id="method.and_downcast" class="method trait-impl"><a class="src rightside" href="../../src/glib/object.rs.html#329-331">Source</a><a href="#method.and_downcast" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.and_downcast" class="fn">and_downcast</a>&lt;T&gt;(self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,
+    &lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;I&gt; as <a class="trait" href="trait.CastNone.html" title="trait gio_unix::prelude::CastNone">CastNone</a>&gt;::<a class="associatedtype" href="trait.CastNone.html#associatedtype.Inner" title="type gio_unix::prelude::CastNone::Inner">Inner</a>: <a class="trait" href="../../glib/object/trait.MayDowncastTo.html" title="trait glib::object::MayDowncastTo">MayDowncastTo</a>&lt;T&gt;,</div></h4></section><section id="method.and_downcast_ref" class="method trait-impl"><a class="src rightside" href="../../src/glib/object.rs.html#337-339">Source</a><a href="#method.and_downcast_ref" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.and_downcast_ref" class="fn">and_downcast_ref</a>&lt;T&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;T</a>&gt;<div class="where">where
+    T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,
+    &lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;I&gt; as <a class="trait" href="trait.CastNone.html" title="trait gio_unix::prelude::CastNone">CastNone</a>&gt;::<a class="associatedtype" href="trait.CastNone.html#associatedtype.Inner" title="type gio_unix::prelude::CastNone::Inner">Inner</a>: <a class="trait" href="../../glib/object/trait.MayDowncastTo.html" title="trait glib::object::MayDowncastTo">MayDowncastTo</a>&lt;T&gt;,</div></h4></section><section id="method.and_upcast" class="method trait-impl"><a class="src rightside" href="../../src/glib/object.rs.html#345-347">Source</a><a href="#method.and_upcast" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.and_upcast" class="fn">and_upcast</a>&lt;T&gt;(self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;T&gt;<div class="where">where
+    T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,
+    &lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;I&gt; as <a class="trait" href="trait.CastNone.html" title="trait gio_unix::prelude::CastNone">CastNone</a>&gt;::<a class="associatedtype" href="trait.CastNone.html#associatedtype.Inner" title="type gio_unix::prelude::CastNone::Inner">Inner</a>: <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;T&gt;,</div></h4></section><section id="method.and_upcast_ref" class="method trait-impl"><a class="src rightside" href="../../src/glib/object.rs.html#353-355">Source</a><a href="#method.and_upcast_ref" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.and_upcast_ref" class="fn">and_upcast_ref</a>&lt;T&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;T</a>&gt;<div class="where">where
+    T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,
+    &lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;I&gt; as <a class="trait" href="trait.CastNone.html" title="trait gio_unix::prelude::CastNone">CastNone</a>&gt;::<a class="associatedtype" href="trait.CastNone.html#associatedtype.Inner" title="type gio_unix::prelude::CastNone::Inner">Inner</a>: <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;T&gt;,</div></h4></section><section id="method.and_dynamic_cast" class="method trait-impl"><a class="src rightside" href="../../src/glib/object.rs.html#361">Source</a><a href="#method.and_dynamic_cast" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.and_dynamic_cast" class="fn">and_dynamic_cast</a>&lt;T&gt;(self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;T, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;I&gt;&gt;<div class="where">where
+    T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,</div></h4></section><section id="method.and_dynamic_cast_ref" class="method trait-impl"><a class="src rightside" href="../../src/glib/object.rs.html#367">Source</a><a href="#method.and_dynamic_cast_ref" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.and_dynamic_cast_ref" class="fn">and_dynamic_cast_ref</a>&lt;T&gt;(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;T</a>&gt;<div class="where">where
+    T: <a class="trait" href="trait.ObjectType.html" title="trait gio_unix::prelude::ObjectType">ObjectType</a>,</div></h4></section></div></details><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"></div><script src="../../trait.impl/glib/object/trait.CastNone.js" data-ignore-extern-crates="core" async></script></section></div></main></body></html>

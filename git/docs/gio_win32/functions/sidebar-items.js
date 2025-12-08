@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["registry_settings_backend_new"]};

@@ -1,9 +1,9 @@
 (function() {
-    var implementors = Object.fromEntries([["gio",[]]]);
+    var implementors = Object.fromEntries([["gio",[]],["gio_unix",[]],["gio_win32",[]]]);
     if (window.register_implementors) {
         window.register_implementors(implementors);
     } else {
         window.pending_implementors = implementors;
     }
 })()
-//{"start":57,"fragment_lengths":[10]}
+//{"start":57,"fragment_lengths":[10,16,17]}

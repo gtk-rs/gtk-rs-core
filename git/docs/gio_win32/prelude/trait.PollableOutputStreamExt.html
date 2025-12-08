@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait containing all `struct@PollableOutputStream` methods."><title>PollableOutputStreamExt in gio_win32::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio_win32" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (ba2142a19 2025-12-07)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("main" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "main") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<rustdoc-topbar><h2><a href="#">PollableOutputStreamExt</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../gio_win32/index.html">gio_<wbr>win32</a><span class="version">0.22.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Pollable<wbr>Output<wbr>Stream<wbr>Ext</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#implementors-1" title="Implementors">Implementors</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.can_poll" title="can_poll">can_poll</a></li><li><a href="#method.is_writable" title="is_writable">is_writable</a></li><li><a href="#method.write_nonblocking" title="write_nonblocking">write_nonblocking</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In gio_<wbr>win32::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">gio_win32</a>::<wbr><a href="index.html">prelude</a></div><h1>Trait <span class="trait">Pollable<wbr>Output<wbr>Stream<wbr>Ext</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/gio/auto/pollable_output_stream.rs.html#39">Source</a> </span></div><pre class="rust item-decl"><code>pub trait PollableOutputStreamExt: <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/pollable_output_stream/struct.PollableOutputStream.html" title="struct gio::auto::pollable_output_stream::PollableOutputStream">PollableOutputStream</a>&gt; + 'static {
+    // Provided methods
+    fn <a href="#method.can_poll" class="fn">can_poll</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_writable" class="fn">is_writable</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.write_nonblocking" class="fn">write_nonblocking</a>(
+        &amp;self,
+        buffer: &amp;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait containing all <a href="../../gio/auto/pollable_output_stream/struct.PollableOutputStream.html" title="struct gio::auto::pollable_output_stream::PollableOutputStream"><code>PollableOutputStream</code></a> methods.</p>
+<h2 id="implementors-1"><a class="doc-anchor" href="#implementors-1">§</a>Implementors</h2>
+<p><a href="../../gio/auto/converter_output_stream/struct.ConverterOutputStream.html" title="struct gio::auto::converter_output_stream::ConverterOutputStream"><code>ConverterOutputStream</code></a>, <a href="../../gio/auto/memory_output_stream/struct.MemoryOutputStream.html" title="struct gio::auto::memory_output_stream::MemoryOutputStream"><code>MemoryOutputStream</code></a>, <a href="../../gio/auto/pollable_output_stream/struct.PollableOutputStream.html" title="struct gio::auto::pollable_output_stream::PollableOutputStream"><code>PollableOutputStream</code></a></p>
+</div></details><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.can_poll" class="method"><a class="src rightside" href="../../src/gio/auto/pollable_output_stream.rs.html#52">Source</a><h4 class="code-header">fn <a href="#method.can_poll" class="fn">can_poll</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if @self is actually pollable. Some classes may implement
+#GPollableOutputStream but have only certain instances of that
+class be pollable. If this method returns <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a>, then the behavior
+of other #GPollableOutputStream methods is undefined.</p>
+<p>For any given stream, the value returned by this method is constant;
+a stream cannot switch from pollable to non-pollable or vice versa.</p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if @self is pollable, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> if not.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_writable" class="method"><a class="src rightside" href="../../src/gio/auto/pollable_output_stream.rs.html#79">Source</a><h4 class="code-header">fn <a href="#method.is_writable" class="fn">is_writable</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if @self can be written.</p>
+<p>Note that some stream types may not be able to implement this 100%
+reliably, and it is possible that a call to g_output_stream_write()
+after this returns <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> would still block. To guarantee
+non-blocking behavior, you should always use
+g_pollable_output_stream_write_nonblocking(), which will return a
+<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.WouldBlock" title="variant gio::auto::enums::IOErrorEnum::WouldBlock"><code>IOErrorEnum::WouldBlock</code></a> error rather than blocking.</p>
+<p>The behaviour of this method is undefined if
+g_pollable_output_stream_can_poll() returns <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> for @self.</p>
+<h5 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if @self is writable, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> if not. If an error
+has occurred on @self, this will result in
+g_pollable_output_stream_is_writable() returning <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a>, and the
+next attempt to write will return the error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.write_nonblocking" class="method"><a class="src rightside" href="../../src/gio/auto/pollable_output_stream.rs.html#116-120">Source</a><h4 class="code-header">fn <a href="#method.write_nonblocking" class="fn">write_nonblocking</a>(
+    &amp;self,
+    buffer: &amp;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Attempts to write up to @count bytes from @buffer to @self, as
+with g_output_stream_write(). If @self is not currently writable,
+this will immediately return <a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.WouldBlock" title="variant gio::auto::enums::IOErrorEnum::WouldBlock"><code>IOErrorEnum::WouldBlock</code></a>, and you can
+use g_pollable_output_stream_create_source() to create a #GSource
+that will be triggered when @self is writable.</p>
+<p>Note that since this method never blocks, you cannot actually
+use @cancellable to cancel it. However, it will return an error
+if @cancellable has already been cancelled when you call, which
+may happen if you call this method after a source triggers due
+to having been cancelled.</p>
+<p>Also note that if <a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.WouldBlock" title="variant gio::auto::enums::IOErrorEnum::WouldBlock"><code>IOErrorEnum::WouldBlock</code></a> is returned some underlying
+transports like D/TLS require that you re-send the same @buffer and
+@count in the next write call.</p>
+<p>The behaviour of this method is undefined if
+g_pollable_output_stream_can_poll() returns <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> for @self.</p>
+<h6 id="buffer"><a class="doc-anchor" href="#buffer">§</a><code>buffer</code></h6>
+<p>a buffer to write
+data from</p>
+<h6 id="cancellable"><a class="doc-anchor" href="#cancellable">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-2"><a class="doc-anchor" href="#returns-2">§</a>Returns</h5>
+<p>the number of bytes written, or -1 on error (including
+<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.WouldBlock" title="variant gio::auto::enums::IOErrorEnum::WouldBlock"><code>IOErrorEnum::WouldBlock</code></a>).</p>
+</div></details></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><section id="impl-PollableOutputStreamExt-for-O" class="impl"><a class="src rightside" href="../../src/gio/auto/pollable_output_stream.rs.html#140">Source</a><a href="#impl-PollableOutputStreamExt-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O&gt; <a class="trait" href="trait.PollableOutputStreamExt.html" title="trait gio_win32::prelude::PollableOutputStreamExt">PollableOutputStreamExt</a> for O<div class="where">where
+    O: <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/pollable_output_stream/struct.PollableOutputStream.html" title="struct gio::auto::pollable_output_stream::PollableOutputStream">PollableOutputStream</a>&gt;,</div></h3></section></div><script src="../../trait.impl/gio/auto/pollable_output_stream/trait.PollableOutputStreamExt.js" async></script></section></div></main></body></html>

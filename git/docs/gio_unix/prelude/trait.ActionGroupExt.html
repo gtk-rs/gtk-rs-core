@@ -1,0 +1,293 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait containing all `struct@ActionGroup` methods."><title>ActionGroupExt in gio_unix::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-ca0dd0c4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio_unix" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (ba2142a19 2025-12-07)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-a3946164.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-a410ff4d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-263c88ec.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("main" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "main") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<rustdoc-topbar><h2><a href="#">ActionGroupExt</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../gio_unix/index.html">gio_<wbr>unix</a><span class="version">0.22.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Action<wbr>Group<wbr>Ext</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#implementors-1" title="Implementors">Implementors</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.action_added" title="action_added">action_added</a></li><li><a href="#method.action_enabled_changed" title="action_enabled_changed">action_enabled_changed</a></li><li><a href="#method.action_parameter_type" title="action_parameter_type">action_parameter_type</a></li><li><a href="#method.action_removed" title="action_removed">action_removed</a></li><li><a href="#method.action_state" title="action_state">action_state</a></li><li><a href="#method.action_state_changed" title="action_state_changed">action_state_changed</a></li><li><a href="#method.action_state_hint" title="action_state_hint">action_state_hint</a></li><li><a href="#method.action_state_type" title="action_state_type">action_state_type</a></li><li><a href="#method.activate_action" title="activate_action">activate_action</a></li><li><a href="#method.change_action_state" title="change_action_state">change_action_state</a></li><li><a href="#method.connect_action_added" title="connect_action_added">connect_action_added</a></li><li><a href="#method.connect_action_enabled_changed" title="connect_action_enabled_changed">connect_action_enabled_changed</a></li><li><a href="#method.connect_action_removed" title="connect_action_removed">connect_action_removed</a></li><li><a href="#method.connect_action_state_changed" title="connect_action_state_changed">connect_action_state_changed</a></li><li><a href="#method.has_action" title="has_action">has_action</a></li><li><a href="#method.is_action_enabled" title="is_action_enabled">is_action_enabled</a></li><li><a href="#method.list_actions" title="list_actions">list_actions</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In gio_<wbr>unix::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">gio_unix</a>::<wbr><a href="index.html">prelude</a></div><h1>Trait <span class="trait">Action<wbr>Group<wbr>Ext</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/gio/auto/action_group.rs.html#112">Source</a> </span></div><pre class="rust item-decl"><code>pub trait ActionGroupExt: <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/action_group/struct.ActionGroup.html" title="struct gio::auto::action_group::ActionGroup">ActionGroup</a>&gt; + 'static {
+<details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 17 methods</span></summary>    // Provided methods
+    fn <a href="#method.action_added" class="fn">action_added</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.action_enabled_changed" class="fn">action_enabled_changed</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, enabled: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.action_removed" class="fn">action_removed</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.action_state_changed" class="fn">action_state_changed</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, state: &amp;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.activate_action" class="fn">activate_action</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, parameter: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.change_action_state" class="fn">change_action_state</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: &amp;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_action_enabled" class="fn">is_action_enabled</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.action_parameter_type" class="fn">action_parameter_type</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/variant_type/struct.VariantType.html" title="struct glib::variant_type::VariantType">VariantType</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.action_state" class="fn">action_state</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.action_state_hint" class="fn">action_state_hint</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.action_state_type" class="fn">action_state_type</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/variant_type/struct.VariantType.html" title="struct glib::variant_type::VariantType">VariantType</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.has_action" class="fn">has_action</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.list_actions" class="fn">list_actions</a>(&amp;self) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_action_added" class="fn">connect_action_added</a>&lt;F&gt;(
+        &amp;self,
+        detail: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_action_enabled_changed" class="fn">connect_action_enabled_changed</a>&lt;F&gt;(
+        &amp;self,
+        detail: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_action_removed" class="fn">connect_action_removed</a>&lt;F&gt;(
+        &amp;self,
+        detail: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_action_state_changed" class="fn">connect_action_state_changed</a>&lt;F&gt;(
+        &amp;self,
+        detail: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, &amp;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>) + 'static</span> { ... }
+</details>}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait containing all <a href="../../gio/auto/action_group/struct.ActionGroup.html" title="struct gio::auto::action_group::ActionGroup"><code>ActionGroup</code></a> methods.</p>
+<h2 id="implementors-1"><a class="doc-anchor" href="#implementors-1">§</a>Implementors</h2>
+<p><a href="../../gio/auto/action_group/struct.ActionGroup.html" title="struct gio::auto::action_group::ActionGroup"><code>ActionGroup</code></a>, <a href="../../gio/auto/application/struct.Application.html" title="struct gio::auto::application::Application"><code>Application</code></a>, <a href="../../gio/auto/dbus_action_group/struct.DBusActionGroup.html" title="struct gio::auto::dbus_action_group::DBusActionGroup"><code>DBusActionGroup</code></a>, <a href="../../gio/auto/remote_action_group/struct.RemoteActionGroup.html" title="struct gio::auto::remote_action_group::RemoteActionGroup"><code>RemoteActionGroup</code></a>, <a href="../../gio/auto/simple_action_group/struct.SimpleActionGroup.html" title="struct gio::auto::simple_action_group::SimpleActionGroup"><code>SimpleActionGroup</code></a></p>
+</div></details><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.action_added" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#119">Source</a><h4 class="code-header">fn <a href="#method.action_added" class="fn">action_added</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)</h4></section></summary><div class="docblock"><p>Emits the <a href="../../gio/auto/action_group/struct.ActionGroup.html#action-added" title="struct gio::auto::action_group::ActionGroup"><code>action-added</code></a> signal on @self.</p>
+<p>This function should only be called by [type@Gio.ActionGroup] implementations.</p>
+<h6 id="action_name"><a class="doc-anchor" href="#action_name">§</a><code>action_name</code></h6>
+<p>the name of an action in the group</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.action_enabled_changed" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#136">Source</a><h4 class="code-header">fn <a href="#method.action_enabled_changed" class="fn">action_enabled_changed</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, enabled: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>)</h4></section></summary><div class="docblock"><p>Emits the <a href="../../gio/auto/action_group/struct.ActionGroup.html#action-enabled-changed" title="struct gio::auto::action_group::ActionGroup"><code>action-enabled-changed</code></a> signal on @self.</p>
+<p>This function should only be called by [type@Gio.ActionGroup] implementations.</p>
+<h6 id="action_name-1"><a class="doc-anchor" href="#action_name-1">§</a><code>action_name</code></h6>
+<p>the name of an action in the group</p>
+<h6 id="enabled"><a class="doc-anchor" href="#enabled">§</a><code>enabled</code></h6>
+<p>whether the action is now enabled</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.action_removed" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#152">Source</a><h4 class="code-header">fn <a href="#method.action_removed" class="fn">action_removed</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)</h4></section></summary><div class="docblock"><p>Emits the <a href="../../gio/auto/action_group/struct.ActionGroup.html#action-removed" title="struct gio::auto::action_group::ActionGroup"><code>action-removed</code></a> signal on @self.</p>
+<p>This function should only be called by [type@Gio.ActionGroup] implementations.</p>
+<h6 id="action_name-2"><a class="doc-anchor" href="#action_name-2">§</a><code>action_name</code></h6>
+<p>the name of an action in the group</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.action_state_changed" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#169">Source</a><h4 class="code-header">fn <a href="#method.action_state_changed" class="fn">action_state_changed</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, state: &amp;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>)</h4></section></summary><div class="docblock"><p>Emits the <a href="../../gio/auto/action_group/struct.ActionGroup.html#action-state-changed" title="struct gio::auto::action_group::ActionGroup"><code>action-state-changed</code></a> signal on @self.</p>
+<p>This function should only be called by [type@Gio.ActionGroup] implementations.</p>
+<h6 id="action_name-3"><a class="doc-anchor" href="#action_name-3">§</a><code>action_name</code></h6>
+<p>the name of an action in the group</p>
+<h6 id="state"><a class="doc-anchor" href="#state">§</a><code>state</code></h6>
+<p>the new state of the named action</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.activate_action" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#219">Source</a><h4 class="code-header">fn <a href="#method.activate_action" class="fn">activate_action</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, parameter: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;)</h4></section></summary><div class="docblock"><p>Activate the named action within @self.</p>
+<p>If the action is expecting a parameter, then the correct type of
+parameter must be given as @parameter.  If the action is expecting no
+parameters then @parameter must be <code>NULL</code>.  See
+<a href="trait.ActionGroupExt.html#method.action_parameter_type" title="method gio::auto::action_group::ActionGroupExt::action_parameter_type::action_parameter_type"><code>action_parameter_type()</code></a>.</p>
+<p>If the [type@Gio.ActionGroup] implementation supports asynchronous remote
+activation over D-Bus, this call may return before the relevant
+D-Bus traffic has been sent, or any replies have been received. In
+order to block on such asynchronous activation calls,
+<a href="../../gio/auto/dbus_connection/struct.DBusConnection.html#method.flush" title="method gio::auto::dbus_connection::DBusConnection::flush"><code>DBusConnection::flush()</code></a> should be called prior to the code, which
+depends on the result of the action activation. Without flushing
+the D-Bus connection, there is no guarantee that the action would
+have been activated.</p>
+<p>The following code which runs in a remote app instance, shows an
+example of a ‘quit’ action being activated on the primary app
+instance over D-Bus. Here <a href="../../gio/auto/dbus_connection/struct.DBusConnection.html#method.flush" title="method gio::auto::dbus_connection::DBusConnection::flush"><code>DBusConnection::flush()</code></a> is called
+before <code>exit()</code>. Without <code>g_dbus_connection_flush()</code>, the ‘quit’ action
+may fail to be activated on the primary instance.</p>
+<p><strong>⚠️ The following code is in c ⚠️</strong></p>
+<div class="example-wrap"><pre class="language-c"><code>// call ‘quit’ action on primary instance
+g_action_group_activate_action (G_ACTION_GROUP (app), &quot;quit&quot;, NULL);
+
+// make sure the action is activated now
+g_dbus_connection_flush (…);
+
+g_debug (&quot;Application has been terminated. Exiting.&quot;);
+
+exit (0);</code></pre></div><h6 id="action_name-4"><a class="doc-anchor" href="#action_name-4">§</a><code>action_name</code></h6>
+<p>the name of the action to activate</p>
+<h6 id="parameter"><a class="doc-anchor" href="#parameter">§</a><code>parameter</code></h6>
+<p>parameters to the activation</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.change_action_state" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#245">Source</a><h4 class="code-header">fn <a href="#method.change_action_state" class="fn">change_action_state</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: &amp;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>)</h4></section></summary><div class="docblock"><p>Request for the state of the named action within @self to be
+changed to @value.</p>
+<p>The action must be stateful and @value must be of the correct type.
+See <a href="trait.ActionGroupExt.html#method.action_state_type" title="method gio::auto::action_group::ActionGroupExt::action_state_type::action_state_type"><code>action_state_type()</code></a>.</p>
+<p>This call merely requests a change.  The action may refuse to change
+its state or may change its state to something other than @value.
+See <a href="trait.ActionGroupExt.html#method.action_state_hint" title="method gio::auto::action_group::ActionGroupExt::action_state_hint::action_state_hint"><code>action_state_hint()</code></a>.</p>
+<p>If the @value GVariant is floating, it is consumed.</p>
+<h6 id="action_name-5"><a class="doc-anchor" href="#action_name-5">§</a><code>action_name</code></h6>
+<p>the name of the action to request the change on</p>
+<h6 id="value"><a class="doc-anchor" href="#value">§</a><code>value</code></h6>
+<p>the new state</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_action_enabled" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#267">Source</a><h4 class="code-header">fn <a href="#method.is_action_enabled" class="fn">is_action_enabled</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if the named action within @self is currently enabled.</p>
+<p>An action must be enabled in order to be activated or in order to
+have its state changed from outside callers.</p>
+<h6 id="action_name-6"><a class="doc-anchor" href="#action_name-6">§</a><code>action_name</code></h6>
+<p>the name of the action to query</p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p>whether the action is currently enabled</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.action_parameter_type" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#297">Source</a><h4 class="code-header">fn <a href="#method.action_parameter_type" class="fn">action_parameter_type</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/variant_type/struct.VariantType.html" title="struct glib::variant_type::VariantType">VariantType</a>&gt;</h4></section></summary><div class="docblock"><p>Queries the type of the parameter that must be given when activating
+the named action within @self.</p>
+<p>When activating the action using <a href="trait.ActionGroupExt.html#method.activate_action" title="method gio::auto::action_group::ActionGroupExt::activate_action::activate_action"><code>activate_action()</code></a>,
+the [type@GLib.Variant] given to that function must be of the type returned
+by this function.</p>
+<p>In the case that this function returns <code>NULL</code>, you must not give any
+[type@GLib.Variant], but <code>NULL</code> instead.</p>
+<p>The parameter type of a particular action will never change but it is
+possible for an action to be removed and for a new action to be added
+with the same name but a different parameter type.</p>
+<h6 id="action_name-7"><a class="doc-anchor" href="#action_name-7">§</a><code>action_name</code></h6>
+<p>the name of the action to query</p>
+<h5 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h5>
+<p>the parameter type</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.action_state" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#322">Source</a><h4 class="code-header">fn <a href="#method.action_state" class="fn">action_state</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;</h4></section></summary><div class="docblock"><p>Queries the current state of the named action within @self.</p>
+<p>If the action is not stateful then <code>NULL</code> will be returned.  If the
+action is stateful then the type of the return value is the type
+given by <a href="trait.ActionGroupExt.html#method.action_state_type" title="method gio::auto::action_group::ActionGroupExt::action_state_type::action_state_type"><code>action_state_type()</code></a>.</p>
+<p>The return value (if non-<code>NULL</code>) should be freed with
+<code>GLib::Variant::unref()</code> when it is no longer required.</p>
+<h6 id="action_name-8"><a class="doc-anchor" href="#action_name-8">§</a><code>action_name</code></h6>
+<p>the name of the action to query</p>
+<h5 id="returns-2"><a class="doc-anchor" href="#returns-2">§</a>Returns</h5>
+<p>the current state of the action</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.action_state_hint" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#357">Source</a><h4 class="code-header">fn <a href="#method.action_state_hint" class="fn">action_state_hint</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;</h4></section></summary><div class="docblock"><p>Requests a hint about the valid range of values for the state of the
+named action within @self.</p>
+<p>If <code>NULL</code> is returned it either means that the action is not stateful
+or that there is no hint about the valid range of values for the
+state of the action.</p>
+<p>If a [type@GLib.Variant] array is returned then each item in the array is a
+possible value for the state.  If a [type@GLib.Variant] pair (ie: two-tuple) is
+returned then the tuple specifies the inclusive lower and upper bound
+of valid values for the state.</p>
+<p>In any case, the information is merely a hint.  It may be possible to
+have a state value outside of the hinted range and setting a value
+within the range may fail.</p>
+<p>The return value (if non-<code>NULL</code>) should be freed with
+<code>GLib::Variant::unref()</code> when it is no longer required.</p>
+<h6 id="action_name-9"><a class="doc-anchor" href="#action_name-9">§</a><code>action_name</code></h6>
+<p>the name of the action to query</p>
+<h5 id="returns-3"><a class="doc-anchor" href="#returns-3">§</a>Returns</h5>
+<p>the state range hint</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.action_state_type" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#390">Source</a><h4 class="code-header">fn <a href="#method.action_state_type" class="fn">action_state_type</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/variant_type/struct.VariantType.html" title="struct glib::variant_type::VariantType">VariantType</a>&gt;</h4></section></summary><div class="docblock"><p>Queries the type of the state of the named action within
+@self.</p>
+<p>If the action is stateful then this function returns the
+[type@GLib.VariantType] of the state.  All calls to
+<a href="trait.ActionGroupExt.html#method.change_action_state" title="method gio::auto::action_group::ActionGroupExt::change_action_state::change_action_state"><code>change_action_state()</code></a> must give a [type@GLib.Variant] of this
+type and <a href="trait.ActionGroupExt.html#method.action_state" title="method gio::auto::action_group::ActionGroupExt::action_state::action_state"><code>action_state()</code></a> will return a [type@GLib.Variant]
+of the same type.</p>
+<p>If the action is not stateful then this function will return <code>NULL</code>.
+In that case, <a href="trait.ActionGroupExt.html#method.action_state" title="method gio::auto::action_group::ActionGroupExt::action_state::action_state"><code>action_state()</code></a> will return <code>NULL</code>
+and you must not call <a href="trait.ActionGroupExt.html#method.change_action_state" title="method gio::auto::action_group::ActionGroupExt::change_action_state::change_action_state"><code>change_action_state()</code></a>.</p>
+<p>The state type of a particular action will never change but it is
+possible for an action to be removed and for a new action to be added
+with the same name but a different state type.</p>
+<h6 id="action_name-10"><a class="doc-anchor" href="#action_name-10">§</a><code>action_name</code></h6>
+<p>the name of the action to query</p>
+<h5 id="returns-4"><a class="doc-anchor" href="#returns-4">§</a>Returns</h5>
+<p>the state type, if the action is stateful</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.has_action" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#407">Source</a><h4 class="code-header">fn <a href="#method.has_action" class="fn">has_action</a>(&amp;self, action_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if the named action exists within @self.</p>
+<h6 id="action_name-11"><a class="doc-anchor" href="#action_name-11">§</a><code>action_name</code></h6>
+<p>the name of the action to check for</p>
+<h5 id="returns-5"><a class="doc-anchor" href="#returns-5">§</a>Returns</h5>
+<p>whether the named action exists</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.list_actions" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#426">Source</a><h4 class="code-header">fn <a href="#method.list_actions" class="fn">list_actions</a>(&amp;self) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;</h4></section></summary><div class="docblock"><p>Lists the actions contained within @self.</p>
+<p>The caller is responsible for freeing the list with <code>strfreev()</code> when
+it is no longer required.</p>
+<h5 id="returns-6"><a class="doc-anchor" href="#returns-6">§</a>Returns</h5>
+<p>a <code>NULL</code>-terminated array
+of the names of the actions in the group</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_action_added" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#441-445">Source</a><h4 class="code-header">fn <a href="#method.connect_action_added" class="fn">connect_action_added</a>&lt;F&gt;(&amp;self, detail: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + 'static,</div></h4></section></summary><div class="docblock"><p>Signals that a new action was just added to the group.</p>
+<p>This signal is emitted after the action has been added
+and is now visible.</p>
+<h6 id="action_name-12"><a class="doc-anchor" href="#action_name-12">§</a><code>action_name</code></h6>
+<p>the name of the action in @action_group</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_action_enabled_changed" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#483-487">Source</a><h4 class="code-header">fn <a href="#method.connect_action_enabled_changed" class="fn">connect_action_enabled_changed</a>&lt;F&gt;(
+    &amp;self,
+    detail: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) + 'static,</div></h4></section></summary><div class="docblock"><p>Signals that the enabled status of the named action has changed.</p>
+<h6 id="action_name-13"><a class="doc-anchor" href="#action_name-13">§</a><code>action_name</code></h6>
+<p>the name of the action in @action_group</p>
+<h6 id="enabled-1"><a class="doc-anchor" href="#enabled-1">§</a><code>enabled</code></h6>
+<p>whether the action is enabled</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_action_removed" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#529-533">Source</a><h4 class="code-header">fn <a href="#method.connect_action_removed" class="fn">connect_action_removed</a>&lt;F&gt;(
+    &amp;self,
+    detail: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + 'static,</div></h4></section></summary><div class="docblock"><p>Signals that an action is just about to be removed from the group.</p>
+<p>This signal is emitted before the action is removed, so the action
+is still visible and can be queried from the signal handler.</p>
+<h6 id="action_name-14"><a class="doc-anchor" href="#action_name-14">§</a><code>action_name</code></h6>
+<p>the name of the action in @action_group</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_action_state_changed" class="method"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#571-575">Source</a><h4 class="code-header">fn <a href="#method.connect_action_state_changed" class="fn">connect_action_state_changed</a>&lt;F&gt;(
+    &amp;self,
+    detail: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self, &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, &amp;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>) + 'static,</div></h4></section></summary><div class="docblock"><p>Signals that the state of the named action has changed.</p>
+<h6 id="action_name-15"><a class="doc-anchor" href="#action_name-15">§</a><code>action_name</code></h6>
+<p>the name of the action in @action_group</p>
+<h6 id="value-1"><a class="doc-anchor" href="#value-1">§</a><code>value</code></h6>
+<p>the new value of the state</p>
+</div></details></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><section id="impl-ActionGroupExt-for-O" class="impl"><a class="src rightside" href="../../src/gio/auto/action_group.rs.html#610">Source</a><a href="#impl-ActionGroupExt-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O&gt; <a class="trait" href="trait.ActionGroupExt.html" title="trait gio_unix::prelude::ActionGroupExt">ActionGroupExt</a> for O<div class="where">where
+    O: <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/action_group/struct.ActionGroup.html" title="struct gio::auto::action_group::ActionGroup">ActionGroup</a>&gt;,</div></h3></section></div><script src="../../trait.impl/gio/auto/action_group/trait.ActionGroupExt.js" async></script></section></div></main></body></html>
