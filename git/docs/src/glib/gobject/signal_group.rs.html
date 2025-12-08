@@ -76,7 +76,7 @@
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">std::mem::transmute</a>;
 <a href=#4 id=4 data-nosnippet>4</a>
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use crate</span>::{
-<a href=#6 id=6 data-nosnippet>6</a>    ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>,
+<a href=#6 id=6 data-nosnippet>6</a>    ffi, gobject_ffi,
 <a href=#7 id=7 data-nosnippet>7</a>    <a href="../lib.rs.html#162">prelude</a>::<span class="kw-2">*</span>,
 <a href=#8 id=8 data-nosnippet>8</a>    signal::{<a href="../signal.rs.html#67-89">connect_raw</a>, <a href="../signal.rs.html#49">SignalHandlerId</a>},
 <a href=#9 id=9 data-nosnippet>9</a>    <a href="../lib.rs.html#167">translate</a>::<span class="kw-2">*</span>,
@@ -101,7 +101,7 @@
 <a href=#28 id=28 data-nosnippet>28</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_signal_group_connect_closure"</span>)]
 <a href=#29 id=29 data-nosnippet>29</a>    </span><span class="kw">pub fn </span>connect_closure(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, after: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, closure: <a href="../closure.rs.html#27">RustClosure</a>) {
 <a href=#30 id=30 data-nosnippet>30</a>        <span class="kw">unsafe </span>{
-<a href=#31 id=31 data-nosnippet>31</a>            gobject_ffi::<a href="../../../gobject_sys/fn.g_signal_group_connect_closure.html">g_signal_group_connect_closure</a>(
+<a href=#31 id=31 data-nosnippet>31</a>            gobject_ffi::g_signal_group_connect_closure(
 <a href=#32 id=32 data-nosnippet>32</a>                <a class="self" href="#29">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
 <a href=#33 id=33 data-nosnippet>33</a>                <a href="#29">signal_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
 <a href=#34 id=34 data-nosnippet>34</a>                <a href="#29">closure</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -185,8 +185,8 @@
 <a href=#112 id=112 data-nosnippet>112</a>
 <a href=#113 id=113 data-nosnippet>113</a>    <span class="kw">unsafe fn </span>connect_bind_unsafe&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="../object.rs.html#1376-1379">Object</a>)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../signal.rs.html#49">SignalHandlerId</a> {
 <a href=#114 id=114 data-nosnippet>114</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>bind_trampoline&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/signal_group.rs.html#7-72">SignalGroup</a>, <span class="kw-2">&amp;</span><a href="../object.rs.html#1376-1379">Object</a>)&gt;(
-<a href=#115 id=115 data-nosnippet>115</a>            this: <span class="kw-2">*mut </span><span class="kw">crate</span>::gobject_ffi::<a href="../../../gobject_sys/struct.GSignalGroup.html">GSignalGroup</a>,
-<a href=#116 id=116 data-nosnippet>116</a>            instance: <span class="kw-2">*mut </span><span class="kw">crate</span>::gobject_ffi::<a href="../../../gobject_sys/struct.GObject.html">GObject</a>,
+<a href=#115 id=115 data-nosnippet>115</a>            this: <span class="kw-2">*mut </span><span class="kw">crate</span>::gobject_ffi::GSignalGroup,
+<a href=#116 id=116 data-nosnippet>116</a>            instance: <span class="kw-2">*mut </span><span class="kw">crate</span>::gobject_ffi::GObject,
 <a href=#117 id=117 data-nosnippet>117</a>            f: ffi::gpointer,
 <a href=#118 id=118 data-nosnippet>118</a>        ) {
 <a href=#119 id=119 data-nosnippet>119</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#117">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
@@ -205,7 +205,7 @@
 <a href=#132 id=132 data-nosnippet>132</a>
 <a href=#133 id=133 data-nosnippet>133</a>    <span class="kw">unsafe fn </span>connect_unbind_unsafe&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>)&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../signal.rs.html#49">SignalHandlerId</a> {
 <a href=#134 id=134 data-nosnippet>134</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>unbind_trampoline&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="auto/signal_group.rs.html#7-72">SignalGroup</a>)&gt;(
-<a href=#135 id=135 data-nosnippet>135</a>            this: <span class="kw-2">*mut </span><span class="kw">crate</span>::gobject_ffi::<a href="../../../gobject_sys/struct.GSignalGroup.html">GSignalGroup</a>,
+<a href=#135 id=135 data-nosnippet>135</a>            this: <span class="kw-2">*mut </span><span class="kw">crate</span>::gobject_ffi::GSignalGroup,
 <a href=#136 id=136 data-nosnippet>136</a>            f: ffi::gpointer,
 <a href=#137 id=137 data-nosnippet>137</a>        ) {
 <a href=#138 id=138 data-nosnippet>138</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#136">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
