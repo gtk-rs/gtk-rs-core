@@ -5,8 +5,29 @@ pub use libc::passwd;
 #[allow(unused_imports)]
 use libc::{c_char, c_int, c_ushort, c_void};
 
-pub use libc::c_int as gint;
-pub use libc::c_uint as guint;
+pub type gint16 = i16;
+pub type gint32 = i32;
+pub type gint64 = i64;
+pub type gint8 = i8;
+pub type gssize = isize;
+pub type gintptr = libc::intptr_t;
+pub type gint = libc::c_int;
+pub type gchar = libc::c_char;
+pub type guchar = libc::c_uchar;
+pub type glong = libc::c_long;
+pub type gshort = libc::c_short;
+pub type guint = libc::c_uint;
+pub type gulong = libc::c_ulong;
+pub type gushort = libc::c_ushort;
+pub type guint16 = u16;
+pub type guint32 = u32;
+pub type guint64 = u64;
+pub type guint8 = u8;
+pub type gsize = usize;
+pub type guintptr = libc::uintptr_t;
+pub type gfloat = f32;
+pub type gdouble = f64;
+pub type goffset = libc::off_t;
 
 pub type GType = libc::size_t;
 
