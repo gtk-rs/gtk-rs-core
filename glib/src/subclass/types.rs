@@ -107,8 +107,9 @@ fn offset_ptr_by_bytes<T, U>(ptr: *const T, offset: isize) -> *const U {
     } else {
         ptr + offset as usize
     };
-    debug_assert_eq!(ptr & (mem::align_of::<U>() - 1), 0);
-    ptr as *const U
+    let ptr = ptr as *const U;
+    debug_assert!(ptr.is_aligned());
+    ptr
 }
 
 // rustdoc-stripper-ignore-next
@@ -129,8 +130,9 @@ fn offset_ptr_by_bytes_mut<T, U>(ptr: *mut T, offset: isize) -> *mut U {
     } else {
         ptr + offset as usize
     };
-    debug_assert_eq!(ptr & (mem::align_of::<U>() - 1), 0);
-    ptr as *mut U
+    let ptr = ptr as *mut U;
+    debug_assert!(ptr.is_aligned());
+    ptr
 }
 
 unsafe impl<T: InstanceStruct> InstanceStructExt for T {
@@ -942,7 +944,7 @@ unsafe extern "C" fn instance_init<T: ObjectSubclass>(
     );
 
     assert!(
-        priv_ptr as usize & (mem::align_of::<PrivateStruct<T>>() - 1) == 0,
+        (priv_ptr as *const PrivateStruct<T>).is_aligned(),
         "Private instance data has higher alignment requirements ({}) than \
          the allocation from GLib. If alignment of more than {} bytes \
          is required, store the corresponding data separately on the heap.",

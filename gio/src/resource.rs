@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{mem, ptr};
+use std::ptr;
 
 use glib::translate::*;
 
@@ -16,7 +16,7 @@ impl Resource {
             // https://bugzilla.gnome.org/show_bug.cgi?id=790030
             let mut data = data.clone();
             let data_ptr = glib::ffi::g_bytes_get_data(data.to_glib_none().0, ptr::null_mut());
-            if data_ptr as usize % mem::align_of::<*const u8>() != 0 {
+            if !(data_ptr as *const *const ()).is_aligned() {
                 data = glib::Bytes::from(&*data);
             }
 
