@@ -244,7 +244,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for &'a ValueArray {
         );
         let value = &*(value as *const Value as *const gobject_ffi::GValue);
         debug_assert!(!value.data[0].v_pointer.is_null());
-        <ValueArray>::from_glib_ptr_borrow(
+        <ValueArray>::from_glib_borrow2(
             &*(&value.data[0].v_pointer as *const ffi::gpointer
                 as *const *mut gobject_ffi::GValueArray),
         )

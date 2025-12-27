@@ -370,13 +370,12 @@ where
     <A as ObjectType>::GlibClassType: Copy,
 {
     fn iface_infos() -> Vec<(Type, InterfaceInfo)> {
-        vec![(
-            A::static_type(),
-            InterfaceInfo(gobject_ffi::GInterfaceInfo {
+        vec![(A::static_type(), unsafe {
+            InterfaceInfo::unsafe_from(gobject_ffi::GInterfaceInfo {
                 interface_init: Some(interface_init::<T, A>),
-                ..InterfaceInfo::default().0
-            }),
-        )]
+                ..InterfaceInfo::default().inner
+            })
+        })]
     }
 
     #[inline]
@@ -415,11 +414,13 @@ macro_rules! interface_list_trait_impl(
                     $(
                         (
                             $name::static_type(),
-                            InterfaceInfo(gobject_ffi::GInterfaceInfo {
-                                interface_init: Some(interface_init::<T, $name>),
-                                interface_finalize: None,
-                                interface_data: ptr::null_mut(),
-                            }),
+                            unsafe {
+                                InterfaceInfo::unsafe_from(gobject_ffi::GInterfaceInfo {
+                                    interface_init: Some(interface_init::<T, $name>),
+                                    interface_finalize: None,
+                                    interface_data: ptr::null_mut(),
+                                })
+                            },
                         )
                     ),+
                 ]
@@ -1124,12 +1125,12 @@ pub fn register_dynamic_type<P: DynamicObjectRegisterExt, T: ObjectSubclass>(
         let already_registered =
             gobject_ffi::g_type_from_name(type_name.as_ptr()) != gobject_ffi::G_TYPE_INVALID;
 
-        let type_info = TypeInfo(gobject_ffi::GTypeInfo {
+        let type_info = TypeInfo::unsafe_from(gobject_ffi::GTypeInfo {
             class_size: mem::size_of::<T::Class>() as u16,
             class_init: Some(class_init::<T>),
             instance_size: mem::size_of::<T::Instance>() as u16,
             instance_init: Some(instance_init::<T>),
-            ..TypeInfo::default().0
+            ..TypeInfo::default().inner
         });
 
         // registers the type within the `type_plugin`
