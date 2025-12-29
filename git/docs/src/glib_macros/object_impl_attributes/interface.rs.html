@@ -74,10 +74,10 @@
 <nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib_macros/object_impl_attributes/</div>interface.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>heck::ToShoutySnakeCase;
-<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.103/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
+<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.104/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.42/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.42/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.42/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
-<a href=#7 id=7 data-nosnippet>7</a><span class="kw">pub fn </span>impl_object_interface(input: <span class="kw">super</span>::<a href="../object_impl_attributes.rs.html#19-27">Input</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.103/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">pub fn </span>impl_object_interface(input: <span class="kw">super</span>::<a href="../object_impl_attributes.rs.html#19-27">Input</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.104/proc_macro2/struct.TokenStream.html">TokenStream</a> {
 <a href=#8 id=8 data-nosnippet>8</a>    <span class="kw">let </span>crate_ident = <span class="kw">crate</span>::utils::<a href="../utils.rs.html#188-215">crate_ident_new</a>();
 <a href=#9 id=9 data-nosnippet>9</a>    <span class="kw">let </span><span class="kw">super</span>::<a href="../object_impl_attributes.rs.html#19-27">Input</a> {
 <a href=#10 id=10 data-nosnippet>10</a>        attrs,
@@ -154,9 +154,9 @@
 <a href=#81 id=81 data-nosnippet>81</a>
 <a href=#82 id=82 data-nosnippet>82</a><span class="comment">// Registers the object interface as a static type.
 <a href=#83 id=83 data-nosnippet>83</a></span><span class="kw">fn </span>register_object_interface_as_static(
-<a href=#84 id=84 data-nosnippet>84</a>    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.103/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-<a href=#85 id=85 data-nosnippet>85</a>    self_ty: <span class="kw-2">&amp;</span>syn::<a href="https://docs.rs/proc-macro2/1.0.103/proc_macro2/struct.Ident.html">Ident</a>,
-<a href=#86 id=86 data-nosnippet>86</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.103/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<a href=#84 id=84 data-nosnippet>84</a>    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.104/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+<a href=#85 id=85 data-nosnippet>85</a>    self_ty: <span class="kw-2">&amp;</span>syn::<a href="https://docs.rs/proc-macro2/1.0.104/proc_macro2/struct.Ident.html">Ident</a>,
+<a href=#86 id=86 data-nosnippet>86</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.104/proc_macro2/struct.TokenStream.html">TokenStream</a> {
 <a href=#87 id=87 data-nosnippet>87</a>    <span class="comment">// registers the interface on first use (lazy registration).
 <a href=#88 id=88 data-nosnippet>88</a>    </span><a href="https://docs.rs/quote/1.0.42/quote/macro.quote.html">quote!</a> {
 <a href=#89 id=89 data-nosnippet>89</a>        <span class="kw">impl </span>#self_ty {
@@ -175,11 +175,11 @@
 <a href=#102 id=102 data-nosnippet>102</a><span class="comment">// The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
 <a href=#103 id=103 data-nosnippet>103</a>// An object interface can be reregistered as a dynamic type.
 <a href=#104 id=104 data-nosnippet>104</a></span><span class="kw">fn </span>register_object_interface_as_dynamic(
-<a href=#105 id=105 data-nosnippet>105</a>    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.103/proc_macro2/struct.TokenStream.html">TokenStream</a>,
-<a href=#106 id=106 data-nosnippet>106</a>    self_ty: <span class="kw-2">&amp;</span>syn::<a href="https://docs.rs/proc-macro2/1.0.103/proc_macro2/struct.Ident.html">Ident</a>,
-<a href=#107 id=107 data-nosnippet>107</a>    plugin_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.103/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+<a href=#105 id=105 data-nosnippet>105</a>    crate_ident: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.104/proc_macro2/struct.TokenStream.html">TokenStream</a>,
+<a href=#106 id=106 data-nosnippet>106</a>    self_ty: <span class="kw-2">&amp;</span>syn::<a href="https://docs.rs/proc-macro2/1.0.104/proc_macro2/struct.Ident.html">Ident</a>,
+<a href=#107 id=107 data-nosnippet>107</a>    plugin_ty: <span class="kw-2">&amp;</span><a href="https://docs.rs/proc-macro2/1.0.104/proc_macro2/struct.TokenStream.html">TokenStream</a>,
 <a href=#108 id=108 data-nosnippet>108</a>    lazy_registration: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-<a href=#109 id=109 data-nosnippet>109</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.103/proc_macro2/struct.TokenStream.html">TokenStream</a> {
+<a href=#109 id=109 data-nosnippet>109</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.104/proc_macro2/struct.TokenStream.html">TokenStream</a> {
 <a href=#110 id=110 data-nosnippet>110</a>    <span class="comment">// The following implementations follows the lifecycle of plugins and of dynamic types (see [`TypePluginExt`] and [`TypeModuleExt`]).
 <a href=#111 id=111 data-nosnippet>111</a>    // An object interface can be reregistered as a dynamic type.
 <a href=#112 id=112 data-nosnippet>112</a>    </span><span class="kw">if </span><a href="#108">lazy_registration</a> {
