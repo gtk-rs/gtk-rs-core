@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct DBusInterfaceInfo(Shared<ffi::GDBusInterfaceInfo>);
 
     match fn {
-        ref => |ptr| ffi::g_dbus_interface_info_ref(ptr),
-        unref => |ptr| ffi::g_dbus_interface_info_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_dbus_interface_info_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_dbus_interface_info_unref(ptr) },
         type_ => || ffi::g_dbus_interface_info_get_type(),
     }
 }

@@ -81,13 +81,15 @@ impl SimpleAction {
             parameter: *mut glib::ffi::GVariant,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                &from_glib_borrow(this),
-                Option::<glib::Variant>::from_glib_borrow(parameter)
-                    .as_ref()
-                    .as_ref(),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    &from_glib_borrow(this),
+                    Option::<glib::Variant>::from_glib_borrow(parameter)
+                        .as_ref()
+                        .as_ref(),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -114,13 +116,15 @@ impl SimpleAction {
             value: *mut glib::ffi::GVariant,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                &from_glib_borrow(this),
-                Option::<glib::Variant>::from_glib_borrow(value)
-                    .as_ref()
-                    .as_ref(),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    &from_glib_borrow(this),
+                    Option::<glib::Variant>::from_glib_borrow(value)
+                        .as_ref()
+                        .as_ref(),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

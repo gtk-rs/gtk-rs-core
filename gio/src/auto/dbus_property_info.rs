@@ -9,8 +9,8 @@ glib::wrapper! {
     pub struct DBusPropertyInfo(Shared<ffi::GDBusPropertyInfo>);
 
     match fn {
-        ref => |ptr| ffi::g_dbus_property_info_ref(ptr),
-        unref => |ptr| ffi::g_dbus_property_info_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_dbus_property_info_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_dbus_property_info_unref(ptr) },
         type_ => || ffi::g_dbus_property_info_get_type(),
     }
 }

@@ -92,11 +92,13 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
             drive: *mut ffi::GDrive,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(drive),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(drive),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -121,11 +123,13 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
             drive: *mut ffi::GDrive,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(drive),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(drive),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -150,11 +154,13 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
             drive: *mut ffi::GDrive,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(drive),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(drive),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -179,11 +185,13 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
             drive: *mut ffi::GDrive,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(drive),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(drive),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -208,11 +216,13 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
             drive: *mut ffi::GDrive,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(drive),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(drive),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -237,11 +247,13 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
             mount: *mut ffi::GMount,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(mount),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(mount),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -266,11 +278,13 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
             mount: *mut ffi::GMount,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(mount),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(mount),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -295,11 +309,13 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
             mount: *mut ffi::GMount,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(mount),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(mount),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -324,11 +340,13 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
             mount: *mut ffi::GMount,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(mount),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(mount),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -353,11 +371,13 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
             volume: *mut ffi::GVolume,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(volume),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(volume),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -382,11 +402,13 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
             volume: *mut ffi::GVolume,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(volume),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(volume),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -411,11 +433,13 @@ pub trait VolumeMonitorExt: IsA<VolumeMonitor> + 'static {
             volume: *mut ffi::GVolume,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(volume),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    VolumeMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(volume),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

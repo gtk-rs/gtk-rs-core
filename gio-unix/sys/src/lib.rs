@@ -323,7 +323,7 @@ impl ::std::fmt::Debug for GFileDescriptorBased {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
 
     //=========================================================================
     // GUnixMountEntry

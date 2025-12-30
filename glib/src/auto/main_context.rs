@@ -12,8 +12,8 @@ crate::wrapper! {
     pub struct MainContext(Shared<ffi::GMainContext>);
 
     match fn {
-        ref => |ptr| ffi::g_main_context_ref(ptr),
-        unref => |ptr| ffi::g_main_context_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_main_context_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_main_context_unref(ptr) },
         type_ => || ffi::g_main_context_get_type(),
     }
 }
