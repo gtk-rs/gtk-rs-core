@@ -240,8 +240,10 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             this: *mut ffi::GMountOperation,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -272,14 +274,16 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             flags: ffi::GAskPasswordFlags,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                MountOperation::from_glib_borrow(this).unsafe_cast_ref(),
-                &glib::GString::from_glib_borrow(message),
-                &glib::GString::from_glib_borrow(default_user),
-                &glib::GString::from_glib_borrow(default_domain),
-                from_glib(flags),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    MountOperation::from_glib_borrow(this).unsafe_cast_ref(),
+                    &glib::GString::from_glib_borrow(message),
+                    &glib::GString::from_glib_borrow(default_user),
+                    &glib::GString::from_glib_borrow(default_domain),
+                    from_glib(flags),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -309,11 +313,13 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             result: ffi::GMountOperationResult,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                MountOperation::from_glib_borrow(this).unsafe_cast_ref(),
-                from_glib(result),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    MountOperation::from_glib_borrow(this).unsafe_cast_ref(),
+                    from_glib(result),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -349,13 +355,15 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             bytes_left: i64,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                MountOperation::from_glib_borrow(this).unsafe_cast_ref(),
-                &glib::GString::from_glib_borrow(message),
-                time_left,
-                bytes_left,
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    MountOperation::from_glib_borrow(this).unsafe_cast_ref(),
+                    &glib::GString::from_glib_borrow(message),
+                    time_left,
+                    bytes_left,
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -380,8 +388,10 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -406,8 +416,10 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -432,8 +444,10 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -463,8 +477,10 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -494,8 +510,10 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -520,8 +538,10 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -546,8 +566,10 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -571,8 +593,10 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -597,8 +621,10 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(MountOperation::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

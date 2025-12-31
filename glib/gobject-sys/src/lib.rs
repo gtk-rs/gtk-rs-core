@@ -1418,7 +1418,7 @@ impl ::std::fmt::Debug for GTypePlugin {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
 
     //=========================================================================
     // GBindingFlags

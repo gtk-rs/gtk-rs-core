@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct AttrList(Shared<ffi::PangoAttrList>);
 
     match fn {
-        ref => |ptr| ffi::pango_attr_list_ref(ptr),
-        unref => |ptr| ffi::pango_attr_list_unref(ptr),
+        ref => |ptr| unsafe { ffi::pango_attr_list_ref(ptr) },
+        unref => |ptr| unsafe { ffi::pango_attr_list_unref(ptr) },
         type_ => || ffi::pango_attr_list_get_type(),
     }
 }
@@ -36,9 +36,11 @@ impl AttrList {
             attribute: *mut ffi::PangoAttribute,
             user_data: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
-            let attribute = from_glib_borrow(attribute);
-            let callback = user_data as *mut P;
-            (*callback)(&attribute).into_glib()
+            unsafe {
+                let attribute = from_glib_borrow(attribute);
+                let callback = user_data as *mut P;
+                (*callback)(&attribute).into_glib()
+            }
         }
         let func = Some(func_func::<P> as _);
         let super_callback0: &mut P = &mut func_data;

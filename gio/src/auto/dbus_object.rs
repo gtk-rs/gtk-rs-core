@@ -69,11 +69,13 @@ pub trait DBusObjectExt: IsA<DBusObject> + 'static {
             interface: *mut ffi::GDBusInterface,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                DBusObject::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(interface),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    DBusObject::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(interface),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -101,11 +103,13 @@ pub trait DBusObjectExt: IsA<DBusObject> + 'static {
             interface: *mut ffi::GDBusInterface,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                DBusObject::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(interface),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    DBusObject::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(interface),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

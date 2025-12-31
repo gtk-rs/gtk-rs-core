@@ -1415,7 +1415,7 @@ impl ::std::fmt::Debug for PangoRenderer {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
 
     //=========================================================================
     // PangoAlignment

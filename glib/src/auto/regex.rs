@@ -9,8 +9,8 @@ crate::wrapper! {
     pub struct Regex(Shared<ffi::GRegex>);
 
     match fn {
-        ref => |ptr| ffi::g_regex_ref(ptr),
-        unref => |ptr| ffi::g_regex_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_regex_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_regex_unref(ptr) },
         type_ => || ffi::g_regex_get_type(),
     }
 }

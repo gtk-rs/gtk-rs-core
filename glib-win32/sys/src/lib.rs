@@ -32,7 +32,7 @@ pub const G_WIN32_OS_ANY: GWin32OSType = 0;
 pub const G_WIN32_OS_WORKSTATION: GWin32OSType = 1;
 pub const G_WIN32_OS_SERVER: GWin32OSType = 2;
 
-extern "C" {
+unsafe extern "C" {
 
     //=========================================================================
     // Other functions

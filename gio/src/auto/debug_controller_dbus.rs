@@ -67,12 +67,14 @@ pub trait DebugControllerDBusExt: IsA<DebugControllerDBus> + 'static {
             invocation: *mut ffi::GDBusMethodInvocation,
             f: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
-            let f: &F = &*(f as *const F);
-            f(
-                DebugControllerDBus::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(invocation),
-            )
-            .into_glib()
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    DebugControllerDBus::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(invocation),
+                )
+                .into_glib()
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

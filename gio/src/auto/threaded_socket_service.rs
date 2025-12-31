@@ -44,15 +44,17 @@ pub trait ThreadedSocketServiceExt: IsA<ThreadedSocketService> + 'static {
             source_object: *mut glib::gobject_ffi::GObject,
             f: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
-            let f: &F = &*(f as *const F);
-            f(
-                ThreadedSocketService::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(connection),
-                Option::<glib::Object>::from_glib_borrow(source_object)
-                    .as_ref()
-                    .as_ref(),
-            )
-            .into_glib()
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    ThreadedSocketService::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(connection),
+                    Option::<glib::Object>::from_glib_borrow(source_object)
+                        .as_ref()
+                        .as_ref(),
+                )
+                .into_glib()
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

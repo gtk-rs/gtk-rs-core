@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct SettingsSchemaSource(Shared<ffi::GSettingsSchemaSource>);
 
     match fn {
-        ref => |ptr| ffi::g_settings_schema_source_ref(ptr),
-        unref => |ptr| ffi::g_settings_schema_source_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_settings_schema_source_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_settings_schema_source_unref(ptr) },
         type_ => || ffi::g_settings_schema_source_get_type(),
     }
 }

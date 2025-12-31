@@ -2656,7 +2656,7 @@ impl ::std::fmt::Debug for GVariantType {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
 
     //=========================================================================
     // GNormalizeMode

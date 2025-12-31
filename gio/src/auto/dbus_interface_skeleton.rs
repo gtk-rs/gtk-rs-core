@@ -180,12 +180,14 @@ pub trait DBusInterfaceSkeletonExt: IsA<DBusInterfaceSkeleton> + 'static {
             invocation: *mut ffi::GDBusMethodInvocation,
             f: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
-            let f: &F = &*(f as *const F);
-            f(
-                DBusInterfaceSkeleton::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(invocation),
-            )
-            .into_glib()
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    DBusInterfaceSkeleton::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(invocation),
+                )
+                .into_glib()
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -210,8 +212,10 @@ pub trait DBusInterfaceSkeletonExt: IsA<DBusInterfaceSkeleton> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(DBusInterfaceSkeleton::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(DBusInterfaceSkeleton::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

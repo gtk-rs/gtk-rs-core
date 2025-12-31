@@ -9095,7 +9095,7 @@ impl ::std::fmt::Debug for GVolume {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
 
     //=========================================================================
     // GBusType

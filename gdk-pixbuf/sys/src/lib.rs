@@ -397,7 +397,7 @@ impl ::std::fmt::Debug for GdkPixbufSimpleAnimIter {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
 
     //=========================================================================
     // GdkColorspace

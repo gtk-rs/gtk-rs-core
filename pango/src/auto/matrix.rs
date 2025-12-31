@@ -9,8 +9,8 @@ glib::wrapper! {
     pub struct Matrix(BoxedInline<ffi::PangoMatrix>);
 
     match fn {
-        copy => |ptr| ffi::pango_matrix_copy(ptr),
-        free => |ptr| ffi::pango_matrix_free(ptr),
+        copy => |ptr| unsafe { ffi::pango_matrix_copy(ptr) },
+        free => |ptr| unsafe { ffi::pango_matrix_free(ptr) },
         type_ => || ffi::pango_matrix_get_type(),
     }
 }

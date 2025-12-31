@@ -60,7 +60,7 @@ impl ::std::fmt::Debug for PangoCairoFontMap {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
 
     //=========================================================================
     // PangoCairoFont

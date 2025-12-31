@@ -27,10 +27,12 @@ pub trait FontsetExt: IsA<Fontset> + 'static {
             font: *mut ffi::PangoFont,
             user_data: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
-            let fontset = from_glib_borrow(fontset);
-            let font = from_glib_borrow(font);
-            let callback = user_data as *mut P;
-            (*callback)(&fontset, &font).into_glib()
+            unsafe {
+                let fontset = from_glib_borrow(fontset);
+                let font = from_glib_borrow(font);
+                let callback = user_data as *mut P;
+                (*callback)(&fontset, &font).into_glib()
+            }
         }
         let func = Some(func_func::<P> as _);
         let super_callback0: &mut P = &mut func_data;

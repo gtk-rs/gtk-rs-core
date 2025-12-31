@@ -367,7 +367,7 @@ impl ::std::fmt::Debug for graphene_vec4_t {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
 
     //=========================================================================
     // graphene_box2d_t
