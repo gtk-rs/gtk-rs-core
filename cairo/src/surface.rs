@@ -9,8 +9,8 @@ use glib::translate::*;
 use libc::{c_ulong, c_void};
 
 use crate::{
-    ffi, utils::status_to_result, Content, Device, Error, Format, ImageSurface, Rectangle,
-    RectangleInt, SurfaceType,
+    Content, Device, Error, Format, ImageSurface, Rectangle, RectangleInt, SurfaceType, ffi,
+    utils::status_to_result,
 };
 
 #[derive(Debug)]
@@ -21,23 +21,29 @@ pub struct Surface(ptr::NonNull<ffi::cairo_surface_t>);
 impl Surface {
     #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::cairo_surface_t) -> Surface {
-        debug_assert!(!ptr.is_null());
-        ffi::cairo_surface_reference(ptr);
-        Surface(ptr::NonNull::new_unchecked(ptr))
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            ffi::cairo_surface_reference(ptr);
+            Surface(ptr::NonNull::new_unchecked(ptr))
+        }
     }
 
     #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::cairo_surface_t) -> crate::Borrowed<Surface> {
-        debug_assert!(!ptr.is_null());
-        crate::Borrowed::new(Surface(ptr::NonNull::new_unchecked(ptr)))
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            crate::Borrowed::new(Surface(ptr::NonNull::new_unchecked(ptr)))
+        }
     }
 
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_surface_t) -> Result<Surface, Error> {
-        debug_assert!(!ptr.is_null());
-        let status = ffi::cairo_surface_status(ptr);
-        status_to_result(status)?;
-        Ok(Surface(ptr::NonNull::new_unchecked(ptr)))
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            let status = ffi::cairo_surface_status(ptr);
+            status_to_result(status)?;
+            Ok(Surface(ptr::NonNull::new_unchecked(ptr)))
+        }
     }
 
     #[inline]
@@ -101,26 +107,28 @@ impl Surface {
     #[doc(alias = "cairo_surface_get_mime_data")]
     #[doc(alias = "get_mime_data_raw")]
     pub unsafe fn mime_data_raw(&self, mime_type: &str) -> Option<&[u8]> {
-        let mut data_ptr: *mut u8 = ptr::null_mut();
-        let mut length: c_ulong = 0;
-        let mime_type = CString::new(mime_type).unwrap();
-        // The function actually needs a mutable pointer
-        #[allow(clippy::unnecessary_mut_passed)]
-        {
-            ffi::cairo_surface_get_mime_data(
-                self.to_raw_none(),
-                mime_type.as_ptr(),
-                &mut data_ptr,
-                &mut length,
-            );
-        }
-        if !data_ptr.is_null() && length != 0 {
-            Some(slice::from_raw_parts(
-                data_ptr as *const u8,
-                length as usize,
-            ))
-        } else {
-            None
+        unsafe {
+            let mut data_ptr: *mut u8 = ptr::null_mut();
+            let mut length: c_ulong = 0;
+            let mime_type = CString::new(mime_type).unwrap();
+            // The function actually needs a mutable pointer
+            #[allow(clippy::unnecessary_mut_passed)]
+            {
+                ffi::cairo_surface_get_mime_data(
+                    self.to_raw_none(),
+                    mime_type.as_ptr(),
+                    &mut data_ptr,
+                    &mut length,
+                );
+            }
+            if !data_ptr.is_null() && length != 0 {
+                Some(slice::from_raw_parts(
+                    data_ptr as *const u8,
+                    length as usize,
+                ))
+            } else {
+                None
+            }
         }
     }
 
@@ -139,8 +147,10 @@ impl Surface {
         let user_data = Box::into_raw(b);
 
         unsafe extern "C" fn unbox<T>(data: *mut c_void) {
-            let data: Box<T> = Box::from_raw(data as *mut T);
-            drop(data);
+            unsafe {
+                let data: Box<T> = Box::from_raw(data as *mut T);
+                drop(data);
+            }
         }
 
         let status = unsafe {
@@ -322,7 +332,7 @@ impl<'a> ToGlibPtr<'a, *mut ffi::cairo_surface_t> for Surface {
 impl FromGlibPtrNone<*mut ffi::cairo_surface_t> for Surface {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::cairo_surface_t) -> Surface {
-        Self::from_raw_none(ptr)
+        unsafe { Self::from_raw_none(ptr) }
     }
 }
 
@@ -330,7 +340,7 @@ impl FromGlibPtrNone<*mut ffi::cairo_surface_t> for Surface {
 impl FromGlibPtrBorrow<*mut ffi::cairo_surface_t> for Surface {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut ffi::cairo_surface_t) -> crate::Borrowed<Surface> {
-        Self::from_raw_borrow(ptr)
+        unsafe { Self::from_raw_borrow(ptr) }
     }
 }
 
@@ -338,7 +348,7 @@ impl FromGlibPtrBorrow<*mut ffi::cairo_surface_t> for Surface {
 impl FromGlibPtrFull<*mut ffi::cairo_surface_t> for Surface {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut ffi::cairo_surface_t) -> Surface {
-        Self::from_raw_full(ptr).unwrap()
+        unsafe { Self::from_raw_full(ptr).unwrap() }
     }
 }
 
@@ -430,7 +440,7 @@ impl Drop for MappedImageSurface {
 
 #[cfg(test)]
 mod tests {
-    use crate::{constants::MIME_TYPE_PNG, Format, ImageSurface};
+    use crate::{Format, ImageSurface, constants::MIME_TYPE_PNG};
 
     #[test]
     fn mime_data() {

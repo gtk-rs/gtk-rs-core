@@ -6,7 +6,7 @@ use futures_channel::oneshot;
 use futures_core::Future;
 use glib::{prelude::*, translate::*};
 
-use crate::{ffi, Cancellable};
+use crate::{Cancellable, ffi};
 
 // rustdoc-stripper-ignore-next
 /// The id of a cancelled handler that is returned by `CancellableExtManual::connect`. This type is
@@ -60,15 +60,19 @@ pub trait CancellableExtManual: IsA<Cancellable> {
             this: *mut ffi::GCancellable,
             callback: glib::ffi::gpointer,
         ) {
-            let callback: &mut Option<F> = &mut *(callback as *mut Option<F>);
-            let callback = callback
-                .take()
-                .expect("Cancellable::cancel() closure called multiple times");
-            callback(Cancellable::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let callback: &mut Option<F> = &mut *(callback as *mut Option<F>);
+                let callback = callback
+                    .take()
+                    .expect("Cancellable::cancel() closure called multiple times");
+                callback(Cancellable::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
 
         unsafe extern "C" fn destroy_closure<F>(ptr: glib::ffi::gpointer) {
-            let _ = Box::<Option<F>>::from_raw(ptr as *mut _);
+            unsafe {
+                let _ = Box::<Option<F>>::from_raw(ptr as *mut _);
+            }
         }
 
         let callback: Box<Option<F>> = Box::new(Some(callback));

@@ -4,7 +4,7 @@ use std::{ptr, time::SystemTime};
 
 use glib::{prelude::*, translate::*};
 
-use crate::{ffi, PixbufAnimation, PixbufAnimationIter};
+use crate::{PixbufAnimation, PixbufAnimationIter, ffi};
 
 pub trait PixbufAnimationExtManual: IsA<PixbufAnimation> + 'static {
     #[doc(alias = "gdk_pixbuf_animation_get_iter")]

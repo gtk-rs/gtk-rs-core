@@ -6,8 +6,8 @@ use std::{ffi::CString, mem::MaybeUninit, ptr};
 use glib::translate::*;
 
 use crate::{
-    ffi, utils::status_to_result, Error, FontExtents, FontFace, FontOptions, FontType, Glyph,
-    Matrix, TextCluster, TextExtents,
+    Error, FontExtents, FontFace, FontOptions, FontType, Glyph, Matrix, TextCluster, TextExtents,
+    ffi, utils::status_to_result,
 };
 
 #[cfg(feature = "use_glib")]
@@ -72,13 +72,13 @@ impl ScaledFont {
     #[cfg(feature = "use_glib")]
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_scaled_font_t) -> ScaledFont {
-        from_glib_full(ptr)
+        unsafe { from_glib_full(ptr) }
     }
 
     #[cfg(feature = "use_glib")]
     #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::cairo_scaled_font_t) -> ScaledFont {
-        from_glib_none(ptr)
+        unsafe { from_glib_none(ptr) }
     }
 
     #[cfg(not(feature = "use_glib"))]

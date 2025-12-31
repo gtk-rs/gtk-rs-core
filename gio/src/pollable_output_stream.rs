@@ -4,14 +4,14 @@ use std::{cell::RefCell, io, mem::transmute, pin::Pin};
 
 use futures_channel::oneshot;
 use futures_core::{
+    Future,
     stream::Stream,
     task::{Context, Poll},
-    Future,
 };
 use futures_io::AsyncWrite;
 use glib::{prelude::*, translate::*};
 
-use crate::{error::to_std_io_result, ffi, prelude::*, Cancellable, PollableOutputStream};
+use crate::{Cancellable, PollableOutputStream, error::to_std_io_result, ffi, prelude::*};
 #[cfg(feature = "v2_60")]
 use crate::{OutputVector, PollableReturn};
 
@@ -35,12 +35,17 @@ pub trait PollableOutputStreamExtManual: IsA<PollableOutputStream> {
             stream: *mut ffi::GPollableOutputStream,
             func: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
-            let func: &RefCell<F> = &*(func as *const RefCell<F>);
-            let mut func = func.borrow_mut();
-            (*func)(PollableOutputStream::from_glib_borrow(stream).unsafe_cast_ref()).into_glib()
+            unsafe {
+                let func: &RefCell<F> = &*(func as *const RefCell<F>);
+                let mut func = func.borrow_mut();
+                (*func)(PollableOutputStream::from_glib_borrow(stream).unsafe_cast_ref())
+                    .into_glib()
+            }
         }
         unsafe extern "C" fn destroy_closure<F>(ptr: glib::ffi::gpointer) {
-            let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
+            unsafe {
+                let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
+            }
         }
         let cancellable = cancellable.map(|c| c.as_ref());
         let gcancellable = cancellable.to_glib_none();

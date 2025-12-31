@@ -6,7 +6,7 @@ use std::{
 };
 
 use crate::{
-    prelude::*, read_input_stream::std_error_to_gio_error, subclass::prelude::*, OutputStream,
+    OutputStream, prelude::*, read_input_stream::std_error_to_gio_error, subclass::prelude::*,
 };
 
 mod imp {

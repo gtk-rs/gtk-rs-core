@@ -7,7 +7,7 @@ use std::{
 };
 
 use crate as glib;
-use crate::{subclass::prelude::*, Object};
+use crate::{Object, subclass::prelude::*};
 
 #[derive(Debug)]
 pub enum BorrowError {

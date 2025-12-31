@@ -4,7 +4,7 @@ use proc_macro::TokenStream;
 use quote::{format_ident, quote};
 use syn::{Generics, Ident};
 
-use super::fields::{derive_downgrade_fields, DowngradeStructParts};
+use super::fields::{DowngradeStructParts, derive_downgrade_fields};
 use crate::utils::crate_ident_new;
 
 /// This function derives a weak type for a given strong enum and

@@ -4,7 +4,7 @@ use std::{fmt, ops};
 
 use glib::translate::*;
 
-use crate::{ffi, Euler, Matrix, Quaternion, Vec3, Vec4};
+use crate::{Euler, Matrix, Quaternion, Vec3, Vec4, ffi};
 
 impl Quaternion {
     #[doc(alias = "graphene_quaternion_init")]

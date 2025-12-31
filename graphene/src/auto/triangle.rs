@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, Box, Plane, Point3D, Vec2, Vec3};
+use crate::{Box, Plane, Point3D, Vec2, Vec3, ffi};
 use glib::translate::*;
 
 glib::wrapper! {
@@ -42,11 +42,7 @@ impl Triangle {
                 p.to_glib_none().0,
                 res.to_glib_none_mut().0,
             );
-            if ret {
-                Some(res)
-            } else {
-                None
-            }
+            if ret { Some(res) } else { None }
         }
     }
 
@@ -123,11 +119,7 @@ impl Triangle {
                 uv_c.to_glib_none().0,
                 res.to_glib_none_mut().0,
             );
-            if ret {
-                Some(res)
-            } else {
-                None
-            }
+            if ret { Some(res) } else { None }
         }
     }
 

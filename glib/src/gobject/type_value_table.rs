@@ -23,7 +23,7 @@ impl TypeValueTable {
     pub unsafe fn from_glib_ptr_borrow_mut<'a>(
         ptr: *mut gobject_ffi::GTypeValueTable,
     ) -> &'a mut Self {
-        &mut *(ptr as *mut Self)
+        unsafe { &mut *(ptr as *mut Self) }
     }
 }
 

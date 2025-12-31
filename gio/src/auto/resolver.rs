@@ -5,11 +5,11 @@
 #[cfg(feature = "v2_60")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
 use crate::ResolverNameLookupFlags;
-use crate::{ffi, AsyncResult, Cancellable, InetAddress, ResolverRecordType, SrvTarget};
+use crate::{AsyncResult, Cancellable, InetAddress, ResolverRecordType, SrvTarget, ffi};
 use glib::{
     object::ObjectType as _,
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::{boxed::Box as Box_, pin::Pin};

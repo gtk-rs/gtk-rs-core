@@ -6,8 +6,8 @@
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_66")))]
 use crate::FileSetContentsFlags;
 use crate::{
-    ffi, translate::*, Bytes, ChecksumType, Error, FileTest, FormatSizeFlags, Pid, Source,
-    SpawnFlags, UserDirectory,
+    Bytes, ChecksumType, Error, FileTest, FormatSizeFlags, Pid, Source, SpawnFlags, UserDirectory,
+    ffi, translate::*,
 };
 use std::boxed::Box as Box_;
 

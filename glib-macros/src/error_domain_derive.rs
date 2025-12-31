@@ -4,7 +4,7 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::Data;
 
-use crate::utils::{crate_ident_new, gen_enum_from_glib, parse_nested_meta_items, NestedMetaItem};
+use crate::utils::{NestedMetaItem, crate_ident_new, gen_enum_from_glib, parse_nested_meta_items};
 
 pub fn impl_error_domain(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
     let name = &input.ident;
@@ -15,7 +15,7 @@ pub fn impl_error_domain(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
             return Err(syn::Error::new_spanned(
                 input,
                 "#[derive(glib::ErrorDomain)] only supports enums",
-            ))
+            ));
         }
     };
 

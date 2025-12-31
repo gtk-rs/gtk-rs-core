@@ -18,18 +18,18 @@ mod manual;
 
 pub use manual::*;
 
+#[allow(unused_imports)]
+use libc::{FILE, intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t};
 #[cfg(unix)]
 #[allow(unused_imports)]
 use libc::{dev_t, gid_t, pid_t, socklen_t, uid_t};
-#[allow(unused_imports)]
-use libc::{intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t, FILE};
 #[allow(unused_imports)]
 use std::ffi::{
     c_char, c_double, c_float, c_int, c_long, c_short, c_uchar, c_uint, c_ulong, c_ushort, c_void,
 };
 
 #[allow(unused_imports)]
-use glib::{gboolean, gconstpointer, gpointer, GType};
+use glib::{GType, gboolean, gconstpointer, gpointer};
 
 // Enums
 pub type GBusType = c_int;
@@ -9715,7 +9715,7 @@ unsafe extern "C" {
         extension_point: *mut GIOExtensionPoint,
     ) -> *mut glib::GList;
     pub fn g_io_extension_point_get_required_type(extension_point: *mut GIOExtensionPoint)
-        -> GType;
+    -> GType;
     pub fn g_io_extension_point_set_required_type(
         extension_point: *mut GIOExtensionPoint,
         type_: GType,
@@ -9807,7 +9807,7 @@ unsafe extern "C" {
     ) -> *mut GSettingsSchemaKey;
     pub fn g_settings_schema_get_path(schema: *mut GSettingsSchema) -> *const c_char;
     pub fn g_settings_schema_has_key(schema: *mut GSettingsSchema, name: *const c_char)
-        -> gboolean;
+    -> gboolean;
     pub fn g_settings_schema_list_children(schema: *mut GSettingsSchema) -> *mut *mut c_char;
     pub fn g_settings_schema_list_keys(schema: *mut GSettingsSchema) -> *mut *mut c_char;
     pub fn g_settings_schema_ref(schema: *mut GSettingsSchema) -> *mut GSettingsSchema;
@@ -10949,7 +10949,7 @@ unsafe extern "C" {
         object_path: *const c_char,
     ) -> *mut GDBusObjectProxy;
     pub fn g_dbus_object_proxy_get_connection(proxy: *mut GDBusObjectProxy)
-        -> *mut GDBusConnection;
+    -> *mut GDBusConnection;
 
     //=========================================================================
     // GDBusObjectSkeleton
@@ -11706,7 +11706,7 @@ unsafe extern "C" {
         stream: *mut GFilterInputStream,
     ) -> *mut GInputStream;
     pub fn g_filter_input_stream_get_close_base_stream(stream: *mut GFilterInputStream)
-        -> gboolean;
+    -> gboolean;
     pub fn g_filter_input_stream_set_close_base_stream(
         stream: *mut GFilterInputStream,
         close_base: gboolean,
@@ -11860,7 +11860,7 @@ unsafe extern "C" {
         port: c_uint,
     ) -> *mut GSocketAddress;
     pub fn g_inet_socket_address_get_address(address: *mut GInetSocketAddress)
-        -> *mut GInetAddress;
+    -> *mut GInetAddress;
     pub fn g_inet_socket_address_get_flowinfo(address: *mut GInetSocketAddress) -> u32;
     pub fn g_inet_socket_address_get_port(address: *mut GInetSocketAddress) -> u16;
     pub fn g_inet_socket_address_get_scope_id(address: *mut GInetSocketAddress) -> u32;
@@ -14169,7 +14169,7 @@ unsafe extern "C" {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
     pub fn g_tls_connection_get_negotiated_protocol(conn: *mut GTlsConnection) -> *const c_char;
     pub fn g_tls_connection_get_peer_certificate(conn: *mut GTlsConnection)
-        -> *mut GTlsCertificate;
+    -> *mut GTlsCertificate;
     pub fn g_tls_connection_get_peer_certificate_errors(
         conn: *mut GTlsConnection,
     ) -> GTlsCertificateFlags;
@@ -14938,7 +14938,7 @@ unsafe extern "C" {
         object_path: *const c_char,
     ) -> *mut GDBusObject;
     pub fn g_dbus_object_manager_get_object_path(manager: *mut GDBusObjectManager)
-        -> *const c_char;
+    -> *const c_char;
     pub fn g_dbus_object_manager_get_objects(manager: *mut GDBusObjectManager) -> *mut glib::GList;
 
     //=========================================================================

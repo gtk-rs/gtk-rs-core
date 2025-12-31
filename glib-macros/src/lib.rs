@@ -20,8 +20,8 @@ mod utils;
 use flags_attribute::AttrInput;
 use proc_macro::TokenStream;
 use proc_macro2::Span;
-use syn::{parse_macro_input, DeriveInput};
-use utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
+use syn::{DeriveInput, parse_macro_input};
+use utils::{NestedMetaItem, parse_nested_meta_items_from_stream};
 
 /// Macro for passing variables as strong or weak references into a closure.
 ///

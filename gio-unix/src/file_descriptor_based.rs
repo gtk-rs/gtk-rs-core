@@ -2,7 +2,7 @@
 
 use std::os::unix::io::{AsFd, AsRawFd, BorrowedFd, FromRawFd, RawFd};
 
-use crate::{ffi, FileDescriptorBased};
+use crate::{FileDescriptorBased, ffi};
 use glib::{prelude::*, translate::*};
 
 impl AsRawFd for FileDescriptorBased {

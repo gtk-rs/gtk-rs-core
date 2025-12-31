@@ -7,7 +7,7 @@ mod tests {
     use futures_util::io::{AsyncBufReadExt, AsyncReadExt};
     use glib::Bytes;
 
-    use crate::{prelude::*, MemoryInputStream};
+    use crate::{MemoryInputStream, prelude::*};
 
     #[test]
     fn new() {

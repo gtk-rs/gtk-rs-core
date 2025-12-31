@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{gobject_ffi, prelude::*, translate::*, InterfaceInfo, TypeInfo, TypeValueTable};
+use crate::{InterfaceInfo, TypeInfo, TypeValueTable, gobject_ffi, prelude::*, translate::*};
 
 crate::wrapper! {
     #[doc(alias = "GTypePlugin")]

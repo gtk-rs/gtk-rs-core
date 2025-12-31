@@ -5,7 +5,7 @@
 #[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 use crate::FontFamily;
-use crate::{ffi, FontDescription};
+use crate::{FontDescription, ffi};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {

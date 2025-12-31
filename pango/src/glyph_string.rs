@@ -1,8 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::{translate::*, Slice};
+use glib::{Slice, translate::*};
 
-use crate::{ffi, GlyphInfo, GlyphString};
+use crate::{GlyphInfo, GlyphString, ffi};
 
 impl GlyphString {
     #[inline]

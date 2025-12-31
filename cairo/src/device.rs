@@ -11,9 +11,9 @@ use std::ptr;
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{ffi, utils::status_to_result, DeviceType, Error};
 #[cfg(feature = "script")]
 use crate::{Content, RecordingSurface, ScriptMode, Surface};
+use crate::{DeviceType, Error, ffi, utils::status_to_result};
 
 #[derive(Debug)]
 #[must_use = "if unused the Device will immediately be released"]
@@ -34,21 +34,27 @@ pub struct Device(ptr::NonNull<ffi::cairo_device_t>);
 impl Device {
     #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::cairo_device_t) -> Device {
-        debug_assert!(!ptr.is_null());
-        ffi::cairo_device_reference(ptr);
-        Device(ptr::NonNull::new_unchecked(ptr))
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            ffi::cairo_device_reference(ptr);
+            Device(ptr::NonNull::new_unchecked(ptr))
+        }
     }
 
     #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::cairo_device_t) -> crate::Borrowed<Device> {
-        debug_assert!(!ptr.is_null());
-        crate::Borrowed::new(Device(ptr::NonNull::new_unchecked(ptr)))
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            crate::Borrowed::new(Device(ptr::NonNull::new_unchecked(ptr)))
+        }
     }
 
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_device_t) -> Device {
-        debug_assert!(!ptr.is_null());
-        Device(ptr::NonNull::new_unchecked(ptr))
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            Device(ptr::NonNull::new_unchecked(ptr))
+        }
     }
 
     #[inline]
@@ -343,7 +349,7 @@ impl<'a> ToGlibPtr<'a, *mut ffi::cairo_device_t> for Device {
 impl FromGlibPtrNone<*mut ffi::cairo_device_t> for Device {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::cairo_device_t) -> Device {
-        Self::from_raw_none(ptr)
+        unsafe { Self::from_raw_none(ptr) }
     }
 }
 
@@ -352,7 +358,7 @@ impl FromGlibPtrNone<*mut ffi::cairo_device_t> for Device {
 impl FromGlibPtrBorrow<*mut ffi::cairo_device_t> for Device {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut ffi::cairo_device_t) -> crate::Borrowed<Device> {
-        Self::from_raw_borrow(ptr)
+        unsafe { Self::from_raw_borrow(ptr) }
     }
 }
 
@@ -361,7 +367,7 @@ impl FromGlibPtrBorrow<*mut ffi::cairo_device_t> for Device {
 impl FromGlibPtrFull<*mut ffi::cairo_device_t> for Device {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut ffi::cairo_device_t) -> Device {
-        Self::from_raw_full(ptr)
+        unsafe { Self::from_raw_full(ptr) }
     }
 }
 

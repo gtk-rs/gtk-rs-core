@@ -111,8 +111,10 @@ impl ThreadPool {
     pub fn push_future<T: Send + 'static, F: FnOnce() -> T + Send + 'static>(
         &self,
         func: F,
-    ) -> Result<impl Future<Output = std::thread::Result<T>> + Send + Sync + 'static, crate::Error>
-    {
+    ) -> Result<
+        impl Future<Output = std::thread::Result<T>> + Send + Sync + 'static + use<T, F>,
+        crate::Error,
+    > {
         let (sender, receiver) = oneshot::channel();
 
         self.push(move || {
@@ -219,8 +221,10 @@ impl Drop for ThreadPool {
 }
 
 unsafe extern "C" fn spawn_func(func: ffi::gpointer, _data: ffi::gpointer) {
-    let func: Box<Box<dyn FnOnce()>> = Box::from_raw(func as *mut _);
-    func()
+    unsafe {
+        let func: Box<Box<dyn FnOnce()>> = Box::from_raw(func as *mut _);
+        func()
+    }
 }
 
 #[cfg(test)]

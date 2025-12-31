@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, prelude::*, translate::*, Object};
+use crate::{Object, ffi, prelude::*, translate::*};
 
 crate::wrapper! {
     #[doc(alias = "GSignalGroup")]

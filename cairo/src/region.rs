@@ -7,7 +7,7 @@ use std::ptr;
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{ffi, utils::status_to_result, Error, RectangleInt, RegionOverlap};
+use crate::{Error, RectangleInt, RegionOverlap, ffi, utils::status_to_result};
 
 #[derive(Debug)]
 #[repr(transparent)]
@@ -56,7 +56,7 @@ impl<'a> ToGlibPtrMut<'a, *mut ffi::cairo_region_t> for Region {
 impl FromGlibPtrNone<*mut ffi::cairo_region_t> for Region {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::cairo_region_t) -> Region {
-        Self::from_raw_none(ptr)
+        unsafe { Self::from_raw_none(ptr) }
     }
 }
 
@@ -65,7 +65,7 @@ impl FromGlibPtrNone<*mut ffi::cairo_region_t> for Region {
 impl FromGlibPtrBorrow<*mut ffi::cairo_region_t> for Region {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut ffi::cairo_region_t) -> crate::Borrowed<Region> {
-        Self::from_raw_borrow(ptr)
+        unsafe { Self::from_raw_borrow(ptr) }
     }
 }
 
@@ -74,7 +74,7 @@ impl FromGlibPtrBorrow<*mut ffi::cairo_region_t> for Region {
 impl FromGlibPtrFull<*mut ffi::cairo_region_t> for Region {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut ffi::cairo_region_t) -> Region {
-        Self::from_raw_full(ptr)
+        unsafe { Self::from_raw_full(ptr) }
     }
 }
 
@@ -114,21 +114,27 @@ impl Eq for Region {}
 impl Region {
     #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::cairo_region_t) -> Region {
-        debug_assert!(!ptr.is_null());
-        ffi::cairo_region_reference(ptr);
-        Region(ptr::NonNull::new_unchecked(ptr))
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            ffi::cairo_region_reference(ptr);
+            Region(ptr::NonNull::new_unchecked(ptr))
+        }
     }
 
     #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::cairo_region_t) -> crate::Borrowed<Region> {
-        debug_assert!(!ptr.is_null());
-        crate::Borrowed::new(Region(ptr::NonNull::new_unchecked(ptr)))
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            crate::Borrowed::new(Region(ptr::NonNull::new_unchecked(ptr)))
+        }
     }
 
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_region_t) -> Region {
-        debug_assert!(!ptr.is_null());
-        Region(ptr::NonNull::new_unchecked(ptr))
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            Region(ptr::NonNull::new_unchecked(ptr))
+        }
     }
 
     #[inline]

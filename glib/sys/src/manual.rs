@@ -96,6 +96,6 @@ pub const G_VARIANT_TYPE_BYTE_STRING: &str = "ay";
 pub const G_VARIANT_TYPE_BYTE_STRING_ARRAY: &str = "aay";
 pub const G_VARIANT_TYPE_VARDICT: &str = "a{sv}";
 
-extern "C" {
+unsafe extern "C" {
     pub fn g_atomic_int_get(atomic: *const c_int) -> c_int;
 }

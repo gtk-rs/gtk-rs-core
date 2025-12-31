@@ -5,11 +5,11 @@
 #[cfg(feature = "v2_82")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
 use crate::SettingsBindFlags;
-use crate::{ffi, Action, SettingsBackend, SettingsSchema};
+use crate::{Action, SettingsBackend, SettingsSchema, ffi};
 use glib::{
     object::ObjectType as _,
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::boxed::Box as Box_;

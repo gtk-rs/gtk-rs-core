@@ -9,8 +9,8 @@ use crate::Direction;
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 use crate::LayoutSerializeFlags;
 use crate::{
-    ffi, Alignment, AttrList, Context, EllipsizeMode, FontDescription, LayoutIter, LayoutLine,
-    Rectangle, TabArray, WrapMode,
+    Alignment, AttrList, Context, EllipsizeMode, FontDescription, LayoutIter, LayoutLine,
+    Rectangle, TabArray, WrapMode, ffi,
 };
 use glib::translate::*;
 

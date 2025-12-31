@@ -3,7 +3,7 @@
 #[cfg(feature = "v1_50")]
 use crate::ffi;
 #[cfg(feature = "v1_50")]
-use glib::{prelude::*, translate::*, Quark};
+use glib::{Quark, prelude::*, translate::*};
 
 #[cfg(feature = "v1_50")]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
@@ -96,7 +96,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for LayoutDeserializeError {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 

@@ -171,7 +171,7 @@ impl VariantDict {
     /// You should only use this function if the extra cost of the safe function
     /// is too much for your performance critical codepaths
     pub unsafe fn end_unsafe(&self) -> Variant {
-        from_glib_none(ffi::g_variant_dict_end(self.to_glib_none().0))
+        unsafe { from_glib_none(ffi::g_variant_dict_end(self.to_glib_none().0)) }
     }
 
     // rustdoc-stripper-ignore-next

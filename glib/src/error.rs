@@ -5,7 +5,7 @@
 
 use std::{borrow::Cow, convert::Infallible, error, ffi::CStr, fmt, str};
 
-use crate::{ffi, translate::*, Quark};
+use crate::{Quark, ffi, translate::*};
 
 wrapper! {
     // rustdoc-stripper-ignore-next

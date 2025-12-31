@@ -31,27 +31,31 @@ impl<T: TransparentPtrType> List<T> {
     /// Create a new `List` around a list.
     #[inline]
     pub unsafe fn from_glib_none(list: *const ffi::GList) -> List<T> {
-        // Need to copy the whole list
-        let list = if mem::needs_drop::<T>() {
-            unsafe extern "C" fn copy_item<T: TransparentPtrType>(
-                ptr: ffi::gconstpointer,
-                _user_data: ffi::gpointer,
-            ) -> ffi::gpointer {
-                let mut item = mem::ManuallyDrop::new(
-                    (*(&ptr as *const ffi::gconstpointer as *const T)).clone(),
-                );
+        unsafe {
+            // Need to copy the whole list
+            let list = if mem::needs_drop::<T>() {
+                unsafe extern "C" fn copy_item<T: TransparentPtrType>(
+                    ptr: ffi::gconstpointer,
+                    _user_data: ffi::gpointer,
+                ) -> ffi::gpointer {
+                    unsafe {
+                        let mut item = mem::ManuallyDrop::new(
+                            (*(&ptr as *const ffi::gconstpointer as *const T)).clone(),
+                        );
 
-                *(&mut *item as *mut T as *mut *mut T::GlibType) as ffi::gpointer
+                        *(&mut *item as *mut T as *mut *mut T::GlibType) as ffi::gpointer
+                    }
+                }
+
+                ffi::g_list_copy_deep(mut_override(list), Some(copy_item::<T>), ptr::null_mut())
+            } else {
+                ffi::g_list_copy(mut_override(list))
+            };
+
+            List {
+                ptr: ptr::NonNull::new(list),
+                phantom: PhantomData,
             }
-
-            ffi::g_list_copy_deep(mut_override(list), Some(copy_item::<T>), ptr::null_mut())
-        } else {
-            ffi::g_list_copy(mut_override(list))
-        };
-
-        List {
-            ptr: ptr::NonNull::new(list),
-            phantom: PhantomData,
         }
     }
 
@@ -59,22 +63,26 @@ impl<T: TransparentPtrType> List<T> {
     /// Create a new `List` around a list.
     #[inline]
     pub unsafe fn from_glib_container(list: *mut ffi::GList) -> List<T> {
-        // Need to copy all items as we only own the container
-        if mem::needs_drop::<T>() {
-            unsafe extern "C" fn copy_item<T: TransparentPtrType>(
-                ptr: ffi::gpointer,
-                _user_data: ffi::gpointer,
-            ) {
-                let item = (*(&ptr as *const ffi::gpointer as *const T)).clone();
-                ptr::write(ptr as *mut T, item);
+        unsafe {
+            // Need to copy all items as we only own the container
+            if mem::needs_drop::<T>() {
+                unsafe extern "C" fn copy_item<T: TransparentPtrType>(
+                    ptr: ffi::gpointer,
+                    _user_data: ffi::gpointer,
+                ) {
+                    unsafe {
+                        let item = (*(&ptr as *const ffi::gpointer as *const T)).clone();
+                        ptr::write(ptr as *mut T, item);
+                    }
+                }
+
+                ffi::g_list_foreach(list, Some(copy_item::<T>), ptr::null_mut());
             }
 
-            ffi::g_list_foreach(list, Some(copy_item::<T>), ptr::null_mut());
-        }
-
-        List {
-            ptr: ptr::NonNull::new(list),
-            phantom: PhantomData,
+            List {
+                ptr: ptr::NonNull::new(list),
+                phantom: PhantomData,
+            }
         }
     }
 
@@ -326,10 +334,12 @@ impl<T: TransparentPtrType> List<T> {
                 b: ffi::gconstpointer,
                 user_data: ffi::gpointer,
             ) -> i32 {
-                let f = &mut *(user_data as *mut F);
-                let a = &*(&a as *const ffi::gconstpointer as *const T);
-                let b = &*(&b as *const ffi::gconstpointer as *const T);
-                f(a, b).into_glib()
+                unsafe {
+                    let f = &mut *(user_data as *mut F);
+                    let a = &*(&a as *const ffi::gconstpointer as *const T);
+                    let b = &*(&b as *const ffi::gconstpointer as *const T);
+                    f(a, b).into_glib()
+                }
             }
 
             self.ptr = Some(ptr::NonNull::new_unchecked(ffi::g_list_sort_with_data(
@@ -411,7 +421,9 @@ impl<T: TransparentPtrType> Drop for List<T> {
             unsafe {
                 if mem::needs_drop::<T>() {
                     unsafe extern "C" fn drop_item<T: TransparentPtrType>(mut ptr: ffi::gpointer) {
-                        ptr::drop_in_place(&mut ptr as *mut ffi::gpointer as *mut T);
+                        unsafe {
+                            ptr::drop_in_place(&mut ptr as *mut ffi::gpointer as *mut T);
+                        }
                     }
 
                     ffi::g_list_free_full(ptr.as_ptr(), Some(drop_item::<T>));
@@ -510,17 +522,17 @@ impl<T: TransparentPtrType> FromGlibContainer<<T as GlibPtrDefault>::GlibType, *
 {
     #[inline]
     unsafe fn from_glib_none_num(ptr: *mut ffi::GList, _num: usize) -> Self {
-        Self::from_glib_none(ptr)
+        unsafe { Self::from_glib_none(ptr) }
     }
 
     #[inline]
     unsafe fn from_glib_container_num(ptr: *mut ffi::GList, _num: usize) -> Self {
-        Self::from_glib_container(ptr)
+        unsafe { Self::from_glib_container(ptr) }
     }
 
     #[inline]
     unsafe fn from_glib_full_num(ptr: *mut ffi::GList, _num: usize) -> Self {
-        Self::from_glib_full(ptr)
+        unsafe { Self::from_glib_full(ptr) }
     }
 }
 
@@ -529,7 +541,7 @@ impl<T: TransparentPtrType> FromGlibContainer<<T as GlibPtrDefault>::GlibType, *
 {
     #[inline]
     unsafe fn from_glib_none_num(ptr: *const ffi::GList, _num: usize) -> Self {
-        Self::from_glib_none(ptr)
+        unsafe { Self::from_glib_none(ptr) }
     }
 
     unsafe fn from_glib_container_num(_ptr: *const ffi::GList, _num: usize) -> Self {
@@ -546,17 +558,17 @@ impl<T: TransparentPtrType> FromGlibPtrContainer<<T as GlibPtrDefault>::GlibType
 {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::GList) -> Self {
-        Self::from_glib_none(ptr)
+        unsafe { Self::from_glib_none(ptr) }
     }
 
     #[inline]
     unsafe fn from_glib_container(ptr: *mut ffi::GList) -> Self {
-        Self::from_glib_container(ptr)
+        unsafe { Self::from_glib_container(ptr) }
     }
 
     #[inline]
     unsafe fn from_glib_full(ptr: *mut ffi::GList) -> Self {
-        Self::from_glib_full(ptr)
+        unsafe { Self::from_glib_full(ptr) }
     }
 }
 
@@ -565,7 +577,7 @@ impl<T: TransparentPtrType> FromGlibPtrContainer<<T as GlibPtrDefault>::GlibType
 {
     #[inline]
     unsafe fn from_glib_none(ptr: *const ffi::GList) -> Self {
-        Self::from_glib_none(ptr)
+        unsafe { Self::from_glib_none(ptr) }
     }
 
     unsafe fn from_glib_container(_ptr: *const ffi::GList) -> Self {

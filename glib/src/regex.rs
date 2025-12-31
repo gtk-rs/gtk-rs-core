@@ -5,8 +5,8 @@
 //! compatibility with GLib.Regex based APIs.
 
 use crate::{
-    ffi, translate::*, GStr, GStringPtr, MatchInfo, PtrSlice, Regex, RegexCompileFlags,
-    RegexMatchFlags,
+    GStr, GStringPtr, MatchInfo, PtrSlice, Regex, RegexCompileFlags, RegexMatchFlags, ffi,
+    translate::*,
 };
 use std::{mem, ptr};
 

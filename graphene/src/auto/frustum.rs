@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, Box, Point3D, Sphere};
+use crate::{Box, Point3D, Sphere, ffi};
 use glib::translate::*;
 
 glib::wrapper! {

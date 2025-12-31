@@ -3,13 +3,13 @@
 // DO NOT EDIT
 
 use crate::{
-    ffi, AsyncResult, Cancellable, DriveStartFlags, DriveStartStopType, Icon, MountOperation,
-    MountUnmountFlags, Volume,
+    AsyncResult, Cancellable, DriveStartFlags, DriveStartStopType, Icon, MountOperation,
+    MountUnmountFlags, Volume, ffi,
 };
 use glib::{
     object::ObjectType as _,
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::{boxed::Box as Box_, pin::Pin};
