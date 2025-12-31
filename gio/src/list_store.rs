@@ -144,7 +144,7 @@ impl ListStore {
             func: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
             unsafe {
-                let func = func as *mut &mut (dyn FnMut(&Object) -> bool);
+                let func = func as *mut &mut dyn FnMut(&Object) -> bool;
 
                 let a = from_glib_borrow(a as *mut glib::gobject_ffi::GObject);
 
@@ -153,8 +153,8 @@ impl ListStore {
         }
 
         let mut func = equal_func;
-        let func_obj: &mut (dyn FnMut(&Object) -> bool) = &mut func;
-        let func_ptr = &func_obj as *const &mut (dyn FnMut(&Object) -> bool) as glib::ffi::gpointer;
+        let func_obj: &mut dyn FnMut(&Object) -> bool = &mut func;
+        let func_ptr = &func_obj as *const &mut dyn FnMut(&Object) -> bool as glib::ffi::gpointer;
         let mut position = std::mem::MaybeUninit::uninit();
 
         // GIO prior to 2.76 requires a non-NULL item to be passed in so we're constructing a fake item here.
