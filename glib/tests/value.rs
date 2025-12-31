@@ -1,6 +1,6 @@
 use std::ops::Deref;
 
-use glib::{prelude::*, BoxedValue, Value};
+use glib::{BoxedValue, Value, prelude::*};
 
 // FIXME all .get::<i32>() should be replaced with .get(); the compiler is totally able to infer the type itself.
 // But somehow without some tests are failing on Windows because the type inference doesn't work or something.

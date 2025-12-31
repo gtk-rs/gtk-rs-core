@@ -4,7 +4,7 @@ use std::sync::OnceLock;
 
 use glib::{prelude::*, subclass::prelude::*, translate::*};
 
-use crate::{ffi, ListModel};
+use crate::{ListModel, ffi};
 
 pub trait ListModelImpl: ObjectImpl + ObjectSubclass<Type: IsA<ListModel>> {
     #[doc(alias = "get_item_type")]
@@ -76,57 +76,63 @@ unsafe impl<T: ListModelImpl> IsImplementable<T> for ListModel {
 unsafe extern "C" fn list_model_get_item_type<T: ListModelImpl>(
     list_model: *mut ffi::GListModel,
 ) -> glib::ffi::GType {
-    let instance = &*(list_model as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(list_model as *mut T::Instance);
+        let imp = instance.imp();
 
-    let type_ = imp.item_type().into_glib();
+        let type_ = imp.item_type().into_glib();
 
-    // Store the type so we can enforce that it doesn't change.
-    let instance = imp.obj();
-    let type_quark = {
-        static QUARK: OnceLock<glib::Quark> = OnceLock::new();
-        *QUARK.get_or_init(|| glib::Quark::from_str("gtk-rs-subclass-list-model-item-type"))
-    };
-    match instance.qdata(type_quark) {
-        Some(old_type) => {
-            assert_eq!(
-                type_,
-                *old_type.as_ref(),
-                "ListModel's get_item_type cannot be changed"
-            );
+        // Store the type so we can enforce that it doesn't change.
+        let instance = imp.obj();
+        let type_quark = {
+            static QUARK: OnceLock<glib::Quark> = OnceLock::new();
+            *QUARK.get_or_init(|| glib::Quark::from_str("gtk-rs-subclass-list-model-item-type"))
+        };
+        match instance.qdata(type_quark) {
+            Some(old_type) => {
+                assert_eq!(
+                    type_,
+                    *old_type.as_ref(),
+                    "ListModel's get_item_type cannot be changed"
+                );
+            }
+            None => {
+                instance.set_qdata(type_quark, type_);
+            }
         }
-        None => {
-            instance.set_qdata(type_quark, type_);
-        }
+        type_
     }
-    type_
 }
 
 unsafe extern "C" fn list_model_get_n_items<T: ListModelImpl>(
     list_model: *mut ffi::GListModel,
 ) -> u32 {
-    let instance = &*(list_model as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(list_model as *mut T::Instance);
+        let imp = instance.imp();
 
-    imp.n_items()
+        imp.n_items()
+    }
 }
 
 unsafe extern "C" fn list_model_get_item<T: ListModelImpl>(
     list_model: *mut ffi::GListModel,
     position: u32,
 ) -> *mut glib::gobject_ffi::GObject {
-    let instance = &*(list_model as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(list_model as *mut T::Instance);
+        let imp = instance.imp();
 
-    let item = imp.item(position);
+        let item = imp.item(position);
 
-    if let Some(ref i) = item {
-        let type_ = imp.item_type();
-        assert!(
-            i.type_().is_a(type_),
-            "All ListModel items need to be of type {} or a subtype of it",
-            type_.name()
-        );
-    };
-    item.into_glib_ptr()
+        if let Some(ref i) = item {
+            let type_ = imp.item_type();
+            assert!(
+                i.type_().is_a(type_),
+                "All ListModel items need to be of type {} or a subtype of it",
+                type_.name()
+            );
+        };
+        item.into_glib_ptr()
+    }
 }

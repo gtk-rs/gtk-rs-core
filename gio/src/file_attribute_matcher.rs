@@ -3,7 +3,7 @@
 use std::iter::FusedIterator;
 
 use crate::ffi;
-use glib::{translate::*, GString};
+use glib::{GString, translate::*};
 
 pub struct FileAttributematcherIter(crate::FileAttributeMatcher);
 

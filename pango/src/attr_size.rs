@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 
-use crate::{ffi, AttrType};
+use crate::{AttrType, ffi};
 
 define_attribute_struct!(
     AttrSize,

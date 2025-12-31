@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 
-use crate::{ffi, FileAttributeInfo, FileAttributeInfoList};
+use crate::{FileAttributeInfo, FileAttributeInfoList, ffi};
 
 impl FileAttributeInfoList {
     #[doc(alias = "g_file_attribute_info_list_lookup")]

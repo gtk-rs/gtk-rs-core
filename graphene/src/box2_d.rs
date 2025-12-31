@@ -4,7 +4,7 @@ use std::fmt;
 
 use glib::translate::*;
 
-use crate::{ffi, Box2D, Point, Rect, Vec2};
+use crate::{Box2D, Point, Rect, Vec2, ffi};
 
 impl Box2D {
     #[doc(alias = "graphene_box2d_get_vertices")]

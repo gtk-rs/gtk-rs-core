@@ -2,7 +2,7 @@
 
 use heck::ToShoutySnakeCase;
 use proc_macro2::TokenStream;
-use quote::{format_ident, quote, ToTokens};
+use quote::{ToTokens, format_ident, quote};
 
 pub fn impl_object_subclass(input: super::Input) -> TokenStream {
     let crate_ident = crate::utils::crate_ident_new();

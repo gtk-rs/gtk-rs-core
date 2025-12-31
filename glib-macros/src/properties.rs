@@ -6,13 +6,13 @@ use proc_macro2::TokenStream as TokenStream2;
 use quote::format_ident;
 use quote::{quote, quote_spanned};
 use std::collections::BTreeMap;
+use syn::Token;
 use syn::ext::IdentExt;
 use syn::parenthesized;
 use syn::parse::Parse;
 use syn::punctuated::Punctuated;
 use syn::spanned::Spanned;
-use syn::Token;
-use syn::{parse_quote_spanned, Attribute, LitStr};
+use syn::{Attribute, LitStr, parse_quote_spanned};
 
 pub struct PropsMacroInput {
     wrapper_ty: syn::Path,
@@ -82,7 +82,7 @@ impl Parse for PropsMacroInput {
                 return Err(syn::Error::new(
                     derive_input.span(),
                     "Properties can only be derived on structs",
-                ))
+                ));
             }
         };
         Ok(Self {
@@ -179,7 +179,7 @@ impl Parse for PropAttr {
                     return Err(syn::Error::new(
                         name.span(),
                         format!("Unsupported attribute list {name_str}(...)"),
-                    ))
+                    ));
                 }
             }
         } else {
@@ -195,7 +195,7 @@ impl Parse for PropAttr {
                             "{name} is a flag managed by the Properties macro. \
                             Use `get` and `set` to manage read and write access to a property",
                         ),
-                    ))
+                    ));
                 }
                 "default" => PropAttr::Default,
                 _ => PropAttr::BuilderField((name, None)),
@@ -364,10 +364,10 @@ fn expand_param_spec(prop: &PropDesc) -> TokenStream2 {
 
     match (&prop.override_class, &prop.override_interface) {
         (Some(c), None) => {
-            return quote!(#crate_ident::ParamSpecOverride::for_class::<#c>(#stripped_name))
+            return quote!(#crate_ident::ParamSpecOverride::for_class::<#c>(#stripped_name));
         }
         (None, Some(i)) => {
-            return quote!(#crate_ident::ParamSpecOverride::for_interface::<#i>(#stripped_name))
+            return quote!(#crate_ident::ParamSpecOverride::for_interface::<#i>(#stripped_name));
         }
         (Some(_), Some(_)) => {
             unreachable!("Both `override_class` and `override_interface` specified")

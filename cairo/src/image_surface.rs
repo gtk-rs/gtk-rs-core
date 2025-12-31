@@ -9,7 +9,7 @@ use std::{
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{ffi, utils::status_to_result, BorrowError, Error, Format, Surface, SurfaceType};
+use crate::{BorrowError, Error, Format, Surface, SurfaceType, ffi, utils::status_to_result};
 
 declare_surface!(ImageSurface, SurfaceType::Image);
 
@@ -39,13 +39,15 @@ impl ImageSurface {
         height: i32,
         stride: i32,
     ) -> Result<ImageSurface, Error> {
-        ImageSurface::from_raw_full(ffi::cairo_image_surface_create_for_data(
-            data,
-            format.into(),
-            width,
-            height,
-            stride,
-        ))
+        unsafe {
+            ImageSurface::from_raw_full(ffi::cairo_image_surface_create_for_data(
+                data,
+                format.into(),
+                width,
+                height,
+                stride,
+            ))
+        }
     }
 
     #[doc(alias = "cairo_image_surface_create_for_data")]

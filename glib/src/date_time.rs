@@ -2,7 +2,7 @@
 
 #[cfg(test)]
 mod tests {
-    use crate::{prelude::*, DateTime};
+    use crate::{DateTime, prelude::*};
 
     #[test]
     fn test_value() {

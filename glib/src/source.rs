@@ -4,7 +4,7 @@ use std::{cell::RefCell, mem::transmute, num::NonZeroU32, time::Duration};
 
 use crate::ffi::{self, gboolean, gpointer};
 
-use crate::{thread_guard::ThreadGuard, translate::*, ControlFlow, MainContext, Source};
+use crate::{ControlFlow, MainContext, Source, thread_guard::ThreadGuard, translate::*};
 
 // rustdoc-stripper-ignore-next
 /// The id of a source that is returned by `idle_add` and `timeout_add`.
@@ -41,8 +41,10 @@ impl SourceId {
 impl FromGlib<u32> for SourceId {
     #[inline]
     unsafe fn from_glib(val: u32) -> Self {
-        debug_assert_ne!(val, 0);
-        Self(NonZeroU32::new_unchecked(val))
+        unsafe {
+            debug_assert_ne!(val, 0);
+            Self(NonZeroU32::new_unchecked(val))
+        }
     }
 }
 
@@ -76,23 +78,31 @@ impl FromGlib<ffi::GPid> for Pid {
 unsafe extern "C" fn trampoline<F: FnMut() -> ControlFlow + Send + 'static>(
     func: gpointer,
 ) -> gboolean {
-    let func: &RefCell<F> = &*(func as *const RefCell<F>);
-    (*func.borrow_mut())().into_glib()
+    unsafe {
+        let func: &RefCell<F> = &*(func as *const RefCell<F>);
+        (*func.borrow_mut())().into_glib()
+    }
 }
 
 unsafe extern "C" fn trampoline_local<F: FnMut() -> ControlFlow + 'static>(
     func: gpointer,
 ) -> gboolean {
-    let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
-    (*func.get_ref().borrow_mut())().into_glib()
+    unsafe {
+        let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
+        (*func.get_ref().borrow_mut())().into_glib()
+    }
 }
 
 unsafe extern "C" fn destroy_closure<F: FnMut() -> ControlFlow + Send + 'static>(ptr: gpointer) {
-    let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
+    unsafe {
+        let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
+    }
 }
 
 unsafe extern "C" fn destroy_closure_local<F: FnMut() -> ControlFlow + 'static>(ptr: gpointer) {
-    let _ = Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
+    unsafe {
+        let _ = Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
+    }
 }
 
 fn into_raw<F: FnMut() -> ControlFlow + Send + 'static>(func: F) -> gpointer {
@@ -110,8 +120,10 @@ unsafe extern "C" fn trampoline_child_watch<F: FnMut(Pid, i32) + Send + 'static>
     status: i32,
     func: gpointer,
 ) {
-    let func: &RefCell<F> = &*(func as *const RefCell<F>);
-    (*func.borrow_mut())(Pid(pid), status)
+    unsafe {
+        let func: &RefCell<F> = &*(func as *const RefCell<F>);
+        (*func.borrow_mut())(Pid(pid), status)
+    }
 }
 
 unsafe extern "C" fn trampoline_child_watch_local<F: FnMut(Pid, i32) + 'static>(
@@ -119,20 +131,26 @@ unsafe extern "C" fn trampoline_child_watch_local<F: FnMut(Pid, i32) + 'static>(
     status: i32,
     func: gpointer,
 ) {
-    let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
-    (*func.get_ref().borrow_mut())(Pid(pid), status)
+    unsafe {
+        let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
+        (*func.get_ref().borrow_mut())(Pid(pid), status)
+    }
 }
 
 unsafe extern "C" fn destroy_closure_child_watch<F: FnMut(Pid, i32) + Send + 'static>(
     ptr: gpointer,
 ) {
-    let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
+    unsafe {
+        let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
+    }
 }
 
 unsafe extern "C" fn destroy_closure_child_watch_local<F: FnMut(Pid, i32) + 'static>(
     ptr: gpointer,
 ) {
-    let _ = Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
+    unsafe {
+        let _ = Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
+    }
 }
 
 fn into_raw_child_watch<F: FnMut(Pid, i32) + Send + 'static>(func: F) -> gpointer {

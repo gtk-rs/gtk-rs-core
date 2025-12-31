@@ -12,7 +12,7 @@ use crate::Overline;
 use crate::ShowFlags;
 #[cfg(feature = "v1_50")]
 use crate::TextTransform;
-use crate::{ffi, AttrType, Gravity, GravityHint, Stretch, Style, Underline, Variant, Weight};
+use crate::{AttrType, Gravity, GravityHint, Stretch, Style, Underline, Variant, Weight, ffi};
 
 define_attribute_struct!(
     AttrInt,

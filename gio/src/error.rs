@@ -2,11 +2,11 @@
 
 use std::io;
 
-#[cfg(feature = "v2_74")]
-use crate::glib::translate::*;
+use crate::IOErrorEnum;
 #[cfg(feature = "v2_74")]
 use crate::glib::FileError;
-use crate::IOErrorEnum;
+#[cfg(feature = "v2_74")]
+use crate::glib::translate::*;
 
 impl From<IOErrorEnum> for io::ErrorKind {
     fn from(kind: IOErrorEnum) -> Self {

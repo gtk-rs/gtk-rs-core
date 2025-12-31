@@ -5,7 +5,7 @@ pub mod subclass;
 
 use proc_macro2::Span;
 
-use crate::utils::{parse_optional_nested_meta_items, NestedMetaItem};
+use crate::utils::{NestedMetaItem, parse_optional_nested_meta_items};
 
 /// The parsing of `#[object_subclass]` and `#[object_interface]` is subtly different.
 enum AttrKind {

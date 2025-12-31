@@ -4,7 +4,7 @@ use std::os::unix::io::{AsFd, AsRawFd, BorrowedFd, IntoRawFd, OwnedFd, RawFd};
 
 use glib::{prelude::*, translate::*};
 
-use crate::{ffi, InputStream};
+use crate::{InputStream, ffi};
 
 impl InputStream {
     // rustdoc-stripper-ignore-next
@@ -26,9 +26,12 @@ impl InputStream {
     /// You may only close the fd if all references to this stream have been dropped.
     #[doc(alias = "g_unix_input_stream_new")]
     pub unsafe fn with_fd<T: AsRawFd>(fd: T) -> InputStream {
-        let fd = fd.as_raw_fd();
-        let close_fd = false.into_glib();
-        gio::InputStream::from_glib_full(ffi::g_unix_input_stream_new(fd, close_fd)).unsafe_cast()
+        unsafe {
+            let fd = fd.as_raw_fd();
+            let close_fd = false.into_glib();
+            gio::InputStream::from_glib_full(ffi::g_unix_input_stream_new(fd, close_fd))
+                .unsafe_cast()
+        }
     }
 }
 
@@ -56,7 +59,12 @@ pub trait UnixInputStreamExtManual: IsA<InputStream> + Sized {
     /// to the stream have been dropped. If you pass in `true`, you must never call close.
     #[doc(alias = "g_unix_input_stream_set_close_fd")]
     unsafe fn set_close_fd(&self, close_fd: bool) {
-        ffi::g_unix_input_stream_set_close_fd(self.as_ref().to_glib_none().0, close_fd.into_glib());
+        unsafe {
+            ffi::g_unix_input_stream_set_close_fd(
+                self.as_ref().to_glib_none().0,
+                close_fd.into_glib(),
+            );
+        }
     }
 }
 

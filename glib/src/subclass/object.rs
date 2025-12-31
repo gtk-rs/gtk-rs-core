@@ -7,11 +7,10 @@
 use std::{mem, ptr};
 
 use crate::{
-    ffi, gobject_ffi,
+    Object, ParamSpec, Slice, Value, ffi, gobject_ffi,
     prelude::*,
-    subclass::{prelude::*, Signal},
+    subclass::{Signal, prelude::*},
     translate::*,
-    Object, ParamSpec, Slice, Value,
 };
 
 // rustdoc-stripper-ignore-next
@@ -93,22 +92,24 @@ unsafe extern "C" fn property<T: ObjectImpl>(
     value: *mut gobject_ffi::GValue,
     pspec: *mut gobject_ffi::GParamSpec,
 ) {
-    let instance = &*(obj as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(obj as *mut T::Instance);
+        let imp = instance.imp();
 
-    let v = imp.property(id as usize, &from_glib_borrow(pspec));
+        let v = imp.property(id as usize, &from_glib_borrow(pspec));
 
-    // We first unset the value we get passed in, in case it contained
-    // any previous data. Then we directly overwrite it with our new
-    // value, and pass ownership of the contained data to the C GValue
-    // by forgetting it on the Rust side.
-    //
-    // Without this, by using the GValue API, we would have to create
-    // a copy of the value when setting it on the destination just to
-    // immediately free the original value afterwards.
-    gobject_ffi::g_value_unset(value);
-    let v = mem::ManuallyDrop::new(v);
-    ptr::write(value, ptr::read(v.to_glib_none().0));
+        // We first unset the value we get passed in, in case it contained
+        // any previous data. Then we directly overwrite it with our new
+        // value, and pass ownership of the contained data to the C GValue
+        // by forgetting it on the Rust side.
+        //
+        // Without this, by using the GValue API, we would have to create
+        // a copy of the value when setting it on the destination just to
+        // immediately free the original value afterwards.
+        gobject_ffi::g_value_unset(value);
+        let v = mem::ManuallyDrop::new(v);
+        ptr::write(value, ptr::read(v.to_glib_none().0));
+    }
 }
 
 unsafe extern "C" fn set_property<T: ObjectImpl>(
@@ -117,29 +118,35 @@ unsafe extern "C" fn set_property<T: ObjectImpl>(
     value: *mut gobject_ffi::GValue,
     pspec: *mut gobject_ffi::GParamSpec,
 ) {
-    let instance = &*(obj as *mut T::Instance);
-    let imp = instance.imp();
-    imp.set_property(
-        id as usize,
-        &*(value as *mut Value),
-        &from_glib_borrow(pspec),
-    );
+    unsafe {
+        let instance = &*(obj as *mut T::Instance);
+        let imp = instance.imp();
+        imp.set_property(
+            id as usize,
+            &*(value as *mut Value),
+            &from_glib_borrow(pspec),
+        );
+    }
 }
 
 unsafe extern "C" fn constructed<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) {
-    let instance = &*(obj as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(obj as *mut T::Instance);
+        let imp = instance.imp();
 
-    imp.constructed();
+        imp.constructed();
+    }
 }
 
 unsafe extern "C" fn notify<T: ObjectImpl>(
     obj: *mut gobject_ffi::GObject,
     pspec: *mut gobject_ffi::GParamSpec,
 ) {
-    let instance = &*(obj as *mut T::Instance);
-    let imp = instance.imp();
-    imp.notify(&from_glib_borrow(pspec));
+    unsafe {
+        let instance = &*(obj as *mut T::Instance);
+        let imp = instance.imp();
+        imp.notify(&from_glib_borrow(pspec));
+    }
 }
 
 unsafe extern "C" fn dispatch_properties_changed<T: ObjectImpl>(
@@ -147,22 +154,26 @@ unsafe extern "C" fn dispatch_properties_changed<T: ObjectImpl>(
     n_pspecs: u32,
     pspecs: *mut *mut gobject_ffi::GParamSpec,
 ) {
-    let instance = &*(obj as *mut T::Instance);
-    let imp = instance.imp();
-    imp.dispatch_properties_changed(Slice::from_glib_borrow_num(pspecs, n_pspecs as _));
+    unsafe {
+        let instance = &*(obj as *mut T::Instance);
+        let imp = instance.imp();
+        imp.dispatch_properties_changed(Slice::from_glib_borrow_num(pspecs, n_pspecs as _));
+    }
 }
 
 unsafe extern "C" fn dispose<T: ObjectImpl>(obj: *mut gobject_ffi::GObject) {
-    let instance = &*(obj as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(obj as *mut T::Instance);
+        let imp = instance.imp();
 
-    imp.dispose();
+        imp.dispose();
 
-    // Chain up to the parent's dispose.
-    let data = T::type_data();
-    let parent_class = data.as_ref().parent_class() as *mut gobject_ffi::GObjectClass;
-    if let Some(ref func) = (*parent_class).dispose {
-        func(obj);
+        // Chain up to the parent's dispose.
+        let data = T::type_data();
+        let parent_class = data.as_ref().parent_class() as *mut gobject_ffi::GObjectClass;
+        if let Some(ref func) = (*parent_class).dispose {
+            func(obj);
+        }
     }
 }
 
@@ -690,11 +701,12 @@ mod test {
             Some("some name")
         );
         assert_eq!(obj.property::<i32>("answer"), 21);
-        assert!(obj
-            .property::<ValueArray>("array")
-            .iter()
-            .map(|val| val.get::<&str>().unwrap())
-            .eq(array));
+        assert!(
+            obj.property::<ValueArray>("array")
+                .iter()
+                .map(|val| val.get::<&str>().unwrap())
+                .eq(array)
+        );
 
         let obj = Object::builder::<SimpleObject>()
             .property_if("name", "some name", false)
@@ -704,11 +716,12 @@ mod test {
 
         assert!(obj.property::<Option<String>>("name").is_none());
         assert_eq!(obj.property::<i32>("answer"), 42);
-        assert!(obj
-            .property::<ValueArray>("array")
-            .iter()
-            .map(|val| val.get::<&str>().unwrap())
-            .eq(["default0", "default1"]));
+        assert!(
+            obj.property::<ValueArray>("array")
+                .iter()
+                .map(|val| val.get::<&str>().unwrap())
+                .eq(["default0", "default1"])
+        );
     }
 
     #[test]
@@ -728,11 +741,12 @@ mod test {
             Some("some name")
         );
         assert_eq!(obj.property::<i32>("answer"), 21);
-        assert!(obj
-            .property::<ValueArray>("array")
-            .iter()
-            .map(|val| val.get::<&str>().unwrap())
-            .eq(array));
+        assert!(
+            obj.property::<ValueArray>("array")
+                .iter()
+                .map(|val| val.get::<&str>().unwrap())
+                .eq(array)
+        );
 
         let obj = Object::builder::<SimpleObject>()
             .property_if_some("name", Option::<&str>::None)
@@ -742,11 +756,12 @@ mod test {
 
         assert!(obj.property::<Option<String>>("name").is_none());
         assert_eq!(obj.property::<i32>("answer"), 42);
-        assert!(obj
-            .property::<ValueArray>("array")
-            .iter()
-            .map(|val| val.get::<&str>().unwrap())
-            .eq(["default0", "default1"]));
+        assert!(
+            obj.property::<ValueArray>("array")
+                .iter()
+                .map(|val| val.get::<&str>().unwrap())
+                .eq(["default0", "default1"])
+        );
     }
 
     #[test]
@@ -758,11 +773,12 @@ mod test {
             .property_from_iter::<ValueArray>("array", &array)
             .build();
 
-        assert!(obj
-            .property::<ValueArray>("array")
-            .iter()
-            .map(|val| val.get::<&str>().unwrap())
-            .eq(array));
+        assert!(
+            obj.property::<ValueArray>("array")
+                .iter()
+                .map(|val| val.get::<&str>().unwrap())
+                .eq(array)
+        );
 
         let obj = Object::builder::<SimpleObject>()
             .property_from_iter::<ValueArray>("array", Vec::<&str>::new())
@@ -780,22 +796,24 @@ mod test {
             .property_if_not_empty::<ValueArray>("array", &array)
             .build();
 
-        assert!(obj
-            .property::<ValueArray>("array")
-            .iter()
-            .map(|val| val.get::<&str>().unwrap())
-            .eq(array));
+        assert!(
+            obj.property::<ValueArray>("array")
+                .iter()
+                .map(|val| val.get::<&str>().unwrap())
+                .eq(array)
+        );
 
         let empty_vec = Vec::<String>::new();
         let obj = Object::builder::<SimpleObject>()
             .property_if_not_empty::<ValueArray>("array", &empty_vec)
             .build();
 
-        assert!(obj
-            .property::<ValueArray>("array")
-            .iter()
-            .map(|val| val.get::<&str>().unwrap())
-            .eq(["default0", "default1"]));
+        assert!(
+            obj.property::<ValueArray>("array")
+                .iter()
+                .map(|val| val.get::<&str>().unwrap())
+                .eq(["default0", "default1"])
+        );
     }
 
     #[test]
@@ -867,8 +885,8 @@ mod test {
     #[test]
     fn test_signals() {
         use std::sync::{
-            atomic::{AtomicBool, Ordering},
             Arc,
+            atomic::{AtomicBool, Ordering},
         };
 
         let obj = Object::builder::<SimpleObject>()
@@ -927,8 +945,8 @@ mod test {
     #[test]
     fn test_callback_validity() {
         use std::sync::{
-            atomic::{AtomicBool, Ordering},
             Arc,
+            atomic::{AtomicBool, Ordering},
         };
 
         let obj = Object::builder::<SimpleObject>()

@@ -7,11 +7,11 @@ use std::{
 
 use futures_channel::oneshot;
 use futures_core::{
-    task::{Context, Poll},
     FusedFuture,
+    task::{Context, Poll},
 };
 
-use crate::{prelude::*, Cancellable};
+use crate::{Cancellable, prelude::*};
 
 pub struct GioFuture<F, O, T> {
     obj: O,

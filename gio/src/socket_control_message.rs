@@ -2,7 +2,7 @@
 
 use glib::{prelude::*, translate::*};
 
-use crate::{prelude::*, SocketControlMessage};
+use crate::{SocketControlMessage, prelude::*};
 
 pub trait SocketControlMessageExtManual: IsA<SocketControlMessage> + Sized {
     #[doc(alias = "g_socket_control_message_serialize")]

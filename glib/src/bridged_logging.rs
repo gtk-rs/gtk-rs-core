@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{gstr, log as glib_log, log_structured_array, translate::*, LogField, LogWriterOutput};
+use crate::{LogField, LogWriterOutput, gstr, log as glib_log, log_structured_array, translate::*};
 
 // rustdoc-stripper-ignore-next
 /// Enumeration of the possible formatting behaviours for a

@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
-    ffi, AsyncResult, Cancellable, IOStream, Socket, SocketAddress, SocketFamily, SocketType,
+    AsyncResult, Cancellable, IOStream, Socket, SocketAddress, SocketFamily, SocketType, ffi,
 };
 use glib::{prelude::*, translate::*};
 use std::{boxed::Box as Box_, pin::Pin};

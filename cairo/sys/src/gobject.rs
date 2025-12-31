@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-extern "C" {
+unsafe extern "C" {
     pub fn cairo_gobject_context_get_type() -> glib_sys::GType;
     pub fn cairo_gobject_device_get_type() -> glib_sys::GType;
     pub fn cairo_gobject_matrix_get_type() -> glib_sys::GType;

@@ -8,9 +8,9 @@ use std::{ffi::CString, fmt, mem::MaybeUninit, ops, ptr, slice};
 use glib::translate::*;
 
 use crate::{
-    ffi, utils::status_to_result, Antialias, Content, Error, FillRule, FontExtents, FontFace,
-    FontOptions, FontSlant, FontWeight, Glyph, LineCap, LineJoin, Matrix, Operator, Path, Pattern,
-    Rectangle, ScaledFont, Surface, TextCluster, TextClusterFlags, TextExtents,
+    Antialias, Content, Error, FillRule, FontExtents, FontFace, FontOptions, FontSlant, FontWeight,
+    Glyph, LineCap, LineJoin, Matrix, Operator, Path, Pattern, Rectangle, ScaledFont, Surface,
+    TextCluster, TextClusterFlags, TextExtents, ffi, utils::status_to_result,
 };
 
 pub struct RectangleList {
@@ -86,7 +86,7 @@ impl<'a> ToGlibPtr<'a, *mut ffi::cairo_t> for &'a Context {
 impl FromGlibPtrNone<*mut ffi::cairo_t> for Context {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::cairo_t) -> Context {
-        Self::from_raw_none(ptr)
+        unsafe { Self::from_raw_none(ptr) }
     }
 }
 
@@ -95,7 +95,7 @@ impl FromGlibPtrNone<*mut ffi::cairo_t> for Context {
 impl FromGlibPtrBorrow<*mut ffi::cairo_t> for Context {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut ffi::cairo_t) -> crate::Borrowed<Context> {
-        Self::from_raw_borrow(ptr)
+        unsafe { Self::from_raw_borrow(ptr) }
     }
 }
 
@@ -104,7 +104,7 @@ impl FromGlibPtrBorrow<*mut ffi::cairo_t> for Context {
 impl FromGlibPtrFull<*mut ffi::cairo_t> for Context {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut ffi::cairo_t) -> Context {
-        Self::from_raw_full(ptr)
+        unsafe { Self::from_raw_full(ptr) }
     }
 }
 
@@ -134,21 +134,27 @@ impl Drop for Context {
 impl Context {
     #[inline]
     pub unsafe fn from_raw_none(ptr: *mut ffi::cairo_t) -> Context {
-        debug_assert!(!ptr.is_null());
-        ffi::cairo_reference(ptr);
-        Context(ptr::NonNull::new_unchecked(ptr))
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            ffi::cairo_reference(ptr);
+            Context(ptr::NonNull::new_unchecked(ptr))
+        }
     }
 
     #[inline]
     pub unsafe fn from_raw_borrow(ptr: *mut ffi::cairo_t) -> crate::Borrowed<Context> {
-        debug_assert!(!ptr.is_null());
-        crate::Borrowed::new(Context(ptr::NonNull::new_unchecked(ptr)))
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            crate::Borrowed::new(Context(ptr::NonNull::new_unchecked(ptr)))
+        }
     }
 
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_t) -> Context {
-        debug_assert!(!ptr.is_null());
-        Context(ptr::NonNull::new_unchecked(ptr))
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            Context(ptr::NonNull::new_unchecked(ptr))
+        }
     }
 
     #[inline]

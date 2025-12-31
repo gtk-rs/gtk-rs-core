@@ -33,14 +33,15 @@ pub use bitflags;
 #[doc(hidden)]
 pub use glib_macros::cstr_bytes;
 pub use glib_macros::{
+    Boxed, Downgrade, Enum, ErrorDomain, Properties, SharedBoxed, ValueDelegate, Variant,
     async_test, clone, closure, closure_local, derived_properties, flags, object_interface,
-    object_subclass, Boxed, Downgrade, Enum, ErrorDomain, Properties, SharedBoxed, ValueDelegate,
-    Variant,
+    object_subclass,
 };
 pub use glib_sys as ffi;
 pub use gobject_sys as gobject_ffi;
 
 pub use self::{
+    FileError,
     byte_array::ByteArray,
     bytes::Bytes,
     closure::{Closure, RustClosure},
@@ -48,8 +49,8 @@ pub use self::{
     error::{BoolError, Error},
     object::{BorrowedObject, Class, InitiallyUnowned, Interface, Object, SendWeakRef, WeakRef},
     signal::{
-        signal_handler_block, signal_handler_disconnect, signal_handler_unblock,
-        signal_stop_emission_by_name, Propagation, SignalHandlerId,
+        Propagation, SignalHandlerId, signal_handler_block, signal_handler_disconnect,
+        signal_handler_unblock, signal_stop_emission_by_name,
     },
     types::{ILong, Pointer, Type, ULong},
     value::{BoxedValue, SendValue, Value},
@@ -57,7 +58,6 @@ pub use self::{
     variant_dict::VariantDict,
     variant_iter::{VariantIter, VariantStrIter},
     variant_type::{VariantTy, VariantTyIterator, VariantType},
-    FileError,
 };
 
 // Hack for the time being to retrieve the current function's name as a string.
@@ -207,11 +207,11 @@ mod log;
 pub use rs_log;
 
 pub use self::log::{
-    log_default_handler, log_remove_handler, log_set_always_fatal, log_set_default_handler,
-    log_set_fatal_mask, log_set_handler, log_set_writer_func, log_structured_array,
-    log_unset_default_handler, log_variant, log_writer_default, log_writer_format_fields,
-    log_writer_journald, log_writer_standard_streams, set_print_handler, set_printerr_handler,
-    unset_print_handler, unset_printerr_handler, LogField, LogHandlerId, LogLevel, LogLevels,
+    LogField, LogHandlerId, LogLevel, LogLevels, log_default_handler, log_remove_handler,
+    log_set_always_fatal, log_set_default_handler, log_set_fatal_mask, log_set_handler,
+    log_set_writer_func, log_structured_array, log_unset_default_handler, log_variant,
+    log_writer_default, log_writer_format_fields, log_writer_journald, log_writer_standard_streams,
+    set_print_handler, set_printerr_handler, unset_print_handler, unset_printerr_handler,
 };
 #[cfg(feature = "v2_68")]
 pub use self::log::{log_writer_default_set_use_stderr, log_writer_default_would_drop};
@@ -225,7 +225,7 @@ mod bridged_logging;
 #[cfg(feature = "log")]
 #[cfg_attr(docsrs, doc(cfg(feature = "log")))]
 pub use self::bridged_logging::{
-    rust_log_handler, rust_log_writer, GlibLogger, GlibLoggerDomain, GlibLoggerFormat,
+    GlibLogger, GlibLoggerDomain, GlibLoggerFormat, rust_log_handler, rust_log_writer,
 };
 
 #[macro_use]

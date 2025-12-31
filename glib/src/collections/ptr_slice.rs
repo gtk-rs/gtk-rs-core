@@ -426,13 +426,15 @@ impl<T: TransparentPtrType> PtrSlice<T> {
     /// Borrows a C array.
     #[inline]
     pub unsafe fn from_glib_borrow<'a>(ptr: *const <T as GlibPtrDefault>::GlibType) -> &'a [T] {
-        let mut len = 0;
-        if !ptr.is_null() {
-            while !(*ptr.add(len)).is_null() {
-                len += 1;
+        unsafe {
+            let mut len = 0;
+            if !ptr.is_null() {
+                while !(*ptr.add(len)).is_null() {
+                    len += 1;
+                }
             }
+            Self::from_glib_borrow_num(ptr, len)
         }
-        Self::from_glib_borrow_num(ptr, len)
     }
 
     // rustdoc-stripper-ignore-next
@@ -442,16 +444,18 @@ impl<T: TransparentPtrType> PtrSlice<T> {
         ptr: *const <T as GlibPtrDefault>::GlibType,
         len: usize,
     ) -> &'a [T] {
-        debug_assert_eq!(
-            mem::size_of::<T>(),
-            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
-        );
-        debug_assert!(!ptr.is_null() || len == 0);
+        unsafe {
+            debug_assert_eq!(
+                mem::size_of::<T>(),
+                mem::size_of::<<T as GlibPtrDefault>::GlibType>()
+            );
+            debug_assert!(!ptr.is_null() || len == 0);
 
-        if len == 0 {
-            &[]
-        } else {
-            std::slice::from_raw_parts(ptr as *const T, len)
+            if len == 0 {
+                &[]
+            } else {
+                std::slice::from_raw_parts(ptr as *const T, len)
+            }
         }
     }
 
@@ -463,18 +467,20 @@ impl<T: TransparentPtrType> PtrSlice<T> {
         len: usize,
         _null_terminated: bool,
     ) -> Self {
-        debug_assert_eq!(
-            mem::size_of::<T>(),
-            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
-        );
-        debug_assert!(!ptr.is_null() || len == 0);
+        unsafe {
+            debug_assert_eq!(
+                mem::size_of::<T>(),
+                mem::size_of::<<T as GlibPtrDefault>::GlibType>()
+            );
+            debug_assert!(!ptr.is_null() || len == 0);
 
-        if len == 0 {
-            PtrSlice::default()
-        } else {
-            // Need to fully copy the array here.
-            let s = Self::from_glib_borrow_num(ptr, len);
-            Self::from(s)
+            if len == 0 {
+                PtrSlice::default()
+            } else {
+                // Need to fully copy the array here.
+                let s = Self::from_glib_borrow_num(ptr, len);
+                Self::from(s)
+            }
         }
     }
 
@@ -486,25 +492,27 @@ impl<T: TransparentPtrType> PtrSlice<T> {
         len: usize,
         null_terminated: bool,
     ) -> Self {
-        debug_assert_eq!(
-            mem::size_of::<T>(),
-            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
-        );
-        debug_assert!(!ptr.is_null() || len == 0);
+        unsafe {
+            debug_assert_eq!(
+                mem::size_of::<T>(),
+                mem::size_of::<<T as GlibPtrDefault>::GlibType>()
+            );
+            debug_assert!(!ptr.is_null() || len == 0);
 
-        if len == 0 {
-            ffi::g_free(ptr as ffi::gpointer);
-            PtrSlice::default()
-        } else {
-            // Need to clone every item because we don't own it here
-            for i in 0..len {
-                let p = ptr.add(i) as *mut T;
-                let clone: T = (*p).clone();
-                ptr::write(p, clone);
+            if len == 0 {
+                ffi::g_free(ptr as ffi::gpointer);
+                PtrSlice::default()
+            } else {
+                // Need to clone every item because we don't own it here
+                for i in 0..len {
+                    let p = ptr.add(i) as *mut T;
+                    let clone: T = (*p).clone();
+                    ptr::write(p, clone);
+                }
+
+                // And now it can be handled exactly the same as `from_glib_full_num()`.
+                Self::from_glib_full_num(ptr, len, null_terminated)
             }
-
-            // And now it can be handled exactly the same as `from_glib_full_num()`.
-            Self::from_glib_full_num(ptr, len, null_terminated)
         }
     }
 
@@ -516,41 +524,43 @@ impl<T: TransparentPtrType> PtrSlice<T> {
         len: usize,
         null_terminated: bool,
     ) -> Self {
-        debug_assert_eq!(
-            mem::size_of::<T>(),
-            mem::size_of::<<T as GlibPtrDefault>::GlibType>()
-        );
-        debug_assert!(!ptr.is_null() || len == 0);
+        unsafe {
+            debug_assert_eq!(
+                mem::size_of::<T>(),
+                mem::size_of::<<T as GlibPtrDefault>::GlibType>()
+            );
+            debug_assert!(!ptr.is_null() || len == 0);
 
-        if len == 0 {
-            ffi::g_free(ptr as ffi::gpointer);
-            PtrSlice::default()
-        } else {
-            if null_terminated {
-                return PtrSlice {
+            if len == 0 {
+                ffi::g_free(ptr as ffi::gpointer);
+                PtrSlice::default()
+            } else {
+                if null_terminated {
+                    return PtrSlice {
+                        ptr: ptr::NonNull::new_unchecked(ptr),
+                        len,
+                        capacity: len + 1,
+                    };
+                }
+
+                // Need to re-allocate here for adding the NULL-terminator
+                let capacity = len + 1;
+                assert_ne!(capacity, 0);
+                let ptr = ffi::g_realloc(
+                    ptr as *mut _,
+                    mem::size_of::<T>().checked_mul(capacity).unwrap(),
+                ) as *mut <T as GlibPtrDefault>::GlibType;
+
+                ptr::write(
+                    ptr.add(len),
+                    Ptr::from(ptr::null_mut::<<T as GlibPtrDefault>::GlibType>()),
+                );
+
+                PtrSlice {
                     ptr: ptr::NonNull::new_unchecked(ptr),
                     len,
-                    capacity: len + 1,
-                };
-            }
-
-            // Need to re-allocate here for adding the NULL-terminator
-            let capacity = len + 1;
-            assert_ne!(capacity, 0);
-            let ptr = ffi::g_realloc(
-                ptr as *mut _,
-                mem::size_of::<T>().checked_mul(capacity).unwrap(),
-            ) as *mut <T as GlibPtrDefault>::GlibType;
-
-            ptr::write(
-                ptr.add(len),
-                Ptr::from(ptr::null_mut::<<T as GlibPtrDefault>::GlibType>()),
-            );
-
-            PtrSlice {
-                ptr: ptr::NonNull::new_unchecked(ptr),
-                len,
-                capacity,
+                    capacity,
+                }
             }
         }
     }
@@ -559,42 +569,48 @@ impl<T: TransparentPtrType> PtrSlice<T> {
     /// Create a new `PtrSlice` around a `NULL`-terminated C array.
     #[inline]
     pub unsafe fn from_glib_none(ptr: *const <T as GlibPtrDefault>::GlibType) -> Self {
-        let mut len = 0;
-        if !ptr.is_null() {
-            while !(*ptr.add(len)).is_null() {
-                len += 1;
+        unsafe {
+            let mut len = 0;
+            if !ptr.is_null() {
+                while !(*ptr.add(len)).is_null() {
+                    len += 1;
+                }
             }
-        }
 
-        PtrSlice::from_glib_none_num(ptr, len, true)
+            PtrSlice::from_glib_none_num(ptr, len, true)
+        }
     }
 
     // rustdoc-stripper-ignore-next
     /// Create a new `PtrSlice` around a `NULL`-terminated C array.
     #[inline]
     pub unsafe fn from_glib_container(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
-        let mut len = 0;
-        if !ptr.is_null() {
-            while !(*ptr.add(len)).is_null() {
-                len += 1;
+        unsafe {
+            let mut len = 0;
+            if !ptr.is_null() {
+                while !(*ptr.add(len)).is_null() {
+                    len += 1;
+                }
             }
-        }
 
-        PtrSlice::from_glib_container_num(ptr, len, true)
+            PtrSlice::from_glib_container_num(ptr, len, true)
+        }
     }
 
     // rustdoc-stripper-ignore-next
     /// Create a new `PtrSlice` around a `NULL`-terminated C array.
     #[inline]
     pub unsafe fn from_glib_full(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
-        let mut len = 0;
-        if !ptr.is_null() {
-            while !(*ptr.add(len)).is_null() {
-                len += 1;
+        unsafe {
+            let mut len = 0;
+            if !ptr.is_null() {
+                while !(*ptr.add(len)).is_null() {
+                    len += 1;
+                }
             }
-        }
 
-        PtrSlice::from_glib_full_num(ptr, len, true)
+            PtrSlice::from_glib_full_num(ptr, len, true)
+        }
     }
 
     // rustdoc-stripper-ignore-next
@@ -932,7 +948,7 @@ impl<T: TransparentPtrType>
 {
     #[inline]
     unsafe fn from_glib_none_num(ptr: *mut <T as GlibPtrDefault>::GlibType, num: usize) -> Self {
-        Self::from_glib_none_num(ptr, num, false)
+        unsafe { Self::from_glib_none_num(ptr, num, false) }
     }
 
     #[inline]
@@ -940,12 +956,12 @@ impl<T: TransparentPtrType>
         ptr: *mut <T as GlibPtrDefault>::GlibType,
         num: usize,
     ) -> Self {
-        Self::from_glib_container_num(ptr, num, false)
+        unsafe { Self::from_glib_container_num(ptr, num, false) }
     }
 
     #[inline]
     unsafe fn from_glib_full_num(ptr: *mut <T as GlibPtrDefault>::GlibType, num: usize) -> Self {
-        Self::from_glib_full_num(ptr, num, false)
+        unsafe { Self::from_glib_full_num(ptr, num, false) }
     }
 }
 
@@ -954,7 +970,7 @@ impl<T: TransparentPtrType>
     for PtrSlice<T>
 {
     unsafe fn from_glib_none_num(ptr: *const <T as GlibPtrDefault>::GlibType, num: usize) -> Self {
-        Self::from_glib_none_num(ptr, num, false)
+        unsafe { Self::from_glib_none_num(ptr, num, false) }
     }
 
     unsafe fn from_glib_container_num(
@@ -978,17 +994,17 @@ impl<T: TransparentPtrType>
 {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
-        Self::from_glib_none(ptr)
+        unsafe { Self::from_glib_none(ptr) }
     }
 
     #[inline]
     unsafe fn from_glib_container(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
-        Self::from_glib_container(ptr)
+        unsafe { Self::from_glib_container(ptr) }
     }
 
     #[inline]
     unsafe fn from_glib_full(ptr: *mut <T as GlibPtrDefault>::GlibType) -> Self {
-        Self::from_glib_full(ptr)
+        unsafe { Self::from_glib_full(ptr) }
     }
 }
 
@@ -998,7 +1014,7 @@ impl<T: TransparentPtrType>
 {
     #[inline]
     unsafe fn from_glib_none(ptr: *const <T as GlibPtrDefault>::GlibType) -> Self {
-        Self::from_glib_none(ptr)
+        unsafe { Self::from_glib_none(ptr) }
     }
 
     unsafe fn from_glib_container(_ptr: *const <T as GlibPtrDefault>::GlibType) -> Self {

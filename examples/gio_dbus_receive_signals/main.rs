@@ -20,10 +20,10 @@ impl Default for SampleApplication {
 mod imp {
     use std::cell::RefCell;
 
-    use futures::{future, StreamExt};
+    use futures::{StreamExt, future};
     use gio::prelude::*;
     use gio::subclass::prelude::*;
-    use gio::{bus_get_future, BusType, DBusSignalFlags, WeakSignalSubscription};
+    use gio::{BusType, DBusSignalFlags, WeakSignalSubscription, bus_get_future};
 
     const DESKTOP_PORTAL_BUSNAME: &str = "org.freedesktop.portal.Desktop";
     const DESKTOP_PORTAL_OBJPATH: &str = "/org/freedesktop/portal/desktop";

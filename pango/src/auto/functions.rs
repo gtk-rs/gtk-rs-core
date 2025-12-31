@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, AttrList, Direction, Stretch, Style, Variant, Weight};
+use crate::{AttrList, Direction, Stretch, Style, Variant, Weight, ffi};
 use glib::translate::*;
 
 //#[cfg_attr(feature = "v1_44", deprecated = "Since 1.44")]

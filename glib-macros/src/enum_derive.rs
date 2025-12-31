@@ -2,11 +2,11 @@
 
 use heck::{ToKebabCase, ToShoutySnakeCase, ToUpperCamelCase};
 use proc_macro2::TokenStream;
-use quote::{format_ident, quote, quote_spanned, ToTokens};
+use quote::{ToTokens, format_ident, quote, quote_spanned};
 
 use crate::utils::{
-    crate_ident_new, gen_enum_from_glib, parse_nested_meta_items, parse_optional_nested_meta_items,
-    NestedMetaItem,
+    NestedMetaItem, crate_ident_new, gen_enum_from_glib, parse_nested_meta_items,
+    parse_optional_nested_meta_items,
 };
 
 // generates glib::gobject_ffi::GEnumValue structs mapping the enum such as:
@@ -70,7 +70,7 @@ pub fn impl_enum(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
             return Err(syn::Error::new_spanned(
                 input,
                 "#[derive(glib::Enum)] only supports enums",
-            ))
+            ));
         }
     };
     let (g_enum_values, nb_enum_values) = gen_enum_values(name, enum_variants);

@@ -1,11 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use proc_macro2::{Ident, Span, TokenStream};
-use quote::{quote, ToTokens};
+use quote::{ToTokens, quote};
 use syn::{
+    Attribute, Expr, ExprAsync, ExprClosure, Token,
     parse::{Parse, ParseStream},
     spanned::Spanned,
-    Attribute, Expr, ExprAsync, ExprClosure, Token,
 };
 
 use crate::utils::crate_ident_new;
@@ -104,7 +104,8 @@ impl UpgradeBehaviour {
                     "upgrade failure attribute must not be followed by any other attributes. Found {} more attribute{}",
                     attrs.len() - 1,
                     if attrs.len() > 2 { "s" } else { "" },
-            )));
+                ),
+            ));
         }
 
         let next_attrs = &input.call(Attribute::parse_outer)?;
@@ -115,7 +116,7 @@ impl UpgradeBehaviour {
                     "upgrade failure attribute must not be followed by any other attributes. Found {} more attribute{}",
                     next_attrs.len(),
                     if next_attrs.len() > 1 { "s" } else { "" },
-                )
+                ),
             ));
         }
 
@@ -180,12 +181,10 @@ impl Capture {
         match name {
             Expr::Path(ref p) if p.path.get_ident().is_some() => {
                 if p.path.get_ident().unwrap() == "self" && alias.is_none() {
-                    return Err(
-                        syn::Error::new_spanned(
-                            attr,
-                            "capture attribute for `self` requires usage of the `rename_to` attribute property",
-                        ),
-                    );
+                    return Err(syn::Error::new_spanned(
+                        attr,
+                        "capture attribute for `self` requires usage of the `rename_to` attribute property",
+                    ));
                 }
                 // Nothing to do, it's just an identifier
             }
@@ -193,12 +192,10 @@ impl Capture {
                 // Nothing to do, it's an alias
             }
             _ => {
-                return Err(
-                    syn::Error::new_spanned(
-                        attr,
-                        "capture attribute for an expression requires usage of the `rename_to` attribute property",
-                    ),
-                );
+                return Err(syn::Error::new_spanned(
+                    attr,
+                    "capture attribute for an expression requires usage of the `rename_to` attribute property",
+                ));
             }
         }
 
@@ -353,8 +350,8 @@ impl Parse for ClosureOrAsync {
 impl ToTokens for ClosureOrAsync {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         match self {
-            ClosureOrAsync::Closure(ref c) => c.to_tokens(tokens),
-            ClosureOrAsync::Async(ref a) => a.to_tokens(tokens),
+            ClosureOrAsync::Closure(c) => c.to_tokens(tokens),
+            ClosureOrAsync::Async(a) => a.to_tokens(tokens),
         }
     }
 }
@@ -392,37 +389,45 @@ impl Parse for Clone {
                 break;
             };
 
-            if let Some(capture) = Capture::maybe_parse(&attrs, input)? {
-                if capture.kind == CaptureKind::Watch {
-                    return Err(syn::Error::new_spanned(
-                        &attrs[0],
-                        "watch variable captures are not supported",
-                    ));
-                }
+            match Capture::maybe_parse(&attrs, input)? {
+                Some(capture) => {
+                    if capture.kind == CaptureKind::Watch {
+                        return Err(syn::Error::new_spanned(
+                            &attrs[0],
+                            "watch variable captures are not supported",
+                        ));
+                    }
 
-                captures.push(capture);
-            } else if let Some(behaviour) = UpgradeBehaviour::maybe_parse(&attrs, input)? {
-                if upgrade_behaviour.is_some() {
-                    return Err(syn::Error::new_spanned(
-                        &attrs[0],
-                        "multiple upgrade failure attributes are not supported",
-                    ));
+                    captures.push(capture);
                 }
+                _ => match UpgradeBehaviour::maybe_parse(&attrs, input)? {
+                    Some(behaviour) => {
+                        if upgrade_behaviour.is_some() {
+                            return Err(syn::Error::new_spanned(
+                                &attrs[0],
+                                "multiple upgrade failure attributes are not supported",
+                            ));
+                        }
 
-                upgrade_behaviour = Some((behaviour, attrs[0].span()));
-                break;
-            } else if let Some(ident) = attrs[0].path().get_ident() {
-                return Err(syn::Error::new_spanned(
-                        &attrs[0],
-                        format!(
-                            "unsupported attribute `{ident}`: only `strong`, `weak`, `weak_allow_none`, `to_owned`, `upgrade_or`, `upgrade_or_else`, `upgrade_or_default` and `upgrade_or_panic` are supported",
-                        ),
-                ));
-            } else {
-                return Err(syn::Error::new_spanned(
-                        &attrs[0],
-                        "unsupported attribute: only `strong`, `weak`, `weak_allow_none`, `to_owned`, `upgrade_or_else`, `upgrade_or_default` and `upgrade_or_panic` are supported",
-                ));
+                        upgrade_behaviour = Some((behaviour, attrs[0].span()));
+                        break;
+                    }
+                    _ => {
+                        if let Some(ident) = attrs[0].path().get_ident() {
+                            return Err(syn::Error::new_spanned(
+                                &attrs[0],
+                                format!(
+                                    "unsupported attribute `{ident}`: only `strong`, `weak`, `weak_allow_none`, `to_owned`, `upgrade_or`, `upgrade_or_else`, `upgrade_or_default` and `upgrade_or_panic` are supported",
+                                ),
+                            ));
+                        } else {
+                            return Err(syn::Error::new_spanned(
+                                &attrs[0],
+                                "unsupported attribute: only `strong`, `weak`, `weak_allow_none`, `to_owned`, `upgrade_or_else`, `upgrade_or_default` and `upgrade_or_panic` are supported",
+                            ));
+                        }
+                    }
+                },
             }
         }
 

@@ -2,7 +2,7 @@
 
 use std::{fmt, io, os::raw::c_char, path::PathBuf, ptr};
 
-use crate::{ffi, translate::*, ConvertError, Error, GString, NormalizeMode, Slice};
+use crate::{ConvertError, Error, GString, NormalizeMode, Slice, ffi, translate::*};
 
 // rustdoc-stripper-ignore-next
 /// A wrapper for [`ConvertError`](crate::ConvertError) that can hold an offset into the input

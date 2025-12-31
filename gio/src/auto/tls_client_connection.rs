@@ -3,10 +3,10 @@
 // DO NOT EDIT
 #![allow(deprecated)]
 
-use crate::{ffi, IOStream, SocketConnectable, TlsCertificateFlags, TlsConnection};
+use crate::{IOStream, SocketConnectable, TlsCertificateFlags, TlsConnection, ffi};
 use glib::{
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::boxed::Box as Box_;

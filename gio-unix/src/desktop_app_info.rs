@@ -4,10 +4,10 @@ use std::boxed::Box as Box_;
 use std::os::unix::io::{AsFd, AsRawFd};
 use std::ptr;
 
-use glib::{prelude::*, Error};
-use glib::{translate::*, GString};
+use glib::{Error, prelude::*};
+use glib::{GString, translate::*};
 
-use crate::{ffi, DesktopAppInfo};
+use crate::{DesktopAppInfo, ffi};
 use gio::AppLaunchContext;
 
 impl DesktopAppInfo {
@@ -55,10 +55,12 @@ pub trait DesktopAppInfoExtManual: IsA<DesktopAppInfo> {
     ) -> Result<(), Error> {
         let user_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(user_setup);
         unsafe extern "C" fn user_setup_func(user_data: glib::ffi::gpointer) {
-            let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
-                Box_::from_raw(user_data as *mut _);
-            let callback = (*callback).expect("cannot get closure...");
-            callback()
+            unsafe {
+                let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
+                    Box_::from_raw(user_data as *mut _);
+                let callback = (*callback).expect("cannot get closure...");
+                callback()
+            }
         }
         let user_setup = if user_setup_data.is_some() {
             Some(user_setup_func as _)
@@ -71,14 +73,16 @@ pub trait DesktopAppInfoExtManual: IsA<DesktopAppInfo> {
             pid: glib::ffi::GPid,
             user_data: glib::ffi::gpointer,
         ) {
-            let appinfo = from_glib_borrow(appinfo);
-            let pid = from_glib(pid);
-            let callback = user_data as *mut Option<&mut dyn FnMut(&DesktopAppInfo, glib::Pid)>;
-            if let Some(ref mut callback) = *callback {
-                callback(&appinfo, pid)
-            } else {
-                panic!("cannot get closure...")
-            };
+            unsafe {
+                let appinfo = from_glib_borrow(appinfo);
+                let pid = from_glib(pid);
+                let callback = user_data as *mut Option<&mut dyn FnMut(&DesktopAppInfo, glib::Pid)>;
+                if let Some(ref mut callback) = *callback {
+                    callback(&appinfo, pid)
+                } else {
+                    panic!("cannot get closure...")
+                };
+            }
         }
         let pid_callback = if pid_callback_data.is_some() {
             Some(pid_callback_func as _)

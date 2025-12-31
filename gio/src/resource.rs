@@ -4,7 +4,7 @@ use std::ptr;
 
 use glib::translate::*;
 
-use crate::{resources_register, Resource};
+use crate::{Resource, resources_register};
 
 impl Resource {
     #[doc(alias = "g_resource_new_from_data")]

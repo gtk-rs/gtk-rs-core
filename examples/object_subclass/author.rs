@@ -1,10 +1,10 @@
 // You can copy/paste this file every time you need a simple GObject
 // to hold some data
 
-use glib::prelude::*;
-use glib::subclass::prelude::*;
-use glib::subclass::Signal;
 use glib::Properties;
+use glib::prelude::*;
+use glib::subclass::Signal;
+use glib::subclass::prelude::*;
 use std::cell::RefCell;
 use std::sync::OnceLock;
 

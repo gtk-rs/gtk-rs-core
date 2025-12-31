@@ -1,14 +1,14 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use crate::{
-    ffi, BusType, Cancellable, DBusConnection, DBusObjectManagerClient,
-    DBusObjectManagerClientFlags, DBusObjectProxy, DBusProxy, GioFuture,
+    BusType, Cancellable, DBusConnection, DBusObjectManagerClient, DBusObjectManagerClientFlags,
+    DBusObjectProxy, DBusProxy, GioFuture, ffi,
 };
 use glib::object::{Cast as _, IsA};
 use glib::signal::connect_raw;
 use glib::translate::{
-    from_glib_borrow, from_glib_full, Borrowed, FromGlibPtrBorrow as _, IntoGlib as _,
-    ToGlibPtr as _,
+    Borrowed, FromGlibPtrBorrow as _, IntoGlib as _, ToGlibPtr as _, from_glib_borrow,
+    from_glib_full,
 };
 use glib::{SignalHandlerId, StrVRef};
 use std::future::Future;
@@ -167,24 +167,29 @@ impl DBusObjectManagerClient {
             interface_name: *const std::ffi::c_char,
             data: glib::ffi::gpointer,
         ) -> glib::ffi::GType {
-            let manager = from_glib_borrow(manager);
-            let object_path: Borrowed<glib::GString> = from_glib_borrow(object_path);
-            let interface_name: Borrowed<Option<glib::GString>> = from_glib_borrow(interface_name);
-            let callback = &*(data as *mut Option<DBusProxyTypeFn>);
-            if let Some(ref callback) = *callback {
-                callback(
-                    &manager,
-                    object_path.as_str(),
-                    (*interface_name).as_ref().map(|s| s.as_str()),
-                )
-            } else {
-                panic!("cannot get closure...")
+            unsafe {
+                let manager = from_glib_borrow(manager);
+                let object_path: Borrowed<glib::GString> = from_glib_borrow(object_path);
+                let interface_name: Borrowed<Option<glib::GString>> =
+                    from_glib_borrow(interface_name);
+                let callback = &*(data as *mut Option<DBusProxyTypeFn>);
+                if let Some(ref callback) = *callback {
+                    callback(
+                        &manager,
+                        object_path.as_str(),
+                        (*interface_name).as_ref().map(|s| s.as_str()),
+                    )
+                } else {
+                    panic!("cannot get closure...")
+                }
+                .into_glib()
             }
-            .into_glib()
         }
 
         unsafe extern "C" fn get_proxy_type_destroy_notify_func(data: glib::ffi::gpointer) {
-            let _callback = Box::from_raw(data as *mut Option<DBusProxyTypeFn>);
+            unsafe {
+                let _callback = Box::from_raw(data as *mut Option<DBusProxyTypeFn>);
+            }
         }
 
         unsafe extern "C" fn new_trampoline<
@@ -194,17 +199,19 @@ impl DBusObjectManagerClient {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = std::ptr::null_mut();
-            let ret = ffi::g_dbus_object_manager_client_new_finish(res, &mut error);
-            let result = if error.is_null() {
-                Ok(from_glib_full(ret))
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box<glib::thread_guard::ThreadGuard<P>> =
-                Box::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = std::ptr::null_mut();
+                let ret = ffi::g_dbus_object_manager_client_new_finish(res, &mut error);
+                let result = if error.is_null() {
+                    Ok(from_glib_full(ret))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box<glib::thread_guard::ThreadGuard<P>> =
+                    Box::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
         }
 
         let get_proxy_type_user_data = Box::new(get_proxy_type_func);
@@ -373,24 +380,29 @@ impl DBusObjectManagerClient {
             interface_name: *const std::ffi::c_char,
             data: glib::ffi::gpointer,
         ) -> glib::ffi::GType {
-            let manager = from_glib_borrow(manager);
-            let object_path: Borrowed<glib::GString> = from_glib_borrow(object_path);
-            let interface_name: Borrowed<Option<glib::GString>> = from_glib_borrow(interface_name);
-            let callback = &*(data as *mut Option<DBusProxyTypeFn>);
-            if let Some(ref callback) = *callback {
-                callback(
-                    &manager,
-                    object_path.as_str(),
-                    (*interface_name).as_ref().map(|s| s.as_str()),
-                )
-            } else {
-                panic!("cannot get closure...")
+            unsafe {
+                let manager = from_glib_borrow(manager);
+                let object_path: Borrowed<glib::GString> = from_glib_borrow(object_path);
+                let interface_name: Borrowed<Option<glib::GString>> =
+                    from_glib_borrow(interface_name);
+                let callback = &*(data as *mut Option<DBusProxyTypeFn>);
+                if let Some(ref callback) = *callback {
+                    callback(
+                        &manager,
+                        object_path.as_str(),
+                        (*interface_name).as_ref().map(|s| s.as_str()),
+                    )
+                } else {
+                    panic!("cannot get closure...")
+                }
+                .into_glib()
             }
-            .into_glib()
         }
 
         unsafe extern "C" fn get_proxy_type_destroy_notify_func(data: glib::ffi::gpointer) {
-            let _callback = Box::from_raw(data as *mut Option<DBusProxyTypeFn>);
+            unsafe {
+                let _callback = Box::from_raw(data as *mut Option<DBusProxyTypeFn>);
+            }
         }
 
         unsafe extern "C" fn new_for_bus_trampoline<
@@ -400,17 +412,19 @@ impl DBusObjectManagerClient {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = std::ptr::null_mut();
-            let ret = ffi::g_dbus_object_manager_client_new_finish(res, &mut error);
-            let result = if error.is_null() {
-                Ok(from_glib_full(ret))
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box<glib::thread_guard::ThreadGuard<P>> =
-                Box::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = std::ptr::null_mut();
+                let ret = ffi::g_dbus_object_manager_client_new_finish(res, &mut error);
+                let result = if error.is_null() {
+                    Ok(from_glib_full(ret))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box<glib::thread_guard::ThreadGuard<P>> =
+                    Box::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
         }
 
         let get_proxy_type_user_data = Box::new(get_proxy_type_func);
@@ -519,14 +533,16 @@ pub trait DBusObjectManagerClientExtManual: IsA<DBusObjectManagerClient> + 'stat
             invalidated_properties: *const *const std::ffi::c_char,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                DBusObjectManagerClient::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(object_proxy),
-                &from_glib_borrow(interface_proxy),
-                &from_glib_borrow(changed_properties),
-                StrVRef::from_glib_borrow(invalidated_properties),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    DBusObjectManagerClient::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(object_proxy),
+                    &from_glib_borrow(interface_proxy),
+                    &from_glib_borrow(changed_properties),
+                    StrVRef::from_glib_borrow(invalidated_properties),
+                )
+            }
         }
         unsafe {
             let f: Box<F> = Box::new(f);

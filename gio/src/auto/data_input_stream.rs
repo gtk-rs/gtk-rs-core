@@ -3,12 +3,12 @@
 // DO NOT EDIT
 
 use crate::{
-    ffi, AsyncResult, BufferedInputStream, Cancellable, DataStreamByteOrder, DataStreamNewlineType,
-    FilterInputStream, InputStream, Seekable,
+    AsyncResult, BufferedInputStream, Cancellable, DataStreamByteOrder, DataStreamNewlineType,
+    FilterInputStream, InputStream, Seekable, ffi,
 };
 use glib::{
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::boxed::Box as Box_;

@@ -3,8 +3,8 @@
 // DO NOT EDIT
 
 use crate::{
-    ffi, AsyncResult, Cancellable, SocketConnectable, TlsCertificate, TlsCertificateFlags,
-    TlsDatabaseLookupFlags, TlsDatabaseVerifyFlags, TlsInteraction,
+    AsyncResult, Cancellable, SocketConnectable, TlsCertificate, TlsCertificateFlags,
+    TlsDatabaseLookupFlags, TlsDatabaseVerifyFlags, TlsInteraction, ffi,
 };
 use glib::{prelude::*, translate::*};
 use std::{boxed::Box as Box_, pin::Pin};

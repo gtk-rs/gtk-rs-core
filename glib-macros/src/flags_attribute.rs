@@ -2,13 +2,13 @@
 
 use heck::{ToKebabCase, ToShoutySnakeCase, ToUpperCamelCase};
 use proc_macro2::TokenStream;
-use quote::{format_ident, quote, quote_spanned, ToTokens};
+use quote::{ToTokens, format_ident, quote, quote_spanned};
 use syn::{
-    punctuated::Punctuated, spanned::Spanned, token::Comma, Attribute, Ident, Variant, Visibility,
+    Attribute, Ident, Variant, Visibility, punctuated::Punctuated, spanned::Spanned, token::Comma,
 };
 
 use crate::utils::{
-    crate_ident_new, parse_nested_meta_items, parse_optional_nested_meta_items, NestedMetaItem,
+    NestedMetaItem, crate_ident_new, parse_nested_meta_items, parse_optional_nested_meta_items,
 };
 
 pub const WRONG_PLACE_MSG: &str = "#[glib::flags] only supports enums";

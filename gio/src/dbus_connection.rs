@@ -3,12 +3,12 @@
 use std::{boxed::Box as Box_, future::Future, marker::PhantomData, num::NonZeroU32};
 
 use crate::{
-    ffi, ActionGroup, DBusConnection, DBusInterfaceInfo, DBusMessage, DBusMethodInvocation,
-    DBusSignalFlags, MenuModel,
+    ActionGroup, DBusConnection, DBusInterfaceInfo, DBusMessage, DBusMethodInvocation,
+    DBusSignalFlags, MenuModel, ffi,
 };
 use futures_channel::mpsc;
 use futures_core::{FusedStream, Stream};
-use glib::{prelude::*, translate::*, variant::VariantTypeMismatchError, WeakRef};
+use glib::{WeakRef, prelude::*, translate::*, variant::VariantTypeMismatchError};
 use pin_project_lite::pin_project;
 
 pub trait DBusMethodCall: Sized {
@@ -567,12 +567,14 @@ impl DBusConnection {
             incoming: glib::ffi::gboolean,
             user_data: glib::ffi::gpointer,
         ) -> *mut ffi::GDBusMessage {
-            let connection = from_glib_borrow(connection);
-            let message = from_glib_full(message);
-            let incoming = from_glib(incoming);
-            let callback: &P = &*(user_data as *mut _);
-            let res = (*callback)(&connection, &message, incoming);
-            res.into_glib_ptr()
+            unsafe {
+                let connection = from_glib_borrow(connection);
+                let message = from_glib_full(message);
+                let incoming = from_glib(incoming);
+                let callback: &P = &*(user_data as *mut _);
+                let res = (*callback)(&connection, &message, incoming);
+                res.into_glib_ptr()
+            }
         }
         let filter_function = Some(filter_function_func::<P> as _);
         unsafe extern "C" fn user_data_free_func_func<
@@ -580,7 +582,9 @@ impl DBusConnection {
         >(
             data: glib::ffi::gpointer,
         ) {
-            let _callback: Box_<P> = Box_::from_raw(data as *mut _);
+            unsafe {
+                let _callback: Box_<P> = Box_::from_raw(data as *mut _);
+            }
         }
         let destroy_call3 = Some(user_data_free_func_func::<P> as _);
         let super_callback0: Box_<P> = filter_function_data;
@@ -672,21 +676,23 @@ impl DBusConnection {
             parameters: *mut glib::ffi::GVariant,
             user_data: glib::ffi::gpointer,
         ) {
-            let connection = from_glib_borrow(connection);
-            let sender_name: Borrowed<glib::GString> = from_glib_borrow(sender_name);
-            let object_path: Borrowed<glib::GString> = from_glib_borrow(object_path);
-            let interface_name: Borrowed<glib::GString> = from_glib_borrow(interface_name);
-            let signal_name: Borrowed<glib::GString> = from_glib_borrow(signal_name);
-            let parameters = from_glib_borrow(parameters);
-            let callback: &P = &*(user_data as *mut _);
-            (*callback)(
-                &connection,
-                sender_name.as_str(),
-                object_path.as_str(),
-                interface_name.as_str(),
-                signal_name.as_str(),
-                &parameters,
-            );
+            unsafe {
+                let connection = from_glib_borrow(connection);
+                let sender_name: Borrowed<glib::GString> = from_glib_borrow(sender_name);
+                let object_path: Borrowed<glib::GString> = from_glib_borrow(object_path);
+                let interface_name: Borrowed<glib::GString> = from_glib_borrow(interface_name);
+                let signal_name: Borrowed<glib::GString> = from_glib_borrow(signal_name);
+                let parameters = from_glib_borrow(parameters);
+                let callback: &P = &*(user_data as *mut _);
+                (*callback)(
+                    &connection,
+                    sender_name.as_str(),
+                    object_path.as_str(),
+                    interface_name.as_str(),
+                    signal_name.as_str(),
+                    &parameters,
+                );
+            }
         }
         let callback = Some(callback_func::<P> as _);
         unsafe extern "C" fn user_data_free_func_func<
@@ -694,7 +700,9 @@ impl DBusConnection {
         >(
             data: glib::ffi::gpointer,
         ) {
-            let _callback: Box_<P> = Box_::from_raw(data as *mut _);
+            unsafe {
+                let _callback: Box_<P> = Box_::from_raw(data as *mut _);
+            }
         }
         let destroy_call9 = Some(user_data_free_func_func::<P> as _);
         let super_callback0: Box_<P> = callback_data;

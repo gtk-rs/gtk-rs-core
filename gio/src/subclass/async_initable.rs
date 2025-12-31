@@ -2,10 +2,10 @@
 
 use std::{future::Future, pin::Pin, ptr};
 
-use glib::{prelude::*, subclass::prelude::*, thread_guard::ThreadGuard, translate::*, Error};
+use glib::{Error, prelude::*, subclass::prelude::*, thread_guard::ThreadGuard, translate::*};
 
 use crate::{
-    ffi, AsyncInitable, AsyncResult, Cancellable, CancellableFuture, GioFutureResult, LocalTask,
+    AsyncInitable, AsyncResult, Cancellable, CancellableFuture, GioFutureResult, LocalTask, ffi,
 };
 
 pub trait AsyncInitableImpl: ObjectImpl + ObjectSubclass<Type: IsA<AsyncInitable>> {
@@ -38,25 +38,27 @@ pub trait AsyncInitableImplExt: AsyncInitableImpl {
                 res: *mut crate::ffi::GAsyncResult,
                 user_data: glib::ffi::gpointer,
             ) {
-                let type_data = T::type_data();
-                let parent_iface = type_data.as_ref().parent_interface::<AsyncInitable>()
-                    as *const ffi::GAsyncInitableIface;
-                let init_finish = (*parent_iface)
-                    .init_finish
-                    .expect("no parent \"init_finish\" implementation");
+                unsafe {
+                    let type_data = T::type_data();
+                    let parent_iface = type_data.as_ref().parent_interface::<AsyncInitable>()
+                        as *const ffi::GAsyncInitableIface;
+                    let init_finish = (*parent_iface)
+                        .init_finish
+                        .expect("no parent \"init_finish\" implementation");
 
-                let r: Box<ThreadGuard<GioFutureResult<Result<(), Error>>>> =
-                    Box::from_raw(user_data as *mut _);
-                let r = r.into_inner();
+                    let r: Box<ThreadGuard<GioFutureResult<Result<(), Error>>>> =
+                        Box::from_raw(user_data as *mut _);
+                    let r = r.into_inner();
 
-                let mut error = ptr::null_mut();
-                init_finish(source_object as *mut _, res, &mut error);
-                let result = if error.is_null() {
-                    Ok(())
-                } else {
-                    Err(from_glib_full(error))
-                };
-                r.resolve(result);
+                    let mut error = ptr::null_mut();
+                    init_finish(source_object as *mut _, res, &mut error);
+                    let result = if error.is_null() {
+                        Ok(())
+                    } else {
+                        Err(from_glib_full(error))
+                    };
+                    r.resolve(result);
+                }
             }
 
             Box::pin(crate::GioFuture::new(
@@ -95,40 +97,42 @@ unsafe extern "C" fn async_initable_init_async<T: AsyncInitableImpl>(
     callback: ffi::GAsyncReadyCallback,
     user_data: glib::ffi::gpointer,
 ) {
-    let instance = &*(initable as *mut T::Instance);
-    let imp = instance.imp();
-    let cancellable = Option::<Cancellable>::from_glib_none(cancellable);
+    unsafe {
+        let instance = &*(initable as *mut T::Instance);
+        let imp = instance.imp();
+        let cancellable = Option::<Cancellable>::from_glib_none(cancellable);
 
-    let task = callback.map(|callback| {
-        let task = LocalTask::new(
-            Some(imp.obj().unsafe_cast_ref::<glib::Object>()),
-            cancellable.as_ref(),
-            move |task, obj| {
-                let result: *mut crate::ffi::GAsyncResult =
-                    task.upcast_ref::<AsyncResult>().to_glib_none().0;
-                let obj: *mut glib::gobject_ffi::GObject = obj.to_glib_none().0;
-                callback(obj, result, user_data);
-            },
-        );
-        task.set_check_cancellable(true);
-        task.set_return_on_cancel(true);
-        task
-    });
+        let task = callback.map(|callback| {
+            let task = LocalTask::new(
+                Some(imp.obj().unsafe_cast_ref::<glib::Object>()),
+                cancellable.as_ref(),
+                move |task, obj| {
+                    let result: *mut crate::ffi::GAsyncResult =
+                        task.upcast_ref::<AsyncResult>().to_glib_none().0;
+                    let obj: *mut glib::gobject_ffi::GObject = obj.to_glib_none().0;
+                    callback(obj, result, user_data);
+                },
+            );
+            task.set_check_cancellable(true);
+            task.set_return_on_cancel(true);
+            task
+        });
 
-    glib::MainContext::ref_thread_default().spawn_local(async move {
-        let io_priority = from_glib(io_priority);
-        let res = if let Some(cancellable) = cancellable {
-            CancellableFuture::new(imp.init_future(io_priority), cancellable)
-                .await
-                .map_err(|cancelled| cancelled.into())
-                .and_then(|res| res)
-        } else {
-            imp.init_future(io_priority).await
-        };
-        if let Some(task) = task {
-            task.return_result(res.map(|_t| true));
-        }
-    });
+        glib::MainContext::ref_thread_default().spawn_local(async move {
+            let io_priority = from_glib(io_priority);
+            let res = if let Some(cancellable) = cancellable {
+                CancellableFuture::new(imp.init_future(io_priority), cancellable)
+                    .await
+                    .map_err(|cancelled| cancelled.into())
+                    .and_then(|res| res)
+            } else {
+                imp.init_future(io_priority).await
+            };
+            if let Some(task) = task {
+                task.return_result(res.map(|_t| true));
+            }
+        });
+    }
 }
 
 unsafe extern "C" fn async_initable_init_finish(
@@ -136,28 +140,30 @@ unsafe extern "C" fn async_initable_init_finish(
     res: *mut ffi::GAsyncResult,
     error: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean {
-    let res = from_glib_none::<_, AsyncResult>(res);
+    unsafe {
+        let res = from_glib_none::<_, AsyncResult>(res);
 
-    let task = res
-        .downcast::<LocalTask<bool>>()
-        .expect("GAsyncResult is not a GTask");
-    if !LocalTask::<bool>::is_valid(
-        &task,
-        Some(from_glib_borrow::<_, AsyncInitable>(initable).as_ref()),
-    ) {
-        panic!("Task is not valid for source object");
-    }
-
-    match task.propagate() {
-        Ok(v) => {
-            debug_assert!(v);
-            true.into_glib()
+        let task = res
+            .downcast::<LocalTask<bool>>()
+            .expect("GAsyncResult is not a GTask");
+        if !LocalTask::<bool>::is_valid(
+            &task,
+            Some(from_glib_borrow::<_, AsyncInitable>(initable).as_ref()),
+        ) {
+            panic!("Task is not valid for source object");
         }
-        Err(e) => {
-            if !error.is_null() {
-                *error = e.into_glib_ptr();
+
+        match task.propagate() {
+            Ok(v) => {
+                debug_assert!(v);
+                true.into_glib()
             }
-            false.into_glib()
+            Err(e) => {
+                if !error.is_null() {
+                    *error = e.into_glib_ptr();
+                }
+                false.into_glib()
+            }
         }
     }
 }
@@ -209,8 +215,10 @@ mod tests {
         pub unsafe extern "C" fn async_initable_test_type_get_value(
             this: *mut AsyncInitableTestType,
         ) -> u64 {
-            let this = super::AsyncInitableTestType::from_glib_borrow(this);
-            this.imp().0.get()
+            unsafe {
+                let this = super::AsyncInitableTestType::from_glib_borrow(this);
+                this.imp().0.get()
+            }
         }
     }
 
@@ -228,12 +236,14 @@ mod tests {
         }
 
         pub unsafe fn new_uninit() -> Self {
-            // This creates an uninitialized AsyncInitableTestType object, for testing
-            // purposes. In real code, using AsyncInitable::new_future (like the new() method
-            // does) is recommended.
-            glib::Object::new_internal(Self::static_type(), &mut [])
-                .downcast()
-                .unwrap()
+            unsafe {
+                // This creates an uninitialized AsyncInitableTestType object, for testing
+                // purposes. In real code, using AsyncInitable::new_future (like the new() method
+                // does) is recommended.
+                glib::Object::new_internal(Self::static_type(), &mut [])
+                    .downcast()
+                    .unwrap()
+            }
         }
 
         pub fn value(&self) -> u64 {
@@ -332,22 +342,24 @@ mod tests {
                     res: *mut crate::ffi::GAsyncResult,
                     user_data: glib::ffi::gpointer,
                 ) {
-                    let tx: Box<ThreadGuard<oneshot::Sender<Result<(), glib::Error>>>> =
-                        Box::from_raw(user_data as *mut _);
-                    let tx = tx.into_inner();
-                    let mut error = ptr::null_mut();
-                    let ret = crate::ffi::g_async_initable_init_finish(
-                        source_object as *mut _,
-                        res,
-                        &mut error,
-                    );
-                    assert_eq!(ret, glib::ffi::GTRUE);
-                    let result = if error.is_null() {
-                        Ok(())
-                    } else {
-                        Err(from_glib_full(error))
-                    };
-                    tx.send(result).unwrap();
+                    unsafe {
+                        let tx: Box<ThreadGuard<oneshot::Sender<Result<(), glib::Error>>>> =
+                            Box::from_raw(user_data as *mut _);
+                        let tx = tx.into_inner();
+                        let mut error = ptr::null_mut();
+                        let ret = crate::ffi::g_async_initable_init_finish(
+                            source_object as *mut _,
+                            res,
+                            &mut error,
+                        );
+                        assert_eq!(ret, glib::ffi::GTRUE);
+                        let result = if error.is_null() {
+                            Ok(())
+                        } else {
+                            Err(from_glib_full(error))
+                        };
+                        tx.send(result).unwrap();
+                    }
                 }
 
                 crate::ffi::g_async_initable_init_async(

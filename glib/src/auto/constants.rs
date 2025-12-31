@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, GStr};
+use crate::{GStr, ffi};
 
 #[doc(alias = "G_CSET_A_2_Z")]
 pub static CSET_A_2_Z: &GStr = unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_CSET_A_2_Z) };

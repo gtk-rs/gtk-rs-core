@@ -55,11 +55,7 @@ impl From<ControlFlow> for std::ops::ControlFlow<()> {
 
 impl From<bool> for ControlFlow {
     fn from(c: bool) -> Self {
-        if c {
-            Self::Continue
-        } else {
-            Self::Break
-        }
+        if c { Self::Continue } else { Self::Break }
     }
 }
 
@@ -86,7 +82,7 @@ impl IntoGlib for ControlFlow {
 impl FromGlib<ffi::gboolean> for ControlFlow {
     #[inline]
     unsafe fn from_glib(value: ffi::gboolean) -> Self {
-        bool::from_glib(value).into()
+        unsafe { bool::from_glib(value).into() }
     }
 }
 

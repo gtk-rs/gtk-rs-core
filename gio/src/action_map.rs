@@ -2,7 +2,7 @@
 
 use glib::{clone, prelude::*};
 
-use crate::{prelude::*, ActionEntry, ActionMap, SimpleAction};
+use crate::{ActionEntry, ActionMap, SimpleAction, prelude::*};
 pub trait ActionMapExtManual: IsA<ActionMap> {
     #[doc(alias = "g_action_map_add_action_entries")]
     fn add_action_entries(&self, entries: impl IntoIterator<Item = ActionEntry<Self>>) {

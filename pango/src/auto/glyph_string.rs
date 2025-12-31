@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, Analysis, Font, Rectangle};
+use crate::{Analysis, Font, Rectangle, ffi};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {

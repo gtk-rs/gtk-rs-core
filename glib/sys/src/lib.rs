@@ -15,11 +15,11 @@ mod manual;
 
 pub use manual::*;
 
+#[allow(unused_imports)]
+use libc::{FILE, intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t};
 #[cfg(unix)]
 #[allow(unused_imports)]
 use libc::{dev_t, gid_t, pid_t, socklen_t, uid_t};
-#[allow(unused_imports)]
-use libc::{intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t, FILE};
 #[allow(unused_imports)]
 use std::ffi::{
     c_char, c_double, c_float, c_int, c_long, c_short, c_uchar, c_uint, c_ulong, c_ushort, c_void,
@@ -2707,7 +2707,7 @@ unsafe extern "C" {
     //=========================================================================
     pub fn g_array_get_type() -> GType;
     pub fn g_array_append_vals(array: *mut GArray, data: gconstpointer, len: c_uint)
-        -> *mut GArray;
+    -> *mut GArray;
     #[cfg(feature = "v2_62")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_62")))]
     pub fn g_array_binary_search(
@@ -4071,7 +4071,7 @@ unsafe extern "C" {
         link_: *mut GList,
     ) -> *mut GList;
     pub fn g_list_insert_sorted(list: *mut GList, data: gpointer, func: GCompareFunc)
-        -> *mut GList;
+    -> *mut GList;
     pub fn g_list_insert_sorted_with_data(
         list: *mut GList,
         data: gpointer,
@@ -4326,7 +4326,7 @@ unsafe extern "C" {
         data: gpointer,
     ) -> *mut GNode;
     pub fn g_node_find_child(node: *mut GNode, flags: GTraverseFlags, data: gpointer)
-        -> *mut GNode;
+    -> *mut GNode;
     pub fn g_node_first_sibling(node: *mut GNode) -> *mut GNode;
     pub fn g_node_get_root(node: *mut GNode) -> *mut GNode;
     pub fn g_node_insert(parent: *mut GNode, position: c_int, node: *mut GNode) -> *mut GNode;
@@ -4531,7 +4531,7 @@ unsafe extern "C" {
     #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_pattern_spec_match_string(pspec: *mut GPatternSpec, string: *const c_char)
-        -> gboolean;
+    -> gboolean;
 
     //=========================================================================
     // GPollFD
@@ -5076,7 +5076,7 @@ unsafe extern "C" {
     );
     pub fn g_sequence_get(iter: *mut GSequenceIter) -> gpointer;
     pub fn g_sequence_insert_before(iter: *mut GSequenceIter, data: gpointer)
-        -> *mut GSequenceIter;
+    -> *mut GSequenceIter;
     pub fn g_sequence_move(src: *mut GSequenceIter, dest: *mut GSequenceIter);
     pub fn g_sequence_move_range(
         dest: *mut GSequenceIter,
@@ -5891,7 +5891,7 @@ unsafe extern "C" {
     pub fn g_variant_new_strv(strv: *const *const c_char, length: ssize_t) -> *mut GVariant;
     pub fn g_variant_new_take_string(string: *mut c_char) -> *mut GVariant;
     pub fn g_variant_new_tuple(children: *const *mut GVariant, n_children: size_t)
-        -> *mut GVariant;
+    -> *mut GVariant;
     pub fn g_variant_new_uint16(value: u16) -> *mut GVariant;
     pub fn g_variant_new_uint32(value: u32) -> *mut GVariant;
     pub fn g_variant_new_uint64(value: u64) -> *mut GVariant;
@@ -6131,7 +6131,7 @@ unsafe extern "C" {
     #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_aligned_alloc0(n_blocks: size_t, n_block_bytes: size_t, alignment: size_t)
-        -> gpointer;
+    -> gpointer;
     #[cfg(feature = "v2_72")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
     pub fn g_aligned_free(mem: gpointer);
@@ -6363,7 +6363,7 @@ unsafe extern "C" {
     //pub fn g_build_filename_valist(first_element: *const c_char, args: /*Unimplemented*/*mut va_list) -> *mut c_char;
     pub fn g_build_filenamev(args: *mut *mut c_char) -> *mut c_char;
     pub fn g_build_path(separator: *const c_char, first_element: *const c_char, ...)
-        -> *mut c_char;
+    -> *mut c_char;
     pub fn g_build_pathv(separator: *const c_char, args: *mut *mut c_char) -> *mut c_char;
     #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
@@ -6636,7 +6636,7 @@ unsafe extern "C" {
     #[cfg(feature = "v2_58")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
     pub fn g_get_language_names_with_category(category_name: *const c_char)
-        -> *const *const c_char;
+    -> *const *const c_char;
     pub fn g_get_locale_variants(locale: *const c_char) -> *mut *mut c_char;
     pub fn g_get_monotonic_time() -> i64;
     pub fn g_get_num_processors() -> c_uint;
@@ -7016,7 +7016,7 @@ unsafe extern "C" {
     pub fn g_set_print_handler(func: GPrintFunc) -> GPrintFunc;
     pub fn g_set_printerr_handler(func: GPrintFunc) -> GPrintFunc;
     pub fn g_setenv(variable: *const c_char, value: *const c_char, overwrite: gboolean)
-        -> gboolean;
+    -> gboolean;
     pub fn g_shell_error_quark() -> GQuark;
     pub fn g_shell_parse_argv(
         command_line: *const c_char,
@@ -7359,7 +7359,7 @@ unsafe extern "C" {
         data: gpointer,
     ) -> c_uint;
     pub fn g_timeout_add_seconds(interval: c_uint, function: GSourceFunc, data: gpointer)
-        -> c_uint;
+    -> c_uint;
     pub fn g_timeout_add_seconds_full(
         priority: c_int,
         interval: c_uint,

@@ -7,8 +7,8 @@ use futures_io::{AsyncRead, AsyncWrite};
 use glib::prelude::*;
 
 use crate::{
-    prelude::*, IOStream, InputStreamAsyncRead, OutputStreamAsyncWrite, PollableInputStream,
-    PollableOutputStream,
+    IOStream, InputStreamAsyncRead, OutputStreamAsyncWrite, PollableInputStream,
+    PollableOutputStream, prelude::*,
 };
 
 pub trait IOStreamExtManual: Sized + IsA<IOStream> {

@@ -3,8 +3,8 @@
 // DO NOT EDIT
 
 use crate::{
-    ffi, AsyncResult, BusType, Cancellable, DBusConnection, File, IOErrorEnum, IOStream, Icon,
-    InputStream, Resource, ResourceLookupFlags, SettingsBackend,
+    AsyncResult, BusType, Cancellable, DBusConnection, File, IOErrorEnum, IOStream, Icon,
+    InputStream, Resource, ResourceLookupFlags, SettingsBackend, ffi,
 };
 use glib::{prelude::*, translate::*};
 use std::{boxed::Box as Box_, pin::Pin};

@@ -7,7 +7,7 @@ use glib::{prelude::*, translate::*};
 #[cfg(feature = "v2_74")]
 use crate::FileIOStream;
 use crate::{
-    ffi, Cancellable, File, FileAttributeValue, FileCreateFlags, FileEnumerator, FileQueryInfoFlags,
+    Cancellable, File, FileAttributeValue, FileCreateFlags, FileEnumerator, FileQueryInfoFlags, ffi,
 };
 
 impl File {
@@ -39,18 +39,20 @@ impl File {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let mut iostream = ptr::null_mut();
-            let ret = ffi::g_file_new_tmp_finish(res, &mut iostream, &mut error);
-            let result = if error.is_null() {
-                Ok((from_glib_full(ret), from_glib_full(iostream)))
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box<glib::thread_guard::ThreadGuard<P>> =
-                Box::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = ptr::null_mut();
+                let mut iostream = ptr::null_mut();
+                let ret = ffi::g_file_new_tmp_finish(res, &mut iostream, &mut error);
+                let result = if error.is_null() {
+                    Ok((from_glib_full(ret), from_glib_full(iostream)))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box<glib::thread_guard::ThreadGuard<P>> =
+                    Box::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = new_tmp_async_trampoline::<P>;
         unsafe {
@@ -117,17 +119,19 @@ impl File {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let ret = ffi::g_file_new_tmp_dir_finish(res, &mut error);
-            let result = if error.is_null() {
-                Ok(from_glib_full(ret))
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box<glib::thread_guard::ThreadGuard<P>> =
-                Box::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = ptr::null_mut();
+                let ret = ffi::g_file_new_tmp_dir_finish(res, &mut error);
+                let result = if error.is_null() {
+                    Ok(from_glib_full(ret))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box<glib::thread_guard::ThreadGuard<P>> =
+                    Box::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = new_tmp_dir_async_trampoline::<P>;
         unsafe {
@@ -209,25 +213,27 @@ pub trait FileExtManual: IsA<File> + Sized {
             res: *mut ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let user_data: Box<(glib::thread_guard::ThreadGuard<R>, B)> =
-                Box::from_raw(user_data as *mut _);
-            let (callback, contents) = *user_data;
-            let callback = callback.into_inner();
+            unsafe {
+                let user_data: Box<(glib::thread_guard::ThreadGuard<R>, B)> =
+                    Box::from_raw(user_data as *mut _);
+                let (callback, contents) = *user_data;
+                let callback = callback.into_inner();
 
-            let mut error = ptr::null_mut();
-            let mut new_etag = ptr::null_mut();
-            let _ = ffi::g_file_replace_contents_finish(
-                _source_object as *mut _,
-                res,
-                &mut new_etag,
-                &mut error,
-            );
-            let result = if error.is_null() {
-                Ok((contents, from_glib_full(new_etag)))
-            } else {
-                Err((contents, from_glib_full(error)))
-            };
-            callback(result);
+                let mut error = ptr::null_mut();
+                let mut new_etag = ptr::null_mut();
+                let _ = ffi::g_file_replace_contents_finish(
+                    _source_object as *mut _,
+                    res,
+                    &mut new_etag,
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    Ok((contents, from_glib_full(new_etag)))
+                } else {
+                    Err((contents, from_glib_full(error)))
+                };
+                callback(result);
+            }
         }
         let callback = replace_contents_async_trampoline::<B, R>;
         unsafe {
@@ -306,18 +312,23 @@ pub trait FileExtManual: IsA<File> + Sized {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let ret =
-                ffi::g_file_enumerate_children_finish(_source_object as *mut _, res, &mut error);
-            let result = if error.is_null() {
-                Ok(from_glib_full(ret))
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box<glib::thread_guard::ThreadGuard<Q>> =
-                Box::from_raw(user_data as *mut _);
-            let callback = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = ptr::null_mut();
+                let ret = ffi::g_file_enumerate_children_finish(
+                    _source_object as *mut _,
+                    res,
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    Ok(from_glib_full(ret))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box<glib::thread_guard::ThreadGuard<Q>> =
+                    Box::from_raw(user_data as *mut _);
+                let callback = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = create_async_trampoline::<Q>;
         unsafe {
@@ -395,19 +406,21 @@ pub trait FileExtManual: IsA<File> + Sized {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            ffi::g_file_copy_finish(_source_object as *mut _, res, &mut error);
-            let result = if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box<(
-                glib::thread_guard::ThreadGuard<Q>,
-                RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
-            )> = Box::from_raw(user_data as *mut _);
-            let callback = callback.0.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = ptr::null_mut();
+                ffi::g_file_copy_finish(_source_object as *mut _, res, &mut error);
+                let result = if error.is_null() {
+                    Ok(())
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box<(
+                    glib::thread_guard::ThreadGuard<Q>,
+                    RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
+                )> = Box::from_raw(user_data as *mut _);
+                let callback = callback.0.into_inner();
+                callback(result);
+            }
         }
         unsafe extern "C" fn copy_async_progress_trampoline<
             Q: FnOnce(Result<(), glib::Error>) + 'static,
@@ -416,16 +429,18 @@ pub trait FileExtManual: IsA<File> + Sized {
             total_num_bytes: i64,
             user_data: glib::ffi::gpointer,
         ) {
-            let callback: &(
-                glib::thread_guard::ThreadGuard<Q>,
-                RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
-            ) = &*(user_data as *const _);
-            (callback
-                .1
-                .borrow_mut()
-                .as_mut()
-                .expect("no closure")
-                .get_mut())(current_num_bytes, total_num_bytes);
+            unsafe {
+                let callback: &(
+                    glib::thread_guard::ThreadGuard<Q>,
+                    RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
+                ) = &*(user_data as *const _);
+                (callback
+                    .1
+                    .borrow_mut()
+                    .as_mut()
+                    .expect("no closure")
+                    .get_mut())(current_num_bytes, total_num_bytes);
+            }
         }
 
         let user_data = Box::into_raw(user_data) as *mut _;
@@ -538,30 +553,32 @@ pub trait FileExtManual: IsA<File> + Sized {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = std::ptr::null_mut();
-            let mut contents = std::ptr::null_mut();
-            let mut length = std::mem::MaybeUninit::uninit();
-            let mut etag_out = std::ptr::null_mut();
-            let _ = ffi::g_file_load_contents_finish(
-                _source_object as *mut _,
-                res,
-                &mut contents,
-                length.as_mut_ptr(),
-                &mut etag_out,
-                &mut error,
-            );
-            let result = if error.is_null() {
-                Ok((
-                    FromGlibContainer::from_glib_full_num(contents, length.assume_init() as _),
-                    from_glib_full(etag_out),
-                ))
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box<glib::thread_guard::ThreadGuard<P>> =
-                Box::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = std::ptr::null_mut();
+                let mut contents = std::ptr::null_mut();
+                let mut length = std::mem::MaybeUninit::uninit();
+                let mut etag_out = std::ptr::null_mut();
+                let _ = ffi::g_file_load_contents_finish(
+                    _source_object as *mut _,
+                    res,
+                    &mut contents,
+                    length.as_mut_ptr(),
+                    &mut etag_out,
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    Ok((
+                        FromGlibContainer::from_glib_full_num(contents, length.assume_init() as _),
+                        from_glib_full(etag_out),
+                    ))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box<glib::thread_guard::ThreadGuard<P>> =
+                    Box::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = load_contents_async_trampoline::<P>;
         unsafe {
@@ -633,32 +650,34 @@ pub trait FileExtManual: IsA<File> + Sized {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut contents = ptr::null_mut();
-            let mut length = mem::MaybeUninit::uninit();
-            let mut etag_out = ptr::null_mut();
-            let mut error = ptr::null_mut();
-            ffi::g_file_load_partial_contents_finish(
-                _source_object as *mut _,
-                res,
-                &mut contents,
-                length.as_mut_ptr(),
-                &mut etag_out,
-                &mut error,
-            );
-            let result = if error.is_null() {
-                Ok((
-                    FromGlibContainer::from_glib_full_num(contents, length.assume_init() as _),
-                    from_glib_full(etag_out),
-                ))
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box<(
-                glib::thread_guard::ThreadGuard<Q>,
-                RefCell<glib::thread_guard::ThreadGuard<P>>,
-            )> = Box::from_raw(user_data as *mut _);
-            let callback = callback.0.into_inner();
-            callback(result);
+            unsafe {
+                let mut contents = ptr::null_mut();
+                let mut length = mem::MaybeUninit::uninit();
+                let mut etag_out = ptr::null_mut();
+                let mut error = ptr::null_mut();
+                ffi::g_file_load_partial_contents_finish(
+                    _source_object as *mut _,
+                    res,
+                    &mut contents,
+                    length.as_mut_ptr(),
+                    &mut etag_out,
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    Ok((
+                        FromGlibContainer::from_glib_full_num(contents, length.assume_init() as _),
+                        from_glib_full(etag_out),
+                    ))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box<(
+                    glib::thread_guard::ThreadGuard<Q>,
+                    RefCell<glib::thread_guard::ThreadGuard<P>>,
+                )> = Box::from_raw(user_data as *mut _);
+                let callback = callback.0.into_inner();
+                callback(result);
+            }
         }
         unsafe extern "C" fn load_partial_contents_async_read_more_trampoline<
             P: FnMut(&[u8]) -> bool + 'static,
@@ -669,19 +688,21 @@ pub trait FileExtManual: IsA<File> + Sized {
             file_size: i64,
             user_data: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
-            use std::slice;
+            unsafe {
+                use std::slice;
 
-            let callback: &(
-                glib::thread_guard::ThreadGuard<Q>,
-                RefCell<glib::thread_guard::ThreadGuard<P>>,
-            ) = &*(user_data as *const _);
-            let data = if file_size == 0 {
-                &[]
-            } else {
-                slice::from_raw_parts(file_contents as *const u8, file_size as usize)
-            };
+                let callback: &(
+                    glib::thread_guard::ThreadGuard<Q>,
+                    RefCell<glib::thread_guard::ThreadGuard<P>>,
+                ) = &*(user_data as *const _);
+                let data = if file_size == 0 {
+                    &[]
+                } else {
+                    slice::from_raw_parts(file_contents as *const u8, file_size as usize)
+                };
 
-            (*callback.1.borrow_mut().get_mut())(data).into_glib()
+                (*callback.1.borrow_mut().get_mut())(data).into_glib()
+            }
         }
 
         let user_data = Box::into_raw(user_data) as *mut _;
@@ -714,14 +735,16 @@ pub trait FileExtManual: IsA<File> + Sized {
             num_files: u64,
             user_data: glib::ffi::gpointer,
         ) {
-            let reporting = from_glib(reporting);
-            let callback: &Option<RefCell<Box<dyn Fn(bool, u64, u64, u64) + 'static>>> =
-                &*(user_data as *mut _);
-            if let Some(ref callback) = *callback {
-                (*callback.borrow_mut())(reporting, current_size, num_dirs, num_files)
-            } else {
-                panic!("cannot get closure...")
-            };
+            unsafe {
+                let reporting = from_glib(reporting);
+                let callback: &Option<RefCell<Box<dyn Fn(bool, u64, u64, u64) + 'static>>> =
+                    &*(user_data as *mut _);
+                if let Some(ref callback) = *callback {
+                    (*callback.borrow_mut())(reporting, current_size, num_dirs, num_files)
+                } else {
+                    panic!("cannot get closure...")
+                };
+            }
         }
         let progress_callback = if progress_callback_data.is_some() {
             Some(progress_callback_func as _)
@@ -800,39 +823,41 @@ pub trait FileExtManual: IsA<File> + Sized {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut disk_usage = mem::MaybeUninit::uninit();
-            let mut num_dirs = mem::MaybeUninit::uninit();
-            let mut num_files = mem::MaybeUninit::uninit();
-            let mut error = ptr::null_mut();
-            ffi::g_file_measure_disk_usage_finish(
-                _source_object as *mut _,
-                res,
-                disk_usage.as_mut_ptr(),
-                num_dirs.as_mut_ptr(),
-                num_files.as_mut_ptr(),
-                &mut error,
-            );
-            let result = if error.is_null() {
-                Ok((
-                    disk_usage.assume_init(),
-                    num_dirs.assume_init(),
-                    num_files.assume_init(),
-                ))
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box<(
-                glib::thread_guard::ThreadGuard<P>,
-                RefCell<
-                    Option<
-                        glib::thread_guard::ThreadGuard<
-                            Box<dyn FnMut(bool, u64, u64, u64) + 'static>,
+            unsafe {
+                let mut disk_usage = mem::MaybeUninit::uninit();
+                let mut num_dirs = mem::MaybeUninit::uninit();
+                let mut num_files = mem::MaybeUninit::uninit();
+                let mut error = ptr::null_mut();
+                ffi::g_file_measure_disk_usage_finish(
+                    _source_object as *mut _,
+                    res,
+                    disk_usage.as_mut_ptr(),
+                    num_dirs.as_mut_ptr(),
+                    num_files.as_mut_ptr(),
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    Ok((
+                        disk_usage.assume_init(),
+                        num_dirs.assume_init(),
+                        num_files.assume_init(),
+                    ))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box<(
+                    glib::thread_guard::ThreadGuard<P>,
+                    RefCell<
+                        Option<
+                            glib::thread_guard::ThreadGuard<
+                                Box<dyn FnMut(bool, u64, u64, u64) + 'static>,
+                            >,
                         >,
                     >,
-                >,
-            )> = Box::from_raw(user_data as *mut _);
-            let callback = callback.0.into_inner();
-            callback(result);
+                )> = Box::from_raw(user_data as *mut _);
+                let callback = callback.0.into_inner();
+                callback(result);
+            }
         }
         unsafe extern "C" fn measure_disk_usage_async_progress_trampoline<
             P: FnOnce(Result<(u64, u64, u64), glib::Error>) + 'static,
@@ -843,22 +868,26 @@ pub trait FileExtManual: IsA<File> + Sized {
             num_files: u64,
             user_data: glib::ffi::gpointer,
         ) {
-            let callback: &(
-                glib::thread_guard::ThreadGuard<P>,
-                RefCell<
-                    Option<
-                        glib::thread_guard::ThreadGuard<
-                            Box<dyn FnMut(bool, u64, u64, u64) + 'static>,
+            unsafe {
+                let callback: &(
+                    glib::thread_guard::ThreadGuard<P>,
+                    RefCell<
+                        Option<
+                            glib::thread_guard::ThreadGuard<
+                                Box<dyn FnMut(bool, u64, u64, u64) + 'static>,
+                            >,
                         >,
                     >,
-                >,
-            ) = &*(user_data as *const _);
-            (callback
-                .1
-                .borrow_mut()
-                .as_mut()
-                .expect("can't get callback")
-                .get_mut())(from_glib(reporting), disk_usage, num_dirs, num_files);
+                ) = &*(user_data as *const _);
+                (callback
+                    .1
+                    .borrow_mut()
+                    .as_mut()
+                    .expect("can't get callback")
+                    .get_mut())(
+                    from_glib(reporting), disk_usage, num_dirs, num_files
+                );
+            }
         }
 
         let user_data = Box::into_raw(user_data) as *mut _;
@@ -950,19 +979,21 @@ pub trait FileExtManual: IsA<File> + Sized {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            ffi::g_file_move_finish(_source_object as *mut _, res, &mut error);
-            let result = if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box<(
-                glib::thread_guard::ThreadGuard<Q>,
-                RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
-            )> = Box::from_raw(user_data as *mut _);
-            let callback = callback.0.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = ptr::null_mut();
+                ffi::g_file_move_finish(_source_object as *mut _, res, &mut error);
+                let result = if error.is_null() {
+                    Ok(())
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box<(
+                    glib::thread_guard::ThreadGuard<Q>,
+                    RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
+                )> = Box::from_raw(user_data as *mut _);
+                let callback = callback.0.into_inner();
+                callback(result);
+            }
         }
         unsafe extern "C" fn move_async_progress_trampoline<
             Q: FnOnce(Result<(), glib::Error>) + 'static,
@@ -971,16 +1002,18 @@ pub trait FileExtManual: IsA<File> + Sized {
             total_num_bytes: i64,
             user_data: glib::ffi::gpointer,
         ) {
-            let callback: &(
-                glib::thread_guard::ThreadGuard<Q>,
-                RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
-            ) = &*(user_data as *const _);
-            (callback
-                .1
-                .borrow_mut()
-                .as_mut()
-                .expect("no closure")
-                .get_mut())(current_num_bytes, total_num_bytes);
+            unsafe {
+                let callback: &(
+                    glib::thread_guard::ThreadGuard<Q>,
+                    RefCell<Option<glib::thread_guard::ThreadGuard<Box<dyn FnMut(i64, i64)>>>>,
+                ) = &*(user_data as *const _);
+                (callback
+                    .1
+                    .borrow_mut()
+                    .as_mut()
+                    .expect("no closure")
+                    .get_mut())(current_num_bytes, total_num_bytes);
+            }
         }
 
         let user_data = Box::into_raw(user_data) as *mut _;
@@ -1029,18 +1062,23 @@ pub trait FileExtManual: IsA<File> + Sized {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let _ =
-                ffi::g_file_make_symbolic_link_finish(_source_object as *mut _, res, &mut error);
-            let result = if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box<glib::thread_guard::ThreadGuard<P>> =
-                Box::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = ptr::null_mut();
+                let _ = ffi::g_file_make_symbolic_link_finish(
+                    _source_object as *mut _,
+                    res,
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    Ok(())
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box<glib::thread_guard::ThreadGuard<P>> =
+                    Box::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = make_symbolic_link_async_trampoline::<P>;
         unsafe {

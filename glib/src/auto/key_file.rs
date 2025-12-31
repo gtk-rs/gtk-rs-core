@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, translate::*, Bytes, Error, KeyFileFlags};
+use crate::{Bytes, Error, KeyFileFlags, ffi, translate::*};
 
 crate::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]

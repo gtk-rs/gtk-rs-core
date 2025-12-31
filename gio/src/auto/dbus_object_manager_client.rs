@@ -3,13 +3,13 @@
 // DO NOT EDIT
 
 use crate::{
-    ffi, AsyncInitable, AsyncResult, BusType, Cancellable, DBusConnection, DBusObjectManager,
-    DBusObjectManagerClientFlags, DBusObjectProxy, DBusProxy, Initable,
+    AsyncInitable, AsyncResult, BusType, Cancellable, DBusConnection, DBusObjectManager,
+    DBusObjectManagerClientFlags, DBusObjectProxy, DBusProxy, Initable, ffi,
 };
 use glib::{
     object::ObjectType as _,
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::boxed::Box as Box_;
