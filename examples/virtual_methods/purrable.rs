@@ -104,7 +104,7 @@ pub trait PurrableImplExt: PurrableImpl {
             unsafe { &*(data.as_ref().parent_interface::<Purrable>() as *const ffi::Interface) };
         let is_purring = parent_iface.is_purring;
 
-        is_purring(unsafe { self.obj().unsafe_cast_ref() })
+        unsafe { is_purring(self.obj().unsafe_cast_ref()) }
     }
 }
 
