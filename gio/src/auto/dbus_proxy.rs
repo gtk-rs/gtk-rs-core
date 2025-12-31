@@ -6,12 +6,12 @@
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use crate::UnixFDList;
 use crate::{
-    ffi, AsyncInitable, AsyncResult, BusType, Cancellable, DBusCallFlags, DBusConnection,
-    DBusInterface, DBusInterfaceInfo, DBusProxyFlags, Initable,
+    AsyncInitable, AsyncResult, BusType, Cancellable, DBusCallFlags, DBusConnection, DBusInterface,
+    DBusInterfaceInfo, DBusProxyFlags, Initable, ffi,
 };
 use glib::{
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::{boxed::Box as Box_, pin::Pin};

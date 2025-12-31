@@ -6,7 +6,7 @@ use std::{mem, ptr, slice};
 
 use libc::{c_uint, c_void};
 
-use crate::{gobject_ffi, prelude::*, translate::*, Type, Value};
+use crate::{Type, Value, gobject_ffi, prelude::*, translate::*};
 
 wrapper! {
     #[derive(PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
@@ -211,76 +211,82 @@ impl Closure {
     /// callers.
     #[doc(alias = "g_closure_new")]
     pub unsafe fn new_unsafe<F: Fn(&[Value]) -> Option<Value>>(callback: F) -> Self {
-        unsafe extern "C" fn marshal<F>(
-            _closure: *mut gobject_ffi::GClosure,
-            return_value: *mut gobject_ffi::GValue,
-            n_param_values: c_uint,
-            param_values: *const gobject_ffi::GValue,
-            _invocation_hint: *mut c_void,
-            marshal_data: *mut c_void,
-        ) where
-            F: Fn(&[Value]) -> Option<Value>,
-        {
-            let values = if n_param_values == 0 {
-                &[]
-            } else {
-                slice::from_raw_parts(param_values as *const _, n_param_values as usize)
-            };
-            let callback: &F = &*(marshal_data as *mut _);
-            let result = callback(values);
+        unsafe {
+            unsafe extern "C" fn marshal<F>(
+                _closure: *mut gobject_ffi::GClosure,
+                return_value: *mut gobject_ffi::GValue,
+                n_param_values: c_uint,
+                param_values: *const gobject_ffi::GValue,
+                _invocation_hint: *mut c_void,
+                marshal_data: *mut c_void,
+            ) where
+                F: Fn(&[Value]) -> Option<Value>,
+            {
+                unsafe {
+                    let values = if n_param_values == 0 {
+                        &[]
+                    } else {
+                        slice::from_raw_parts(param_values as *const _, n_param_values as usize)
+                    };
+                    let callback: &F = &*(marshal_data as *mut _);
+                    let result = callback(values);
 
-            if return_value.is_null() {
-                assert!(
-                    result.is_none(),
-                    "Closure returned a return value but the caller did not expect one"
-                );
-            } else {
-                let return_value = &mut *(return_value as *mut Value);
-                match result {
-                    Some(result) => {
+                    if return_value.is_null() {
                         assert!(
-                            result.type_().is_a(return_value.type_()),
-                            "Closure returned a value of type {} but caller expected {}",
-                            result.type_(),
-                            return_value.type_()
+                            result.is_none(),
+                            "Closure returned a return value but the caller did not expect one"
                         );
-                        *return_value = result;
-                    }
-                    None if return_value.type_() == Type::INVALID => (),
-                    None => {
-                        panic!(
-                            "Closure returned no value but the caller expected a value of type {}",
-                            return_value.type_()
-                        );
+                    } else {
+                        let return_value = &mut *(return_value as *mut Value);
+                        match result {
+                            Some(result) => {
+                                assert!(
+                                    result.type_().is_a(return_value.type_()),
+                                    "Closure returned a value of type {} but caller expected {}",
+                                    result.type_(),
+                                    return_value.type_()
+                                );
+                                *return_value = result;
+                            }
+                            None if return_value.type_() == Type::INVALID => (),
+                            None => {
+                                panic!(
+                                    "Closure returned no value but the caller expected a value of type {}",
+                                    return_value.type_()
+                                );
+                            }
+                        }
                     }
                 }
             }
-        }
 
-        unsafe extern "C" fn finalize<F>(
-            notify_data: *mut c_void,
-            _closure: *mut gobject_ffi::GClosure,
-        ) where
-            F: Fn(&[Value]) -> Option<Value>,
-        {
-            let _callback: Box<F> = Box::from_raw(notify_data as *mut _);
-            // callback is dropped here.
-        }
+            unsafe extern "C" fn finalize<F>(
+                notify_data: *mut c_void,
+                _closure: *mut gobject_ffi::GClosure,
+            ) where
+                F: Fn(&[Value]) -> Option<Value>,
+            {
+                unsafe {
+                    let _callback: Box<F> = Box::from_raw(notify_data as *mut _);
+                    // callback is dropped here.
+                }
+            }
 
-        // Due to bitfields we have to do our own calculations here for the size of the GClosure:
-        // - 4: 32 bits in guint bitfields at the beginning
-        // - padding due to alignment needed for the following pointer
-        // - 3 * size_of<*mut c_void>: 3 pointers
-        // We don't store any custom data ourselves in the GClosure
-        let size = u32::max(4, mem::align_of::<*mut c_void>() as u32)
-            + 3 * mem::size_of::<*mut c_void>() as u32;
-        let closure = gobject_ffi::g_closure_new_simple(size, ptr::null_mut());
-        let callback = Box::new(callback);
-        let ptr: *mut F = Box::into_raw(callback);
-        let ptr: *mut c_void = ptr as *mut _;
-        gobject_ffi::g_closure_set_meta_marshal(closure, ptr, Some(marshal::<F>));
-        gobject_ffi::g_closure_add_finalize_notifier(closure, ptr, Some(finalize::<F>));
-        from_glib_none(closure)
+            // Due to bitfields we have to do our own calculations here for the size of the GClosure:
+            // - 4: 32 bits in guint bitfields at the beginning
+            // - padding due to alignment needed for the following pointer
+            // - 3 * size_of<*mut c_void>: 3 pointers
+            // We don't store any custom data ourselves in the GClosure
+            let size = u32::max(4, mem::align_of::<*mut c_void>() as u32)
+                + 3 * mem::size_of::<*mut c_void>() as u32;
+            let closure = gobject_ffi::g_closure_new_simple(size, ptr::null_mut());
+            let callback = Box::new(callback);
+            let ptr: *mut F = Box::into_raw(callback);
+            let ptr: *mut c_void = ptr as *mut _;
+            gobject_ffi::g_closure_set_meta_marshal(closure, ptr, Some(marshal::<F>));
+            gobject_ffi::g_closure_add_finalize_notifier(closure, ptr, Some(finalize::<F>));
+            from_glib_none(closure)
+        }
     }
 
     // rustdoc-stripper-ignore-next
@@ -297,29 +303,31 @@ impl Closure {
     /// this is not guaranteed for closures created from other languages.
     #[doc(alias = "g_closure_invoke")]
     pub unsafe fn invoke_with_values(&self, return_type: Type, values: &[Value]) -> Option<Value> {
-        let mut result = if return_type == Type::UNIT {
-            Value::uninitialized()
-        } else {
-            Value::from_type(return_type)
-        };
-        let result_ptr = if return_type == Type::UNIT {
-            ptr::null_mut()
-        } else {
-            result.to_glib_none_mut().0
-        };
+        unsafe {
+            let mut result = if return_type == Type::UNIT {
+                Value::uninitialized()
+            } else {
+                Value::from_type(return_type)
+            };
+            let result_ptr = if return_type == Type::UNIT {
+                ptr::null_mut()
+            } else {
+                result.to_glib_none_mut().0
+            };
 
-        gobject_ffi::g_closure_invoke(
-            self.to_glib_none().0,
-            result_ptr,
-            values.len() as u32,
-            mut_override(values.as_ptr()) as *mut gobject_ffi::GValue,
-            ptr::null_mut(),
-        );
+            gobject_ffi::g_closure_invoke(
+                self.to_glib_none().0,
+                result_ptr,
+                values.len() as u32,
+                mut_override(values.as_ptr()) as *mut gobject_ffi::GValue,
+                ptr::null_mut(),
+            );
 
-        if return_type == Type::UNIT {
-            None
-        } else {
-            Some(result)
+            if return_type == Type::UNIT {
+                None
+            } else {
+                Some(result)
+            }
         }
     }
 
@@ -399,8 +407,8 @@ unsafe impl Sync for Closure {}
 #[cfg(test)]
 mod tests {
     use std::sync::{
-        atomic::{AtomicUsize, Ordering},
         Arc,
+        atomic::{AtomicUsize, Ordering},
     };
 
     use super::*;

@@ -1,8 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::{prelude::*, translate::*, BoolError, StrV, Variant};
+use glib::{BoolError, StrV, Variant, prelude::*, translate::*};
 
-use crate::{ffi, prelude::*, Settings, SettingsBindFlags};
+use crate::{Settings, SettingsBindFlags, ffi, prelude::*};
 
 #[must_use = "The builder must be built to be used"]
 pub struct BindingBuilder<'a> {
@@ -101,29 +101,36 @@ impl BindingBuilder<'_> {
             variant: *mut glib::ffi::GVariant,
             user_data: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
-            let user_data = &*(user_data as *const Mappings);
-            let f = user_data.0.as_ref().unwrap();
-            let value = &mut *(value as *mut glib::Value);
-            if let Some(v) = f(&from_glib_borrow(variant), value.type_()) {
-                *value = v;
-                true
-            } else {
-                false
+            unsafe {
+                let user_data = &*(user_data as *const Mappings);
+                let f = user_data.0.as_ref().unwrap();
+                let value = &mut *(value as *mut glib::Value);
+                match f(&from_glib_borrow(variant), value.type_()) {
+                    Some(v) => {
+                        *value = v;
+                        true
+                    }
+                    _ => false,
+                }
+                .into_glib()
             }
-            .into_glib()
         }
         unsafe extern "C" fn bind_with_mapping_set_trampoline(
             value: *const glib::gobject_ffi::GValue,
             variant_type: *const glib::ffi::GVariantType,
             user_data: glib::ffi::gpointer,
         ) -> *mut glib::ffi::GVariant {
-            let user_data = &*(user_data as *const Mappings);
-            let f = user_data.1.as_ref().unwrap();
-            let value = &*(value as *const glib::Value);
-            f(value, from_glib_none(variant_type)).into_glib_ptr()
+            unsafe {
+                let user_data = &*(user_data as *const Mappings);
+                let f = user_data.1.as_ref().unwrap();
+                let value = &*(value as *const glib::Value);
+                f(value, from_glib_none(variant_type)).into_glib_ptr()
+            }
         }
         unsafe extern "C" fn destroy_closure(ptr: *mut libc::c_void) {
-            let _ = Box::<Mappings>::from_raw(ptr as *mut _);
+            unsafe {
+                let _ = Box::<Mappings>::from_raw(ptr as *mut _);
+            }
         }
 
         if self.get_mapping.is_none() && self.set_mapping.is_none() {
@@ -266,8 +273,10 @@ mod test {
                 panic!("Can't test without GSchemas!");
             }
 
-            set_var("GSETTINGS_SCHEMA_DIR", tmp_dir);
-            set_var("GSETTINGS_BACKEND", "memory");
+            // TODO: Audit that the environment access only happens in single-threaded code.
+            unsafe { set_var("GSETTINGS_SCHEMA_DIR", tmp_dir) };
+            // TODO: Audit that the environment access only happens in single-threaded code.
+            unsafe { set_var("GSETTINGS_BACKEND", "memory") };
         });
     }
 

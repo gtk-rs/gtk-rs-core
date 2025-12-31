@@ -7,13 +7,13 @@
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
 use crate::TlsProtocolVersion;
 use crate::{
-    ffi, AsyncResult, Cancellable, IOStream, TlsCertificate, TlsCertificateFlags, TlsDatabase,
-    TlsInteraction, TlsRehandshakeMode,
+    AsyncResult, Cancellable, IOStream, TlsCertificate, TlsCertificateFlags, TlsDatabase,
+    TlsInteraction, TlsRehandshakeMode, ffi,
 };
 use glib::{
     object::ObjectType as _,
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::{boxed::Box as Box_, pin::Pin};

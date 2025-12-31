@@ -4,9 +4,9 @@
 #[test]
 fn test_gdbus_peer_connection() {
     use gio::{
+        DBusConnection, DBusConnectionFlags, DBusNodeInfo, Socket,
         glib::{self, VariantTy},
         prelude::*,
-        DBusConnection, DBusConnectionFlags, DBusNodeInfo, Socket,
     };
     use std::os::unix::net::UnixStream;
 

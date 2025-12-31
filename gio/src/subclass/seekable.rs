@@ -2,9 +2,9 @@
 
 use std::ptr;
 
-use glib::{prelude::*, subclass::prelude::*, translate::*, Error, SeekType};
+use glib::{Error, SeekType, prelude::*, subclass::prelude::*, translate::*};
 
-use crate::{ffi, Cancellable, Seekable};
+use crate::{Cancellable, Seekable, ffi};
 
 pub trait SeekableImpl: Send + ObjectImpl + ObjectSubclass<Type: IsA<Seekable>> {
     fn tell(&self) -> i64;
@@ -135,19 +135,23 @@ unsafe impl<T: SeekableImpl> IsImplementable<T> for Seekable {
 }
 
 unsafe extern "C" fn seekable_tell<T: SeekableImpl>(seekable: *mut ffi::GSeekable) -> i64 {
-    let instance = &*(seekable as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(seekable as *mut T::Instance);
+        let imp = instance.imp();
 
-    imp.tell()
+        imp.tell()
+    }
 }
 
 unsafe extern "C" fn seekable_can_seek<T: SeekableImpl>(
     seekable: *mut ffi::GSeekable,
 ) -> glib::ffi::gboolean {
-    let instance = &*(seekable as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(seekable as *mut T::Instance);
+        let imp = instance.imp();
 
-    imp.can_seek().into_glib()
+        imp.can_seek().into_glib()
+    }
 }
 
 unsafe extern "C" fn seekable_seek<T: SeekableImpl>(
@@ -157,22 +161,24 @@ unsafe extern "C" fn seekable_seek<T: SeekableImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean {
-    let instance = &*(seekable as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(seekable as *mut T::Instance);
+        let imp = instance.imp();
 
-    match imp.seek(
-        offset,
-        from_glib(type_),
-        Option::<Cancellable>::from_glib_borrow(cancellable)
-            .as_ref()
-            .as_ref(),
-    ) {
-        Ok(()) => glib::ffi::GTRUE,
-        Err(e) => {
-            if !err.is_null() {
-                *err = e.into_glib_ptr();
+        match imp.seek(
+            offset,
+            from_glib(type_),
+            Option::<Cancellable>::from_glib_borrow(cancellable)
+                .as_ref()
+                .as_ref(),
+        ) {
+            Ok(()) => glib::ffi::GTRUE,
+            Err(e) => {
+                if !err.is_null() {
+                    *err = e.into_glib_ptr();
+                }
+                glib::ffi::GFALSE
             }
-            glib::ffi::GFALSE
         }
     }
 }
@@ -180,10 +186,12 @@ unsafe extern "C" fn seekable_seek<T: SeekableImpl>(
 unsafe extern "C" fn seekable_can_truncate<T: SeekableImpl>(
     seekable: *mut ffi::GSeekable,
 ) -> glib::ffi::gboolean {
-    let instance = &*(seekable as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(seekable as *mut T::Instance);
+        let imp = instance.imp();
 
-    imp.can_truncate().into_glib()
+        imp.can_truncate().into_glib()
+    }
 }
 
 unsafe extern "C" fn seekable_truncate<T: SeekableImpl>(
@@ -192,21 +200,23 @@ unsafe extern "C" fn seekable_truncate<T: SeekableImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean {
-    let instance = &*(seekable as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(seekable as *mut T::Instance);
+        let imp = instance.imp();
 
-    match imp.truncate(
-        offset,
-        Option::<Cancellable>::from_glib_borrow(cancellable)
-            .as_ref()
-            .as_ref(),
-    ) {
-        Ok(()) => glib::ffi::GTRUE,
-        Err(e) => {
-            if !err.is_null() {
-                *err = e.into_glib_ptr();
+        match imp.truncate(
+            offset,
+            Option::<Cancellable>::from_glib_borrow(cancellable)
+                .as_ref()
+                .as_ref(),
+        ) {
+            Ok(()) => glib::ffi::GTRUE,
+            Err(e) => {
+                if !err.is_null() {
+                    *err = e.into_glib_ptr();
+                }
+                glib::ffi::GFALSE
             }
-            glib::ffi::GFALSE
         }
     }
 }

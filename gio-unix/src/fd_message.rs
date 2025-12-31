@@ -5,7 +5,7 @@ use std::{mem, ptr};
 
 use glib::{prelude::*, translate::*};
 
-use crate::{ffi, FDMessage};
+use crate::{FDMessage, ffi};
 
 pub trait FDMessageExtManual: IsA<FDMessage> + Sized {
     #[doc(alias = "g_unix_fd_message_append_fd")]
@@ -50,9 +50,9 @@ mod tests {
     };
 
     use crate::prelude::*;
-    use gio::prelude::UnixFDListExt;
     use gio::Cancellable;
     use gio::Socket;
+    use gio::prelude::UnixFDListExt;
     use glib::prelude::Cast;
 
     #[test]

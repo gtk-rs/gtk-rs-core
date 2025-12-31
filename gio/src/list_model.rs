@@ -4,7 +4,7 @@ use std::{cell::Cell, fmt, iter::FusedIterator, marker::PhantomData, rc::Rc};
 
 use glib::SignalHandlerId;
 
-use crate::{prelude::*, ListModel};
+use crate::{ListModel, prelude::*};
 
 pub trait ListModelExtManual: IsA<ListModel> + Sized {
     // rustdoc-stripper-ignore-next

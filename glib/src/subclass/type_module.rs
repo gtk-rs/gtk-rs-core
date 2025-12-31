@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{ffi, gobject_ffi, prelude::*, subclass::prelude::*, translate::*, Object, TypeModule};
+use crate::{Object, TypeModule, ffi, gobject_ffi, prelude::*, subclass::prelude::*, translate::*};
 
 pub trait TypeModuleImpl: ObjectImpl + ObjectSubclass<Type: IsA<Object> + IsA<TypeModule>> {
     // rustdoc-stripper-ignore-next
@@ -71,30 +71,34 @@ unsafe impl<T: TypeModuleImpl> IsSubclassable<T> for TypeModule {
 unsafe extern "C" fn load<T: TypeModuleImpl>(
     type_module: *mut gobject_ffi::GTypeModule,
 ) -> ffi::gboolean {
-    let instance = &*(type_module as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(type_module as *mut T::Instance);
+        let imp = instance.imp();
 
-    let res = imp.load();
-    // GLib type system expects a module to never be disposed if types has been
-    // successfully loaded.
-    // The following code prevents the Rust wrapper (`glib::TypeModule` subclass)
-    // to dispose the module when dropped by ensuring the reference count is > 1.
-    // Nothing is done if loading types has failed, allowing application to drop
-    // and dispose the invalid module.
-    if res && (*(type_module as *const gobject_ffi::GObject)).ref_count == 1 {
-        unsafe {
-            gobject_ffi::g_object_ref(type_module as _);
+        let res = imp.load();
+        // GLib type system expects a module to never be disposed if types has been
+        // successfully loaded.
+        // The following code prevents the Rust wrapper (`glib::TypeModule` subclass)
+        // to dispose the module when dropped by ensuring the reference count is > 1.
+        // Nothing is done if loading types has failed, allowing application to drop
+        // and dispose the invalid module.
+        if res && (*(type_module as *const gobject_ffi::GObject)).ref_count == 1 {
+            unsafe {
+                gobject_ffi::g_object_ref(type_module as _);
+            }
         }
-    }
 
-    res.into_glib()
+        res.into_glib()
+    }
 }
 
 unsafe extern "C" fn unload<T: TypeModuleImpl>(type_module: *mut gobject_ffi::GTypeModule) {
-    let instance = &*(type_module as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(type_module as *mut T::Instance);
+        let imp = instance.imp();
 
-    imp.unload();
+        imp.unload();
+    }
 }
 
 #[cfg(test)]

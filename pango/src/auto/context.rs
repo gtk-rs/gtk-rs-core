@@ -3,8 +3,8 @@
 // DO NOT EDIT
 
 use crate::{
-    ffi, Direction, Font, FontDescription, FontFamily, FontMap, FontMetrics, Fontset, Gravity,
-    GravityHint, Language, Matrix,
+    Direction, Font, FontDescription, FontFamily, FontMap, FontMetrics, Fontset, Gravity,
+    GravityHint, Language, Matrix, ffi,
 };
 use glib::{prelude::*, translate::*};
 

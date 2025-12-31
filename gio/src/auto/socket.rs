@@ -3,12 +3,12 @@
 // DO NOT EDIT
 
 use crate::{
-    ffi, Cancellable, Credentials, DatagramBased, InetAddress, Initable, SocketAddress,
-    SocketConnection, SocketFamily, SocketProtocol, SocketType,
+    Cancellable, Credentials, DatagramBased, InetAddress, Initable, SocketAddress,
+    SocketConnection, SocketFamily, SocketProtocol, SocketType, ffi,
 };
 use glib::{
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::boxed::Box as Box_;

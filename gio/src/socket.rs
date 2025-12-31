@@ -11,11 +11,11 @@ use std::time::Duration;
 use std::{cell::RefCell, marker::PhantomData, mem::transmute, pin::Pin, ptr};
 
 use futures_core::stream::Stream;
-use glib::{prelude::*, translate::*, Slice};
+use glib::{Slice, prelude::*, translate::*};
 
 #[cfg(feature = "v2_60")]
 use crate::PollableReturn;
-use crate::{ffi, Cancellable, Socket, SocketAddress, SocketControlMessage};
+use crate::{Cancellable, Socket, SocketAddress, SocketControlMessage, ffi};
 
 impl Socket {
     #[cfg(unix)]
@@ -694,16 +694,20 @@ pub trait SocketExtManual: IsA<Socket> + Sized {
             condition: glib::ffi::GIOCondition,
             func: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
-            let func: &RefCell<F> = &*(func as *const RefCell<F>);
-            let mut func = func.borrow_mut();
-            (*func)(
-                Socket::from_glib_borrow(socket).unsafe_cast_ref(),
-                from_glib(condition),
-            )
-            .into_glib()
+            unsafe {
+                let func: &RefCell<F> = &*(func as *const RefCell<F>);
+                let mut func = func.borrow_mut();
+                (*func)(
+                    Socket::from_glib_borrow(socket).unsafe_cast_ref(),
+                    from_glib(condition),
+                )
+                .into_glib()
+            }
         }
         unsafe extern "C" fn destroy_closure<F>(ptr: glib::ffi::gpointer) {
-            let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
+            unsafe {
+                let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
+            }
         }
         let cancellable = cancellable.map(|c| c.as_ref());
         let gcancellable = cancellable.to_glib_none();
@@ -829,7 +833,7 @@ mod tests {
     #[cfg(unix)]
     fn dgram_socket_messages() {
         use super::Socket;
-        use crate::{prelude::*, Cancellable};
+        use crate::{Cancellable, prelude::*};
 
         let addr = crate::InetSocketAddress::from_string("127.0.0.1", 28351).unwrap();
 

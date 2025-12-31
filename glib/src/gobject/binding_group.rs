@@ -3,8 +3,8 @@
 use std::{fmt, ptr};
 
 use crate::{
-    ffi, gobject_ffi, object::ObjectRef, prelude::*, translate::*, Binding, BindingFlags,
-    BindingGroup, BoolError, Object, ParamSpec, Value,
+    Binding, BindingFlags, BindingGroup, BoolError, Object, ParamSpec, Value, ffi, gobject_ffi,
+    object::ObjectRef, prelude::*, translate::*,
 };
 
 impl BindingGroup {
@@ -126,10 +126,11 @@ impl<'a> BindingGroupBuilder<'a> {
             to_value: *mut gobject_ffi::GValue,
             user_data: ffi::gpointer,
         ) -> ffi::gboolean {
-            let transform_data =
-                &*(user_data as *const (TransformFn, TransformFn, String, ParamSpec));
+            unsafe {
+                let transform_data =
+                    &*(user_data as *const (TransformFn, TransformFn, String, ParamSpec));
 
-            match (transform_data.0.as_ref().unwrap())(
+                match (transform_data.0.as_ref().unwrap())(
                 &from_glib_borrow(binding),
                 &*(from_value as *const Value),
             ) {
@@ -147,6 +148,7 @@ impl<'a> BindingGroupBuilder<'a> {
                 }
             }
             .into_glib()
+            }
         }
 
         unsafe extern "C" fn transform_from_trampoline(
@@ -155,11 +157,12 @@ impl<'a> BindingGroupBuilder<'a> {
             to_value: *mut gobject_ffi::GValue,
             user_data: ffi::gpointer,
         ) -> ffi::gboolean {
-            let transform_data =
-                &*(user_data as *const (TransformFn, TransformFn, String, ParamSpec));
-            let binding = from_glib_borrow(binding);
+            unsafe {
+                let transform_data =
+                    &*(user_data as *const (TransformFn, TransformFn, String, ParamSpec));
+                let binding = from_glib_borrow(binding);
 
-            match (transform_data.1.as_ref().unwrap())(
+                match (transform_data.1.as_ref().unwrap())(
                 &binding,
                 &*(from_value as *const Value),
             ) {
@@ -182,31 +185,38 @@ impl<'a> BindingGroupBuilder<'a> {
                 }
             }
             .into_glib()
+            }
         }
 
         unsafe extern "C" fn free_transform_data(data: ffi::gpointer) {
-            let _ = Box::from_raw(data as *mut (TransformFn, TransformFn, String, ParamSpec));
+            unsafe {
+                let _ = Box::from_raw(data as *mut (TransformFn, TransformFn, String, ParamSpec));
+            }
         }
 
         let mut _source_property_name_cstr = None;
-        let source_property_name = if let Some(source) = self.group.source() {
-            let source_property = source.find_property(self.source_property).ok_or_else(|| {
-                bool_error!(
-                    "Source property {} on type {} not found",
-                    self.source_property,
-                    source.type_()
-                )
-            })?;
+        let source_property_name = match self.group.source() {
+            Some(source) => {
+                let source_property =
+                    source.find_property(self.source_property).ok_or_else(|| {
+                        bool_error!(
+                            "Source property {} on type {} not found",
+                            self.source_property,
+                            source.type_()
+                        )
+                    })?;
 
-            // This is NUL-terminated from the C side
-            source_property.name().as_ptr()
-        } else {
-            // This is a Rust &str and needs to be NUL-terminated first
-            let source_property_name = std::ffi::CString::new(self.source_property).unwrap();
-            let source_property_name_ptr = source_property_name.as_ptr() as *const u8;
-            _source_property_name_cstr = Some(source_property_name);
+                // This is NUL-terminated from the C side
+                source_property.name().as_ptr()
+            }
+            _ => {
+                // This is a Rust &str and needs to be NUL-terminated first
+                let source_property_name = std::ffi::CString::new(self.source_property).unwrap();
+                let source_property_name_ptr = source_property_name.as_ptr() as *const u8;
+                _source_property_name_cstr = Some(source_property_name);
 
-            source_property_name_ptr
+                source_property_name_ptr
+            }
         };
 
         unsafe {

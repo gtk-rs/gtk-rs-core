@@ -5,7 +5,7 @@
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use crate::UnixFDList;
-use crate::{ffi, DBusConnection, DBusMessage, DBusMethodInfo, DBusPropertyInfo};
+use crate::{DBusConnection, DBusMessage, DBusMethodInfo, DBusPropertyInfo, ffi};
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 use glib::prelude::*;

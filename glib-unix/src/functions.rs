@@ -30,23 +30,31 @@ fn into_raw_local<F: FnMut() -> ControlFlow + 'static>(func: F) -> gpointer {
 unsafe extern "C" fn trampoline<F: FnMut() -> ControlFlow + Send + 'static>(
     func: gpointer,
 ) -> glib::ffi::gboolean {
-    let func: &RefCell<F> = &*(func as *const RefCell<F>);
-    (*func.borrow_mut())().into_glib()
+    unsafe {
+        let func: &RefCell<F> = &*(func as *const RefCell<F>);
+        (*func.borrow_mut())().into_glib()
+    }
 }
 
 unsafe extern "C" fn trampoline_local<F: FnMut() -> ControlFlow + 'static>(
     func: gpointer,
 ) -> glib::ffi::gboolean {
-    let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
-    (*func.get_ref().borrow_mut())().into_glib()
+    unsafe {
+        let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
+        (*func.get_ref().borrow_mut())().into_glib()
+    }
 }
 
 unsafe extern "C" fn destroy_closure<F: FnMut() -> ControlFlow + Send + 'static>(ptr: gpointer) {
-    let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
+    unsafe {
+        let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
+    }
 }
 
 unsafe extern "C" fn destroy_closure_local<F: FnMut() -> ControlFlow + 'static>(ptr: gpointer) {
-    let _ = Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
+    unsafe {
+        let _ = Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
+    }
 }
 
 unsafe extern "C" fn trampoline_unix_fd<
@@ -56,8 +64,10 @@ unsafe extern "C" fn trampoline_unix_fd<
     condition: glib::ffi::GIOCondition,
     func: gpointer,
 ) -> glib::ffi::gboolean {
-    let func: &RefCell<F> = &*(func as *const RefCell<F>);
-    (*func.borrow_mut())(fd, from_glib(condition)).into_glib()
+    unsafe {
+        let func: &RefCell<F> = &*(func as *const RefCell<F>);
+        (*func.borrow_mut())(fd, from_glib(condition)).into_glib()
+    }
 }
 
 unsafe extern "C" fn trampoline_unix_fd_local<
@@ -67,8 +77,10 @@ unsafe extern "C" fn trampoline_unix_fd_local<
     condition: glib::ffi::GIOCondition,
     func: gpointer,
 ) -> glib::ffi::gboolean {
-    let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
-    (*func.get_ref().borrow_mut())(fd, from_glib(condition)).into_glib()
+    unsafe {
+        let func: &ThreadGuard<RefCell<F>> = &*(func as *const ThreadGuard<RefCell<F>>);
+        (*func.get_ref().borrow_mut())(fd, from_glib(condition)).into_glib()
+    }
 }
 
 unsafe extern "C" fn destroy_closure_unix_fd<
@@ -76,7 +88,9 @@ unsafe extern "C" fn destroy_closure_unix_fd<
 >(
     ptr: gpointer,
 ) {
-    let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
+    unsafe {
+        let _ = Box::<RefCell<F>>::from_raw(ptr as *mut _);
+    }
 }
 
 unsafe extern "C" fn destroy_closure_unix_fd_local<
@@ -84,7 +98,9 @@ unsafe extern "C" fn destroy_closure_unix_fd_local<
 >(
     ptr: gpointer,
 ) {
-    let _ = Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
+    unsafe {
+        let _ = Box::<ThreadGuard<RefCell<F>>>::from_raw(ptr as *mut _);
+    }
 }
 
 fn into_raw_unix_fd<F: FnMut(RawFd, IOCondition) -> ControlFlow + Send + 'static>(

@@ -2,7 +2,7 @@
 
 use glib::{prelude::*, subclass::prelude::*, translate::*};
 
-use crate::{ffi, File, FileMonitor, FileMonitorEvent};
+use crate::{File, FileMonitor, FileMonitorEvent, ffi};
 
 // Support custom implementation of virtual functions defined in `gio::ffi::GFileMonitorClass`.
 pub trait FileMonitorImpl: ObjectImpl + ObjectSubclass<Type: IsA<FileMonitor>> {
@@ -66,28 +66,32 @@ unsafe extern "C" fn changed<T: FileMonitorImpl>(
     other_file: *mut ffi::GFile,
     event_type: ffi::GFileMonitorEvent,
 ) {
-    let instance = &*(monitor as *mut T::Instance);
-    let imp = instance.imp();
-    let other_file = Option::<File>::from_glib_none(other_file);
+    unsafe {
+        let instance = &*(monitor as *mut T::Instance);
+        let imp = instance.imp();
+        let other_file = Option::<File>::from_glib_none(other_file);
 
-    imp.changed(
-        &from_glib_borrow(file),
-        other_file.as_ref(),
-        from_glib(event_type),
-    );
+        imp.changed(
+            &from_glib_borrow(file),
+            other_file.as_ref(),
+            from_glib(event_type),
+        );
+    }
 }
 
 unsafe extern "C" fn cancel<T: FileMonitorImpl>(
     monitor: *mut ffi::GFileMonitor,
 ) -> glib::ffi::gboolean {
-    let instance = &*(monitor as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(monitor as *mut T::Instance);
+        let imp = instance.imp();
 
-    imp.cancel();
+        imp.cancel();
 
-    // vfunc must return true as specified in documentation.
-    // https://docs.gtk.org/gio/vfunc.FileMonitor.cancel.html
-    true.into_glib()
+        // vfunc must return true as specified in documentation.
+        // https://docs.gtk.org/gio/vfunc.FileMonitor.cancel.html
+        true.into_glib()
+    }
 }
 
 #[cfg(test)]

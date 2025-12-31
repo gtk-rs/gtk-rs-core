@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, Point, Rect, Vec2};
+use crate::{Point, Rect, Vec2, ffi};
 use glib::translate::*;
 
 glib::wrapper! {
@@ -154,11 +154,7 @@ impl Box2D {
                 b.to_glib_none().0,
                 res.to_glib_none_mut().0,
             );
-            if ret {
-                Some(res)
-            } else {
-                None
-            }
+            if ret { Some(res) } else { None }
         }
     }
 

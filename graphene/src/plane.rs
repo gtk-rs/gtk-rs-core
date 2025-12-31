@@ -4,7 +4,7 @@ use std::fmt;
 
 use glib::translate::*;
 
-use crate::{ffi, Plane, Point3D, Vec3, Vec4};
+use crate::{Plane, Point3D, Vec3, Vec4, ffi};
 
 impl Plane {
     #[doc(alias = "graphene_plane_init")]

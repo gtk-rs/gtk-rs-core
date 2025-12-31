@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 
-use crate::{ffi, GlyphItem, GlyphString, Item};
+use crate::{GlyphItem, GlyphString, Item, ffi};
 
 impl GlyphItem {
     pub fn item(&self) -> Item {

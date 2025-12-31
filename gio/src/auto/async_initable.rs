@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, AsyncResult, Cancellable};
+use crate::{AsyncResult, Cancellable, ffi};
 use glib::{prelude::*, translate::*};
 use std::{boxed::Box as Box_, pin::Pin};
 
@@ -76,14 +76,16 @@ pub trait AsyncInitableExt: IsA<AsyncInitable> + 'static {
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        Box_::pin(crate::GioFuture::new(
-            self,
-            move |obj, cancellable, send| {
-                obj.init_async(io_priority, Some(cancellable), move |res| {
-                    send.resolve(res);
-                });
-            },
-        ))
+        unsafe {
+            Box_::pin(crate::GioFuture::new(
+                self,
+                move |obj, cancellable, send| {
+                    obj.init_async(io_priority, Some(cancellable), move |res| {
+                        send.resolve(res);
+                    });
+                },
+            ))
+        }
     }
 }
 

@@ -2,9 +2,9 @@
 
 use std::ptr;
 
-use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
+use glib::{Error, prelude::*, subclass::prelude::*, translate::*};
 
-use crate::{ffi, Cancellable, InputStream, OutputStream, OutputStreamSpliceFlags};
+use crate::{Cancellable, InputStream, OutputStream, OutputStreamSpliceFlags, ffi};
 
 pub trait OutputStreamImpl: Send + ObjectImpl + ObjectSubclass<Type: IsA<OutputStream>> {
     fn write(&self, buffer: &[u8], cancellable: Option<&Cancellable>) -> Result<usize, Error> {
@@ -166,31 +166,33 @@ unsafe extern "C" fn stream_write<T: OutputStreamImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> isize {
-    debug_assert!(count <= isize::MAX as usize);
+    unsafe {
+        debug_assert!(count <= isize::MAX as usize);
 
-    let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.imp();
+        let instance = &*(ptr as *mut T::Instance);
+        let imp = instance.imp();
 
-    match imp.write(
-        if count == 0 {
-            &[]
-        } else {
-            std::slice::from_raw_parts(buffer as *const u8, count)
-        },
-        Option::<Cancellable>::from_glib_borrow(cancellable)
-            .as_ref()
-            .as_ref(),
-    ) {
-        Ok(res) => {
-            assert!(res <= isize::MAX as usize);
-            assert!(res <= count);
-            res as isize
-        }
-        Err(e) => {
-            if !err.is_null() {
-                *err = e.into_glib_ptr();
+        match imp.write(
+            if count == 0 {
+                &[]
+            } else {
+                std::slice::from_raw_parts(buffer as *const u8, count)
+            },
+            Option::<Cancellable>::from_glib_borrow(cancellable)
+                .as_ref()
+                .as_ref(),
+        ) {
+            Ok(res) => {
+                assert!(res <= isize::MAX as usize);
+                assert!(res <= count);
+                res as isize
             }
-            -1
+            Err(e) => {
+                if !err.is_null() {
+                    *err = e.into_glib_ptr();
+                }
+                -1
+            }
         }
     }
 }
@@ -200,20 +202,22 @@ unsafe extern "C" fn stream_close<T: OutputStreamImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean {
-    let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(ptr as *mut T::Instance);
+        let imp = instance.imp();
 
-    match imp.close(
-        Option::<Cancellable>::from_glib_borrow(cancellable)
-            .as_ref()
-            .as_ref(),
-    ) {
-        Ok(_) => glib::ffi::GTRUE,
-        Err(e) => {
-            if !err.is_null() {
-                *err = e.into_glib_ptr();
+        match imp.close(
+            Option::<Cancellable>::from_glib_borrow(cancellable)
+                .as_ref()
+                .as_ref(),
+        ) {
+            Ok(_) => glib::ffi::GTRUE,
+            Err(e) => {
+                if !err.is_null() {
+                    *err = e.into_glib_ptr();
+                }
+                glib::ffi::GFALSE
             }
-            glib::ffi::GFALSE
         }
     }
 }
@@ -223,20 +227,22 @@ unsafe extern "C" fn stream_flush<T: OutputStreamImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean {
-    let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(ptr as *mut T::Instance);
+        let imp = instance.imp();
 
-    match imp.flush(
-        Option::<Cancellable>::from_glib_borrow(cancellable)
-            .as_ref()
-            .as_ref(),
-    ) {
-        Ok(_) => glib::ffi::GTRUE,
-        Err(e) => {
-            if !err.is_null() {
-                *err = e.into_glib_ptr();
+        match imp.flush(
+            Option::<Cancellable>::from_glib_borrow(cancellable)
+                .as_ref()
+                .as_ref(),
+        ) {
+            Ok(_) => glib::ffi::GTRUE,
+            Err(e) => {
+                if !err.is_null() {
+                    *err = e.into_glib_ptr();
+                }
+                glib::ffi::GFALSE
             }
-            glib::ffi::GFALSE
         }
     }
 }
@@ -248,25 +254,27 @@ unsafe extern "C" fn stream_splice<T: OutputStreamImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> isize {
-    let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(ptr as *mut T::Instance);
+        let imp = instance.imp();
 
-    match imp.splice(
-        &from_glib_borrow(input_stream),
-        from_glib(flags),
-        Option::<Cancellable>::from_glib_borrow(cancellable)
-            .as_ref()
-            .as_ref(),
-    ) {
-        Ok(res) => {
-            assert!(res <= isize::MAX as usize);
-            res as isize
-        }
-        Err(e) => {
-            if !err.is_null() {
-                *err = e.into_glib_ptr();
+        match imp.splice(
+            &from_glib_borrow(input_stream),
+            from_glib(flags),
+            Option::<Cancellable>::from_glib_borrow(cancellable)
+                .as_ref()
+                .as_ref(),
+        ) {
+            Ok(res) => {
+                assert!(res <= isize::MAX as usize);
+                res as isize
             }
-            -1
+            Err(e) => {
+                if !err.is_null() {
+                    *err = e.into_glib_ptr();
+                }
+                -1
+            }
         }
     }
 }

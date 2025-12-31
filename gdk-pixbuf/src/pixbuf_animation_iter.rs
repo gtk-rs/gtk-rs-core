@@ -4,7 +4,7 @@ use std::time::{Duration, SystemTime};
 
 use glib::translate::*;
 
-use super::{ffi, Pixbuf};
+use super::{Pixbuf, ffi};
 
 glib::wrapper! {
     #[doc(alias = "GdkPixbufAnimationIter")]

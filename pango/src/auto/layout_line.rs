@@ -5,7 +5,7 @@
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 use crate::Direction;
-use crate::{ffi, Rectangle};
+use crate::{Rectangle, ffi};
 use glib::translate::*;
 
 glib::wrapper! {

@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, Subprocess, SubprocessFlags};
+use crate::{Subprocess, SubprocessFlags, ffi};
 use glib::translate::*;
 #[cfg(unix)]
 #[cfg_attr(docsrs, doc(cfg(unix)))]

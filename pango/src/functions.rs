@@ -3,10 +3,10 @@
 use glib::translate::*;
 use std::{ffi::c_char, ptr};
 
-pub use crate::auto::functions::*;
 #[cfg(feature = "v1_44")]
 use crate::ShapeFlags;
-use crate::{ffi, Analysis, AttrIterator, AttrList, Context, Direction, GlyphString, Item};
+pub use crate::auto::functions::*;
+use crate::{Analysis, AttrIterator, AttrList, Context, Direction, GlyphString, Item, ffi};
 
 #[doc(alias = "pango_reorder_items")]
 pub fn reorder_items(logical_items: &glib::List<Item>) -> glib::List<Item> {

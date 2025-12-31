@@ -33,7 +33,7 @@ fn main() {
 /// the resulting input stream.
 fn read_and_print_file(
     file: &gio::File,
-) -> impl Future<Output = Result<(), String>> + std::marker::Unpin {
+) -> impl Future<Output = Result<(), String>> + std::marker::Unpin + use<> {
     file.read_future(glib::Priority::default())
         .map_err(|err| format!("Failed to open file: {err}"))
         .and_then(read_and_print_chunks)
@@ -94,7 +94,7 @@ fn read_and_print_next_chunk(
     strm: &gio::FileInputStream,
     buf: Vec<u8>,
     idx: usize,
-) -> impl Future<Output = Result<Option<Vec<u8>>, String>> + std::marker::Unpin {
+) -> impl Future<Output = Result<Option<Vec<u8>>, String>> + std::marker::Unpin + use<> {
     let strm_clone = strm.clone();
     strm.read_future(buf, glib::Priority::default())
         .map_err(|(_buf, err)| format!("Failed to read from stream: {err}"))

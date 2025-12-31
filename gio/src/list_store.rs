@@ -2,9 +2,9 @@
 
 use std::{cell::Cell, cmp::Ordering, rc::Rc};
 
-use glib::{prelude::*, translate::*, Object};
+use glib::{Object, prelude::*, translate::*};
 
-use crate::{ffi, prelude::*, ListModel, ListStore};
+use crate::{ListModel, ListStore, ffi, prelude::*};
 
 impl ListStore {
     #[doc(alias = "g_list_store_new")]
@@ -143,11 +143,13 @@ impl ListStore {
             _b: glib::ffi::gconstpointer,
             func: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
-            let func = func as *mut &mut (dyn FnMut(&Object) -> bool);
+            unsafe {
+                let func = func as *mut &mut (dyn FnMut(&Object) -> bool);
 
-            let a = from_glib_borrow(a as *mut glib::gobject_ffi::GObject);
+                let a = from_glib_borrow(a as *mut glib::gobject_ffi::GObject);
 
-            (*func)(&a).into_glib()
+                (*func)(&a).into_glib()
+            }
         }
 
         let mut func = equal_func;
@@ -224,12 +226,14 @@ unsafe extern "C" fn compare_func_trampoline(
     b: glib::ffi::gconstpointer,
     func: glib::ffi::gpointer,
 ) -> i32 {
-    let func = func as *mut &mut dyn FnMut(&Object, &Object) -> Ordering;
+    unsafe {
+        let func = func as *mut &mut dyn FnMut(&Object, &Object) -> Ordering;
 
-    let a = from_glib_borrow(a as *mut glib::gobject_ffi::GObject);
-    let b = from_glib_borrow(b as *mut glib::gobject_ffi::GObject);
+        let a = from_glib_borrow(a as *mut glib::gobject_ffi::GObject);
+        let b = from_glib_borrow(b as *mut glib::gobject_ffi::GObject);
 
-    (*func)(&a, &b).into_glib()
+        (*func)(&a, &b).into_glib()
+    }
 }
 
 impl<A: AsRef<glib::Object>> std::iter::Extend<A> for ListStore {
@@ -244,7 +248,7 @@ impl<A: AsRef<glib::Object>> std::iter::Extend<A> for ListStore {
 
 #[cfg(test)]
 mod tests {
-    use crate::{prelude::*, ListStore};
+    use crate::{ListStore, prelude::*};
 
     #[test]
     fn splice() {

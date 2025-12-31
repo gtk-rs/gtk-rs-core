@@ -5,7 +5,7 @@
 #[cfg(feature = "v1_57")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_57")))]
 use crate::FontColor;
-use crate::{ffi, FontMask, Gravity, Stretch, Style, Variant, Weight};
+use crate::{FontMask, Gravity, Stretch, Style, Variant, Weight, ffi};
 use glib::translate::*;
 
 glib::wrapper! {

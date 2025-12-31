@@ -6,15 +6,15 @@
 use std::{cmp, fmt, hash, marker::PhantomData, mem, mem::ManuallyDrop, ops, pin::Pin, ptr};
 
 use crate::{
+    Closure, PtrSlice, RustClosure, SignalHandlerId, Type, Value,
     closure::TryFromClosureReturnValue,
     ffi, gobject_ffi,
     prelude::*,
     quark::Quark,
-    subclass::{prelude::*, SignalId, SignalQuery},
+    subclass::{SignalId, SignalQuery, prelude::*},
     thread_guard::thread_id,
     translate::*,
     value::FromValue,
-    Closure, PtrSlice, RustClosure, SignalHandlerId, Type, Value,
 };
 
 // rustdoc-stripper-ignore-next
@@ -258,8 +258,10 @@ pub trait Cast: ObjectType {
     #[track_caller]
     #[inline]
     unsafe fn unsafe_cast<T: ObjectType>(self) -> T {
-        debug_assert!(self.is::<T>());
-        T::unsafe_from(self.into())
+        unsafe {
+            debug_assert!(self.is::<T>());
+            T::unsafe_from(self.into())
+        }
     }
 
     // rustdoc-stripper-ignore-next
@@ -276,12 +278,14 @@ pub trait Cast: ObjectType {
     #[track_caller]
     #[inline]
     unsafe fn unsafe_cast_ref<T: ObjectType>(&self) -> &T {
-        debug_assert!(self.is::<T>());
-        // This cast is safe because all our wrapper types have the
-        // same representation except for the name and the phantom data
-        // type. IsA<> is an unsafe trait that must only be implemented
-        // if this is a valid wrapper type
-        &*(self as *const Self as *const T)
+        unsafe {
+            debug_assert!(self.is::<T>());
+            // This cast is safe because all our wrapper types have the
+            // same representation except for the name and the phantom data
+            // type. IsA<> is an unsafe trait that must only be implemented
+            // if this is a valid wrapper type
+            &*(self as *const Self as *const T)
+        }
     }
 }
 
@@ -472,12 +476,14 @@ impl<'a> ToGlibPtr<'a, *mut gobject_ffi::GObject> for ObjectRef {
 impl FromGlibPtrNone<*mut gobject_ffi::GObject> for ObjectRef {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut gobject_ffi::GObject) -> Self {
-        debug_assert!(!ptr.is_null());
-        debug_assert_ne!((*ptr).ref_count, 0);
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            debug_assert_ne!((*ptr).ref_count, 0);
 
-        // Attention: This takes ownership of floating references!
-        Self {
-            inner: ptr::NonNull::new_unchecked(gobject_ffi::g_object_ref_sink(ptr)),
+            // Attention: This takes ownership of floating references!
+            Self {
+                inner: ptr::NonNull::new_unchecked(gobject_ffi::g_object_ref_sink(ptr)),
+            }
         }
     }
 }
@@ -486,8 +492,10 @@ impl FromGlibPtrNone<*mut gobject_ffi::GObject> for ObjectRef {
 impl FromGlibPtrNone<*const gobject_ffi::GObject> for ObjectRef {
     #[inline]
     unsafe fn from_glib_none(ptr: *const gobject_ffi::GObject) -> Self {
-        // Attention: This takes ownership of floating references!
-        from_glib_none(ptr as *mut gobject_ffi::GObject)
+        unsafe {
+            // Attention: This takes ownership of floating references!
+            from_glib_none(ptr as *mut gobject_ffi::GObject)
+        }
     }
 }
 
@@ -495,11 +503,13 @@ impl FromGlibPtrNone<*const gobject_ffi::GObject> for ObjectRef {
 impl FromGlibPtrFull<*mut gobject_ffi::GObject> for ObjectRef {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut gobject_ffi::GObject) -> Self {
-        debug_assert!(!ptr.is_null());
-        debug_assert_ne!((*ptr).ref_count, 0);
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            debug_assert_ne!((*ptr).ref_count, 0);
 
-        Self {
-            inner: ptr::NonNull::new_unchecked(ptr),
+            Self {
+                inner: ptr::NonNull::new_unchecked(ptr),
+            }
         }
     }
 }
@@ -508,12 +518,14 @@ impl FromGlibPtrFull<*mut gobject_ffi::GObject> for ObjectRef {
 impl FromGlibPtrBorrow<*mut gobject_ffi::GObject> for ObjectRef {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut gobject_ffi::GObject) -> Borrowed<Self> {
-        debug_assert!(!ptr.is_null());
-        debug_assert_ne!((*ptr).ref_count, 0);
+        unsafe {
+            debug_assert!(!ptr.is_null());
+            debug_assert_ne!((*ptr).ref_count, 0);
 
-        Borrowed::new(Self {
-            inner: ptr::NonNull::new_unchecked(ptr),
-        })
+            Borrowed::new(Self {
+                inner: ptr::NonNull::new_unchecked(ptr),
+            })
+        }
     }
 }
 
@@ -521,7 +533,7 @@ impl FromGlibPtrBorrow<*mut gobject_ffi::GObject> for ObjectRef {
 impl FromGlibPtrBorrow<*const gobject_ffi::GObject> for ObjectRef {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *const gobject_ffi::GObject) -> Borrowed<Self> {
-        from_glib_borrow(ptr as *mut gobject_ffi::GObject)
+        unsafe { from_glib_borrow(ptr as *mut gobject_ffi::GObject) }
     }
 }
 
@@ -704,12 +716,12 @@ macro_rules! glib_object_wrapper {
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::UnsafeFrom<$crate::object::ObjectRef> for $name $(<$($generic),+>)? {
             #[inline]
-            unsafe fn unsafe_from(t: $crate::object::ObjectRef) -> Self {
+            unsafe fn unsafe_from(t: $crate::object::ObjectRef) -> Self { unsafe {
                 $name {
                     inner: $crate::object::TypedObjectRef::new(t),
                     phantom: std::marker::PhantomData,
                 }
-            }
+            }}
         }
 
         #[doc(hidden)]
@@ -736,7 +748,7 @@ macro_rules! glib_object_wrapper {
             }
 
             #[inline]
-            unsafe fn from_glib_ptr_borrow(ptr: &*mut Self::GlibType) -> &Self {
+            unsafe fn from_glib_ptr_borrow(ptr: &*mut Self::GlibType) -> &Self { unsafe {
                 debug_assert_eq!(
                     std::mem::size_of::<Self>(),
                     std::mem::size_of::<$crate::ffi::gpointer>()
@@ -744,7 +756,7 @@ macro_rules! glib_object_wrapper {
                 debug_assert!(!ptr.is_null());
                 debug_assert_ne!((*(*ptr as *const $crate::gobject_ffi::GObject)).ref_count, 0);
                 &*(ptr as *const *mut $ffi_name as *const Self)
-            }
+            }}
         }
 
         #[doc(hidden)]
@@ -895,49 +907,49 @@ macro_rules! glib_object_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrNone<*mut $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             #[allow(clippy::cast_ptr_alignment)]
-            unsafe fn from_glib_none(ptr: *mut $ffi_name) -> Self {
+            unsafe fn from_glib_none(ptr: *mut $ffi_name) -> Self { unsafe {
                 debug_assert!(!ptr.is_null());
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
                 $name {
                     inner: $crate::object::TypedObjectRef::new($crate::translate::from_glib_none(ptr as *mut _)),
                     phantom: std::marker::PhantomData,
                 }
-            }
+            }}
         }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrNone<*const $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             #[allow(clippy::cast_ptr_alignment)]
-            unsafe fn from_glib_none(ptr: *const $ffi_name) -> Self {
+            unsafe fn from_glib_none(ptr: *const $ffi_name) -> Self { unsafe {
                 debug_assert!(!ptr.is_null());
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
                 $name {
                     inner: $crate::object::TypedObjectRef::new($crate::translate::from_glib_none(ptr as *mut _)),
                     phantom: std::marker::PhantomData,
                 }
-            }
+            }}
         }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrFull<*mut $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             #[allow(clippy::cast_ptr_alignment)]
-            unsafe fn from_glib_full(ptr: *mut $ffi_name) -> Self {
+            unsafe fn from_glib_full(ptr: *mut $ffi_name) -> Self { unsafe {
                 debug_assert!(!ptr.is_null());
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
                 $name {
                     inner: $crate::object::TypedObjectRef::new($crate::translate::from_glib_full(ptr as *mut _)),
                     phantom: std::marker::PhantomData,
                 }
-            }
+            }}
         }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrBorrow<*mut $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             #[allow(clippy::cast_ptr_alignment)]
-            unsafe fn from_glib_borrow(ptr: *mut $ffi_name) -> $crate::translate::Borrowed<Self> {
+            unsafe fn from_glib_borrow(ptr: *mut $ffi_name) -> $crate::translate::Borrowed<Self> { unsafe {
                 debug_assert!(!ptr.is_null());
                 debug_assert!($crate::types::instance_of::<Self>(ptr as *const _));
                 $crate::translate::Borrowed::new(
@@ -946,21 +958,21 @@ macro_rules! glib_object_wrapper {
                         phantom: std::marker::PhantomData,
                     }
                 )
-            }
+            }}
         }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrBorrow<*const $ffi_name> for $name $(<$($generic),+>)? {
             #[inline]
             #[allow(clippy::cast_ptr_alignment)]
-            unsafe fn from_glib_borrow(ptr: *const $ffi_name) -> $crate::translate::Borrowed<Self> {
+            unsafe fn from_glib_borrow(ptr: *const $ffi_name) -> $crate::translate::Borrowed<Self> { unsafe {
                 $crate::translate::from_glib_borrow::<_, Self>(ptr as *mut $ffi_name)
-            }
+            }}
         }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibContainerAsVec<*mut $ffi_name, *mut *mut $ffi_name> for $name $(<$($generic),+>)? {
-            unsafe fn from_glib_none_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> {
+            unsafe fn from_glib_none_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> { unsafe {
                 if num == 0 || ptr.is_null() {
                     return Vec::new();
                 }
@@ -972,15 +984,15 @@ macro_rules! glib_object_wrapper {
                 }
                 res.set_len(num);
                 res
-            }
+            }}
 
-            unsafe fn from_glib_container_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> {
+            unsafe fn from_glib_container_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> { unsafe {
                 let res = $crate::translate::FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr, num);
                 $crate::ffi::g_free(ptr as *mut _);
                 res
-            }
+            }}
 
-            unsafe fn from_glib_full_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> {
+            unsafe fn from_glib_full_num_as_vec(ptr: *mut *mut $ffi_name, num: usize) -> Vec<Self> { unsafe {
                 if num == 0 || ptr.is_null() {
                     $crate::ffi::g_free(ptr as *mut _);
                     return Vec::new();
@@ -992,29 +1004,29 @@ macro_rules! glib_object_wrapper {
                 res.set_len(num);
                 $crate::ffi::g_free(ptr as *mut _);
                 res
-            }
+            }}
         }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrArrayContainerAsVec<*mut $ffi_name, *mut *mut $ffi_name> for $name $(<$($generic),+>)? {
-            unsafe fn from_glib_none_as_vec(ptr: *mut *mut $ffi_name) -> Vec<Self> {
+            unsafe fn from_glib_none_as_vec(ptr: *mut *mut $ffi_name) -> Vec<Self> { unsafe {
                 $crate::translate::FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr))
-            }
+            }}
 
-            unsafe fn from_glib_container_as_vec(ptr: *mut *mut $ffi_name) -> Vec<Self> {
+            unsafe fn from_glib_container_as_vec(ptr: *mut *mut $ffi_name) -> Vec<Self> { unsafe {
                 $crate::translate::FromGlibContainerAsVec::from_glib_container_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr))
-            }
+            }}
 
-            unsafe fn from_glib_full_as_vec(ptr: *mut *mut $ffi_name) -> Vec<Self> {
+            unsafe fn from_glib_full_as_vec(ptr: *mut *mut $ffi_name) -> Vec<Self> { unsafe {
                 $crate::translate::FromGlibContainerAsVec::from_glib_full_num_as_vec(ptr, $crate::translate::c_ptr_array_len(ptr))
-            }
+            }}
         }
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibContainerAsVec<*mut $ffi_name, *const *mut $ffi_name> for $name $(<$($generic),+>)? {
-            unsafe fn from_glib_none_num_as_vec(ptr: *const *mut $ffi_name, num: usize) -> Vec<Self> {
+            unsafe fn from_glib_none_num_as_vec(ptr: *const *mut $ffi_name, num: usize) -> Vec<Self> { unsafe {
                 $crate::translate::FromGlibContainerAsVec::from_glib_none_num_as_vec(ptr as *mut *mut _, num)
-            }
+            }}
 
             unsafe fn from_glib_container_num_as_vec(_: *const *mut $ffi_name, _: usize) -> Vec<Self> {
                 // Can't free a *const
@@ -1029,9 +1041,9 @@ macro_rules! glib_object_wrapper {
 
         #[doc(hidden)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::translate::FromGlibPtrArrayContainerAsVec<*mut $ffi_name, *const *mut $ffi_name> for $name $(<$($generic),+>)? {
-            unsafe fn from_glib_none_as_vec(ptr: *const *mut $ffi_name) -> Vec<Self> {
+            unsafe fn from_glib_none_as_vec(ptr: *const *mut $ffi_name) -> Vec<Self> { unsafe {
                 $crate::translate::FromGlibPtrArrayContainerAsVec::from_glib_none_as_vec(ptr as *mut *mut _)
-            }
+            }}
 
             unsafe fn from_glib_container_as_vec(_: *const *mut $ffi_name) -> Vec<Self> {
                 // Can't free a *const
@@ -1066,12 +1078,12 @@ macro_rules! glib_object_wrapper {
             type Checker = $crate::object::ObjectValueTypeChecker<Self>;
 
             #[inline]
-            unsafe fn from_value(value: &'a $crate::Value) -> Self {
+            unsafe fn from_value(value: &'a $crate::Value) -> Self { unsafe {
                 let ptr = $crate::gobject_ffi::g_value_dup_object($crate::translate::ToGlibPtr::to_glib_none(value).0);
                 debug_assert!(!ptr.is_null());
                 debug_assert_ne!((*ptr).ref_count, 0);
                 <Self as $crate::translate::FromGlibPtrFull<*mut $ffi_name>>::from_glib_full(ptr as *mut $ffi_name)
-            }
+            }}
         }
 
         #[doc(hidden)]
@@ -1079,10 +1091,10 @@ macro_rules! glib_object_wrapper {
             type Checker = $crate::object::ObjectValueTypeChecker<Self>;
 
             #[inline]
-            unsafe fn from_value(value: &'a $crate::Value) -> Self {
+            unsafe fn from_value(value: &'a $crate::Value) -> Self { unsafe {
                 let value = &*(value as *const $crate::Value as *const $crate::gobject_ffi::GValue);
                 <$name $(<$($generic),+>)? as $crate::object::ObjectType>::from_glib_ptr_borrow(&*(&value.data[0].v_pointer as *const $crate::ffi::gpointer as *const *mut $ffi_name))
-            }
+            }}
         }
 
         #[doc(hidden)]
@@ -1420,11 +1432,15 @@ impl Object {
         unsafe {
             let iface_type = from_glib(gio_sys::g_initable_get_type());
             if type_.is_a(iface_type) {
-                panic!("Can't instantiate type '{type_}' implementing `gio::Initable`. Use `gio::Initable::new()`");
+                panic!(
+                    "Can't instantiate type '{type_}' implementing `gio::Initable`. Use `gio::Initable::new()`"
+                );
             }
             let iface_type = from_glib(gio_sys::g_async_initable_get_type());
             if type_.is_a(iface_type) {
-                panic!("Can't instantiate type '{type_}' implementing `gio::AsyncInitable`. Use `gio::AsyncInitable::new()`");
+                panic!(
+                    "Can't instantiate type '{type_}' implementing `gio::AsyncInitable`. Use `gio::AsyncInitable::new()`"
+                );
             }
         }
 
@@ -1444,69 +1460,72 @@ impl Object {
     /// without using the API of those interfaces first.
     #[track_caller]
     pub unsafe fn new_internal(type_: Type, properties: &mut [(&str, Value)]) -> Object {
-        if !type_.is_a(Object::static_type()) {
-            panic!("Can't instantiate non-GObject type '{type_}'");
-        }
-
-        if gobject_ffi::g_type_test_flags(
-            type_.into_glib(),
-            gobject_ffi::G_TYPE_FLAG_INSTANTIATABLE,
-        ) == ffi::GFALSE
-        {
-            panic!("Can't instantiate type '{type_}'");
-        }
-
-        if gobject_ffi::g_type_test_flags(type_.into_glib(), gobject_ffi::G_TYPE_FLAG_ABSTRACT)
-            != ffi::GFALSE
-        {
-            panic!("Can't instantiate abstract type '{type_}'");
-        }
-
-        let mut property_names = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
-        let mut property_values = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
-
-        if !properties.is_empty() {
-            let klass = ObjectClass::from_type(type_)
-                .unwrap_or_else(|| panic!("Can't retrieve class for type '{type_}'"));
-
-            for (idx, (name, value)) in properties.iter_mut().enumerate() {
-                let pspec = klass
-                    .find_property(name)
-                    .unwrap_or_else(|| panic!("Can't find property '{name}' for type '{type_}'"));
-
-                if (pspec.flags().contains(crate::ParamFlags::CONSTRUCT)
-                    || pspec.flags().contains(crate::ParamFlags::CONSTRUCT_ONLY))
-                    && property_names[0..idx]
-                        .iter()
-                        .any(|other_name| pspec.name().as_ptr() == *other_name)
-                {
-                    panic!("Can't set construct property '{name}' for type '{type_}' twice");
-                }
-
-                // FIXME: With GLib 2.74 and GParamSpecClass::value_is_valid() it is possible to
-                // not require mutable values here except for when LAX_VALIDATION is provided and a
-                // change is needed, or a GObject value needs it's GType changed.
-                validate_property_type(type_, true, &pspec, value);
-
-                property_names.push(pspec.name().as_ptr());
-                property_values.push(*value.to_glib_none().0);
+        unsafe {
+            if !type_.is_a(Object::static_type()) {
+                panic!("Can't instantiate non-GObject type '{type_}'");
             }
-        }
 
-        let ptr = gobject_ffi::g_object_new_with_properties(
-            type_.into_glib(),
-            properties.len() as u32,
-            mut_override(property_names.as_ptr() as *const *const _),
-            property_values.as_ptr(),
-        );
+            if gobject_ffi::g_type_test_flags(
+                type_.into_glib(),
+                gobject_ffi::G_TYPE_FLAG_INSTANTIATABLE,
+            ) == ffi::GFALSE
+            {
+                panic!("Can't instantiate type '{type_}'");
+            }
 
-        if ptr.is_null() {
-            panic!("Can't instantiate object for type '{type_}'");
-        } else if type_.is_a(InitiallyUnowned::static_type()) {
-            // Attention: This takes ownership of the floating reference
-            from_glib_none(ptr)
-        } else {
-            from_glib_full(ptr)
+            if gobject_ffi::g_type_test_flags(type_.into_glib(), gobject_ffi::G_TYPE_FLAG_ABSTRACT)
+                != ffi::GFALSE
+            {
+                panic!("Can't instantiate abstract type '{type_}'");
+            }
+
+            let mut property_names = smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
+            let mut property_values =
+                smallvec::SmallVec::<[_; 16]>::with_capacity(properties.len());
+
+            if !properties.is_empty() {
+                let klass = ObjectClass::from_type(type_)
+                    .unwrap_or_else(|| panic!("Can't retrieve class for type '{type_}'"));
+
+                for (idx, (name, value)) in properties.iter_mut().enumerate() {
+                    let pspec = klass.find_property(name).unwrap_or_else(|| {
+                        panic!("Can't find property '{name}' for type '{type_}'")
+                    });
+
+                    if (pspec.flags().contains(crate::ParamFlags::CONSTRUCT)
+                        || pspec.flags().contains(crate::ParamFlags::CONSTRUCT_ONLY))
+                        && property_names[0..idx]
+                            .iter()
+                            .any(|other_name| pspec.name().as_ptr() == *other_name)
+                    {
+                        panic!("Can't set construct property '{name}' for type '{type_}' twice");
+                    }
+
+                    // FIXME: With GLib 2.74 and GParamSpecClass::value_is_valid() it is possible to
+                    // not require mutable values here except for when LAX_VALIDATION is provided and a
+                    // change is needed, or a GObject value needs it's GType changed.
+                    validate_property_type(type_, true, &pspec, value);
+
+                    property_names.push(pspec.name().as_ptr());
+                    property_values.push(*value.to_glib_none().0);
+                }
+            }
+
+            let ptr = gobject_ffi::g_object_new_with_properties(
+                type_.into_glib(),
+                properties.len() as u32,
+                mut_override(property_names.as_ptr() as *const *const _),
+                property_values.as_ptr(),
+            );
+
+            if ptr.is_null() {
+                panic!("Can't instantiate object for type '{type_}'");
+            } else if type_.is_a(InitiallyUnowned::static_type()) {
+                // Attention: This takes ownership of the floating reference
+                from_glib_none(ptr)
+            } else {
+                from_glib_full(ptr)
+            }
         }
     }
 
@@ -2485,51 +2504,59 @@ impl<T: ObjectType> ObjectExt for T {
     }
 
     unsafe fn set_qdata<QD: 'static>(&self, key: Quark, value: QD) {
-        unsafe extern "C" fn drop_value<QD>(ptr: ffi::gpointer) {
-            debug_assert!(!ptr.is_null());
-            let value: Box<QD> = Box::from_raw(ptr as *mut QD);
-            drop(value)
-        }
+        unsafe {
+            unsafe extern "C" fn drop_value<QD>(ptr: ffi::gpointer) {
+                unsafe {
+                    debug_assert!(!ptr.is_null());
+                    let value: Box<QD> = Box::from_raw(ptr as *mut QD);
+                    drop(value)
+                }
+            }
 
-        let ptr = Box::into_raw(Box::new(value)) as ffi::gpointer;
-        gobject_ffi::g_object_set_qdata_full(
-            self.as_object_ref().to_glib_none().0,
-            key.into_glib(),
-            ptr,
-            Some(drop_value::<QD>),
-        );
+            let ptr = Box::into_raw(Box::new(value)) as ffi::gpointer;
+            gobject_ffi::g_object_set_qdata_full(
+                self.as_object_ref().to_glib_none().0,
+                key.into_glib(),
+                ptr,
+                Some(drop_value::<QD>),
+            );
+        }
     }
 
     unsafe fn qdata<QD: 'static>(&self, key: Quark) -> Option<ptr::NonNull<QD>> {
-        ptr::NonNull::new(gobject_ffi::g_object_get_qdata(
-            self.as_object_ref().to_glib_none().0,
-            key.into_glib(),
-        ) as *mut QD)
+        unsafe {
+            ptr::NonNull::new(gobject_ffi::g_object_get_qdata(
+                self.as_object_ref().to_glib_none().0,
+                key.into_glib(),
+            ) as *mut QD)
+        }
     }
 
     unsafe fn steal_qdata<QD: 'static>(&self, key: Quark) -> Option<QD> {
-        let ptr = gobject_ffi::g_object_steal_qdata(
-            self.as_object_ref().to_glib_none().0,
-            key.into_glib(),
-        );
-        if ptr.is_null() {
-            None
-        } else {
-            let value: Box<QD> = Box::from_raw(ptr as *mut QD);
-            Some(*value)
+        unsafe {
+            let ptr = gobject_ffi::g_object_steal_qdata(
+                self.as_object_ref().to_glib_none().0,
+                key.into_glib(),
+            );
+            if ptr.is_null() {
+                None
+            } else {
+                let value: Box<QD> = Box::from_raw(ptr as *mut QD);
+                Some(*value)
+            }
         }
     }
 
     unsafe fn set_data<QD: 'static>(&self, key: &str, value: QD) {
-        self.set_qdata::<QD>(Quark::from_str(key), value)
+        unsafe { self.set_qdata::<QD>(Quark::from_str(key), value) }
     }
 
     unsafe fn data<QD: 'static>(&self, key: &str) -> Option<ptr::NonNull<QD>> {
-        self.qdata::<QD>(Quark::from_str(key))
+        unsafe { self.qdata::<QD>(Quark::from_str(key)) }
     }
 
     unsafe fn steal_data<QD: 'static>(&self, key: &str) -> Option<QD> {
-        self.steal_qdata::<QD>(Quark::from_str(key))
+        unsafe { self.steal_qdata::<QD>(Quark::from_str(key)) }
     }
 
     fn block_signal(&self, handler_id: &SignalHandlerId) {
@@ -2637,10 +2664,12 @@ impl<T: ObjectType> ObjectExt for T {
     where
         F: Fn(&[Value]) -> Option<Value>,
     {
-        let type_ = self.type_();
-        let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
-            .unwrap_or_else(|| panic!("Signal '{signal_name}' of type '{type_}' not found"));
-        self.connect_unsafe_id(signal_id, details, after, callback)
+        unsafe {
+            let type_ = self.type_();
+            let (signal_id, details) = SignalId::parse_name(signal_name, type_, true)
+                .unwrap_or_else(|| panic!("Signal '{signal_name}' of type '{type_}' not found"));
+            self.connect_unsafe_id(signal_id, details, after, callback)
+        }
     }
 
     #[track_caller]
@@ -2654,67 +2683,69 @@ impl<T: ObjectType> ObjectExt for T {
     where
         F: Fn(&[Value]) -> Option<Value>,
     {
-        let signal_query = signal_id.query();
-        let type_ = self.type_();
-        let return_type: Type = signal_query.return_type().into();
-        let signal_name = signal_id.name();
-        let signal_query_type = signal_query.type_();
+        unsafe {
+            let signal_query = signal_id.query();
+            let type_ = self.type_();
+            let return_type: Type = signal_query.return_type().into();
+            let signal_name = signal_id.name();
+            let signal_query_type = signal_query.type_();
 
-        let closure = if return_type == Type::UNIT {
-            Closure::new_unsafe(move |values| {
-                let ret = callback(values);
-                if let Some(ret) = ret {
-                    panic!(
-                        "Signal '{signal_name}' of type '{type_}' required no return value but got value of type '{}'",
-                        ret.type_()
-                    );
-                }
-                None
-            })
-        } else {
-            Closure::new_unsafe(move |values| {
-                let mut ret = callback(values).unwrap_or_else(|| {
+            let closure = if return_type == Type::UNIT {
+                Closure::new_unsafe(move |values| {
+                    let ret = callback(values);
+                    if let Some(ret) = ret {
+                        panic!(
+                            "Signal '{signal_name}' of type '{type_}' required no return value but got value of type '{}'",
+                            ret.type_()
+                        );
+                    }
+                    None
+                })
+            } else {
+                Closure::new_unsafe(move |values| {
+                    let mut ret = callback(values).unwrap_or_else(|| {
                     panic!(
                         "Signal '{signal_name}' of type '{type_}' required return value of type '{}' but got None",
                         return_type.name()
                     );
                 });
-                let valid_type: bool = from_glib(gobject_ffi::g_type_check_value_holds(
-                    mut_override(ret.to_glib_none().0),
-                    return_type.into_glib(),
-                ));
+                    let valid_type: bool = from_glib(gobject_ffi::g_type_check_value_holds(
+                        mut_override(ret.to_glib_none().0),
+                        return_type.into_glib(),
+                    ));
 
-                if valid_type {
-                    return Some(ret);
-                }
+                    if valid_type {
+                        return Some(ret);
+                    }
 
-                if let Err(got) = coerce_object_type(&mut ret, return_type) {
-                    panic!(
-                        "Signal '{signal_name}' of type '{type_}' required return value of type '{return_type}' but got '{got}'",
-                    );
-                };
-                Some(ret)
-            })
-        };
+                    if let Err(got) = coerce_object_type(&mut ret, return_type) {
+                        panic!(
+                            "Signal '{signal_name}' of type '{type_}' required return value of type '{return_type}' but got '{got}'",
+                        );
+                    };
+                    Some(ret)
+                })
+            };
 
-        assert!(
-            type_.is_a(signal_query_type),
-            "Signal '{signal_name}' of type '{type_}' but got type '{signal_query_type}'",
-        );
+            assert!(
+                type_.is_a(signal_query_type),
+                "Signal '{signal_name}' of type '{type_}' but got type '{signal_query_type}'",
+            );
 
-        let handler = gobject_ffi::g_signal_connect_closure_by_id(
-            self.as_object_ref().to_glib_none().0,
-            signal_id.into_glib(),
-            details.into_glib(),
-            closure.as_ref().to_glib_none().0,
-            after.into_glib(),
-        );
+            let handler = gobject_ffi::g_signal_connect_closure_by_id(
+                self.as_object_ref().to_glib_none().0,
+                signal_id.into_glib(),
+                details.into_glib(),
+                closure.as_ref().to_glib_none().0,
+                after.into_glib(),
+            );
 
-        if handler == 0 {
-            panic!("Failed to connect to signal '{signal_name}' of type '{type_}'",);
+            if handler == 0 {
+                panic!("Failed to connect to signal '{signal_name}' of type '{type_}'",);
+            }
+
+            from_glib(handler)
         }
-
-        from_glib(handler)
     }
 
     #[track_caller]
@@ -3060,35 +3091,39 @@ impl<T: ObjectType> ObjectExt for T {
         name: Option<&str>,
         f: F,
     ) -> SignalHandlerId {
-        unsafe extern "C" fn notify_trampoline<P, F: Fn(&P, &crate::ParamSpec)>(
-            this: *mut gobject_ffi::GObject,
-            param_spec: *mut gobject_ffi::GParamSpec,
-            f: ffi::gpointer,
-        ) where
-            P: ObjectType,
-        {
-            let f: &F = &*(f as *const F);
-            f(
-                Object::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(param_spec),
+        unsafe {
+            unsafe extern "C" fn notify_trampoline<P, F: Fn(&P, &crate::ParamSpec)>(
+                this: *mut gobject_ffi::GObject,
+                param_spec: *mut gobject_ffi::GParamSpec,
+                f: ffi::gpointer,
+            ) where
+                P: ObjectType,
+            {
+                unsafe {
+                    let f: &F = &*(f as *const F);
+                    f(
+                        Object::from_glib_borrow(this).unsafe_cast_ref(),
+                        &from_glib_borrow(param_spec),
+                    )
+                }
+            }
+
+            let signal_name = if let Some(name) = name {
+                format!("notify::{name}\0")
+            } else {
+                "notify\0".into()
+            };
+
+            let f: Box<F> = Box::new(f);
+            crate::signal::connect_raw(
+                self.as_object_ref().to_glib_none().0,
+                signal_name.as_ptr() as *const _,
+                Some(mem::transmute::<*const (), unsafe extern "C" fn()>(
+                    notify_trampoline::<Self, F> as *const (),
+                )),
+                Box::into_raw(f),
             )
         }
-
-        let signal_name = if let Some(name) = name {
-            format!("notify::{name}\0")
-        } else {
-            "notify\0".into()
-        };
-
-        let f: Box<F> = Box::new(f);
-        crate::signal::connect_raw(
-            self.as_object_ref().to_glib_none().0,
-            signal_name.as_ptr() as *const _,
-            Some(mem::transmute::<*const (), unsafe extern "C" fn()>(
-                notify_trampoline::<Self, F> as *const (),
-            )),
-            Box::into_raw(f),
-        )
     }
 
     #[inline]
@@ -3154,7 +3189,9 @@ impl<T: ObjectType> ObjectExt for T {
 
     #[inline]
     unsafe fn run_dispose(&self) {
-        gobject_ffi::g_object_run_dispose(self.as_ptr() as *mut _);
+        unsafe {
+            gobject_ffi::g_object_run_dispose(self.as_ptr() as *mut _);
+        }
     }
 }
 
@@ -3184,7 +3221,7 @@ impl<T: ObjectType> WatchedObject<T> {
     where
         T: FromGlibPtrBorrow<*mut <T as ObjectType>::GlibType>,
     {
-        from_glib_borrow(self.0.as_ptr())
+        unsafe { from_glib_borrow(self.0.as_ptr()) }
     }
 }
 
@@ -3255,10 +3292,10 @@ fn validate_property_type(
         if !valid_type {
             if let Err(got) = coerce_object_type(property_value, pspec.value_type()) {
                 panic!(
-                        "property '{}' of type '{type_}' can't be set from the given type (expected: '{}', got: '{got}')",
-                        pspec.name(),
-                        pspec.value_type(),
-                    );
+                    "property '{}' of type '{type_}' can't be set from the given type (expected: '{}', got: '{got}')",
+                    pspec.name(),
+                    pspec.value_type(),
+                );
             }
         }
 
@@ -3402,13 +3439,15 @@ pub struct WeakRefNotify<T: ObjectType> {
 }
 
 unsafe extern "C" fn notify_func(data: ffi::gpointer, _obj: *mut gobject_ffi::GObject) {
-    // SAFETY: Call to FFI with pointers that must be valid due to Pin and lifetimes.
-    //         ManuallyDrop and Pin are elided because the pointer only points to Box<Box<dyn FnOnce()>>.
-    let callback: Box<Box<dyn FnOnce()>> = Box::from_raw(data as *mut _);
+    unsafe {
+        // SAFETY: Call to FFI with pointers that must be valid due to Pin and lifetimes.
+        //         ManuallyDrop and Pin are elided because the pointer only points to Box<Box<dyn FnOnce()>>.
+        let callback: Box<Box<dyn FnOnce()>> = Box::from_raw(data as *mut _);
 
-    // SAFETY: Function must have type FnOnce() due type checks in WeakRefNotify::new.
-    //         This callback can only be called once when the object is disposed, to the data can be dropped.
-    (*callback)()
+        // SAFETY: Function must have type FnOnce() due type checks in WeakRefNotify::new.
+        //         This callback can only be called once when the object is disposed, to the data can be dropped.
+        (*callback)()
+    }
 }
 
 impl<T: ObjectType> WeakRefNotify<T> {
@@ -3800,27 +3839,29 @@ impl<'a, 'f, 't> BindingBuilder<'a, 'f, 't> {
             to_value: *mut gobject_ffi::GValue,
             user_data: ffi::gpointer,
         ) -> ffi::gboolean {
-            let transform_data = &*(user_data
-                as *const (TransformFn, TransformFn, crate::ParamSpec, crate::ParamSpec));
+            unsafe {
+                let transform_data = &*(user_data
+                    as *const (TransformFn, TransformFn, crate::ParamSpec, crate::ParamSpec));
 
-            match (transform_data.0.as_ref().unwrap())(
-                &from_glib_borrow(binding),
-                &*(from_value as *const Value),
-            ) {
-                None => false,
-                Some(res) => {
-                    assert!(
+                match (transform_data.0.as_ref().unwrap())(
+                    &from_glib_borrow(binding),
+                    &*(from_value as *const Value),
+                ) {
+                    None => false,
+                    Some(res) => {
+                        assert!(
                         res.type_().is_a(transform_data.3.value_type()),
                         "Target property {} expected type {} but transform_to function returned {}",
                         transform_data.3.name(),
                         transform_data.3.value_type(),
                         res.type_()
                     );
-                    *to_value = res.into_raw();
-                    true
+                        *to_value = res.into_raw();
+                        true
+                    }
                 }
+                .into_glib()
             }
-            .into_glib()
         }
 
         unsafe extern "C" fn transform_from_trampoline(
@@ -3829,10 +3870,11 @@ impl<'a, 'f, 't> BindingBuilder<'a, 'f, 't> {
             to_value: *mut gobject_ffi::GValue,
             user_data: ffi::gpointer,
         ) -> ffi::gboolean {
-            let transform_data = &*(user_data
-                as *const (TransformFn, TransformFn, crate::ParamSpec, crate::ParamSpec));
+            unsafe {
+                let transform_data = &*(user_data
+                    as *const (TransformFn, TransformFn, crate::ParamSpec, crate::ParamSpec));
 
-            match (transform_data.1.as_ref().unwrap())(
+                match (transform_data.1.as_ref().unwrap())(
                 &from_glib_borrow(binding),
                 &*(from_value as *const Value),
             ) {
@@ -3850,12 +3892,15 @@ impl<'a, 'f, 't> BindingBuilder<'a, 'f, 't> {
                 }
             }
             .into_glib()
+            }
         }
 
         unsafe extern "C" fn free_transform_data(data: ffi::gpointer) {
-            let _ = Box::from_raw(
-                data as *mut (TransformFn, TransformFn, crate::ParamSpec, crate::ParamSpec),
-            );
+            unsafe {
+                let _ = Box::from_raw(
+                    data as *mut (TransformFn, TransformFn, crate::ParamSpec, crate::ParamSpec),
+                );
+            }
         }
 
         unsafe {
@@ -4449,9 +4494,11 @@ impl<'a, T: ObjectType> BorrowedObject<'a, T> {
     /// The pointer needs to be valid for at least the lifetime `'a`.
     #[inline]
     pub unsafe fn new(ptr: *mut T::GlibType) -> BorrowedObject<'a, T> {
-        BorrowedObject {
-            ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
-            phantom: PhantomData,
+        unsafe {
+            BorrowedObject {
+                ptr: ptr::NonNull::new_unchecked(ptr as *mut _),
+                phantom: PhantomData,
+            }
         }
     }
 
@@ -4511,8 +4558,8 @@ mod tests {
         cell::Cell,
         rc::Rc,
         sync::{
-            atomic::{AtomicBool, Ordering},
             Arc,
+            atomic::{AtomicBool, Ordering},
         },
     };
 

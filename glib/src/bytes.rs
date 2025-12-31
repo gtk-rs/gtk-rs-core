@@ -74,7 +74,9 @@ impl Bytes {
         };
 
         unsafe extern "C" fn drop_box<T: AsRef<[u8]> + Send + 'static>(b: ffi::gpointer) {
-            let _: Box<T> = Box::from_raw(b as *mut _);
+            unsafe {
+                let _: Box<T> = Box::from_raw(b as *mut _);
+            }
         }
 
         unsafe {

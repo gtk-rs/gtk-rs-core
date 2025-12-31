@@ -3,13 +3,13 @@
 use std::{pin::Pin, task::ready};
 
 use futures_core::{
+    Future,
     stream::Stream,
     task::{Context, Poll},
-    Future,
 };
 
-use crate::{prelude::SocketListenerExt, SocketConnection, SocketListener};
-use glib::{prelude::*, Error, Object};
+use crate::{SocketConnection, SocketListener, prelude::SocketListenerExt};
+use glib::{Error, Object, prelude::*};
 
 pub struct Incoming {
     listener: SocketListener,

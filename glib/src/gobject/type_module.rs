@@ -1,11 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use crate::{
+    InterfaceInfo, TypeFlags, TypeInfo, TypePlugin,
     enums::{EnumValues, FlagsValues},
     gobject_ffi,
     prelude::*,
     translate::*,
-    InterfaceInfo, TypeFlags, TypeInfo, TypePlugin,
 };
 
 crate::wrapper! {

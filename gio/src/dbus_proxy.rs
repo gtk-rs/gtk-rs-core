@@ -2,9 +2,9 @@
 
 use std::{boxed::Box as Box_, mem::transmute};
 
-use glib::{prelude::*, signal::connect_raw, translate::*, SignalHandlerId};
+use glib::{SignalHandlerId, prelude::*, signal::connect_raw, translate::*};
 
-use crate::{ffi, DBusProxy};
+use crate::{DBusProxy, ffi};
 
 pub trait DBusProxyExtManual: IsA<DBusProxy> + 'static {
     #[cfg(feature = "v2_72")]
@@ -26,15 +26,17 @@ pub trait DBusProxyExtManual: IsA<DBusProxy> + 'static {
             parameters: *mut glib::ffi::GVariant,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                DBusProxy::from_glib_borrow(this).unsafe_cast_ref(),
-                Option::<glib::GString>::from_glib_borrow(sender_name)
-                    .as_ref()
-                    .as_deref(),
-                &glib::GString::from_glib_borrow(signal_name),
-                &from_glib_borrow(parameters),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    DBusProxy::from_glib_borrow(this).unsafe_cast_ref(),
+                    Option::<glib::GString>::from_glib_borrow(sender_name)
+                        .as_ref()
+                        .as_deref(),
+                    &glib::GString::from_glib_borrow(signal_name),
+                    &from_glib_borrow(parameters),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -71,15 +73,17 @@ pub trait DBusProxyExtManual: IsA<DBusProxy> + 'static {
             parameters: *mut glib::ffi::GVariant,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                DBusProxy::from_glib_borrow(this).unsafe_cast_ref(),
-                Option::<glib::GString>::from_glib_borrow(sender_name)
-                    .as_ref()
-                    .as_deref(),
-                &glib::GString::from_glib_borrow(signal_name),
-                &from_glib_borrow(parameters),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    DBusProxy::from_glib_borrow(this).unsafe_cast_ref(),
+                    Option::<glib::GString>::from_glib_borrow(sender_name)
+                        .as_ref()
+                        .as_deref(),
+                    &glib::GString::from_glib_borrow(signal_name),
+                    &from_glib_borrow(parameters),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

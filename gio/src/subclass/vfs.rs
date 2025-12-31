@@ -2,11 +2,11 @@
 
 use std::path::PathBuf;
 
-use glib::{prelude::*, subclass::prelude::*, translate::*, GString, StrVRef};
+use glib::{GString, StrVRef, prelude::*, subclass::prelude::*, translate::*};
 
 use libc::c_char;
 
-use crate::{ffi, File, Vfs};
+use crate::{File, Vfs, ffi};
 
 // Support custom implementation of virtual functions defined in `gio::ffi::GVfsClass`.
 pub trait VfsImpl: ObjectImpl + ObjectSubclass<Type: IsA<Vfs>> {
@@ -130,59 +130,69 @@ unsafe impl<T: VfsImpl> IsSubclassable<T> for Vfs {
 }
 
 unsafe extern "C" fn is_active<T: VfsImpl>(vfs: *mut ffi::GVfs) -> glib::ffi::gboolean {
-    let instance = &*(vfs as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(vfs as *mut T::Instance);
+        let imp = instance.imp();
 
-    let res = imp.is_active();
+        let res = imp.is_active();
 
-    res.into_glib()
+        res.into_glib()
+    }
 }
 
 unsafe extern "C" fn get_file_for_path<T: VfsImpl>(
     vfs: *mut ffi::GVfs,
     path: *const c_char,
 ) -> *mut ffi::GFile {
-    let instance = &*(vfs as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(vfs as *mut T::Instance);
+        let imp = instance.imp();
 
-    let file = imp.get_file_for_path(&PathBuf::from_glib_none(path));
+        let file = imp.get_file_for_path(&PathBuf::from_glib_none(path));
 
-    file.into_glib_ptr()
+        file.into_glib_ptr()
+    }
 }
 
 unsafe extern "C" fn get_file_for_uri<T: VfsImpl>(
     vfs: *mut ffi::GVfs,
     uri: *const c_char,
 ) -> *mut ffi::GFile {
-    let instance = &*(vfs as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(vfs as *mut T::Instance);
+        let imp = instance.imp();
 
-    let file = imp.get_file_for_uri(&GString::from_glib_borrow(uri));
+        let file = imp.get_file_for_uri(&GString::from_glib_borrow(uri));
 
-    file.into_glib_ptr()
+        file.into_glib_ptr()
+    }
 }
 
 unsafe extern "C" fn get_supported_uri_schemes<T: VfsImpl>(
     vfs: *mut ffi::GVfs,
 ) -> *const *const c_char {
-    let instance = &*(vfs as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(vfs as *mut T::Instance);
+        let imp = instance.imp();
 
-    let supported_uri_schemes = imp.get_supported_uri_schemes();
+        let supported_uri_schemes = imp.get_supported_uri_schemes();
 
-    supported_uri_schemes.as_ptr()
+        supported_uri_schemes.as_ptr()
+    }
 }
 
 unsafe extern "C" fn parse_name<T: VfsImpl>(
     vfs: *mut ffi::GVfs,
     parse_name: *const c_char,
 ) -> *mut ffi::GFile {
-    let instance = &*(vfs as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(vfs as *mut T::Instance);
+        let imp = instance.imp();
 
-    let file = imp.parse_name(&GString::from_glib_borrow(parse_name));
+        let file = imp.parse_name(&GString::from_glib_borrow(parse_name));
 
-    file.into_glib_ptr()
+        file.into_glib_ptr()
+    }
 }
 
 #[cfg(test)]

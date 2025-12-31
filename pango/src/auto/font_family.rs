@@ -2,10 +2,10 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, FontFace};
+use crate::{FontFace, ffi};
 #[cfg(feature = "v1_52")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_52")))]
-use glib::signal::{connect_raw, SignalHandlerId};
+use glib::signal::{SignalHandlerId, connect_raw};
 use glib::{prelude::*, translate::*};
 #[cfg(feature = "v1_52")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_52")))]

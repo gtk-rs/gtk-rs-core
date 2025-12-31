@@ -48,14 +48,18 @@ pub trait BoxedType: StaticType + Clone + Sized + 'static {
 /// [`Boxed!`]: ../../derive.Boxed.html
 pub fn register_boxed_type<T: BoxedType>() -> crate::Type {
     unsafe extern "C" fn boxed_copy<T: BoxedType>(v: ffi::gpointer) -> ffi::gpointer {
-        let v = &*(v as *mut T);
-        let copy = Box::new(v.clone());
+        unsafe {
+            let v = &*(v as *mut T);
+            let copy = Box::new(v.clone());
 
-        Box::into_raw(copy) as ffi::gpointer
+            Box::into_raw(copy) as ffi::gpointer
+        }
     }
     unsafe extern "C" fn boxed_free<T: BoxedType>(v: ffi::gpointer) {
-        let v = v as *mut T;
-        let _ = Box::from_raw(v);
+        unsafe {
+            let v = v as *mut T;
+            let _ = Box::from_raw(v);
+        }
     }
     unsafe {
         use std::ffi::CString;

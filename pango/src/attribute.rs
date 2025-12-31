@@ -2,7 +2,7 @@
 
 use glib::translate::*;
 
-use crate::{ffi, AttrClass, AttrType, Attribute};
+use crate::{AttrClass, AttrType, Attribute, ffi};
 
 impl Attribute {
     #[doc(alias = "get_attr_class")]
@@ -145,17 +145,17 @@ macro_rules! define_attribute_struct {
         #[doc(hidden)]
         impl glib::translate::FromGlibPtrFull<*mut ffi::PangoAttribute> for $rust_type {
             #[inline]
-            unsafe fn from_glib_full(ptr: *mut ffi::PangoAttribute) -> Self {
+            unsafe fn from_glib_full(ptr: *mut ffi::PangoAttribute) -> Self { unsafe {
                 glib::translate::from_glib_full(ptr as *mut $ffi_type)
-            }
+            }}
         }
 
         #[doc(hidden)]
         impl glib::translate::FromGlibPtrFull<*const ffi::PangoAttribute> for $rust_type {
             #[inline]
-            unsafe fn from_glib_full(ptr: *const ffi::PangoAttribute) -> Self {
+            unsafe fn from_glib_full(ptr: *const ffi::PangoAttribute) -> Self { unsafe {
                 glib::translate::from_glib_full(ptr as *const $ffi_type)
-            }
+            }}
         }
 
         impl std::convert::AsRef<crate::Attribute> for $rust_type {

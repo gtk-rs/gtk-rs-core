@@ -15,18 +15,18 @@ use gio_sys as gio;
 use glib_sys as glib;
 use gobject_sys as gobject;
 
+#[allow(unused_imports)]
+use libc::{FILE, intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t};
 #[cfg(unix)]
 #[allow(unused_imports)]
 use libc::{dev_t, gid_t, pid_t, socklen_t, uid_t};
-#[allow(unused_imports)]
-use libc::{intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t, FILE};
 #[allow(unused_imports)]
 use std::ffi::{
     c_char, c_double, c_float, c_int, c_long, c_short, c_uchar, c_uint, c_ulong, c_ushort, c_void,
 };
 
 #[allow(unused_imports)]
-use glib::{gboolean, gconstpointer, gpointer, GType};
+use glib::{GType, gboolean, gconstpointer, gpointer};
 
 // Enums
 pub type GdkColorspace = c_int;
@@ -864,7 +864,7 @@ unsafe extern "C" {
         error: *mut *mut glib::GError,
     ) -> gboolean;
     pub fn gdk_pixbuf_loader_get_animation(loader: *mut GdkPixbufLoader)
-        -> *mut GdkPixbufAnimation;
+    -> *mut GdkPixbufAnimation;
     pub fn gdk_pixbuf_loader_get_format(loader: *mut GdkPixbufLoader) -> *mut GdkPixbufFormat;
     pub fn gdk_pixbuf_loader_get_pixbuf(loader: *mut GdkPixbufLoader) -> *mut GdkPixbuf;
     pub fn gdk_pixbuf_loader_set_size(loader: *mut GdkPixbufLoader, width: c_int, height: c_int);

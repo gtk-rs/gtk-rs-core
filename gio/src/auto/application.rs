@@ -3,12 +3,12 @@
 // DO NOT EDIT
 
 use crate::{
-    ffi, ActionGroup, ActionMap, ApplicationFlags, Cancellable, DBusConnection, File, Notification,
+    ActionGroup, ActionMap, ApplicationFlags, Cancellable, DBusConnection, File, Notification, ffi,
 };
 use glib::{
     object::ObjectType as _,
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::boxed::Box as Box_;

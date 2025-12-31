@@ -3,13 +3,13 @@
 use std::{boxed::Box as Box_, mem::transmute, ops::ControlFlow};
 
 use glib::{
-    prelude::*,
-    signal::{connect_raw, SignalHandlerId},
-    translate::*,
     ExitCode, GString,
+    prelude::*,
+    signal::{SignalHandlerId, connect_raw},
+    translate::*,
 };
 
-use crate::{ffi, Application, ApplicationCommandLine, File};
+use crate::{Application, ApplicationCommandLine, File, ffi};
 
 pub trait ApplicationExtManual: IsA<Application> {
     #[doc(alias = "g_application_run")]
@@ -38,13 +38,16 @@ pub trait ApplicationExtManual: IsA<Application> {
         ) where
             P: IsA<Application>,
         {
-            let f: &F = &*(f as *const F);
-            let files: Vec<File> = FromGlibContainer::from_glib_none_num(files, n_files as usize);
-            f(
-                Application::from_glib_borrow(this).unsafe_cast_ref(),
-                &files,
-                &GString::from_glib_borrow(hint),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                let files: Vec<File> =
+                    FromGlibContainer::from_glib_none_num(files, n_files as usize);
+                f(
+                    Application::from_glib_borrow(this).unsafe_cast_ref(),
+                    &files,
+                    &GString::from_glib_borrow(hint),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -72,12 +75,14 @@ pub trait ApplicationExtManual: IsA<Application> {
             command_line: *mut ffi::GApplicationCommandLine,
             f: glib::ffi::gpointer,
         ) -> std::ffi::c_int {
-            let f: &F = &*(f as *const F);
-            f(
-                Application::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(command_line),
-            )
-            .into()
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    Application::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(command_line),
+                )
+                .into()
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -107,14 +112,16 @@ pub trait ApplicationExtManual: IsA<Application> {
             options: *mut glib::ffi::GVariantDict,
             f: glib::ffi::gpointer,
         ) -> std::ffi::c_int {
-            let f: &F = &*(f as *const F);
-            f(
-                Application::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(options),
-            )
-            .break_value()
-            .map(i32::from)
-            .unwrap_or(-1)
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    Application::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(options),
+                )
+                .break_value()
+                .map(i32::from)
+                .unwrap_or(-1)
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

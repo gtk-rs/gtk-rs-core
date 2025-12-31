@@ -877,17 +877,21 @@ fn test_clone_macro_typed_args() {
                     std::mem::drop(w);
 
                     // We use the threads to ensure that the closure panics as expected.
-                    assert!(thread::spawn(move || {
-                        closure(1);
-                    })
-                    .join()
-                    .is_err());
+                    assert!(
+                        thread::spawn(move || {
+                            closure(1);
+                        })
+                        .join()
+                        .is_err()
+                    );
                     assert_eq!(2, *check.lock().unwrap());
-                    assert!(thread::spawn(move || {
-                        closure2(1);
-                    })
-                    .join()
-                    .is_err());
+                    assert!(
+                        thread::spawn(move || {
+                            closure2(1);
+                        })
+                        .join()
+                        .is_err()
+                    );
                     assert_eq!(2, *check.lock().unwrap());
                 }};
             }

@@ -4,9 +4,9 @@ use std::{cmp, fmt, hash};
 
 use super::prelude::*;
 use crate::{
+    WeakRef,
     clone::{Downgrade, Upgrade},
     prelude::*,
-    WeakRef,
 };
 
 // rustdoc-stripper-ignore-next

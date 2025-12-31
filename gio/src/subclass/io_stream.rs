@@ -2,9 +2,9 @@
 
 use std::{ptr, sync::OnceLock};
 
-use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
+use glib::{Error, prelude::*, subclass::prelude::*, translate::*};
 
-use crate::{ffi, Cancellable, IOStream, InputStream, OutputStream};
+use crate::{Cancellable, IOStream, InputStream, OutputStream, ffi};
 
 pub trait IOStreamImpl: Send + ObjectImpl + ObjectSubclass<Type: IsA<IOStream>> {
     fn input_stream(&self) -> InputStream {
@@ -81,55 +81,59 @@ unsafe impl<T: IOStreamImpl> IsSubclassable<T> for IOStream {
 unsafe extern "C" fn stream_get_input_stream<T: IOStreamImpl>(
     ptr: *mut ffi::GIOStream,
 ) -> *mut ffi::GInputStream {
-    let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(ptr as *mut T::Instance);
+        let imp = instance.imp();
 
-    let ret = imp.input_stream();
+        let ret = imp.input_stream();
 
-    let instance = imp.obj();
-    // Ensure that a) the stream stays alive as long as the IO stream instance and
-    // b) that the same stream is returned every time. This is a requirement by the
-    // IO stream API.
-    let input_stream_quark = {
-        static QUARK: OnceLock<glib::Quark> = OnceLock::new();
-        *QUARK.get_or_init(|| glib::Quark::from_str("gtk-rs-subclass-input-stream"))
-    };
-    if let Some(old_stream) = instance.qdata::<InputStream>(input_stream_quark) {
-        assert_eq!(
-            old_stream.as_ref(),
-            &ret,
-            "Did not return same input stream again"
-        );
+        let instance = imp.obj();
+        // Ensure that a) the stream stays alive as long as the IO stream instance and
+        // b) that the same stream is returned every time. This is a requirement by the
+        // IO stream API.
+        let input_stream_quark = {
+            static QUARK: OnceLock<glib::Quark> = OnceLock::new();
+            *QUARK.get_or_init(|| glib::Quark::from_str("gtk-rs-subclass-input-stream"))
+        };
+        if let Some(old_stream) = instance.qdata::<InputStream>(input_stream_quark) {
+            assert_eq!(
+                old_stream.as_ref(),
+                &ret,
+                "Did not return same input stream again"
+            );
+        }
+        instance.set_qdata(input_stream_quark, ret.clone());
+        ret.to_glib_none().0
     }
-    instance.set_qdata(input_stream_quark, ret.clone());
-    ret.to_glib_none().0
 }
 
 unsafe extern "C" fn stream_get_output_stream<T: IOStreamImpl>(
     ptr: *mut ffi::GIOStream,
 ) -> *mut ffi::GOutputStream {
-    let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(ptr as *mut T::Instance);
+        let imp = instance.imp();
 
-    let ret = imp.output_stream();
+        let ret = imp.output_stream();
 
-    let instance = imp.obj();
-    // Ensure that a) the stream stays alive as long as the IO stream instance and
-    // b) that the same stream is returned every time. This is a requirement by the
-    // IO stream API.
-    let output_stream_quark = {
-        static QUARK: OnceLock<glib::Quark> = OnceLock::new();
-        *QUARK.get_or_init(|| glib::Quark::from_str("gtk-rs-subclass-output-stream"))
-    };
-    if let Some(old_stream) = instance.qdata::<OutputStream>(output_stream_quark) {
-        assert_eq!(
-            old_stream.as_ref(),
-            &ret,
-            "Did not return same output stream again"
-        );
+        let instance = imp.obj();
+        // Ensure that a) the stream stays alive as long as the IO stream instance and
+        // b) that the same stream is returned every time. This is a requirement by the
+        // IO stream API.
+        let output_stream_quark = {
+            static QUARK: OnceLock<glib::Quark> = OnceLock::new();
+            *QUARK.get_or_init(|| glib::Quark::from_str("gtk-rs-subclass-output-stream"))
+        };
+        if let Some(old_stream) = instance.qdata::<OutputStream>(output_stream_quark) {
+            assert_eq!(
+                old_stream.as_ref(),
+                &ret,
+                "Did not return same output stream again"
+            );
+        }
+        instance.set_qdata(output_stream_quark, ret.clone());
+        ret.to_glib_none().0
     }
-    instance.set_qdata(output_stream_quark, ret.clone());
-    ret.to_glib_none().0
 }
 
 unsafe extern "C" fn stream_close<T: IOStreamImpl>(
@@ -137,20 +141,22 @@ unsafe extern "C" fn stream_close<T: IOStreamImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean {
-    let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(ptr as *mut T::Instance);
+        let imp = instance.imp();
 
-    match imp.close(
-        Option::<Cancellable>::from_glib_borrow(cancellable)
-            .as_ref()
-            .as_ref(),
-    ) {
-        Ok(_) => glib::ffi::GTRUE,
-        Err(e) => {
-            if !err.is_null() {
-                *err = e.into_glib_ptr();
+        match imp.close(
+            Option::<Cancellable>::from_glib_borrow(cancellable)
+                .as_ref()
+                .as_ref(),
+        ) {
+            Ok(_) => glib::ffi::GTRUE,
+            Err(e) => {
+                if !err.is_null() {
+                    *err = e.into_glib_ptr();
+                }
+                glib::ffi::GFALSE
             }
-            glib::ffi::GFALSE
         }
     }
 }

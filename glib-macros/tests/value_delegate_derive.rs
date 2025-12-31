@@ -1,4 +1,4 @@
-use glib::{prelude::*, value::FromValue, Value, ValueDelegate};
+use glib::{Value, ValueDelegate, prelude::*, value::FromValue};
 
 #[test]
 fn into_value() {
@@ -115,18 +115,24 @@ fn into_value() {
         "foo"
     );
     // From Option<TestNullable> None
-    assert!(glib::Value::from(None::<TestNullable>)
-        .get::<Option<TestNullable>>()
-        .unwrap()
-        .is_none());
-    assert!(glib::Value::from(None::<String>)
-        .get::<Option<TestNullable>>()
-        .unwrap()
-        .is_none());
-    assert!(glib::Value::from(None::<TestNullable>)
-        .get::<Option<String>>()
-        .unwrap()
-        .is_none());
+    assert!(
+        glib::Value::from(None::<TestNullable>)
+            .get::<Option<TestNullable>>()
+            .unwrap()
+            .is_none()
+    );
+    assert!(
+        glib::Value::from(None::<String>)
+            .get::<Option<TestNullable>>()
+            .unwrap()
+            .is_none()
+    );
+    assert!(
+        glib::Value::from(None::<TestNullable>)
+            .get::<Option<String>>()
+            .unwrap()
+            .is_none()
+    );
 }
 
 #[allow(clippy::unnecessary_literal_unwrap)]

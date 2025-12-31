@@ -15,7 +15,7 @@ use std::ptr;
 // #[cfg(windows)]
 // #[cfg(feature = "v2_58")]
 // use std::os::windows::io::AsRawHandle;
-use crate::{ffi, translate::*, ChecksumType, GStr};
+use crate::{ChecksumType, GStr, ffi, translate::*};
 #[cfg(not(windows))]
 use crate::{Error, Pid, SpawnFlags};
 
@@ -36,10 +36,12 @@ pub fn spawn_async_with_fds<P: AsRef<std::path::Path>>(
 ) -> Result<Pid, Error> {
     let child_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(child_setup);
     unsafe extern "C" fn child_setup_func(user_data: ffi::gpointer) {
-        let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
-            Box_::from_raw(user_data as *mut _);
-        let callback = (*callback).expect("cannot get closure...");
-        callback()
+        unsafe {
+            let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback = (*callback).expect("cannot get closure...");
+            callback()
+        }
     }
     let child_setup = if child_setup_data.is_some() {
         Some(child_setup_func as _)
@@ -149,10 +151,12 @@ pub fn spawn_async_with_pipes<
 ) -> Result<(Pid, T, U, V), Error> {
     let child_setup_data: Box_<Option<Box_<dyn FnOnce() + 'static>>> = Box_::new(child_setup);
     unsafe extern "C" fn child_setup_func(user_data: ffi::gpointer) {
-        let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
-            Box_::from_raw(user_data as *mut _);
-        let callback = (*callback).expect("cannot get closure...");
-        callback()
+        unsafe {
+            let callback: Box_<Option<Box_<dyn FnOnce() + 'static>>> =
+                Box_::from_raw(user_data as *mut _);
+            let callback = (*callback).expect("cannot get closure...");
+            callback()
+        }
     }
     let child_setup = if child_setup_data.is_some() {
         Some(child_setup_func as _)

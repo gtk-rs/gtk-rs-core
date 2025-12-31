@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, Point};
+use crate::{Point, ffi};
 use glib::translate::*;
 
 glib::wrapper! {
@@ -166,11 +166,7 @@ impl Rect {
                 b.to_glib_none().0,
                 res.to_glib_none_mut().0,
             );
-            if ret {
-                Some(res)
-            } else {
-                None
-            }
+            if ret { Some(res) } else { None }
         }
     }
 

@@ -613,8 +613,8 @@ pub use self::constants::FILE_ATTRIBUTE_FILESYSTEM_READONLY;
 pub use self::constants::FILE_ATTRIBUTE_FILESYSTEM_REMOTE;
 pub use self::constants::FILE_ATTRIBUTE_FILESYSTEM_SIZE;
 pub use self::constants::FILE_ATTRIBUTE_FILESYSTEM_TYPE;
-pub use self::constants::FILE_ATTRIBUTE_FILESYSTEM_USED;
 pub use self::constants::FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW;
+pub use self::constants::FILE_ATTRIBUTE_FILESYSTEM_USED;
 pub use self::constants::FILE_ATTRIBUTE_GVFS_BACKEND;
 pub use self::constants::FILE_ATTRIBUTE_ID_FILE;
 pub use self::constants::FILE_ATTRIBUTE_ID_FILESYSTEM;
@@ -656,19 +656,6 @@ pub use self::constants::FILE_ATTRIBUTE_STANDARD_SYMBOLIC_ICON;
 pub use self::constants::FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET;
 pub use self::constants::FILE_ATTRIBUTE_STANDARD_TARGET_URI;
 pub use self::constants::FILE_ATTRIBUTE_STANDARD_TYPE;
-pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED;
-#[cfg(feature = "v2_76")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
-pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE;
-#[cfg(feature = "v2_76")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
-pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL;
-#[cfg(feature = "v2_76")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
-pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE;
-#[cfg(feature = "v2_76")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
-pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE;
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_IS_VALID;
 #[cfg(feature = "v2_76")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
@@ -695,6 +682,19 @@ pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_PATH_XLARGE;
 #[cfg(feature = "v2_76")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 pub use self::constants::FILE_ATTRIBUTE_THUMBNAIL_PATH_XXLARGE;
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED;
+#[cfg(feature = "v2_76")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE;
+#[cfg(feature = "v2_76")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL;
+#[cfg(feature = "v2_76")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE;
+#[cfg(feature = "v2_76")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
+pub use self::constants::FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE;
 pub use self::constants::FILE_ATTRIBUTE_TIME_ACCESS;
 #[cfg(feature = "v2_74")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
@@ -718,8 +718,8 @@ pub use self::constants::FILE_ATTRIBUTE_TIME_MODIFIED_USEC;
 pub use self::constants::FILE_ATTRIBUTE_TRASH_DELETION_DATE;
 pub use self::constants::FILE_ATTRIBUTE_TRASH_ITEM_COUNT;
 pub use self::constants::FILE_ATTRIBUTE_TRASH_ORIG_PATH;
-pub use self::constants::FILE_ATTRIBUTE_UNIX_BLOCKS;
 pub use self::constants::FILE_ATTRIBUTE_UNIX_BLOCK_SIZE;
+pub use self::constants::FILE_ATTRIBUTE_UNIX_BLOCKS;
 pub use self::constants::FILE_ATTRIBUTE_UNIX_DEVICE;
 pub use self::constants::FILE_ATTRIBUTE_UNIX_GID;
 pub use self::constants::FILE_ATTRIBUTE_UNIX_INODE;

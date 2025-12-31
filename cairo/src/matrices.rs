@@ -4,7 +4,7 @@ use std::fmt;
 #[cfg(feature = "use_glib")]
 use std::marker::PhantomData;
 
-use crate::{ffi, utils::status_to_result, Error};
+use crate::{Error, ffi, utils::status_to_result};
 
 #[repr(transparent)]
 #[derive(Clone, Copy, PartialEq)]
@@ -200,7 +200,7 @@ impl fmt::Debug for Matrix {
 impl Uninitialized for Matrix {
     #[inline]
     unsafe fn uninitialized() -> Self {
-        std::mem::zeroed()
+        unsafe { std::mem::zeroed() }
     }
 }
 
@@ -234,7 +234,7 @@ impl<'a> ToGlibPtrMut<'a, *mut ffi::cairo_matrix_t> for Matrix {
 impl FromGlibPtrNone<*const ffi::cairo_matrix_t> for Matrix {
     #[inline]
     unsafe fn from_glib_none(ptr: *const ffi::cairo_matrix_t) -> Self {
-        *(ptr as *const Matrix)
+        unsafe { *(ptr as *const Matrix) }
     }
 }
 
@@ -243,7 +243,7 @@ impl FromGlibPtrNone<*const ffi::cairo_matrix_t> for Matrix {
 impl FromGlibPtrBorrow<*mut ffi::cairo_matrix_t> for Matrix {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut ffi::cairo_matrix_t) -> crate::Borrowed<Self> {
-        crate::Borrowed::new(*(ptr as *mut Matrix))
+        unsafe { crate::Borrowed::new(*(ptr as *mut Matrix)) }
     }
 }
 
@@ -252,7 +252,7 @@ impl FromGlibPtrBorrow<*mut ffi::cairo_matrix_t> for Matrix {
 impl FromGlibPtrNone<*mut ffi::cairo_matrix_t> for Matrix {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::cairo_matrix_t) -> Self {
-        *(ptr as *mut Matrix)
+        unsafe { *(ptr as *mut Matrix) }
     }
 }
 

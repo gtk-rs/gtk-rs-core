@@ -2,9 +2,9 @@
 
 use std::{marker::PhantomData, mem, ptr};
 
-use glib::{translate::*, SList};
+use glib::{SList, translate::*};
 
-use crate::{ffi, AttrType, Attribute, FontDescription, Language};
+use crate::{AttrType, Attribute, FontDescription, Language, ffi};
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct AttrIterator<'list> {
@@ -167,9 +167,11 @@ where
 impl FromGlibPtrFull<*mut ffi::PangoAttrIterator> for AttrIterator<'_> {
     #[inline]
     unsafe fn from_glib_full(ptr: *mut ffi::PangoAttrIterator) -> Self {
-        Self {
-            ptr: ptr::NonNull::new_unchecked(ptr),
-            list: PhantomData,
+        unsafe {
+            Self {
+                ptr: ptr::NonNull::new_unchecked(ptr),
+                list: PhantomData,
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 
 use std::net::SocketAddr;
 
-use crate::{prelude::*, InetAddress, InetSocketAddress};
+use crate::{InetAddress, InetSocketAddress, prelude::*};
 
 impl From<SocketAddr> for InetSocketAddress {
     fn from(addr: SocketAddr) -> Self {

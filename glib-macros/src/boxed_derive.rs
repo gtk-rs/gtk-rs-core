@@ -3,7 +3,7 @@
 use proc_macro2::{Ident, TokenStream};
 use quote::quote;
 
-use crate::utils::{crate_ident_new, parse_nested_meta_items, NestedMetaItem};
+use crate::utils::{NestedMetaItem, crate_ident_new, parse_nested_meta_items};
 
 fn gen_option_to_ptr() -> TokenStream {
     quote! {

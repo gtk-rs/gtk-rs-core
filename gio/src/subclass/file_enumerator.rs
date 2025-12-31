@@ -2,7 +2,7 @@
 
 use glib::{prelude::*, subclass::prelude::*, translate::*};
 
-use crate::{ffi, prelude::*, Cancellable, FileEnumerator, FileInfo, IOErrorEnum};
+use crate::{Cancellable, FileEnumerator, FileInfo, IOErrorEnum, ffi, prelude::*};
 
 // Support custom implementation of virtual functions defined in `gio::ffi::GFileEnumeratorClass` except pairs `xxx_async/xxx_finish` for which GIO provides a default implementation (which should be ok).
 // TODO: overriding these default implementations might still be useful for subclasses (if they can do something better than blocking IO).
@@ -135,19 +135,21 @@ unsafe extern "C" fn next_file<T: FileEnumeratorImpl>(
     cancellable: *mut ffi::GCancellable,
     error: *mut *mut glib::ffi::GError,
 ) -> *mut ffi::GFileInfo {
-    let instance = &*(enumerator as *mut T::Instance);
-    let imp = instance.imp();
-    let cancellable = Option::<Cancellable>::from_glib_none(cancellable);
+    unsafe {
+        let instance = &*(enumerator as *mut T::Instance);
+        let imp = instance.imp();
+        let cancellable = Option::<Cancellable>::from_glib_none(cancellable);
 
-    let res = imp.next_file(cancellable.as_ref());
+        let res = imp.next_file(cancellable.as_ref());
 
-    match res {
-        Ok(fileinfo) => fileinfo.to_glib_full(),
-        Err(err) => {
-            if !error.is_null() {
-                *error = err.to_glib_full()
+        match res {
+            Ok(fileinfo) => fileinfo.to_glib_full(),
+            Err(err) => {
+                if !error.is_null() {
+                    *error = err.to_glib_full()
+                }
+                std::ptr::null_mut()
             }
-            std::ptr::null_mut()
         }
     }
 }
@@ -157,17 +159,19 @@ unsafe extern "C" fn close_fn<T: FileEnumeratorImpl>(
     cancellable: *mut ffi::GCancellable,
     error: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean {
-    let instance = &*(enumerator as *mut T::Instance);
-    let imp = instance.imp();
-    let cancellable = Option::<Cancellable>::from_glib_none(cancellable);
+    unsafe {
+        let instance = &*(enumerator as *mut T::Instance);
+        let imp = instance.imp();
+        let cancellable = Option::<Cancellable>::from_glib_none(cancellable);
 
-    let res = imp.close(cancellable.as_ref());
+        let res = imp.close(cancellable.as_ref());
 
-    if !error.is_null() {
-        *error = res.1.to_glib_full()
+        if !error.is_null() {
+            *error = res.1.to_glib_full()
+        }
+
+        res.0.into_glib()
     }
-
-    res.0.into_glib()
 }
 
 #[cfg(test)]

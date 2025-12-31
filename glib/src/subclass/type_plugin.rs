@@ -2,8 +2,8 @@
 
 use crate::enums::{EnumValues, FlagsValues};
 use crate::{
-    ffi, gobject_ffi, prelude::*, subclass::prelude::*, translate::*, Interface, InterfaceInfo,
-    Object, Type, TypeFlags, TypeInfo, TypePlugin, TypeValueTable,
+    Interface, InterfaceInfo, Object, Type, TypeFlags, TypeInfo, TypePlugin, TypeValueTable, ffi,
+    gobject_ffi, prelude::*, subclass::prelude::*, translate::*,
 };
 
 pub trait TypePluginImpl: ObjectImpl + ObjectSubclass<Type: IsA<Object> + IsA<TypePlugin>> {
@@ -125,17 +125,21 @@ unsafe impl<T: TypePluginImpl> IsImplementable<T> for TypePlugin {
 }
 
 unsafe extern "C" fn use_plugin<T: TypePluginImpl>(type_plugin: *mut gobject_ffi::GTypePlugin) {
-    let instance = &*(type_plugin as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(type_plugin as *mut T::Instance);
+        let imp = instance.imp();
 
-    imp.use_plugin();
+        imp.use_plugin();
+    }
 }
 
 unsafe extern "C" fn unuse_plugin<T: TypePluginImpl>(type_plugin: *mut gobject_ffi::GTypePlugin) {
-    let instance = &*(type_plugin as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(type_plugin as *mut T::Instance);
+        let imp = instance.imp();
 
-    imp.unuse_plugin();
+        imp.unuse_plugin();
+    }
 }
 
 unsafe extern "C" fn complete_type_info<T: TypePluginImpl>(
@@ -144,18 +148,20 @@ unsafe extern "C" fn complete_type_info<T: TypePluginImpl>(
     info_ptr: *mut gobject_ffi::GTypeInfo,
     value_table_ptr: *mut gobject_ffi::GTypeValueTable,
 ) {
-    assert!(!info_ptr.is_null());
-    assert!(!value_table_ptr.is_null());
-    let instance = &*(type_plugin as *mut T::Instance);
-    let imp = instance.imp();
-    let type_ = Type::from_glib(gtype);
-    let info = TypeInfo::from_glib_ptr_borrow_mut(info_ptr);
-    let value_table = TypeValueTable::from_glib_ptr_borrow_mut(value_table_ptr);
+    unsafe {
+        assert!(!info_ptr.is_null());
+        assert!(!value_table_ptr.is_null());
+        let instance = &*(type_plugin as *mut T::Instance);
+        let imp = instance.imp();
+        let type_ = Type::from_glib(gtype);
+        let info = TypeInfo::from_glib_ptr_borrow_mut(info_ptr);
+        let value_table = TypeValueTable::from_glib_ptr_borrow_mut(value_table_ptr);
 
-    let (info_, value_table_) = imp.complete_type_info(type_);
+        let (info_, value_table_) = imp.complete_type_info(type_);
 
-    *info = info_;
-    *value_table = value_table_;
+        *info = info_;
+        *value_table = value_table_;
+    }
 }
 
 unsafe extern "C" fn complete_interface_info<T: TypePluginImpl>(
@@ -164,15 +170,17 @@ unsafe extern "C" fn complete_interface_info<T: TypePluginImpl>(
     interface_gtype: ffi::GType,
     info_ptr: *mut gobject_ffi::GInterfaceInfo,
 ) {
-    assert!(!info_ptr.is_null());
-    let instance = &*(type_plugin as *mut T::Instance);
-    let imp = instance.imp();
-    let instance_type = Type::from_glib(instance_gtype);
-    let interface_type = Type::from_glib(interface_gtype);
-    let info = InterfaceInfo::from_glib_ptr_borrow_mut(info_ptr);
+    unsafe {
+        assert!(!info_ptr.is_null());
+        let instance = &*(type_plugin as *mut T::Instance);
+        let imp = instance.imp();
+        let instance_type = Type::from_glib(instance_gtype);
+        let interface_type = Type::from_glib(interface_gtype);
+        let info = InterfaceInfo::from_glib_ptr_borrow_mut(info_ptr);
 
-    let info_ = imp.complete_interface_info(instance_type, interface_type);
-    *info = info_;
+        let info_ = imp.complete_interface_info(instance_type, interface_type);
+        *info = info_;
+    }
 }
 
 pub trait TypePluginRegisterImpl:

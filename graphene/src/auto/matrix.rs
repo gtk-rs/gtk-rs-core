@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, Box, Euler, Point, Point3D, Quad, Quaternion, Ray, Rect, Sphere, Vec3, Vec4};
+use crate::{Box, Euler, Point, Point3D, Quad, Quaternion, Ray, Rect, Sphere, Vec3, Vec4, ffi};
 use glib::translate::*;
 
 glib::wrapper! {
@@ -127,11 +127,7 @@ impl Matrix {
         unsafe {
             let mut res = Matrix::uninitialized();
             let ret = ffi::graphene_matrix_inverse(self.to_glib_none().0, res.to_glib_none_mut().0);
-            if ret {
-                Some(res)
-            } else {
-                None
-            }
+            if ret { Some(res) } else { None }
         }
     }
 
@@ -519,11 +515,7 @@ impl Matrix {
                 bounds.to_glib_none().0,
                 res.to_glib_none_mut().0,
             );
-            if ret {
-                Some(res)
-            } else {
-                None
-            }
+            if ret { Some(res) } else { None }
         }
     }
 }

@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{prelude::*, Binding, Object};
+use crate::{Binding, Object, prelude::*};
 
 impl Binding {
     #[doc(alias = "get_source")]

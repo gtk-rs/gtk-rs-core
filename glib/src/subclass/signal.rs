@@ -3,8 +3,8 @@
 use std::{fmt, num::NonZeroU32, ops::ControlFlow, ptr, sync::Mutex};
 
 use crate::{
-    ffi, gobject_ffi, prelude::*, translate::*, utils::is_canonical_pspec_name, Closure,
-    SignalFlags, Type, Value,
+    Closure, SignalFlags, Type, Value, ffi, gobject_ffi, prelude::*, translate::*,
+    utils::is_canonical_pspec_name,
 };
 
 // rustdoc-stripper-ignore-next
@@ -264,8 +264,10 @@ impl SignalId {
 impl FromGlib<u32> for SignalId {
     #[inline]
     unsafe fn from_glib(signal_id: u32) -> Self {
-        debug_assert_ne!(signal_id, 0);
-        Self::new(NonZeroU32::new_unchecked(signal_id))
+        unsafe {
+            debug_assert_ne!(signal_id, 0);
+            Self::new(NonZeroU32::new_unchecked(signal_id))
+        }
     }
 }
 
@@ -643,64 +645,64 @@ impl Signal {
             handler_return: *const gobject_ffi::GValue,
             data: ffi::gpointer,
         ) -> ffi::gboolean {
-            let accumulator = &*(data as *const (
-                SignalType,
-                Box<
-                    dyn Fn(&SignalInvocationHint, Value, &Value) -> ControlFlow<Value, Value>
-                        + Send
-                        + Sync
-                        + 'static,
-                >,
-            ));
+            unsafe {
+                let accumulator = &*(data as *const (
+                    SignalType,
+                    Box<
+                        dyn Fn(&SignalInvocationHint, Value, &Value) -> ControlFlow<Value, Value>
+                            + Send
+                            + Sync
+                            + 'static,
+                    >,
+                ));
 
-            let return_accu = &mut *(return_accu as *mut Value);
-            let handler_return = &*(handler_return as *const Value);
-            let return_type = accumulator.0;
+                let return_accu = &mut *(return_accu as *mut Value);
+                let handler_return = &*(handler_return as *const Value);
+                let return_type = accumulator.0;
 
-            assert!(
-                handler_return.type_().is_a(return_type.into()),
-                "Signal has a return type of {} but handler returned {}",
-                Type::from(return_type),
-                handler_return.type_()
-            );
+                assert!(
+                    handler_return.type_().is_a(return_type.into()),
+                    "Signal has a return type of {} but handler returned {}",
+                    Type::from(return_type),
+                    handler_return.type_()
+                );
 
-            let control_flow = (accumulator.1)(
-                &SignalInvocationHint(*ihint),
-                std::mem::replace(return_accu, Value::uninitialized()),
-                handler_return,
-            );
+                let control_flow = (accumulator.1)(
+                    &SignalInvocationHint(*ihint),
+                    std::mem::replace(return_accu, Value::uninitialized()),
+                    handler_return,
+                );
 
-            let res = match control_flow {
-                ControlFlow::Continue(val) => {
-                    *return_accu = val;
-                    true.into_glib()
-                }
+                let res = match control_flow {
+                    ControlFlow::Continue(val) => {
+                        *return_accu = val;
+                        true.into_glib()
+                    }
 
-                ControlFlow::Break(val) => {
-                    *return_accu = val;
-                    false.into_glib()
-                }
-            };
+                    ControlFlow::Break(val) => {
+                        *return_accu = val;
+                        false.into_glib()
+                    }
+                };
 
-            assert!(
-                return_accu.type_().is_a(return_type.into()),
-                "Signal has a return type of {} but accumulator returned {}",
-                Type::from(return_type),
-                return_accu.type_()
-            );
+                assert!(
+                    return_accu.type_().is_a(return_type.into()),
+                    "Signal has a return type of {} but accumulator returned {}",
+                    Type::from(return_type),
+                    return_accu.type_()
+                );
 
-            res
+                res
+            }
         }
 
-        let (accumulator, accumulator_trampoline) =
-            if let (Some(accumulator), true) = (accumulator, return_type != Type::UNIT) {
-                (
-                    Box::into_raw(Box::new((return_type, accumulator))),
-                    Some::<unsafe extern "C" fn(_, _, _, _) -> _>(accumulator_trampoline),
-                )
-            } else {
-                (ptr::null_mut(), None)
-            };
+        let (accumulator, accumulator_trampoline) = match (accumulator, return_type != Type::UNIT) {
+            (Some(accumulator), true) => (
+                Box::into_raw(Box::new((return_type, accumulator))),
+                Some::<unsafe extern "C" fn(_, _, _, _) -> _>(accumulator_trampoline),
+            ),
+            _ => (ptr::null_mut(), None),
+        };
 
         unsafe {
             let signal_id = gobject_ffi::g_signal_newv(

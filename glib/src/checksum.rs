@@ -2,7 +2,7 @@
 
 use libc::size_t;
 
-use crate::{ffi, translate::*, Checksum};
+use crate::{Checksum, ffi, translate::*};
 
 impl Checksum {
     #[doc(alias = "g_checksum_get_digest")]
