@@ -81,17 +81,19 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = std::ptr::null_mut();
-            ffi::g_network_monitor_can_reach_finish(_source_object as *mut _, res, &mut error);
-            let result = if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
-                Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = std::ptr::null_mut();
+                ffi::g_network_monitor_can_reach_finish(_source_object as *mut _, res, &mut error);
+                let result = if error.is_null() {
+                    Ok(())
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                    Box_::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = can_reach_async_trampoline::<P>;
         unsafe {
@@ -162,11 +164,13 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
             network_available: glib::ffi::gboolean,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                from_glib(network_available),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    from_glib(network_available),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -191,8 +195,10 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -217,8 +223,10 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -243,8 +251,10 @@ pub trait NetworkMonitorExt: IsA<NetworkMonitor> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

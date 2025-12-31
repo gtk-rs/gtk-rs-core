@@ -9,8 +9,8 @@ crate::wrapper! {
     pub struct DateTime(Shared<ffi::GDateTime>);
 
     match fn {
-        ref => |ptr| ffi::g_date_time_ref(ptr),
-        unref => |ptr| ffi::g_date_time_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_date_time_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_date_time_unref(ptr) },
         type_ => || ffi::g_date_time_get_type(),
     }
 }

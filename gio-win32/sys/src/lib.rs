@@ -169,7 +169,7 @@ impl ::std::fmt::Debug for GWin32OutputStream {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
 
     //=========================================================================
     // GWin32InputStream

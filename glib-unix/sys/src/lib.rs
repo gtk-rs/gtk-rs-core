@@ -54,7 +54,7 @@ impl ::std::fmt::Debug for GUnixPipe {
     }
 }
 
-extern "C" {
+unsafe extern "C" {
 
     //=========================================================================
     // GUnixPipe

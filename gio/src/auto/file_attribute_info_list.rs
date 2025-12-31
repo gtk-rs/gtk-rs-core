@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct FileAttributeInfoList(Shared<ffi::GFileAttributeInfoList>);
 
     match fn {
-        ref => |ptr| ffi::g_file_attribute_info_list_ref(ptr),
-        unref => |ptr| ffi::g_file_attribute_info_list_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_file_attribute_info_list_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_file_attribute_info_list_unref(ptr) },
         type_ => || ffi::g_file_attribute_info_list_get_type(),
     }
 }

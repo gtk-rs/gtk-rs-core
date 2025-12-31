@@ -38,10 +38,12 @@ pub trait Win32OutputStreamExt: IsA<OutputStream> + 'static {
     #[doc(alias = "g_win32_output_stream_set_close_handle")]
     #[doc(alias = "close-handle")]
     unsafe fn set_close_handle(&self, close_handle: bool) {
-        ffi::g_win32_output_stream_set_close_handle(
-            self.as_ref().to_glib_none().0,
-            close_handle.into_glib(),
-        );
+        unsafe {
+            ffi::g_win32_output_stream_set_close_handle(
+                self.as_ref().to_glib_none().0,
+                close_handle.into_glib(),
+            );
+        }
     }
 
     #[doc(alias = "close-handle")]
@@ -54,8 +56,10 @@ pub trait Win32OutputStreamExt: IsA<OutputStream> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(OutputStream::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(OutputStream::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
