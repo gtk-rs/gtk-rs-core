@@ -55,25 +55,28 @@ impl DBusObjectManagerClient {
             interface_name: *const std::ffi::c_char,
             data: glib::ffi::gpointer,
         ) -> glib::ffi::GType {
-            let manager = from_glib_borrow(manager);
-            let object_path: Borrowed<glib::GString> = from_glib_borrow(object_path);
-            let interface_name: Borrowed<Option<glib::GString>> = from_glib_borrow(interface_name);
-            let callback = &*(data as *mut Option<
-                Box_<
-                    dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
-                        + 'static,
-                >,
-            >);
-            if let Some(ref callback) = *callback {
-                callback(
-                    &manager,
-                    object_path.as_str(),
-                    (*interface_name).as_ref().map(|s| s.as_str()),
-                )
-            } else {
-                panic!("cannot get closure...")
+            unsafe {
+                let manager = from_glib_borrow(manager);
+                let object_path: Borrowed<glib::GString> = from_glib_borrow(object_path);
+                let interface_name: Borrowed<Option<glib::GString>> =
+                    from_glib_borrow(interface_name);
+                let callback = &*(data as *mut Option<
+                    Box_<
+                        dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+                            + 'static,
+                    >,
+                >);
+                if let Some(ref callback) = *callback {
+                    callback(
+                        &manager,
+                        object_path.as_str(),
+                        (*interface_name).as_ref().map(|s| s.as_str()),
+                    )
+                } else {
+                    panic!("cannot get closure...")
+                }
+                .into_glib()
             }
-            .into_glib()
         }
         let get_proxy_type_func = if get_proxy_type_func_data.is_some() {
             Some(get_proxy_type_func_func as _)
@@ -81,14 +84,20 @@ impl DBusObjectManagerClient {
             None
         };
         unsafe extern "C" fn get_proxy_type_destroy_notify_func(data: glib::ffi::gpointer) {
-            let _callback = Box_::from_raw(
-                data as *mut Option<
-                    Box_<
-                        dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
-                            + 'static,
+            unsafe {
+                let _callback = Box_::from_raw(
+                    data as *mut Option<
+                        Box_<
+                            dyn Fn(
+                                    &DBusObjectManagerClient,
+                                    &str,
+                                    Option<&str>,
+                                ) -> glib::types::Type
+                                + 'static,
+                        >,
                     >,
-                >,
-            );
+                );
+            }
         }
         let destroy_call6 = Some(get_proxy_type_destroy_notify_func as _);
         let super_callback0: Box_<
@@ -149,25 +158,28 @@ impl DBusObjectManagerClient {
             interface_name: *const std::ffi::c_char,
             data: glib::ffi::gpointer,
         ) -> glib::ffi::GType {
-            let manager = from_glib_borrow(manager);
-            let object_path: Borrowed<glib::GString> = from_glib_borrow(object_path);
-            let interface_name: Borrowed<Option<glib::GString>> = from_glib_borrow(interface_name);
-            let callback = &*(data as *mut Option<
-                Box_<
-                    dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
-                        + 'static,
-                >,
-            >);
-            if let Some(ref callback) = *callback {
-                callback(
-                    &manager,
-                    object_path.as_str(),
-                    (*interface_name).as_ref().map(|s| s.as_str()),
-                )
-            } else {
-                panic!("cannot get closure...")
+            unsafe {
+                let manager = from_glib_borrow(manager);
+                let object_path: Borrowed<glib::GString> = from_glib_borrow(object_path);
+                let interface_name: Borrowed<Option<glib::GString>> =
+                    from_glib_borrow(interface_name);
+                let callback = &*(data as *mut Option<
+                    Box_<
+                        dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
+                            + 'static,
+                    >,
+                >);
+                if let Some(ref callback) = *callback {
+                    callback(
+                        &manager,
+                        object_path.as_str(),
+                        (*interface_name).as_ref().map(|s| s.as_str()),
+                    )
+                } else {
+                    panic!("cannot get closure...")
+                }
+                .into_glib()
             }
-            .into_glib()
         }
         let get_proxy_type_func = if get_proxy_type_func_data.is_some() {
             Some(get_proxy_type_func_func as _)
@@ -175,14 +187,20 @@ impl DBusObjectManagerClient {
             None
         };
         unsafe extern "C" fn get_proxy_type_destroy_notify_func(data: glib::ffi::gpointer) {
-            let _callback = Box_::from_raw(
-                data as *mut Option<
-                    Box_<
-                        dyn Fn(&DBusObjectManagerClient, &str, Option<&str>) -> glib::types::Type
-                            + 'static,
+            unsafe {
+                let _callback = Box_::from_raw(
+                    data as *mut Option<
+                        Box_<
+                            dyn Fn(
+                                    &DBusObjectManagerClient,
+                                    &str,
+                                    Option<&str>,
+                                ) -> glib::types::Type
+                                + 'static,
+                        >,
                     >,
-                >,
-            );
+                );
+            }
         }
         let destroy_call6 = Some(get_proxy_type_destroy_notify_func as _);
         let super_callback0: Box_<
@@ -289,15 +307,17 @@ pub trait DBusObjectManagerClientExt: IsA<DBusObjectManagerClient> + 'static {
             parameters: *mut glib::ffi::GVariant,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                DBusObjectManagerClient::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(object_proxy),
-                &from_glib_borrow(interface_proxy),
-                &glib::GString::from_glib_borrow(sender_name),
-                &glib::GString::from_glib_borrow(signal_name),
-                &from_glib_borrow(parameters),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    DBusObjectManagerClient::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(object_proxy),
+                    &from_glib_borrow(interface_proxy),
+                    &glib::GString::from_glib_borrow(sender_name),
+                    &glib::GString::from_glib_borrow(signal_name),
+                    &from_glib_borrow(parameters),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -325,8 +345,10 @@ pub trait DBusObjectManagerClientExt: IsA<DBusObjectManagerClient> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(DBusObjectManagerClient::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(DBusObjectManagerClient::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

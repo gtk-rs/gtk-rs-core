@@ -83,7 +83,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for FontMask {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -180,7 +180,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for LayoutDeserializeFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -283,7 +283,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for LayoutSerializeFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -384,7 +384,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for ShapeFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -489,7 +489,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for ShowFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 

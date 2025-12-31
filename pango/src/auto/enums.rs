@@ -74,7 +74,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for Alignment {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -344,7 +344,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for AttrType {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -454,7 +454,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for BaselineShift {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -647,7 +647,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for BidiType {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -749,7 +749,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for CoverageLevel {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -861,7 +861,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for Direction {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -961,7 +961,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for EllipsizeMode {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -1071,7 +1071,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for FontColor {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -1189,7 +1189,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for FontScale {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -1340,7 +1340,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for Gravity {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -1436,7 +1436,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for GravityHint {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -1542,7 +1542,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for Overline {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -1650,7 +1650,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for RenderPart {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -2219,7 +2219,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for Script {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -2339,7 +2339,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for Stretch {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -2435,7 +2435,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for Style {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -2547,7 +2547,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for TabAlign {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -2661,7 +2661,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for TextTransform {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -2781,7 +2781,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for Underline {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -2913,7 +2913,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for Variant {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -3045,7 +3045,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for Weight {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -3149,7 +3149,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for WrapMode {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 

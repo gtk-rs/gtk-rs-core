@@ -45,11 +45,13 @@ pub trait MemoryMonitorExt: IsA<MemoryMonitor> + 'static {
             level: ffi::GMemoryMonitorWarningLevel,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                MemoryMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                from_glib(level),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    MemoryMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    from_glib(level),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

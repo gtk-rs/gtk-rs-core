@@ -177,11 +177,13 @@ pub trait ActionGroupExt: IsA<ActionGroup> + 'static {
             action_name: *mut std::ffi::c_char,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                ActionGroup::from_glib_borrow(this).unsafe_cast_ref(),
-                &glib::GString::from_glib_borrow(action_name),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    ActionGroup::from_glib_borrow(this).unsafe_cast_ref(),
+                    &glib::GString::from_glib_borrow(action_name),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -215,12 +217,14 @@ pub trait ActionGroupExt: IsA<ActionGroup> + 'static {
             enabled: glib::ffi::gboolean,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                ActionGroup::from_glib_borrow(this).unsafe_cast_ref(),
-                &glib::GString::from_glib_borrow(action_name),
-                from_glib(enabled),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    ActionGroup::from_glib_borrow(this).unsafe_cast_ref(),
+                    &glib::GString::from_glib_borrow(action_name),
+                    from_glib(enabled),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -254,11 +258,13 @@ pub trait ActionGroupExt: IsA<ActionGroup> + 'static {
             action_name: *mut std::ffi::c_char,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                ActionGroup::from_glib_borrow(this).unsafe_cast_ref(),
-                &glib::GString::from_glib_borrow(action_name),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    ActionGroup::from_glib_borrow(this).unsafe_cast_ref(),
+                    &glib::GString::from_glib_borrow(action_name),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -292,12 +298,14 @@ pub trait ActionGroupExt: IsA<ActionGroup> + 'static {
             value: *mut glib::ffi::GVariant,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                ActionGroup::from_glib_borrow(this).unsafe_cast_ref(),
-                &glib::GString::from_glib_borrow(action_name),
-                &from_glib_borrow(value),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    ActionGroup::from_glib_borrow(this).unsafe_cast_ref(),
+                    &glib::GString::from_glib_borrow(action_name),
+                    &from_glib_borrow(value),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

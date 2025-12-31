@@ -206,17 +206,19 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = std::ptr::null_mut();
-            ffi::g_tls_connection_handshake_finish(_source_object as *mut _, res, &mut error);
-            let result = if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
-                Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = std::ptr::null_mut();
+                ffi::g_tls_connection_handshake_finish(_source_object as *mut _, res, &mut error);
+                let result = if error.is_null() {
+                    Ok(())
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                    Box_::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = handshake_async_trampoline::<P>;
         unsafe {
@@ -329,13 +331,15 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             errors: ffi::GTlsCertificateFlags,
             f: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
-            let f: &F = &*(f as *const F);
-            f(
-                TlsConnection::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(peer_cert),
-                from_glib(errors),
-            )
-            .into_glib()
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    TlsConnection::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(peer_cert),
+                    from_glib(errors),
+                )
+                .into_glib()
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -362,8 +366,10 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -388,8 +394,10 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -416,8 +424,10 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -442,8 +452,10 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -468,8 +480,10 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -496,8 +510,10 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -522,8 +538,10 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -551,8 +569,10 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -579,8 +599,10 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -606,8 +628,10 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -632,8 +656,10 @@ pub trait TlsConnectionExt: IsA<TlsConnection> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

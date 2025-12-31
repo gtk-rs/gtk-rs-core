@@ -120,13 +120,15 @@ pub trait MenuModelExt: IsA<MenuModel> + 'static {
             added: std::ffi::c_int,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                MenuModel::from_glib_borrow(this).unsafe_cast_ref(),
-                position,
-                removed,
-                added,
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    MenuModel::from_glib_borrow(this).unsafe_cast_ref(),
+                    position,
+                    removed,
+                    added,
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

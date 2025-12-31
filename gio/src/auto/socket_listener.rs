@@ -88,23 +88,25 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = std::ptr::null_mut();
-            let mut source_object = std::ptr::null_mut();
-            let ret = ffi::g_socket_listener_accept_finish(
-                _source_object as *mut _,
-                res,
-                &mut source_object,
-                &mut error,
-            );
-            let result = if error.is_null() {
-                Ok((from_glib_full(ret), from_glib_none(source_object)))
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
-                Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = std::ptr::null_mut();
+                let mut source_object = std::ptr::null_mut();
+                let ret = ffi::g_socket_listener_accept_finish(
+                    _source_object as *mut _,
+                    res,
+                    &mut source_object,
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    Ok((from_glib_full(ret), from_glib_none(source_object)))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                    Box_::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = accept_async_trampoline::<P>;
         unsafe {
@@ -185,23 +187,25 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = std::ptr::null_mut();
-            let mut source_object = std::ptr::null_mut();
-            let ret = ffi::g_socket_listener_accept_socket_finish(
-                _source_object as *mut _,
-                res,
-                &mut source_object,
-                &mut error,
-            );
-            let result = if error.is_null() {
-                Ok((from_glib_full(ret), from_glib_none(source_object)))
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
-                Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = std::ptr::null_mut();
+                let mut source_object = std::ptr::null_mut();
+                let ret = ffi::g_socket_listener_accept_socket_finish(
+                    _source_object as *mut _,
+                    res,
+                    &mut source_object,
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    Ok((from_glib_full(ret), from_glib_none(source_object)))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                    Box_::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = accept_socket_async_trampoline::<P>;
         unsafe {
@@ -365,12 +369,14 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
             socket: *mut ffi::GSocket,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                SocketListener::from_glib_borrow(this).unsafe_cast_ref(),
-                from_glib(event),
-                &from_glib_borrow(socket),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    SocketListener::from_glib_borrow(this).unsafe_cast_ref(),
+                    from_glib(event),
+                    &from_glib_borrow(socket),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -395,8 +401,10 @@ pub trait SocketListenerExt: IsA<SocketListener> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(SocketListener::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(SocketListener::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

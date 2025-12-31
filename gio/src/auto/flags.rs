@@ -65,7 +65,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for AppInfoCreateFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -165,7 +165,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for ApplicationFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -256,7 +256,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for AskPasswordFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -343,7 +343,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for BusNameOwnerFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -426,7 +426,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for BusNameWatcherFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -511,7 +511,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for ConverterFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -596,7 +596,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for DBusCallFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -679,7 +679,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for DBusCapabilityFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -776,7 +776,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for DBusConnectionFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -859,7 +859,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for DBusInterfaceSkeletonFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -946,7 +946,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for DBusMessageFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -1029,7 +1029,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for DBusObjectManagerClientFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -1114,7 +1114,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for DBusPropertyInfoFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -1209,7 +1209,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for DBusProxyFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -1292,7 +1292,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for DBusSendMessageFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -1379,7 +1379,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for DBusServerFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -1466,7 +1466,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for DBusSignalFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -1549,7 +1549,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for DBusSubtreeFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -1630,7 +1630,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for DriveStartFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -1715,7 +1715,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for FileAttributeInfoFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -1812,7 +1812,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for FileCopyFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -1897,7 +1897,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for FileCreateFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -1984,7 +1984,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for FileMeasureFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -2073,7 +2073,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for FileMonitorFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -2156,7 +2156,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for FileQueryInfoFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -2239,7 +2239,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for IOModuleScopeFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -2326,7 +2326,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for IOStreamSpliceFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -2407,7 +2407,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for MountMountFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -2490,7 +2490,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for MountUnmountFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -2575,7 +2575,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for OutputStreamSpliceFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -2674,7 +2674,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for ResolverNameLookupFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -2761,7 +2761,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for ResourceFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -2842,7 +2842,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for ResourceLookupFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -2933,7 +2933,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for SettingsBindFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -3034,7 +3034,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for SubprocessFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -3115,7 +3115,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for TestDBusFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -3210,7 +3210,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for TlsCertificateFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -3291,7 +3291,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for TlsCertificateRequestFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -3374,7 +3374,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for TlsDatabaseLookupFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -3455,7 +3455,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for TlsDatabaseVerifyFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 
@@ -3548,7 +3548,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for TlsPasswordFlags {
 
     #[inline]
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0)) }
     }
 }
 

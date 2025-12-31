@@ -92,25 +92,27 @@ impl Subprocess {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = std::ptr::null_mut();
-            let mut stdout_buf = std::ptr::null_mut();
-            let mut stderr_buf = std::ptr::null_mut();
-            ffi::g_subprocess_communicate_finish(
-                _source_object as *mut _,
-                res,
-                &mut stdout_buf,
-                &mut stderr_buf,
-                &mut error,
-            );
-            let result = if error.is_null() {
-                Ok((from_glib_full(stdout_buf), from_glib_full(stderr_buf)))
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
-                Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = std::ptr::null_mut();
+                let mut stdout_buf = std::ptr::null_mut();
+                let mut stderr_buf = std::ptr::null_mut();
+                ffi::g_subprocess_communicate_finish(
+                    _source_object as *mut _,
+                    res,
+                    &mut stdout_buf,
+                    &mut stderr_buf,
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    Ok((from_glib_full(stdout_buf), from_glib_full(stderr_buf)))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                    Box_::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = communicate_async_trampoline::<P>;
         unsafe {
@@ -293,17 +295,19 @@ impl Subprocess {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = std::ptr::null_mut();
-            ffi::g_subprocess_wait_finish(_source_object as *mut _, res, &mut error);
-            let result = if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
-                Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = std::ptr::null_mut();
+                ffi::g_subprocess_wait_finish(_source_object as *mut _, res, &mut error);
+                let result = if error.is_null() {
+                    Ok(())
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                    Box_::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = wait_async_trampoline::<P>;
         unsafe {
@@ -375,17 +379,19 @@ impl Subprocess {
             res: *mut crate::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = std::ptr::null_mut();
-            ffi::g_subprocess_wait_check_finish(_source_object as *mut _, res, &mut error);
-            let result = if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
-                Box_::from_raw(user_data as *mut _);
-            let callback: P = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = std::ptr::null_mut();
+                ffi::g_subprocess_wait_check_finish(_source_object as *mut _, res, &mut error);
+                let result = if error.is_null() {
+                    Ok(())
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                    Box_::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = wait_check_async_trampoline::<P>;
         unsafe {
