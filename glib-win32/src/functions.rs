@@ -4,6 +4,9 @@ use glib::translate::*;
 #[cfg(windows)]
 use std::path::PathBuf;
 
+#[cfg(windows)]
+use crate::ffi;
+
 #[doc(alias = "g_win32_get_package_installation_directory_of_module")]
 #[doc(alias = "get_package_installation_directory_of_module")]
 #[cfg(all(docsrs, windows))]

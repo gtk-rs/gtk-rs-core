@@ -2,7 +2,7 @@
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![doc = include_str!("../README.md")]
-pub use ffi;
+pub use glib_unix_sys as ffi;
 
 mod auto;
 mod functions;

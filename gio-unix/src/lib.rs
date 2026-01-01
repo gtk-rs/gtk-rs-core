@@ -2,8 +2,7 @@
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![doc = include_str!("../README.md")]
-
-pub use ffi;
+pub use gio_unix_sys as ffi;
 
 #[allow(unused_imports)]
 #[allow(clippy::derived_hash_with_manual_eq)]

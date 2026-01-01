@@ -11,6 +11,8 @@ use glib::thread_guard::ThreadGuard;
 use glib::translate::*;
 use glib::{ControlFlow, IOCondition, Priority, Source, SourceId};
 
+use crate::ffi;
+
 #[cfg(feature = "futures")]
 use glib::{SourceFuture, SourceStream};
 
