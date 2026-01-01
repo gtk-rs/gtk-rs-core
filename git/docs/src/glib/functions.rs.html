@@ -342,84 +342,53 @@
 <a href=#269 id=269 data-nosnippet>269</a>/// ## `name_used`
 <a href=#270 id=270 data-nosnippet>270</a>/// location to store actual name used,
 <a href=#271 id=271 data-nosnippet>271</a>///   or [`None`]
-<a href=#272 id=272 data-nosnippet>272</a></span><span class="comment">// rustdoc-stripper-ignore-next-stop
-<a href=#273 id=273 data-nosnippet>273</a></span><span class="doccomment">/// Opens a file for writing in the preferred directory for temporary
-<a href=#274 id=274 data-nosnippet>274</a>/// files (as returned by g_get_tmp_dir()).
-<a href=#275 id=275 data-nosnippet>275</a>///
-<a href=#276 id=276 data-nosnippet>276</a>/// @tmpl should be a string in the GLib file name encoding containing
-<a href=#277 id=277 data-nosnippet>277</a>/// a sequence of six 'X' characters, as the parameter to g_mkstemp().
-<a href=#278 id=278 data-nosnippet>278</a>/// However, unlike these functions, the template should only be a
-<a href=#279 id=279 data-nosnippet>279</a>/// basename, no directory components are allowed. If template is
-<a href=#280 id=280 data-nosnippet>280</a>/// [`None`], a default template is used.
-<a href=#281 id=281 data-nosnippet>281</a>///
-<a href=#282 id=282 data-nosnippet>282</a>/// Note that in contrast to g_mkstemp() (and mkstemp()) @tmpl is not
-<a href=#283 id=283 data-nosnippet>283</a>/// modified, and might thus be a read-only literal string.
-<a href=#284 id=284 data-nosnippet>284</a>///
-<a href=#285 id=285 data-nosnippet>285</a>/// Upon success, and if @name_used is non-[`None`], the actual name used
-<a href=#286 id=286 data-nosnippet>286</a>/// is returned in @name_used. This string should be freed with g_free()
-<a href=#287 id=287 data-nosnippet>287</a>/// when not needed any longer. The returned name is in the GLib file
-<a href=#288 id=288 data-nosnippet>288</a>/// name encoding.
-<a href=#289 id=289 data-nosnippet>289</a>/// ## `tmpl`
-<a href=#290 id=290 data-nosnippet>290</a>/// Template for file name, as in
-<a href=#291 id=291 data-nosnippet>291</a>///   g_mkstemp(), basename only, or [`None`] for a default template
-<a href=#292 id=292 data-nosnippet>292</a>///
-<a href=#293 id=293 data-nosnippet>293</a>/// # Returns
-<a href=#294 id=294 data-nosnippet>294</a>///
-<a href=#295 id=295 data-nosnippet>295</a>/// A file handle (as from open()) to the file opened for
-<a href=#296 id=296 data-nosnippet>296</a>///   reading and writing. The file is opened in binary mode on platforms
-<a href=#297 id=297 data-nosnippet>297</a>///   where there is a difference. The file handle should be closed with
-<a href=#298 id=298 data-nosnippet>298</a>///   close(). In case of errors, -1 is returned and @error will be set.
-<a href=#299 id=299 data-nosnippet>299</a>///
-<a href=#300 id=300 data-nosnippet>300</a>/// ## `name_used`
-<a href=#301 id=301 data-nosnippet>301</a>/// location to store actual name used,
-<a href=#302 id=302 data-nosnippet>302</a>///   or [`None`]
-<a href=#303 id=303 data-nosnippet>303</a></span><span class="attr">#[cfg(unix)]
-<a href=#304 id=304 data-nosnippet>304</a>#[doc(alias = <span class="string">"g_file_open_tmp"</span>)]
-<a href=#305 id=305 data-nosnippet>305</a></span><span class="kw">pub fn </span><a href="../../glib/fn.file_open_tmp.html">file_open_tmp</a>(
-<a href=#306 id=306 data-nosnippet>306</a>    tmpl: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;std::path::<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;&gt;,
-<a href=#307 id=307 data-nosnippet>307</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>, std::path::<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">PathBuf</a>), <span class="kw">crate</span>::<a href="error.rs.html#10-25">Error</a>&gt; {
-<a href=#308 id=308 data-nosnippet>308</a>    <span class="kw">unsafe </span>{
-<a href=#309 id=309 data-nosnippet>309</a>        <span class="kw">let </span><span class="kw-2">mut </span>name_used = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
-<a href=#310 id=310 data-nosnippet>310</a>        <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
-<a href=#311 id=311 data-nosnippet>311</a>        <span class="kw">let </span>ret = ffi::g_file_open_tmp(
-<a href=#312 id=312 data-nosnippet>312</a>            <a href="#306">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#312">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#313 id=313 data-nosnippet>313</a>            <span class="kw-2">&amp;mut </span><a href="#309">name_used</a>,
-<a href=#314 id=314 data-nosnippet>314</a>            <span class="kw-2">&amp;mut </span><a href="#310">error</a>,
-<a href=#315 id=315 data-nosnippet>315</a>        );
-<a href=#316 id=316 data-nosnippet>316</a>        <span class="kw">if </span><a href="#310">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
-<a href=#317 id=317 data-nosnippet>317</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>::<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">from_raw_fd</a>(<a href="#311">ret</a>), <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#309">name_used</a>)))
-<a href=#318 id=318 data-nosnippet>318</a>        } <span class="kw">else </span>{
-<a href=#319 id=319 data-nosnippet>319</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#310">error</a>))
-<a href=#320 id=320 data-nosnippet>320</a>        }
-<a href=#321 id=321 data-nosnippet>321</a>    }
-<a href=#322 id=322 data-nosnippet>322</a>}
-<a href=#323 id=323 data-nosnippet>323</a>
-<a href=#324 id=324 data-nosnippet>324</a><span class="comment">// rustdoc-stripper-ignore-next
-<a href=#325 id=325 data-nosnippet>325</a></span><span class="doccomment">/// Spawn a new infallible `Future` on the thread-default main context.
-<a href=#326 id=326 data-nosnippet>326</a>///
-<a href=#327 id=327 data-nosnippet>327</a>/// This can be called from any thread and will execute the future from the thread
-<a href=#328 id=328 data-nosnippet>328</a>/// where main context is running, e.g. via a `MainLoop`.
-<a href=#329 id=329 data-nosnippet>329</a></span><span class="attr">#[cfg(feature = <span class="string">"futures"</span>)]
-<a href=#330 id=330 data-nosnippet>330</a></span><span class="kw">pub fn </span><a href="../../glib/fn.spawn_future.html">spawn_future</a>&lt;R: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>, F: <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = R&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(
-<a href=#331 id=331 data-nosnippet>331</a>    f: F,
-<a href=#332 id=332 data-nosnippet>332</a>) -&gt; <span class="kw">crate</span>::<a href="main_context_futures.rs.html#279-284">JoinHandle</a>&lt;R&gt; {
-<a href=#333 id=333 data-nosnippet>333</a>    <span class="kw">let </span>ctx = <span class="kw">crate</span>::<a href="auto/main_context.rs.html#10-21">MainContext</a>::<a href="auto/main_context.rs.html#276-278">ref_thread_default</a>();
-<a href=#334 id=334 data-nosnippet>334</a>    <a href="#333">ctx</a>.<a href="main_context_futures.rs.html#525-530">spawn</a>(<a href="#331">f</a>)
-<a href=#335 id=335 data-nosnippet>335</a>}
-<a href=#336 id=336 data-nosnippet>336</a>
-<a href=#337 id=337 data-nosnippet>337</a><span class="comment">// rustdoc-stripper-ignore-next
-<a href=#338 id=338 data-nosnippet>338</a></span><span class="doccomment">/// Spawn a new infallible `Future` on the thread-default main context.
-<a href=#339 id=339 data-nosnippet>339</a>///
-<a href=#340 id=340 data-nosnippet>340</a>/// The given `Future` does not have to be `Send`.
-<a href=#341 id=341 data-nosnippet>341</a>///
-<a href=#342 id=342 data-nosnippet>342</a>/// This can be called only from the thread where the main context is running, e.g.
-<a href=#343 id=343 data-nosnippet>343</a>/// from any other `Future` that is executed on this main context, or after calling
-<a href=#344 id=344 data-nosnippet>344</a>/// `with_thread_default` or `acquire` on the main context.
-<a href=#345 id=345 data-nosnippet>345</a></span><span class="attr">#[cfg(feature = <span class="string">"futures"</span>)]
-<a href=#346 id=346 data-nosnippet>346</a></span><span class="kw">pub fn </span><a href="../../glib/fn.spawn_future_local.html">spawn_future_local</a>&lt;R: <span class="lifetime">'static</span>, F: <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = R&gt; + <span class="lifetime">'static</span>&gt;(
-<a href=#347 id=347 data-nosnippet>347</a>    f: F,
-<a href=#348 id=348 data-nosnippet>348</a>) -&gt; <span class="kw">crate</span>::<a href="main_context_futures.rs.html#279-284">JoinHandle</a>&lt;R&gt; {
-<a href=#349 id=349 data-nosnippet>349</a>    <span class="kw">let </span>ctx = <span class="kw">crate</span>::<a href="auto/main_context.rs.html#10-21">MainContext</a>::<a href="auto/main_context.rs.html#276-278">ref_thread_default</a>();
-<a href=#350 id=350 data-nosnippet>350</a>    <a href="#349">ctx</a>.<a href="main_context_futures.rs.html#540-542">spawn_local</a>(<a href="#347">f</a>)
-<a href=#351 id=351 data-nosnippet>351</a>}
+<a href=#272 id=272 data-nosnippet>272</a></span><span class="attr">#[cfg(unix)]
+<a href=#273 id=273 data-nosnippet>273</a>#[doc(alias = <span class="string">"g_file_open_tmp"</span>)]
+<a href=#274 id=274 data-nosnippet>274</a></span><span class="kw">pub fn </span><a href="../../glib/fn.file_open_tmp.html">file_open_tmp</a>(
+<a href=#275 id=275 data-nosnippet>275</a>    tmpl: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;std::path::<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;&gt;,
+<a href=#276 id=276 data-nosnippet>276</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>, std::path::<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">PathBuf</a>), <span class="kw">crate</span>::<a href="error.rs.html#10-25">Error</a>&gt; {
+<a href=#277 id=277 data-nosnippet>277</a>    <span class="kw">unsafe </span>{
+<a href=#278 id=278 data-nosnippet>278</a>        <span class="kw">let </span><span class="kw-2">mut </span>name_used = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
+<a href=#279 id=279 data-nosnippet>279</a>        <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
+<a href=#280 id=280 data-nosnippet>280</a>        <span class="kw">let </span>ret = ffi::g_file_open_tmp(
+<a href=#281 id=281 data-nosnippet>281</a>            <a href="#275">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#281">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#282 id=282 data-nosnippet>282</a>            <span class="kw-2">&amp;mut </span><a href="#278">name_used</a>,
+<a href=#283 id=283 data-nosnippet>283</a>            <span class="kw-2">&amp;mut </span><a href="#279">error</a>,
+<a href=#284 id=284 data-nosnippet>284</a>        );
+<a href=#285 id=285 data-nosnippet>285</a>        <span class="kw">if </span><a href="#279">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
+<a href=#286 id=286 data-nosnippet>286</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((<a href="https://doc.rust-lang.org/nightly/std/os/fd/owned/struct.OwnedFd.html">OwnedFd</a>::<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/trait.FromRawFd.html#tymethod.from_raw_fd">from_raw_fd</a>(<a href="#280">ret</a>), <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#278">name_used</a>)))
+<a href=#287 id=287 data-nosnippet>287</a>        } <span class="kw">else </span>{
+<a href=#288 id=288 data-nosnippet>288</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#279">error</a>))
+<a href=#289 id=289 data-nosnippet>289</a>        }
+<a href=#290 id=290 data-nosnippet>290</a>    }
+<a href=#291 id=291 data-nosnippet>291</a>}
+<a href=#292 id=292 data-nosnippet>292</a>
+<a href=#293 id=293 data-nosnippet>293</a><span class="comment">// rustdoc-stripper-ignore-next
+<a href=#294 id=294 data-nosnippet>294</a></span><span class="doccomment">/// Spawn a new infallible `Future` on the thread-default main context.
+<a href=#295 id=295 data-nosnippet>295</a>///
+<a href=#296 id=296 data-nosnippet>296</a>/// This can be called from any thread and will execute the future from the thread
+<a href=#297 id=297 data-nosnippet>297</a>/// where main context is running, e.g. via a `MainLoop`.
+<a href=#298 id=298 data-nosnippet>298</a></span><span class="attr">#[cfg(feature = <span class="string">"futures"</span>)]
+<a href=#299 id=299 data-nosnippet>299</a></span><span class="kw">pub fn </span><a href="../../glib/fn.spawn_future.html">spawn_future</a>&lt;R: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>, F: <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = R&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(
+<a href=#300 id=300 data-nosnippet>300</a>    f: F,
+<a href=#301 id=301 data-nosnippet>301</a>) -&gt; <span class="kw">crate</span>::<a href="main_context_futures.rs.html#279-284">JoinHandle</a>&lt;R&gt; {
+<a href=#302 id=302 data-nosnippet>302</a>    <span class="kw">let </span>ctx = <span class="kw">crate</span>::<a href="auto/main_context.rs.html#10-21">MainContext</a>::<a href="auto/main_context.rs.html#276-278">ref_thread_default</a>();
+<a href=#303 id=303 data-nosnippet>303</a>    <a href="#302">ctx</a>.<a href="main_context_futures.rs.html#525-530">spawn</a>(<a href="#300">f</a>)
+<a href=#304 id=304 data-nosnippet>304</a>}
+<a href=#305 id=305 data-nosnippet>305</a>
+<a href=#306 id=306 data-nosnippet>306</a><span class="comment">// rustdoc-stripper-ignore-next
+<a href=#307 id=307 data-nosnippet>307</a></span><span class="doccomment">/// Spawn a new infallible `Future` on the thread-default main context.
+<a href=#308 id=308 data-nosnippet>308</a>///
+<a href=#309 id=309 data-nosnippet>309</a>/// The given `Future` does not have to be `Send`.
+<a href=#310 id=310 data-nosnippet>310</a>///
+<a href=#311 id=311 data-nosnippet>311</a>/// This can be called only from the thread where the main context is running, e.g.
+<a href=#312 id=312 data-nosnippet>312</a>/// from any other `Future` that is executed on this main context, or after calling
+<a href=#313 id=313 data-nosnippet>313</a>/// `with_thread_default` or `acquire` on the main context.
+<a href=#314 id=314 data-nosnippet>314</a></span><span class="attr">#[cfg(feature = <span class="string">"futures"</span>)]
+<a href=#315 id=315 data-nosnippet>315</a></span><span class="kw">pub fn </span><a href="../../glib/fn.spawn_future_local.html">spawn_future_local</a>&lt;R: <span class="lifetime">'static</span>, F: <a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = R&gt; + <span class="lifetime">'static</span>&gt;(
+<a href=#316 id=316 data-nosnippet>316</a>    f: F,
+<a href=#317 id=317 data-nosnippet>317</a>) -&gt; <span class="kw">crate</span>::<a href="main_context_futures.rs.html#279-284">JoinHandle</a>&lt;R&gt; {
+<a href=#318 id=318 data-nosnippet>318</a>    <span class="kw">let </span>ctx = <span class="kw">crate</span>::<a href="auto/main_context.rs.html#10-21">MainContext</a>::<a href="auto/main_context.rs.html#276-278">ref_thread_default</a>();
+<a href=#319 id=319 data-nosnippet>319</a>    <a href="#318">ctx</a>.<a href="main_context_futures.rs.html#540-542">spawn_local</a>(<a href="#316">f</a>)
+<a href=#320 id=320 data-nosnippet>320</a>}
 </code></pre></div></section></main></body></html>
