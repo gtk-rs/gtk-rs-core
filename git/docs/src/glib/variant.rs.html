@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/variant.rs`."><title>variant.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-80aa586b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (21cf7fb3f 2025-12-28)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/variant.rs`."><title>variant.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-2eb46af5.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (8d670b93d 2025-12-31)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -185,7 +185,7 @@
 <a href=#112 id=112 data-nosnippet>112</a>};
 <a href=#113 id=113 data-nosnippet>113</a>
 <a href=#114 id=114 data-nosnippet>114</a><span class="kw">use </span>crate::{
-<a href=#115 id=115 data-nosnippet>115</a>    ffi, gobject_ffi, prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>, <a href="bytes.rs.html#15-41">Bytes</a>, <a href="types.rs.html#22">Type</a>, <a href="variant_iter.rs.html#14-18">VariantIter</a>, <a href="variant_iter.rs.html#102-106">VariantStrIter</a>,
+<a href=#115 id=115 data-nosnippet>115</a>    ffi, gobject_ffi, prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>, <a href="bytes.rs.html#15-97">Bytes</a>, <a href="types.rs.html#22">Type</a>, <a href="variant_iter.rs.html#14-18">VariantIter</a>, <a href="variant_iter.rs.html#102-106">VariantStrIter</a>,
 <a href=#116 id=116 data-nosnippet>116</a>    <a href="variant_type.rs.html#734-736">VariantTy</a>, <a href="variant_type.rs.html#354-361">VariantType</a>,
 <a href=#117 id=117 data-nosnippet>117</a>};
 <a href=#118 id=118 data-nosnippet>118</a>
@@ -1432,7 +1432,7 @@
 <a href=#1359 id=1359 data-nosnippet>1359</a>    ///
 <a href=#1360 id=1360 data-nosnippet>1360</a>    /// a new #GVariant with a floating reference
 <a href=#1361 id=1361 data-nosnippet>1361</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_variant_new_from_bytes"</span>)]
-<a href=#1362 id=1362 data-nosnippet>1362</a>    </span><span class="kw">pub fn </span>from_bytes&lt;T: <a href="#2208-2212">StaticVariantType</a>&gt;(bytes: <span class="kw-2">&amp;</span><a href="bytes.rs.html#15-41">Bytes</a>) -&gt; <span class="self">Self </span>{
+<a href=#1362 id=1362 data-nosnippet>1362</a>    </span><span class="kw">pub fn </span>from_bytes&lt;T: <a href="#2208-2212">StaticVariantType</a>&gt;(bytes: <span class="kw-2">&amp;</span><a href="bytes.rs.html#15-97">Bytes</a>) -&gt; <span class="self">Self </span>{
 <a href=#1363 id=1363 data-nosnippet>1363</a>        <a href="#119-625">Variant</a>::<a href="#1494-1502">from_bytes_with_type</a>(<a href="#1362">bytes</a>, <span class="kw-2">&amp;</span>T::<a href="#2211">static_variant_type</a>())
 <a href=#1364 id=1364 data-nosnippet>1364</a>    }
 <a href=#1365 id=1365 data-nosnippet>1365</a>
@@ -1449,7 +1449,7 @@
 <a href=#1376 id=1376 data-nosnippet>1376</a>    /// Since the data is not validated, this is potentially dangerous if called
 <a href=#1377 id=1377 data-nosnippet>1377</a>    /// on bytes which are not guaranteed to have come from serialising another
 <a href=#1378 id=1378 data-nosnippet>1378</a>    /// Variant.  The caller is responsible for ensuring bad data is not passed in.
-<a href=#1379 id=1379 data-nosnippet>1379</a>    </span><span class="kw">pub unsafe fn </span>from_bytes_trusted&lt;T: <a href="#2208-2212">StaticVariantType</a>&gt;(bytes: <span class="kw-2">&amp;</span><a href="bytes.rs.html#15-41">Bytes</a>) -&gt; <span class="self">Self </span>{
+<a href=#1379 id=1379 data-nosnippet>1379</a>    </span><span class="kw">pub unsafe fn </span>from_bytes_trusted&lt;T: <a href="#2208-2212">StaticVariantType</a>&gt;(bytes: <span class="kw-2">&amp;</span><a href="bytes.rs.html#15-97">Bytes</a>) -&gt; <span class="self">Self </span>{
 <a href=#1380 id=1380 data-nosnippet>1380</a>        <a href="#119-625">Variant</a>::<a href="#1517-1523">from_bytes_with_type_trusted</a>(<a href="#1379">bytes</a>, <span class="kw-2">&amp;</span>T::<a href="#2211">static_variant_type</a>())
 <a href=#1381 id=1381 data-nosnippet>1381</a>    }
 <a href=#1382 id=1382 data-nosnippet>1382</a>
@@ -1564,7 +1564,7 @@
 <a href=#1491 id=1491 data-nosnippet>1491</a>    <span class="comment">// rustdoc-stripper-ignore-next
 <a href=#1492 id=1492 data-nosnippet>1492</a>    </span><span class="doccomment">/// Constructs a new serialized-mode GVariant instance with a given type.
 <a href=#1493 id=1493 data-nosnippet>1493</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_variant_new_from_bytes"</span>)]
-<a href=#1494 id=1494 data-nosnippet>1494</a>    </span><span class="kw">pub fn </span>from_bytes_with_type(bytes: <span class="kw-2">&amp;</span><a href="bytes.rs.html#15-41">Bytes</a>, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#734-736">VariantTy</a>) -&gt; <span class="self">Self </span>{
+<a href=#1494 id=1494 data-nosnippet>1494</a>    </span><span class="kw">pub fn </span>from_bytes_with_type(bytes: <span class="kw-2">&amp;</span><a href="bytes.rs.html#15-97">Bytes</a>, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#734-736">VariantTy</a>) -&gt; <span class="self">Self </span>{
 <a href=#1495 id=1495 data-nosnippet>1495</a>        <span class="kw">unsafe </span>{
 <a href=#1496 id=1496 data-nosnippet>1496</a>            <a href="translate.rs.html#1629-1631">from_glib_none</a>(ffi::g_variant_new_from_bytes(
 <a href=#1497 id=1497 data-nosnippet>1497</a>                <a href="#1494">type_</a>.<a href="variant_type.rs.html#952-954">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
@@ -1587,7 +1587,7 @@
 <a href=#1514 id=1514 data-nosnippet>1514</a>    /// Since the data is not validated, this is potentially dangerous if called
 <a href=#1515 id=1515 data-nosnippet>1515</a>    /// on bytes which are not guaranteed to have come from serialising another
 <a href=#1516 id=1516 data-nosnippet>1516</a>    /// Variant.  The caller is responsible for ensuring bad data is not passed in.
-<a href=#1517 id=1517 data-nosnippet>1517</a>    </span><span class="kw">pub unsafe fn </span>from_bytes_with_type_trusted(bytes: <span class="kw-2">&amp;</span><a href="bytes.rs.html#15-41">Bytes</a>, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#734-736">VariantTy</a>) -&gt; <span class="self">Self </span>{
+<a href=#1517 id=1517 data-nosnippet>1517</a>    </span><span class="kw">pub unsafe fn </span>from_bytes_with_type_trusted(bytes: <span class="kw-2">&amp;</span><a href="bytes.rs.html#15-97">Bytes</a>, type_: <span class="kw-2">&amp;</span><a href="variant_type.rs.html#734-736">VariantTy</a>) -&gt; <span class="self">Self </span>{
 <a href=#1518 id=1518 data-nosnippet>1518</a>        <a href="translate.rs.html#1629-1631">from_glib_none</a>(ffi::g_variant_new_from_bytes(
 <a href=#1519 id=1519 data-nosnippet>1519</a>            <a href="#1517">type_</a>.<a href="variant_type.rs.html#952-954">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
 <a href=#1520 id=1520 data-nosnippet>1520</a>            <a href="#1517">bytes</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
@@ -1677,7 +1677,7 @@
 <a href=#1604 id=1604 data-nosnippet>1604</a>    /// A new #GBytes representing the variant data
 <a href=#1605 id=1605 data-nosnippet>1605</a>    </span><span class="attr">#[doc(alias = <span class="string">"get_data_as_bytes"</span>)]
 <a href=#1606 id=1606 data-nosnippet>1606</a>    #[doc(alias = <span class="string">"g_variant_get_data_as_bytes"</span>)]
-<a href=#1607 id=1607 data-nosnippet>1607</a>    </span><span class="kw">pub fn </span>data_as_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="bytes.rs.html#15-41">Bytes</a> {
+<a href=#1607 id=1607 data-nosnippet>1607</a>    </span><span class="kw">pub fn </span>data_as_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="bytes.rs.html#15-97">Bytes</a> {
 <a href=#1608 id=1608 data-nosnippet>1608</a>        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_variant_get_data_as_bytes(<a class="self" href="#1607">self</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
 <a href=#1609 id=1609 data-nosnippet>1609</a>    }
 <a href=#1610 id=1610 data-nosnippet>1610</a>
