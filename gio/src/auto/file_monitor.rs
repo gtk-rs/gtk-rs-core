@@ -2,11 +2,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, File, FileMonitorEvent};
+use crate::{File, FileMonitorEvent, ffi};
 use glib::{
     object::ObjectType as _,
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::boxed::Box as Box_;
@@ -85,15 +85,17 @@ pub trait FileMonitorExt: IsA<FileMonitor> + 'static {
             event_type: ffi::GFileMonitorEvent,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                FileMonitor::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(file),
-                Option::<File>::from_glib_borrow(other_file)
-                    .as_ref()
-                    .as_ref(),
-                from_glib(event_type),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    FileMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(file),
+                    Option::<File>::from_glib_borrow(other_file)
+                        .as_ref()
+                        .as_ref(),
+                    from_glib(event_type),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -118,8 +120,10 @@ pub trait FileMonitorExt: IsA<FileMonitor> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(FileMonitor::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(FileMonitor::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -144,8 +148,10 @@ pub trait FileMonitorExt: IsA<FileMonitor> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(FileMonitor::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(FileMonitor::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

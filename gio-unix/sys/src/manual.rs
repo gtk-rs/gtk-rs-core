@@ -6,7 +6,7 @@ pub const G_SOCKET_MSG_OOB: super::GSocketMsgFlags = libc::MSG_OOB;
 pub const G_SOCKET_MSG_PEEK: super::GSocketMsgFlags = libc::MSG_PEEK;
 pub const G_SOCKET_MSG_DONTROUTE: super::GSocketMsgFlags = libc::MSG_DONTROUTE;
 
-extern "C" {
+unsafe extern "C" {
 
     #[cfg(feature = "v2_84")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]

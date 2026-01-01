@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, InputStream, ResourceLookupFlags};
+use crate::{InputStream, ResourceLookupFlags, ffi};
 use glib::translate::*;
 
 glib::wrapper! {
@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct Resource(Shared<ffi::GResource>);
 
     match fn {
-        ref => |ptr| ffi::g_resource_ref(ptr),
-        unref => |ptr| ffi::g_resource_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_resource_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_resource_unref(ptr) },
         type_ => || ffi::g_resource_get_type(),
     }
 }

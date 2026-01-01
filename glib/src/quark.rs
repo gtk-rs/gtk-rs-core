@@ -2,7 +2,7 @@
 
 use std::{fmt, num::NonZeroU32};
 
-use crate::{ffi, translate::*, GStr};
+use crate::{GStr, ffi, translate::*};
 
 #[derive(Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[repr(transparent)]
@@ -58,8 +58,10 @@ impl std::str::FromStr for Quark {
 impl FromGlib<ffi::GQuark> for Quark {
     #[inline]
     unsafe fn from_glib(value: ffi::GQuark) -> Self {
-        debug_assert_ne!(value, 0);
-        Self(NonZeroU32::new_unchecked(value))
+        unsafe {
+            debug_assert_ne!(value, 0);
+            Self(NonZeroU32::new_unchecked(value))
+        }
     }
 }
 
@@ -67,10 +69,12 @@ impl FromGlib<ffi::GQuark> for Quark {
 impl TryFromGlib<ffi::GQuark> for Quark {
     type Error = GlibNoneError;
     unsafe fn try_from_glib(value: ffi::GQuark) -> Result<Self, Self::Error> {
-        if value == 0 {
-            Err(GlibNoneError)
-        } else {
-            Ok(Self(NonZeroU32::new_unchecked(value)))
+        unsafe {
+            if value == 0 {
+                Err(GlibNoneError)
+            } else {
+                Ok(Self(NonZeroU32::new_unchecked(value)))
+            }
         }
     }
 }

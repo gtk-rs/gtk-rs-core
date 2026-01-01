@@ -3,7 +3,7 @@
 use std::sync::OnceLock;
 
 use super::{FontExtents, FontFace, ScaledFont, TextCluster, TextClusterFlags, TextExtents};
-use crate::{ffi, utils::status_to_result, Context, Error, Glyph};
+use crate::{Context, Error, Glyph, ffi, utils::status_to_result};
 
 type BoxInitFunc =
     Box<dyn Fn(&ScaledFont, &Context, &mut FontExtents) -> Result<(), Error> + Send + Sync>;
@@ -45,16 +45,17 @@ impl UserFontFace {
             cr: *mut ffi::cairo_t,
             extents: *mut ffi::cairo_font_extents_t,
         ) -> ffi::cairo_status_t {
-            let font_extents = &mut *(extents as *mut FontExtents);
-            let init_func = INIT_FUNC.get().unwrap();
-            if let Err(err) = init_func(
-                &ScaledFont::from_raw_none(scaled_font),
-                &Context::from_raw_none(cr),
-                font_extents,
-            ) {
-                err.into()
-            } else {
-                ffi::STATUS_SUCCESS
+            unsafe {
+                let font_extents = &mut *(extents as *mut FontExtents);
+                let init_func = INIT_FUNC.get().unwrap();
+                match init_func(
+                    &ScaledFont::from_raw_none(scaled_font),
+                    &Context::from_raw_none(cr),
+                    font_extents,
+                ) {
+                    Err(err) => err.into(),
+                    _ => ffi::STATUS_SUCCESS,
+                }
             }
         }
         unsafe {
@@ -80,17 +81,18 @@ impl UserFontFace {
             cr: *mut ffi::cairo_t,
             extents: *mut ffi::cairo_text_extents_t,
         ) -> ffi::cairo_status_t {
-            let text_extents = &mut *(extents as *mut TextExtents);
-            let render_glyph_func = RENDER_GLYPH_FUNC.get().unwrap();
-            if let Err(err) = render_glyph_func(
-                &ScaledFont::from_raw_none(scaled_font),
-                glyph,
-                &Context::from_raw_none(cr),
-                text_extents,
-            ) {
-                err.into()
-            } else {
-                ffi::STATUS_SUCCESS
+            unsafe {
+                let text_extents = &mut *(extents as *mut TextExtents);
+                let render_glyph_func = RENDER_GLYPH_FUNC.get().unwrap();
+                match render_glyph_func(
+                    &ScaledFont::from_raw_none(scaled_font),
+                    glyph,
+                    &Context::from_raw_none(cr),
+                    text_extents,
+                ) {
+                    Err(err) => err.into(),
+                    _ => ffi::STATUS_SUCCESS,
+                }
             }
         }
         unsafe {
@@ -119,17 +121,18 @@ impl UserFontFace {
             cr: *mut ffi::cairo_t,
             extents: *mut ffi::cairo_text_extents_t,
         ) -> ffi::cairo_status_t {
-            let text_extents = &mut *(extents as *mut TextExtents);
-            let render_glyph_func = RENDER_COLOR_GLYPH_FUNC.get().unwrap();
-            if let Err(err) = render_glyph_func(
-                &ScaledFont::from_raw_none(scaled_font),
-                glyph,
-                &Context::from_raw_none(cr),
-                text_extents,
-            ) {
-                err.into()
-            } else {
-                ffi::STATUS_SUCCESS
+            unsafe {
+                let text_extents = &mut *(extents as *mut TextExtents);
+                let render_glyph_func = RENDER_COLOR_GLYPH_FUNC.get().unwrap();
+                match render_glyph_func(
+                    &ScaledFont::from_raw_none(scaled_font),
+                    glyph,
+                    &Context::from_raw_none(cr),
+                    text_extents,
+                ) {
+                    Err(err) => err.into(),
+                    _ => ffi::STATUS_SUCCESS,
+                }
             }
         }
         unsafe {
@@ -154,12 +157,14 @@ impl UserFontFace {
             unicode: libc::c_ulong,
             glyph_index: *mut libc::c_ulong,
         ) -> ffi::cairo_status_t {
-            let unicode_to_glyph_func = UNICODE_TO_GLYPH_FUNC.get().unwrap();
-            match unicode_to_glyph_func(&ScaledFont::from_raw_none(scaled_font), unicode) {
-                Err(err) => err.into(),
-                Ok(glyph) => {
-                    *glyph_index = glyph;
-                    ffi::STATUS_SUCCESS
+            unsafe {
+                let unicode_to_glyph_func = UNICODE_TO_GLYPH_FUNC.get().unwrap();
+                match unicode_to_glyph_func(&ScaledFont::from_raw_none(scaled_font), unicode) {
+                    Err(err) => err.into(),
+                    Ok(glyph) => {
+                        *glyph_index = glyph;
+                        ffi::STATUS_SUCCESS
+                    }
                 }
             }
         }
@@ -193,37 +198,39 @@ impl UserFontFace {
             num_clusters: *mut libc::c_int,
             cluster_flags: *mut ffi::cairo_text_cluster_flags_t,
         ) -> ffi::cairo_status_t {
-            let text_to_glyphs_func = TEXT_TO_GLYPHS_FUNC.get().unwrap();
-            let text = if utf8_len > 0 {
-                let bytes = std::slice::from_raw_parts(utf8 as *const u8, utf8_len as usize);
-                std::str::from_utf8_unchecked(bytes)
-            } else {
-                std::ffi::CStr::from_ptr(utf8).to_str().unwrap()
-            };
-            match text_to_glyphs_func(&ScaledFont::from_raw_none(scaled_font), text) {
-                Err(err) => err.into(),
-                Ok((glyphs_, clusters_, flags)) => {
-                    *num_glyphs = glyphs_.len() as _;
-                    let c_glyphs = ffi::cairo_glyph_allocate(*num_glyphs);
-                    std::ptr::copy_nonoverlapping(
-                        glyphs_.as_ptr(),
-                        c_glyphs as *mut _,
-                        glyphs_.len(),
-                    );
-                    *glyphs = c_glyphs;
+            unsafe {
+                let text_to_glyphs_func = TEXT_TO_GLYPHS_FUNC.get().unwrap();
+                let text = if utf8_len > 0 {
+                    let bytes = std::slice::from_raw_parts(utf8 as *const u8, utf8_len as usize);
+                    std::str::from_utf8_unchecked(bytes)
+                } else {
+                    std::ffi::CStr::from_ptr(utf8).to_str().unwrap()
+                };
+                match text_to_glyphs_func(&ScaledFont::from_raw_none(scaled_font), text) {
+                    Err(err) => err.into(),
+                    Ok((glyphs_, clusters_, flags)) => {
+                        *num_glyphs = glyphs_.len() as _;
+                        let c_glyphs = ffi::cairo_glyph_allocate(*num_glyphs);
+                        std::ptr::copy_nonoverlapping(
+                            glyphs_.as_ptr(),
+                            c_glyphs as *mut _,
+                            glyphs_.len(),
+                        );
+                        *glyphs = c_glyphs;
 
-                    *num_clusters = clusters_.len() as _;
-                    let c_clusters = ffi::cairo_text_cluster_allocate(*num_clusters);
-                    std::ptr::copy_nonoverlapping(
-                        clusters_.as_ptr(),
-                        c_clusters as *mut _,
-                        clusters_.len(),
-                    );
-                    *clusters = c_clusters;
+                        *num_clusters = clusters_.len() as _;
+                        let c_clusters = ffi::cairo_text_cluster_allocate(*num_clusters);
+                        std::ptr::copy_nonoverlapping(
+                            clusters_.as_ptr(),
+                            c_clusters as *mut _,
+                            clusters_.len(),
+                        );
+                        *clusters = c_clusters;
 
-                    *cluster_flags = flags.into();
+                        *cluster_flags = flags.into();
 
-                    ffi::STATUS_SUCCESS
+                        ffi::STATUS_SUCCESS
+                    }
                 }
             }
         }

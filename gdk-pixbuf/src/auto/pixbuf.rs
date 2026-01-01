@@ -3,7 +3,7 @@
 // DO NOT EDIT
 #![allow(deprecated)]
 
-use crate::{ffi, Colorspace, InterpType, PixbufFormat, PixbufRotation};
+use crate::{Colorspace, InterpType, PixbufFormat, PixbufRotation, ffi};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {

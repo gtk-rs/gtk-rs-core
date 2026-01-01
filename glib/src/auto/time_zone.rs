@@ -2,15 +2,15 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, translate::*, TimeType};
+use crate::{TimeType, ffi, translate::*};
 
 crate::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct TimeZone(Shared<ffi::GTimeZone>);
 
     match fn {
-        ref => |ptr| ffi::g_time_zone_ref(ptr),
-        unref => |ptr| ffi::g_time_zone_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_time_zone_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_time_zone_unref(ptr) },
         type_ => || ffi::g_time_zone_get_type(),
     }
 }

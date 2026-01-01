@@ -2,15 +2,15 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, translate::*, Error};
+use crate::{Error, ffi, translate::*};
 
 crate::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MarkupParseContext(Shared<ffi::GMarkupParseContext>);
 
     match fn {
-        ref => |ptr| ffi::g_markup_parse_context_ref(ptr),
-        unref => |ptr| ffi::g_markup_parse_context_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_markup_parse_context_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_markup_parse_context_unref(ptr) },
         type_ => || ffi::g_markup_parse_context_get_type(),
     }
 }

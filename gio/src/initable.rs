@@ -2,9 +2,9 @@
 
 use std::marker::PhantomData;
 
-use glib::{object::IsClass, prelude::*, Object, Type};
+use glib::{Object, Type, object::IsClass, prelude::*};
 
-use crate::{prelude::*, Cancellable, Initable};
+use crate::{Cancellable, Initable, prelude::*};
 
 impl Initable {
     // rustdoc-stripper-ignore-next

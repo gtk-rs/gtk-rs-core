@@ -2,9 +2,9 @@
 
 use std::{boxed::Box as Box_, mem, pin::Pin, ptr};
 
-use glib::{prelude::*, translate::*, GString};
+use glib::{GString, prelude::*, translate::*};
 
-use crate::{ffi, Cancellable, DataInputStream};
+use crate::{Cancellable, DataInputStream, ffi};
 
 pub trait DataInputStreamExtManual: IsA<DataInputStream> + 'static {
     #[doc(alias = "g_data_input_stream_read_line")]
@@ -63,28 +63,30 @@ pub trait DataInputStreamExtManual: IsA<DataInputStream> + 'static {
             res: *mut ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let mut length = mem::MaybeUninit::uninit();
-            let ret = ffi::g_data_input_stream_read_line_finish(
-                _source_object as *mut _,
-                res,
-                length.as_mut_ptr(),
-                &mut error,
-            );
-            let result = if error.is_null() {
-                if ret.is_null() {
-                    Ok(None)
+            unsafe {
+                let mut error = ptr::null_mut();
+                let mut length = mem::MaybeUninit::uninit();
+                let ret = ffi::g_data_input_stream_read_line_finish(
+                    _source_object as *mut _,
+                    res,
+                    length.as_mut_ptr(),
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    if ret.is_null() {
+                        Ok(None)
+                    } else {
+                        let length = length.assume_init();
+                        Ok(Some(FromGlibContainer::from_glib_full_num(ret, length)))
+                    }
                 } else {
-                    let length = length.assume_init();
-                    Ok(Some(FromGlibContainer::from_glib_full_num(ret, length)))
-                }
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
-                Box_::from_raw(user_data as *mut _);
-            let callback = callback.into_inner();
-            callback(result);
+                    Err(from_glib_full(error))
+                };
+                let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
+                    Box_::from_raw(user_data as *mut _);
+                let callback = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = read_line_async_trampoline::<Q>;
         unsafe {
@@ -167,22 +169,24 @@ pub trait DataInputStreamExtManual: IsA<DataInputStream> + 'static {
             res: *mut ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let ret = ffi::g_data_input_stream_read_line_finish_utf8(
-                _source_object as *mut _,
-                res,
-                ptr::null_mut(),
-                &mut error,
-            );
-            let result = if error.is_null() {
-                Ok(from_glib_full(ret))
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
-                Box_::from_raw(user_data as *mut _);
-            let callback = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = ptr::null_mut();
+                let ret = ffi::g_data_input_stream_read_line_finish_utf8(
+                    _source_object as *mut _,
+                    res,
+                    ptr::null_mut(),
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    Ok(from_glib_full(ret))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
+                    Box_::from_raw(user_data as *mut _);
+                let callback = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = read_line_async_trampoline::<Q>;
         unsafe {
@@ -272,27 +276,29 @@ pub trait DataInputStreamExtManual: IsA<DataInputStream> + 'static {
             res: *mut ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let mut length = mem::MaybeUninit::uninit();
-            let ret = ffi::g_data_input_stream_read_upto_finish(
-                _source_object as *mut _,
-                res,
-                length.as_mut_ptr(),
-                &mut error,
-            );
-            let result = if error.is_null() {
-                let length = length.assume_init();
-                Ok(FromGlibContainer::from_glib_full_num(
-                    ret as *mut u8,
-                    length,
-                ))
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
-                Box_::from_raw(user_data as *mut _);
-            let callback = callback.into_inner();
-            callback(result);
+            unsafe {
+                let mut error = ptr::null_mut();
+                let mut length = mem::MaybeUninit::uninit();
+                let ret = ffi::g_data_input_stream_read_upto_finish(
+                    _source_object as *mut _,
+                    res,
+                    length.as_mut_ptr(),
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    let length = length.assume_init();
+                    Ok(FromGlibContainer::from_glib_full_num(
+                        ret as *mut u8,
+                        length,
+                    ))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box_<glib::thread_guard::ThreadGuard<Q>> =
+                    Box_::from_raw(user_data as *mut _);
+                let callback = callback.into_inner();
+                callback(result);
+            }
         }
         let callback = read_upto_async_trampoline::<Q>;
         unsafe {

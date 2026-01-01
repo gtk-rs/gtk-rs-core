@@ -2,10 +2,10 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::ffi;
 #[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 use crate::AttrIterator;
+use crate::ffi;
 use glib::translate::*;
 
 glib::wrapper! {
@@ -13,8 +13,8 @@ glib::wrapper! {
     pub struct Item(Boxed<ffi::PangoItem>);
 
     match fn {
-        copy => |ptr| ffi::pango_item_copy(mut_override(ptr)),
-        free => |ptr| ffi::pango_item_free(ptr),
+        copy => |ptr| unsafe { ffi::pango_item_copy(mut_override(ptr)) },
+        free => |ptr| unsafe { ffi::pango_item_free(ptr) },
         type_ => || ffi::pango_item_get_type(),
     }
 }

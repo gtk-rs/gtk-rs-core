@@ -2,15 +2,15 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, translate::*, BoolError, TimeSpan, TimeZone};
+use crate::{BoolError, TimeSpan, TimeZone, ffi, translate::*};
 
 crate::wrapper! {
     #[derive(Debug)]
     pub struct DateTime(Shared<ffi::GDateTime>);
 
     match fn {
-        ref => |ptr| ffi::g_date_time_ref(ptr),
-        unref => |ptr| ffi::g_date_time_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_date_time_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_date_time_unref(ptr) },
         type_ => || ffi::g_date_time_get_type(),
     }
 }

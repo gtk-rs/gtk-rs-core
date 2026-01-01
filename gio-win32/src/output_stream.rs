@@ -5,7 +5,7 @@ use std::os::windows::io::{AsRawHandle, FromRawHandle, IntoRawHandle, RawHandle}
 
 use glib::{prelude::*, translate::*};
 
-use crate::{ffi, OutputStream};
+use crate::{OutputStream, ffi};
 
 impl OutputStream {
     // rustdoc-stripper-ignore-next

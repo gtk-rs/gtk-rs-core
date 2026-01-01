@@ -1,8 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::{prelude::*, translate::*, VariantTy};
+use glib::{VariantTy, prelude::*, translate::*};
 
-use crate::{ffi, DBusMethodInvocation};
+use crate::{DBusMethodInvocation, ffi};
 
 impl DBusMethodInvocation {
     #[doc(alias = "g_dbus_method_invocation_return_error_literal")]

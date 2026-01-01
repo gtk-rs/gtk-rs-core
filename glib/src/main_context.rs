@@ -4,7 +4,7 @@ use std::mem;
 
 use crate::ffi::{self, gboolean, gpointer};
 
-use crate::{source::Priority, translate::*, MainContext, Source, SourceId};
+use crate::{MainContext, Source, SourceId, source::Priority, translate::*};
 
 impl MainContext {
     #[doc(alias = "g_main_context_prepare")]
@@ -105,10 +105,15 @@ impl MainContext {
         // FIXME: Combine the first two cases somehow
         if self.is_owner() {
             func();
-        } else if let Ok(_acquire) = self.acquire() {
-            func();
         } else {
-            panic!("Must be called from a thread that owns the main context");
+            match self.acquire() {
+                Ok(_acquire) => {
+                    func();
+                }
+                _ => {
+                    panic!("Must be called from a thread that owns the main context");
+                }
+            }
         }
     }
 
@@ -116,25 +121,31 @@ impl MainContext {
     where
         F: FnOnce() + 'static,
     {
-        unsafe extern "C" fn trampoline<F: FnOnce() + 'static>(func: gpointer) -> gboolean {
-            let func: &mut Option<F> = &mut *(func as *mut Option<F>);
-            let func = func
-                .take()
-                .expect("MainContext::invoke() closure called multiple times");
-            func();
-            ffi::G_SOURCE_REMOVE
+        unsafe {
+            unsafe extern "C" fn trampoline<F: FnOnce() + 'static>(func: gpointer) -> gboolean {
+                unsafe {
+                    let func: &mut Option<F> = &mut *(func as *mut Option<F>);
+                    let func = func
+                        .take()
+                        .expect("MainContext::invoke() closure called multiple times");
+                    func();
+                    ffi::G_SOURCE_REMOVE
+                }
+            }
+            unsafe extern "C" fn destroy_closure<F: FnOnce() + 'static>(ptr: gpointer) {
+                unsafe {
+                    let _ = Box::<Option<F>>::from_raw(ptr as *mut _);
+                }
+            }
+            let func = Box::into_raw(Box::new(Some(func)));
+            ffi::g_main_context_invoke_full(
+                self.to_glib_none().0,
+                priority.into_glib(),
+                Some(trampoline::<F>),
+                func as gpointer,
+                Some(destroy_closure::<F>),
+            )
         }
-        unsafe extern "C" fn destroy_closure<F: FnOnce() + 'static>(ptr: gpointer) {
-            let _ = Box::<Option<F>>::from_raw(ptr as *mut _);
-        }
-        let func = Box::into_raw(Box::new(Some(func)));
-        ffi::g_main_context_invoke_full(
-            self.to_glib_none().0,
-            priority.into_glib(),
-            Some(trampoline::<F>),
-            func as gpointer,
-            Some(destroy_closure::<F>),
-        )
     }
 
     // rustdoc-stripper-ignore-next
@@ -167,7 +178,9 @@ impl MainContext {
             if ret {
                 Ok(MainContextAcquireGuard(self))
             } else {
-                Err(bool_error!("Failed to acquire ownership of main context, already acquired by another thread"))
+                Err(bool_error!(
+                    "Failed to acquire ownership of main context, already acquired by another thread"
+                ))
             }
         }
     }

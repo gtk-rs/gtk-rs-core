@@ -1,10 +1,10 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use crate::{
+    InterfaceInfo, Object, TypeFlags, TypeInfo, TypeModule, TypePlugin,
     enums::{EnumValues, FlagsValues},
     prelude::*,
     subclass::prelude::*,
-    InterfaceInfo, Object, TypeFlags, TypeInfo, TypeModule, TypePlugin,
 };
 
 pub trait DynamicObjectRegisterExt: AsRef<TypePlugin> + 'static {

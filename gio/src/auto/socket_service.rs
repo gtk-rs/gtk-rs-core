@@ -2,11 +2,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, SocketConnection, SocketListener};
+use crate::{SocketConnection, SocketListener, ffi};
 use glib::{
     object::ObjectType as _,
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::boxed::Box as Box_;
@@ -80,15 +80,17 @@ pub trait SocketServiceExt: IsA<SocketService> + 'static {
             source_object: *mut glib::gobject_ffi::GObject,
             f: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
-            let f: &F = &*(f as *const F);
-            f(
-                SocketService::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(connection),
-                Option::<glib::Object>::from_glib_borrow(source_object)
-                    .as_ref()
-                    .as_ref(),
-            )
-            .into_glib()
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    SocketService::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(connection),
+                    Option::<glib::Object>::from_glib_borrow(source_object)
+                        .as_ref()
+                        .as_ref(),
+                )
+                .into_glib()
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -113,8 +115,10 @@ pub trait SocketServiceExt: IsA<SocketService> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(SocketService::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(SocketService::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

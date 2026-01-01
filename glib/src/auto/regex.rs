@@ -2,15 +2,15 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, translate::*, Error, RegexCompileFlags, RegexMatchFlags};
+use crate::{Error, RegexCompileFlags, RegexMatchFlags, ffi, translate::*};
 
 crate::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Regex(Shared<ffi::GRegex>);
 
     match fn {
-        ref => |ptr| ffi::g_regex_ref(ptr),
-        unref => |ptr| ffi::g_regex_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_regex_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_regex_unref(ptr) },
         type_ => || ffi::g_regex_get_type(),
     }
 }

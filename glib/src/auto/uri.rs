@@ -2,15 +2,15 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, translate::*, Bytes, Error, UriFlags, UriHideFlags};
+use crate::{Bytes, Error, UriFlags, UriHideFlags, ffi, translate::*};
 
 crate::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Uri(Shared<ffi::GUri>);
 
     match fn {
-        ref => |ptr| ffi::g_uri_ref(ptr),
-        unref => |ptr| ffi::g_uri_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_uri_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_uri_unref(ptr) },
         type_ => || ffi::g_uri_get_type(),
     }
 }

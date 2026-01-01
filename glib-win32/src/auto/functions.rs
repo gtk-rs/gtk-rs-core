@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, OSType};
+use crate::{OSType, ffi};
 use glib::translate::*;
 
 #[doc(alias = "g_win32_check_windows_version")]

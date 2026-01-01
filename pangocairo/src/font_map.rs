@@ -2,7 +2,7 @@
 
 use glib::{prelude::*, translate::*};
 
-use crate::{ffi, FontMap};
+use crate::{FontMap, ffi};
 
 pub trait PangoCairoFontMapExtManual: IsA<FontMap> + 'static {
     #[doc(alias = "pango_cairo_font_map_get_font_type")]

@@ -4,13 +4,13 @@ use std::{boxed::Box as Box_, future::Future, mem::transmute, panic, ptr};
 
 use glib::{
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 
 use futures_channel::oneshot;
 
-use crate::{ffi, AsyncResult, Cancellable};
+use crate::{AsyncResult, Cancellable, ffi};
 
 glib::wrapper! {
     // rustdoc-stripper-ignore-next
@@ -82,7 +82,7 @@ macro_rules! task_impl {
                     source_object: *mut glib::gobject_ffi::GObject,
                     res: *mut ffi::GAsyncResult,
                     user_data: glib::ffi::gpointer,
-                ) {
+                ) { unsafe {
                     let callback: Box_<Q> = Box::from_raw(user_data as *mut _);
                     let task = AsyncResult::from_glib_none(res)
                         .downcast::<$name<V>>()
@@ -92,7 +92,7 @@ macro_rules! task_impl {
                         task,
                         source_object.as_ref().as_ref().map(|s| s.unsafe_cast_ref()),
                     );
-                }
+                }}
                 let callback = trampoline::<S, V, Q>;
                 unsafe {
                     from_glib_full(ffi::g_task_new(
@@ -211,10 +211,10 @@ macro_rules! task_impl {
                 ) where
                     V: ValueType $(+ $bound)?,
                     F: Fn(&$name<V>) + 'static,
-                {
+                { unsafe {
                     let f: &F = &*(f as *const F);
                     f(&from_glib_borrow(this))
-                }
+                }}
                 unsafe {
                     let f: Box_<F> = Box_::new(f);
                     connect_raw(
@@ -250,9 +250,9 @@ macro_rules! task_impl {
             #[allow(unused_unsafe)]
             pub $($safety)? fn return_result(self, result: Result<V, glib::Error>) {
                 #[cfg(not(feature = "v2_64"))]
-                unsafe extern "C" fn value_free(value: *mut libc::c_void) {
+                unsafe extern "C" fn value_free(value: *mut libc::c_void) { unsafe {
                     let _: glib::Value = from_glib_full(value as *mut glib::gobject_ffi::GValue);
-                }
+                }}
 
                 match result {
                     #[cfg(feature = "v2_64")]
@@ -445,15 +445,17 @@ impl<V: ValueType + Send> Task<V> {
             S: IsA<glib::Object> + Send,
             Q: FnOnce(Task<V>, Option<&S>, Option<&Cancellable>) + Send + 'static,
         {
-            let task = Task::from_glib_none(task);
-            let source_object = Option::<glib::Object>::from_glib_borrow(source_object);
-            let cancellable = Option::<Cancellable>::from_glib_borrow(cancellable);
-            let task_func: Box_<Q> = Box::from_raw(user_data as *mut _);
-            task_func(
-                task,
-                source_object.as_ref().as_ref().map(|s| s.unsafe_cast_ref()),
-                cancellable.as_ref().as_ref(),
-            );
+            unsafe {
+                let task = Task::from_glib_none(task);
+                let source_object = Option::<glib::Object>::from_glib_borrow(source_object);
+                let cancellable = Option::<Cancellable>::from_glib_borrow(cancellable);
+                let task_func: Box_<Q> = Box::from_raw(user_data as *mut _);
+                task_func(
+                    task,
+                    source_object.as_ref().as_ref().map(|s| s.unsafe_cast_ref()),
+                    cancellable.as_ref().as_ref(),
+                );
+            }
         }
 
         let task_func = trampoline::<V, S, Q>;

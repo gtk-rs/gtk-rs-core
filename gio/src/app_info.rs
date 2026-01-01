@@ -7,7 +7,7 @@ use std::ptr;
 use glib::prelude::*;
 use glib::translate::*;
 
-use crate::{ffi, AppInfo, AppLaunchContext, Cancellable};
+use crate::{AppInfo, AppLaunchContext, Cancellable, ffi};
 
 pub trait AppInfoExtManual: IsA<AppInfo> + 'static {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_60")))]
@@ -45,19 +45,22 @@ pub trait AppInfoExtManual: IsA<AppInfo> + 'static {
             res: *mut ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
-            let mut error = ptr::null_mut();
-            let _ = ffi::g_app_info_launch_uris_finish(_source_object as *mut _, res, &mut error);
-            let result = if error.is_null() {
-                Ok(())
-            } else {
-                Err(from_glib_full(error))
-            };
-            let callback: Box_<(glib::thread_guard::ThreadGuard<R>, *mut *mut libc::c_char)> =
-                Box_::from_raw(user_data as *mut _);
-            let (callback, uris) = *callback;
-            let callback = callback.into_inner();
-            callback(result);
-            glib::ffi::g_strfreev(uris);
+            unsafe {
+                let mut error = ptr::null_mut();
+                let _ =
+                    ffi::g_app_info_launch_uris_finish(_source_object as *mut _, res, &mut error);
+                let result = if error.is_null() {
+                    Ok(())
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box_<(glib::thread_guard::ThreadGuard<R>, *mut *mut libc::c_char)> =
+                    Box_::from_raw(user_data as *mut _);
+                let (callback, uris) = *callback;
+                let callback = callback.into_inner();
+                callback(result);
+                glib::ffi::g_strfreev(uris);
+            }
         }
         let callback = launch_uris_async_trampoline::<R>;
         unsafe {

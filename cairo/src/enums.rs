@@ -5,7 +5,7 @@ use std::fmt::Debug;
 #[cfg(feature = "use_glib")]
 use glib::translate::*;
 
-use crate::{ffi, Error};
+use crate::{Error, ffi};
 
 // Helper macro for our GValue related trait impls
 #[cfg(feature = "use_glib")]
@@ -26,7 +26,7 @@ macro_rules! gvalue_impl {
             type Checker = glib::value::GenericValueTypeChecker<Self>;
 
             unsafe fn from_value(value: &'a glib::Value) -> Self {
-                Self::from(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+                unsafe { Self::from(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
             }
         }
 

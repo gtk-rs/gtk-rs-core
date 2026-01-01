@@ -2,11 +2,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, DBusInterface, DBusObject};
+use crate::{DBusInterface, DBusObject, ffi};
 use glib::{
     object::ObjectType as _,
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::boxed::Box as Box_;
@@ -82,12 +82,14 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + 'static {
             interface: *mut ffi::GDBusInterface,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                DBusObjectManager::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(object),
-                &from_glib_borrow(interface),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    DBusObjectManager::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(object),
+                    &from_glib_borrow(interface),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -116,12 +118,14 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + 'static {
             interface: *mut ffi::GDBusInterface,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                DBusObjectManager::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(object),
-                &from_glib_borrow(interface),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    DBusObjectManager::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(object),
+                    &from_glib_borrow(interface),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -146,11 +150,13 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + 'static {
             object: *mut ffi::GDBusObject,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                DBusObjectManager::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(object),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    DBusObjectManager::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(object),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -175,11 +181,13 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + 'static {
             object: *mut ffi::GDBusObject,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                DBusObjectManager::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(object),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    DBusObjectManager::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(object),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

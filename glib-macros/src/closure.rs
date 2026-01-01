@@ -1,11 +1,11 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use proc_macro2::{Ident, Span, TokenStream};
-use quote::{quote, ToTokens};
+use quote::{ToTokens, quote};
 use syn::{
+    Attribute, ExprClosure, Token,
     parse::{Parse, ParseStream},
     spanned::Spanned,
-    Attribute, ExprClosure, Token,
 };
 
 use crate::{
@@ -45,39 +45,47 @@ impl Parse for Closure {
                 break;
             };
 
-            if let Some(capture) = Capture::maybe_parse(&attrs, input)? {
-                if capture.kind == CaptureKind::Watch
-                    && captures.iter().any(|c| c.kind == CaptureKind::Watch)
-                {
-                    return Err(syn::Error::new_spanned(
-                        &attrs[0],
-                        "only one `watch` capture is allowed per closure",
-                    ));
-                }
+            match Capture::maybe_parse(&attrs, input)? {
+                Some(capture) => {
+                    if capture.kind == CaptureKind::Watch
+                        && captures.iter().any(|c| c.kind == CaptureKind::Watch)
+                    {
+                        return Err(syn::Error::new_spanned(
+                            &attrs[0],
+                            "only one `watch` capture is allowed per closure",
+                        ));
+                    }
 
-                captures.push(capture);
-            } else if let Some(behaviour) = UpgradeBehaviour::maybe_parse(&attrs, input)? {
-                if upgrade_behaviour.is_some() {
-                    return Err(syn::Error::new_spanned(
-                        &attrs[0],
-                        "multiple upgrade failure attributes are not supported",
-                    ));
+                    captures.push(capture);
                 }
+                _ => match UpgradeBehaviour::maybe_parse(&attrs, input)? {
+                    Some(behaviour) => {
+                        if upgrade_behaviour.is_some() {
+                            return Err(syn::Error::new_spanned(
+                                &attrs[0],
+                                "multiple upgrade failure attributes are not supported",
+                            ));
+                        }
 
-                upgrade_behaviour = Some((behaviour, attrs[0].span()));
-                break;
-            } else if let Some(ident) = attrs[0].path().get_ident() {
-                return Err(syn::Error::new_spanned(
-                        &attrs[0],
-                        format!(
-                            "unsupported attribute `{ident}`: only `watch`, `strong`, `weak`, `weak_allow_none`, `to_owned`, `upgrade_or`, `upgrade_or_else`, `upgrade_or_default` and `upgrade_or_panic` are supported",
-                        ),
-                ));
-            } else {
-                return Err(syn::Error::new_spanned(
-                        &attrs[0],
-                        "unsupported attribute: only `strong`, `weak`, `weak_allow_none`, `to_owned`, `upgrade_or_else`, `upgrade_or_default` and `upgrade_or_panic` are supported",
-                ));
+                        upgrade_behaviour = Some((behaviour, attrs[0].span()));
+                        break;
+                    }
+                    _ => {
+                        if let Some(ident) = attrs[0].path().get_ident() {
+                            return Err(syn::Error::new_spanned(
+                                &attrs[0],
+                                format!(
+                                    "unsupported attribute `{ident}`: only `watch`, `strong`, `weak`, `weak_allow_none`, `to_owned`, `upgrade_or`, `upgrade_or_else`, `upgrade_or_default` and `upgrade_or_panic` are supported",
+                                ),
+                            ));
+                        } else {
+                            return Err(syn::Error::new_spanned(
+                                &attrs[0],
+                                "unsupported attribute: only `strong`, `weak`, `weak_allow_none`, `to_owned`, `upgrade_or_else`, `upgrade_or_default` and `upgrade_or_panic` are supported",
+                            ));
+                        }
+                    }
+                },
             }
         }
 

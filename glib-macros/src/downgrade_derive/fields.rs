@@ -129,7 +129,7 @@ pub fn derive_downgrade_fields(fields: syn::Fields) -> DowngradeStructParts {
                 end_of_struct: quote!(;),
                 destruct: quote! {
                     (#(
-                        ref #field_ident
+                        #field_ident
                     ),*)
                 },
                 downgrade: quote! {
@@ -171,7 +171,7 @@ pub fn derive_downgrade_fields(fields: syn::Fields) -> DowngradeStructParts {
                 end_of_struct: quote!(),
                 destruct: quote! {
                     {#(
-                        ref #field_ident
+                        #field_ident
                     ),*}
                 },
                 downgrade: quote! {

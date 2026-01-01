@@ -49,28 +49,30 @@ fn run_unsafe(send: oneshot::Sender<()>) {
         result: *mut gio::ffi::GAsyncResult,
         user_data: glib::ffi::gpointer,
     ) {
-        let mut error = std::ptr::null_mut();
-        let ret = file_size::ffi::my_file_size_get_file_size_finish(
-            source_object as *mut file_size::ffi::FileSize,
-            result,
-            &mut error,
-        );
-        if !error.is_null() {
-            eprintln!("Task returned error!");
-            return;
+        unsafe {
+            let mut error = std::ptr::null_mut();
+            let ret = file_size::ffi::my_file_size_get_file_size_finish(
+                source_object as *mut file_size::ffi::FileSize,
+                result,
+                &mut error,
+            );
+            if !error.is_null() {
+                eprintln!("Task returned error!");
+                return;
+            }
+
+            println!("Unsafe callback - Returned value from task: {ret}");
+            println!(
+                "Unsafe callback - FileSize::size: {}",
+                file_size::ffi::my_file_size_get_retrieved_size(
+                    source_object as *mut file_size::ffi::FileSize
+                )
+            );
+
+            Box::from_raw(user_data as *mut oneshot::Sender<()>)
+                .send(())
+                .unwrap();
         }
-
-        println!("Unsafe callback - Returned value from task: {ret}");
-        println!(
-            "Unsafe callback - FileSize::size: {}",
-            file_size::ffi::my_file_size_get_retrieved_size(
-                source_object as *mut file_size::ffi::FileSize
-            )
-        );
-
-        Box::from_raw(user_data as *mut oneshot::Sender<()>)
-            .send(())
-            .unwrap();
     }
 
     // The actual call to my_file_size_get_file_size_async

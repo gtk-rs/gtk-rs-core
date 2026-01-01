@@ -4,7 +4,7 @@ use std::fmt;
 
 use glib::translate::*;
 
-use crate::{ffi, Color};
+use crate::{Color, ffi};
 
 impl Color {
     #[doc(alias = "pango_color_parse")]

@@ -73,7 +73,7 @@ impl fmt::Debug for Rectangle {
 impl Uninitialized for Rectangle {
     #[inline]
     unsafe fn uninitialized() -> Self {
-        mem::zeroed()
+        unsafe { mem::zeroed() }
     }
 }
 
@@ -110,7 +110,7 @@ impl<'a> ToGlibPtrMut<'a, *mut ffi::cairo_rectangle_t> for Rectangle {
 impl FromGlibPtrNone<*const ffi::cairo_rectangle_t> for Rectangle {
     #[inline]
     unsafe fn from_glib_none(ptr: *const ffi::cairo_rectangle_t) -> Self {
-        *(ptr as *const Rectangle)
+        unsafe { *(ptr as *const Rectangle) }
     }
 }
 
@@ -119,7 +119,7 @@ impl FromGlibPtrNone<*const ffi::cairo_rectangle_t> for Rectangle {
 impl FromGlibPtrBorrow<*mut ffi::cairo_rectangle_t> for Rectangle {
     #[inline]
     unsafe fn from_glib_borrow(ptr: *mut ffi::cairo_rectangle_t) -> crate::Borrowed<Self> {
-        crate::Borrowed::new(*(ptr as *mut Rectangle))
+        unsafe { crate::Borrowed::new(*(ptr as *mut Rectangle)) }
     }
 }
 
@@ -128,7 +128,7 @@ impl FromGlibPtrBorrow<*mut ffi::cairo_rectangle_t> for Rectangle {
 impl FromGlibPtrNone<*mut ffi::cairo_rectangle_t> for Rectangle {
     #[inline]
     unsafe fn from_glib_none(ptr: *mut ffi::cairo_rectangle_t) -> Self {
-        *(ptr as *mut Rectangle)
+        unsafe { *(ptr as *mut Rectangle) }
     }
 }
 

@@ -463,5 +463,5 @@ pub use self::{
     signal::{
         Signal, SignalClassHandlerToken, SignalId, SignalInvocationHint, SignalQuery, SignalType,
     },
-    types::{register_dynamic_type, register_type, InitializingObject, InitializingType, TypeData},
+    types::{InitializingObject, InitializingType, TypeData, register_dynamic_type, register_type},
 };

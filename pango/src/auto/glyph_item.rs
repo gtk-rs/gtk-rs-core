@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, AttrList};
+use crate::{AttrList, ffi};
 use glib::translate::*;
 
 glib::wrapper! {
@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct GlyphItem(Boxed<ffi::PangoGlyphItem>);
 
     match fn {
-        copy => |ptr| ffi::pango_glyph_item_copy(mut_override(ptr)),
-        free => |ptr| ffi::pango_glyph_item_free(ptr),
+        copy => |ptr| unsafe { ffi::pango_glyph_item_copy(mut_override(ptr)) },
+        free => |ptr| unsafe { ffi::pango_glyph_item_free(ptr) },
         type_ => || ffi::pango_glyph_item_get_type(),
     }
 }

@@ -2,15 +2,15 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, translate::*, Bytes, Error, KeyFileFlags};
+use crate::{Bytes, Error, KeyFileFlags, ffi, translate::*};
 
 crate::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct KeyFile(Shared<ffi::GKeyFile>);
 
     match fn {
-        ref => |ptr| ffi::g_key_file_ref(ptr),
-        unref => |ptr| ffi::g_key_file_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_key_file_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_key_file_unref(ptr) },
         type_ => || ffi::g_key_file_get_type(),
     }
 }

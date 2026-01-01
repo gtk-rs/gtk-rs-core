@@ -50,8 +50,10 @@ macro_rules! user_data_methods {
             value: std::rc::Rc<T>,
         ) -> Result<(), crate::Error> {
             unsafe extern "C" fn destructor<T>(ptr: *mut libc::c_void) {
-                let ptr: *const T = ptr as _;
-                drop(std::rc::Rc::from_raw(ptr))
+                unsafe {
+                    let ptr: *const T = ptr as _;
+                    drop(std::rc::Rc::from_raw(ptr))
+                }
             }
             // Safety:
             //

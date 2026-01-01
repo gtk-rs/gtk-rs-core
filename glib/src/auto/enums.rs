@@ -691,7 +691,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for NormalizeMode {
 
     #[inline]
     unsafe fn from_value(value: &'a crate::Value) -> Self {
-        from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -1139,7 +1139,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for UnicodeBreakType {
 
     #[inline]
     unsafe fn from_value(value: &'a crate::Value) -> Self {
-        from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -2001,7 +2001,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for UnicodeScript {
 
     #[inline]
     unsafe fn from_value(value: &'a crate::Value) -> Self {
-        from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 
@@ -2203,7 +2203,7 @@ unsafe impl<'a> crate::value::FromValue<'a> for UnicodeType {
 
     #[inline]
     unsafe fn from_value(value: &'a crate::Value) -> Self {
-        from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0))
+        unsafe { from_glib(crate::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
     }
 }
 

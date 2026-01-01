@@ -4,7 +4,7 @@ use std::{mem, ptr};
 
 use glib::{prelude::*, translate::*};
 
-use crate::{ffi, Converter, ConverterFlags, ConverterResult};
+use crate::{Converter, ConverterFlags, ConverterResult, ffi};
 
 pub trait ConverterExtManual: IsA<Converter> + 'static {
     #[doc(alias = "g_converter_convert")]

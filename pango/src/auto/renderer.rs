@@ -3,7 +3,7 @@
 // DO NOT EDIT
 
 use crate::{
-    ffi, Color, Font, Glyph, GlyphItem, GlyphString, Layout, LayoutLine, Matrix, RenderPart,
+    Color, Font, Glyph, GlyphItem, GlyphString, Layout, LayoutLine, Matrix, RenderPart, ffi,
 };
 use glib::{prelude::*, translate::*};
 

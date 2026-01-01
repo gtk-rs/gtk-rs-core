@@ -2,9 +2,9 @@
 
 use std::{mem, ptr, sync::OnceLock};
 
-use glib::{prelude::*, subclass::prelude::*, translate::*, GString, Quark, Variant, VariantType};
+use glib::{GString, Quark, Variant, VariantType, prelude::*, subclass::prelude::*, translate::*};
 
-use crate::{ffi, ActionGroup};
+use crate::{ActionGroup, ffi};
 
 pub trait ActionGroupImpl: ObjectImpl + ObjectSubclass<Type: IsA<ActionGroup>> {
     fn action_added(&self, action_name: &str) {
@@ -363,22 +363,26 @@ unsafe extern "C" fn action_group_has_action<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
     action_nameptr: *const libc::c_char,
 ) -> glib::ffi::gboolean {
-    let instance = &*(action_group as *mut T::Instance);
-    let action_name = GString::from_glib_borrow(action_nameptr);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(action_group as *mut T::Instance);
+        let action_name = GString::from_glib_borrow(action_nameptr);
+        let imp = instance.imp();
 
-    imp.has_action(&action_name).into_glib()
+        imp.has_action(&action_name).into_glib()
+    }
 }
 
 unsafe extern "C" fn action_group_get_action_enabled<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
     action_nameptr: *const libc::c_char,
 ) -> glib::ffi::gboolean {
-    let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.imp();
-    let action_name = GString::from_glib_borrow(action_nameptr);
+    unsafe {
+        let instance = &*(action_group as *mut T::Instance);
+        let imp = instance.imp();
+        let action_name = GString::from_glib_borrow(action_nameptr);
 
-    imp.action_is_enabled(&action_name).into_glib()
+        imp.action_is_enabled(&action_name).into_glib()
+    }
 }
 
 // rustdoc-stripper-ignore-next
@@ -395,28 +399,30 @@ unsafe extern "C" fn action_group_get_action_parameter_type<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
     action_nameptr: *const libc::c_char,
 ) -> *const glib::ffi::GVariantType {
-    let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.imp();
-    let action_name = GString::from_glib_borrow(action_nameptr);
-    let wrap = from_glib_borrow::<_, ActionGroup>(action_group);
+    unsafe {
+        let instance = &*(action_group as *mut T::Instance);
+        let imp = instance.imp();
+        let action_name = GString::from_glib_borrow(action_nameptr);
+        let wrap = from_glib_borrow::<_, ActionGroup>(action_group);
 
-    let ret = imp.action_parameter_type(&action_name);
+        let ret = imp.action_parameter_type(&action_name);
 
-    if let Some(param_type) = ret {
-        let parameter_type_quark = {
-            static QUARK: OnceLock<Quark> = OnceLock::new();
-            *QUARK.get_or_init(|| {
-                Quark::from_str("gtk-rs-subclass-action-group-get-action-parameter")
-            })
-        };
-        let param_type = param_type.into_glib_ptr();
-        wrap.set_qdata(
-            parameter_type_quark,
-            PtrHolder(param_type, |ptr| glib::ffi::g_free(ptr as *mut _)),
-        );
-        param_type
-    } else {
-        ptr::null()
+        if let Some(param_type) = ret {
+            let parameter_type_quark = {
+                static QUARK: OnceLock<Quark> = OnceLock::new();
+                *QUARK.get_or_init(|| {
+                    Quark::from_str("gtk-rs-subclass-action-group-get-action-parameter")
+                })
+            };
+            let param_type = param_type.into_glib_ptr();
+            wrap.set_qdata(
+                parameter_type_quark,
+                PtrHolder(param_type, |ptr| glib::ffi::g_free(ptr as *mut _)),
+            );
+            param_type
+        } else {
+            ptr::null()
+        }
     }
 }
 
@@ -424,28 +430,30 @@ unsafe extern "C" fn action_group_get_action_state_type<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
     action_nameptr: *const libc::c_char,
 ) -> *const glib::ffi::GVariantType {
-    let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.imp();
-    let action_name = GString::from_glib_borrow(action_nameptr);
+    unsafe {
+        let instance = &*(action_group as *mut T::Instance);
+        let imp = instance.imp();
+        let action_name = GString::from_glib_borrow(action_nameptr);
 
-    let ret = imp.action_state_type(&action_name);
+        let ret = imp.action_state_type(&action_name);
 
-    if let Some(state_type) = ret {
-        let instance = imp.obj();
-        let state_type_quark = {
-            static QUARK: OnceLock<Quark> = OnceLock::new();
-            *QUARK.get_or_init(|| {
-                Quark::from_str("gtk-rs-subclass-action-group-get-action-state-type")
-            })
-        };
-        let state_type = state_type.into_glib_ptr();
-        instance.set_qdata(
-            state_type_quark,
-            PtrHolder(state_type, |ptr| glib::ffi::g_free(ptr as *mut _)),
-        );
-        state_type
-    } else {
-        ptr::null()
+        if let Some(state_type) = ret {
+            let instance = imp.obj();
+            let state_type_quark = {
+                static QUARK: OnceLock<Quark> = OnceLock::new();
+                *QUARK.get_or_init(|| {
+                    Quark::from_str("gtk-rs-subclass-action-group-get-action-state-type")
+                })
+            };
+            let state_type = state_type.into_glib_ptr();
+            instance.set_qdata(
+                state_type_quark,
+                PtrHolder(state_type, |ptr| glib::ffi::g_free(ptr as *mut _)),
+            );
+            state_type
+        } else {
+            ptr::null()
+        }
     }
 }
 
@@ -453,27 +461,29 @@ unsafe extern "C" fn action_group_get_action_state_hint<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
     action_nameptr: *const libc::c_char,
 ) -> *mut glib::ffi::GVariant {
-    let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.imp();
-    let action_name = GString::from_glib_borrow(action_nameptr);
+    unsafe {
+        let instance = &*(action_group as *mut T::Instance);
+        let imp = instance.imp();
+        let action_name = GString::from_glib_borrow(action_nameptr);
 
-    let ret = imp.action_state_hint(&action_name);
-    if let Some(state_hint) = ret {
-        let instance = imp.obj();
-        let state_hint_quark = {
-            static QUARK: OnceLock<Quark> = OnceLock::new();
-            *QUARK.get_or_init(|| {
-                Quark::from_str("gtk-rs-subclass-action-group-get-action-state-hint")
-            })
-        };
-        let state_hint_ptr = state_hint.into_glib_ptr();
-        instance.set_qdata(
-            state_hint_quark,
-            PtrHolder(state_hint_ptr, |ptr| glib::ffi::g_variant_unref(ptr)),
-        );
-        state_hint_ptr
-    } else {
-        ptr::null_mut()
+        let ret = imp.action_state_hint(&action_name);
+        if let Some(state_hint) = ret {
+            let instance = imp.obj();
+            let state_hint_quark = {
+                static QUARK: OnceLock<Quark> = OnceLock::new();
+                *QUARK.get_or_init(|| {
+                    Quark::from_str("gtk-rs-subclass-action-group-get-action-state-hint")
+                })
+            };
+            let state_hint_ptr = state_hint.into_glib_ptr();
+            instance.set_qdata(
+                state_hint_quark,
+                PtrHolder(state_hint_ptr, |ptr| glib::ffi::g_variant_unref(ptr)),
+            );
+            state_hint_ptr
+        } else {
+            ptr::null_mut()
+        }
     }
 }
 
@@ -481,25 +491,29 @@ unsafe extern "C" fn action_group_get_action_state<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
     action_nameptr: *const libc::c_char,
 ) -> *mut glib::ffi::GVariant {
-    let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.imp();
-    let action_name = GString::from_glib_borrow(action_nameptr);
+    unsafe {
+        let instance = &*(action_group as *mut T::Instance);
+        let imp = instance.imp();
+        let action_name = GString::from_glib_borrow(action_nameptr);
 
-    let ret = imp.action_state(&action_name);
-    if let Some(state) = ret {
-        let instance = imp.obj();
-        let state_quark = {
-            static QUARK: OnceLock<Quark> = OnceLock::new();
-            *QUARK.get_or_init(|| Quark::from_str("gtk-rs-subclass-action-group-get-action-state"))
-        };
-        let state_ptr = state.into_glib_ptr();
-        instance.set_qdata(
-            state_quark,
-            PtrHolder(state_ptr, |ptr| glib::ffi::g_variant_unref(ptr)),
-        );
-        state_ptr
-    } else {
-        ptr::null_mut()
+        let ret = imp.action_state(&action_name);
+        if let Some(state) = ret {
+            let instance = imp.obj();
+            let state_quark = {
+                static QUARK: OnceLock<Quark> = OnceLock::new();
+                *QUARK.get_or_init(|| {
+                    Quark::from_str("gtk-rs-subclass-action-group-get-action-state")
+                })
+            };
+            let state_ptr = state.into_glib_ptr();
+            instance.set_qdata(
+                state_quark,
+                PtrHolder(state_ptr, |ptr| glib::ffi::g_variant_unref(ptr)),
+            );
+            state_ptr
+        } else {
+            ptr::null_mut()
+        }
     }
 }
 
@@ -508,12 +522,14 @@ unsafe extern "C" fn action_group_change_action_state<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
     stateptr: *mut glib::ffi::GVariant,
 ) {
-    let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.imp();
-    let action_name = GString::from_glib_borrow(action_nameptr);
-    let state = Variant::from_glib_borrow(stateptr);
+    unsafe {
+        let instance = &*(action_group as *mut T::Instance);
+        let imp = instance.imp();
+        let action_name = GString::from_glib_borrow(action_nameptr);
+        let state = Variant::from_glib_borrow(stateptr);
 
-    imp.change_action_state(&action_name, &state)
+        imp.change_action_state(&action_name, &state)
+    }
 }
 
 unsafe extern "C" fn action_group_activate_action<T: ActionGroupImpl>(
@@ -521,34 +537,40 @@ unsafe extern "C" fn action_group_activate_action<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
     parameterptr: *mut glib::ffi::GVariant,
 ) {
-    let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.imp();
-    let action_name = GString::from_glib_borrow(action_nameptr);
-    let param: Borrowed<Option<Variant>> = from_glib_borrow(parameterptr);
+    unsafe {
+        let instance = &*(action_group as *mut T::Instance);
+        let imp = instance.imp();
+        let action_name = GString::from_glib_borrow(action_nameptr);
+        let param: Borrowed<Option<Variant>> = from_glib_borrow(parameterptr);
 
-    imp.activate_action(&action_name, param.as_ref().as_ref())
+        imp.activate_action(&action_name, param.as_ref().as_ref())
+    }
 }
 
 unsafe extern "C" fn action_group_action_added<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
     action_nameptr: *const libc::c_char,
 ) {
-    let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.imp();
-    let action_name = GString::from_glib_borrow(action_nameptr);
+    unsafe {
+        let instance = &*(action_group as *mut T::Instance);
+        let imp = instance.imp();
+        let action_name = GString::from_glib_borrow(action_nameptr);
 
-    imp.action_added(&action_name)
+        imp.action_added(&action_name)
+    }
 }
 
 unsafe extern "C" fn action_group_action_removed<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
     action_nameptr: *const libc::c_char,
 ) {
-    let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.imp();
-    let action_name = GString::from_glib_borrow(action_nameptr);
+    unsafe {
+        let instance = &*(action_group as *mut T::Instance);
+        let imp = instance.imp();
+        let action_name = GString::from_glib_borrow(action_nameptr);
 
-    imp.action_removed(&action_name)
+        imp.action_removed(&action_name)
+    }
 }
 
 unsafe extern "C" fn action_group_action_enabled_changed<T: ActionGroupImpl>(
@@ -556,11 +578,13 @@ unsafe extern "C" fn action_group_action_enabled_changed<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
     enabled: glib::ffi::gboolean,
 ) {
-    let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.imp();
-    let action_name = GString::from_glib_borrow(action_nameptr);
+    unsafe {
+        let instance = &*(action_group as *mut T::Instance);
+        let imp = instance.imp();
+        let action_name = GString::from_glib_borrow(action_nameptr);
 
-    imp.action_enabled_changed(&action_name, from_glib(enabled))
+        imp.action_enabled_changed(&action_name, from_glib(enabled))
+    }
 }
 
 unsafe extern "C" fn action_group_action_state_changed<T: ActionGroupImpl>(
@@ -568,31 +592,35 @@ unsafe extern "C" fn action_group_action_state_changed<T: ActionGroupImpl>(
     action_nameptr: *const libc::c_char,
     stateptr: *mut glib::ffi::GVariant,
 ) {
-    let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.imp();
-    let action_name = GString::from_glib_borrow(action_nameptr);
-    let state = Variant::from_glib_borrow(stateptr);
+    unsafe {
+        let instance = &*(action_group as *mut T::Instance);
+        let imp = instance.imp();
+        let action_name = GString::from_glib_borrow(action_nameptr);
+        let state = Variant::from_glib_borrow(stateptr);
 
-    imp.action_state_changed(&action_name, &state)
+        imp.action_state_changed(&action_name, &state)
+    }
 }
 
 unsafe extern "C" fn action_group_list_actions<T: ActionGroupImpl>(
     action_group: *mut ffi::GActionGroup,
 ) -> *mut *mut libc::c_char {
-    let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(action_group as *mut T::Instance);
+        let imp = instance.imp();
 
-    let actions = imp.list_actions();
+        let actions = imp.list_actions();
 
-    {
-        let instance = imp.obj();
-        let actions_quark = {
-            static QUARK: OnceLock<Quark> = OnceLock::new();
-            *QUARK.get_or_init(|| Quark::from_str("gtk-rs-subclass-action-group-list-actions"))
-        };
-        let actionsptr = actions.to_glib_full();
-        instance.set_qdata(actions_quark, actionsptr);
-        actionsptr
+        {
+            let instance = imp.obj();
+            let actions_quark = {
+                static QUARK: OnceLock<Quark> = OnceLock::new();
+                *QUARK.get_or_init(|| Quark::from_str("gtk-rs-subclass-action-group-list-actions"))
+            };
+            let actionsptr = actions.to_glib_full();
+            instance.set_qdata(actions_quark, actionsptr);
+            actionsptr
+        }
     }
 }
 
@@ -605,92 +633,96 @@ unsafe extern "C" fn action_group_query_action<T: ActionGroupImpl>(
     state_hint: *mut *mut glib::ffi::GVariant,
     state: *mut *mut glib::ffi::GVariant,
 ) -> glib::ffi::gboolean {
-    let instance = &*(action_group as *mut T::Instance);
-    let imp = instance.imp();
-    let action_name = GString::from_glib_borrow(action_nameptr);
+    unsafe {
+        let instance = &*(action_group as *mut T::Instance);
+        let imp = instance.imp();
+        let action_name = GString::from_glib_borrow(action_nameptr);
 
-    let ret = imp.query_action(&action_name);
-    if let Some((rs_enabled, rs_parameter_type, rs_state_type, rs_state_hint, rs_state)) = ret {
-        let instance = imp.obj();
+        let ret = imp.query_action(&action_name);
+        if let Some((rs_enabled, rs_parameter_type, rs_state_type, rs_state_hint, rs_state)) = ret {
+            let instance = imp.obj();
 
-        if !enabled.is_null() {
-            *enabled = rs_enabled.into_glib();
-        }
-        if !parameter_type.is_null() {
-            if let Some(rs_parameter_type) = rs_parameter_type {
-                let param_type_quark = {
-                    static QUARK: OnceLock<Quark> = OnceLock::new();
-                    *QUARK.get_or_init(|| {
-                        Quark::from_str("gtk-rs-subclass-action-group-query-action-parameter-type")
-                    })
-                };
-                let ret = rs_parameter_type.into_glib_ptr();
-                instance.set_qdata(
-                    param_type_quark,
-                    PtrHolder(ret, |ptr| glib::ffi::g_free(ptr as *mut _)),
-                );
-                *parameter_type = ret;
-            } else {
-                *parameter_type = ptr::null_mut();
+            if !enabled.is_null() {
+                *enabled = rs_enabled.into_glib();
             }
-        }
-        if !state_type.is_null() {
-            if let Some(rs_state_type) = rs_state_type {
-                let state_type_quark = {
-                    static QUARK: OnceLock<Quark> = OnceLock::new();
-                    *QUARK.get_or_init(|| {
-                        Quark::from_str("gtk-rs-subclass-action-group-query-action-state-type")
-                    })
-                };
-                let ret = rs_state_type.into_glib_ptr();
-                instance.set_qdata(
-                    state_type_quark,
-                    PtrHolder(ret, |ptr| glib::ffi::g_free(ptr as *mut _)),
-                );
-                *state_type = ret;
-            } else {
-                *state_type = ptr::null_mut();
+            if !parameter_type.is_null() {
+                if let Some(rs_parameter_type) = rs_parameter_type {
+                    let param_type_quark = {
+                        static QUARK: OnceLock<Quark> = OnceLock::new();
+                        *QUARK.get_or_init(|| {
+                            Quark::from_str(
+                                "gtk-rs-subclass-action-group-query-action-parameter-type",
+                            )
+                        })
+                    };
+                    let ret = rs_parameter_type.into_glib_ptr();
+                    instance.set_qdata(
+                        param_type_quark,
+                        PtrHolder(ret, |ptr| glib::ffi::g_free(ptr as *mut _)),
+                    );
+                    *parameter_type = ret;
+                } else {
+                    *parameter_type = ptr::null_mut();
+                }
             }
-        }
-        if !state_hint.is_null() {
-            if let Some(rs_state_hint) = rs_state_hint {
-                let state_hint_quark = {
-                    static QUARK: OnceLock<Quark> = OnceLock::new();
-                    *QUARK.get_or_init(|| {
-                        Quark::from_str("gtk-rs-subclass-action-group-query-action-state-hint")
-                    })
-                };
-                let ret = rs_state_hint.into_glib_ptr();
-                instance.set_qdata(
-                    state_hint_quark,
-                    PtrHolder(ret, |ptr| glib::ffi::g_variant_unref(ptr)),
-                );
-                *state_hint = ret;
-            } else {
-                *state_hint = ptr::null_mut();
+            if !state_type.is_null() {
+                if let Some(rs_state_type) = rs_state_type {
+                    let state_type_quark = {
+                        static QUARK: OnceLock<Quark> = OnceLock::new();
+                        *QUARK.get_or_init(|| {
+                            Quark::from_str("gtk-rs-subclass-action-group-query-action-state-type")
+                        })
+                    };
+                    let ret = rs_state_type.into_glib_ptr();
+                    instance.set_qdata(
+                        state_type_quark,
+                        PtrHolder(ret, |ptr| glib::ffi::g_free(ptr as *mut _)),
+                    );
+                    *state_type = ret;
+                } else {
+                    *state_type = ptr::null_mut();
+                }
             }
-        }
-        if !state.is_null() {
-            if let Some(rs_state) = rs_state {
-                let state_quark = {
-                    static QUARK: OnceLock<Quark> = OnceLock::new();
-                    *QUARK.get_or_init(|| {
-                        Quark::from_str("gtk-rs-subclass-action-group-query-action-state")
-                    })
-                };
-                let ret = rs_state.into_glib_ptr();
-                instance.set_qdata(
-                    state_quark,
-                    PtrHolder(ret, |ptr| glib::ffi::g_variant_unref(ptr)),
-                );
-                *state = ret;
-            } else {
-                *state = ptr::null_mut();
+            if !state_hint.is_null() {
+                if let Some(rs_state_hint) = rs_state_hint {
+                    let state_hint_quark = {
+                        static QUARK: OnceLock<Quark> = OnceLock::new();
+                        *QUARK.get_or_init(|| {
+                            Quark::from_str("gtk-rs-subclass-action-group-query-action-state-hint")
+                        })
+                    };
+                    let ret = rs_state_hint.into_glib_ptr();
+                    instance.set_qdata(
+                        state_hint_quark,
+                        PtrHolder(ret, |ptr| glib::ffi::g_variant_unref(ptr)),
+                    );
+                    *state_hint = ret;
+                } else {
+                    *state_hint = ptr::null_mut();
+                }
             }
+            if !state.is_null() {
+                if let Some(rs_state) = rs_state {
+                    let state_quark = {
+                        static QUARK: OnceLock<Quark> = OnceLock::new();
+                        *QUARK.get_or_init(|| {
+                            Quark::from_str("gtk-rs-subclass-action-group-query-action-state")
+                        })
+                    };
+                    let ret = rs_state.into_glib_ptr();
+                    instance.set_qdata(
+                        state_quark,
+                        PtrHolder(ret, |ptr| glib::ffi::g_variant_unref(ptr)),
+                    );
+                    *state = ret;
+                } else {
+                    *state = ptr::null_mut();
+                }
+            }
+            true
+        } else {
+            false
         }
-        true
-    } else {
-        false
+        .into_glib()
     }
-    .into_glib()
 }

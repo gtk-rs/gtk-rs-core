@@ -9,8 +9,8 @@ glib::wrapper! {
     pub struct DBusMethodInfo(Shared<ffi::GDBusMethodInfo>);
 
     match fn {
-        ref => |ptr| ffi::g_dbus_method_info_ref(ptr),
-        unref => |ptr| ffi::g_dbus_method_info_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_dbus_method_info_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_dbus_method_info_unref(ptr) },
         type_ => || ffi::g_dbus_method_info_get_type(),
     }
 }

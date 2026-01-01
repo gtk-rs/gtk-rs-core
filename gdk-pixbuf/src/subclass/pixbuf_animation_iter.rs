@@ -10,7 +10,7 @@ use std::{
 
 use glib::{prelude::*, subclass::prelude::*, translate::*};
 
-use crate::{ffi, Pixbuf, PixbufAnimationIter};
+use crate::{Pixbuf, PixbufAnimationIter, ffi};
 
 pub trait PixbufAnimationIterImpl:
     ObjectImpl + ObjectSubclass<Type: IsA<PixbufAnimationIter>>
@@ -135,47 +135,55 @@ unsafe impl<T: PixbufAnimationIterImpl> IsSubclassable<T> for PixbufAnimationIte
 unsafe extern "C" fn animation_iter_get_delay_time<T: PixbufAnimationIterImpl>(
     ptr: *mut ffi::GdkPixbufAnimationIter,
 ) -> i32 {
-    let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(ptr as *mut T::Instance);
+        let imp = instance.imp();
 
-    imp.delay_time().map(|t| t.as_millis() as i32).unwrap_or(-1)
+        imp.delay_time().map(|t| t.as_millis() as i32).unwrap_or(-1)
+    }
 }
 
 unsafe extern "C" fn animation_iter_get_pixbuf<T: PixbufAnimationIterImpl>(
     ptr: *mut ffi::GdkPixbufAnimationIter,
 ) -> *mut ffi::GdkPixbuf {
-    let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(ptr as *mut T::Instance);
+        let imp = instance.imp();
 
-    let pixbuf = imp.pixbuf();
-    // Ensure that the pixbuf stays alive until the next call
-    let pixbuf_quark = {
-        static QUARK: OnceLock<glib::Quark> = OnceLock::new();
-        *QUARK.get_or_init(|| glib::Quark::from_str("gtk-rs-subclass-pixbuf"))
-    };
-    imp.obj().set_qdata(pixbuf_quark, pixbuf.clone());
-    pixbuf.to_glib_none().0
+        let pixbuf = imp.pixbuf();
+        // Ensure that the pixbuf stays alive until the next call
+        let pixbuf_quark = {
+            static QUARK: OnceLock<glib::Quark> = OnceLock::new();
+            *QUARK.get_or_init(|| glib::Quark::from_str("gtk-rs-subclass-pixbuf"))
+        };
+        imp.obj().set_qdata(pixbuf_quark, pixbuf.clone());
+        pixbuf.to_glib_none().0
+    }
 }
 
 unsafe extern "C" fn animation_iter_on_currently_loading_frame<T: PixbufAnimationIterImpl>(
     ptr: *mut ffi::GdkPixbufAnimationIter,
 ) -> glib::ffi::gboolean {
-    let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(ptr as *mut T::Instance);
+        let imp = instance.imp();
 
-    imp.on_currently_loading_frame().into_glib()
+        imp.on_currently_loading_frame().into_glib()
+    }
 }
 
 unsafe extern "C" fn animation_iter_advance<T: PixbufAnimationIterImpl>(
     ptr: *mut ffi::GdkPixbufAnimationIter,
     current_time_ptr: *const glib::ffi::GTimeVal,
 ) -> glib::ffi::gboolean {
-    let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(ptr as *mut T::Instance);
+        let imp = instance.imp();
 
-    let current_time = SystemTime::UNIX_EPOCH
-        + Duration::from_secs((*current_time_ptr).tv_sec.try_into().unwrap())
-        + Duration::from_micros((*current_time_ptr).tv_usec.try_into().unwrap());
+        let current_time = SystemTime::UNIX_EPOCH
+            + Duration::from_secs((*current_time_ptr).tv_sec.try_into().unwrap())
+            + Duration::from_micros((*current_time_ptr).tv_usec.try_into().unwrap());
 
-    imp.advance(current_time).into_glib()
+        imp.advance(current_time).into_glib()
+    }
 }

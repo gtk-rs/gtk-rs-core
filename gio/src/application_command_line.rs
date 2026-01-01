@@ -1,8 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use glib::{prelude::*, translate::*, ExitCode};
+use glib::{ExitCode, prelude::*, translate::*};
 
-use crate::{ffi, ApplicationCommandLine};
+use crate::{ApplicationCommandLine, ffi};
 
 pub trait ApplicationCommandLineExtManual: IsA<ApplicationCommandLine> {
     #[doc(alias = "g_application_command_line_get_exit_status")]

@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, Point3D, Sphere, Vec3};
+use crate::{Point3D, Sphere, Vec3, ffi};
 use glib::translate::*;
 
 glib::wrapper! {
@@ -170,11 +170,7 @@ impl Box {
                 b.to_glib_none().0,
                 res.to_glib_none_mut().0,
             );
-            if ret {
-                Some(res)
-            } else {
-                None
-            }
+            if ret { Some(res) } else { None }
         }
     }
 

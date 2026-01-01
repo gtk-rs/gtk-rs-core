@@ -4,7 +4,7 @@ use std::net::IpAddr;
 
 use glib::{prelude::*, translate::*};
 
-use crate::{ffi, prelude::*, InetAddress, SocketFamily};
+use crate::{InetAddress, SocketFamily, ffi, prelude::*};
 
 #[derive(Debug)]
 pub enum InetAddressBytes<'a> {

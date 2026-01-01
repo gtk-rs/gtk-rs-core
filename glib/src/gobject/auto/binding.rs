@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, translate::*, BindingFlags};
+use crate::{BindingFlags, ffi, translate::*};
 
 crate::wrapper! {
     #[doc(alias = "GBinding")]

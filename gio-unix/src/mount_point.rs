@@ -4,7 +4,7 @@ use std::mem;
 
 use glib::translate::*;
 
-use crate::{ffi, MountPoint};
+use crate::{MountPoint, ffi};
 
 impl MountPoint {
     #[cfg(unix)]

@@ -2,15 +2,15 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, translate::*, MainContext};
+use crate::{MainContext, ffi, translate::*};
 
 crate::wrapper! {
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MainLoop(Shared<ffi::GMainLoop>);
 
     match fn {
-        ref => |ptr| ffi::g_main_loop_ref(ptr),
-        unref => |ptr| ffi::g_main_loop_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_main_loop_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_main_loop_unref(ptr) },
         type_ => || ffi::g_main_loop_get_type(),
     }
 }

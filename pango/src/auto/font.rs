@@ -8,7 +8,7 @@ use crate::Context;
 #[cfg(feature = "v1_46")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
 use crate::FontFace;
-use crate::{ffi, Coverage, FontDescription, FontMap, FontMetrics, Glyph, Language, Rectangle};
+use crate::{Coverage, FontDescription, FontMap, FontMetrics, Glyph, Language, Rectangle, ffi};
 use glib::{prelude::*, translate::*};
 
 glib::wrapper! {

@@ -12,7 +12,7 @@ use glib::translate::*;
 #[cfg(feature = "v1_16")]
 use crate::font::font_face::to_optional_string;
 use crate::{
-    ffi, utils::status_to_result, Antialias, Error, HintMetrics, HintStyle, SubpixelOrder,
+    Antialias, Error, HintMetrics, HintStyle, SubpixelOrder, ffi, utils::status_to_result,
 };
 
 #[cfg(feature = "use_glib")]
@@ -58,7 +58,7 @@ impl FontOptions {
     #[cfg_attr(docsrs, doc(cfg(feature = "use_glib")))]
     #[inline]
     pub unsafe fn from_raw_full(ptr: *mut ffi::cairo_font_options_t) -> Self {
-        from_glib_full(ptr)
+        unsafe { from_glib_full(ptr) }
     }
 
     #[cfg(not(feature = "use_glib"))]

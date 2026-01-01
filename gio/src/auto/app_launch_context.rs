@@ -2,11 +2,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, AppInfo, File};
+use crate::{AppInfo, File, ffi};
 use glib::{
     object::ObjectType as _,
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::boxed::Box as Box_;
@@ -115,11 +115,13 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + 'static {
             startup_notify_id: *mut std::ffi::c_char,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                AppLaunchContext::from_glib_borrow(this).unsafe_cast_ref(),
-                &glib::GString::from_glib_borrow(startup_notify_id),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    AppLaunchContext::from_glib_borrow(this).unsafe_cast_ref(),
+                    &glib::GString::from_glib_borrow(startup_notify_id),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -150,14 +152,16 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + 'static {
             platform_data: *mut glib::ffi::GVariant,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                AppLaunchContext::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(info),
-                Option::<glib::Variant>::from_glib_borrow(platform_data)
-                    .as_ref()
-                    .as_ref(),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    AppLaunchContext::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(info),
+                    Option::<glib::Variant>::from_glib_borrow(platform_data)
+                        .as_ref()
+                        .as_ref(),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -186,12 +190,14 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + 'static {
             platform_data: *mut glib::ffi::GVariant,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                AppLaunchContext::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(info),
-                &from_glib_borrow(platform_data),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    AppLaunchContext::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(info),
+                    &from_glib_borrow(platform_data),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

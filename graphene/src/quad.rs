@@ -4,7 +4,7 @@ use std::fmt;
 
 use glib::translate::*;
 
-use crate::{ffi, Point, Quad, Rect};
+use crate::{Point, Quad, Rect, ffi};
 
 impl Quad {
     #[doc(alias = "graphene_quad_init")]

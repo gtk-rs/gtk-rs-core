@@ -4,7 +4,7 @@ use std::mem;
 
 use glib::translate::*;
 
-use crate::{ffi, MountEntry};
+use crate::{MountEntry, ffi};
 
 impl MountEntry {
     #[doc(alias = "g_unix_mounts_get")]

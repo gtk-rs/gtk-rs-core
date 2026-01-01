@@ -4,15 +4,15 @@ use std::cell::Cell;
 use std::cell::RefCell;
 use std::marker::PhantomData;
 use std::rc::Rc;
-use std::sync::atomic::Ordering;
 use std::sync::Arc;
 use std::sync::Mutex;
 use std::sync::RwLock;
+use std::sync::atomic::Ordering;
 
-use crate::prelude::*;
 use crate::Object;
 use crate::SendWeakRef;
 use crate::WeakRef;
+use crate::prelude::*;
 
 // rustdoc-stripper-ignore-next
 /// A type that can be used as a property. It covers every type which have an associated `ParamSpec`

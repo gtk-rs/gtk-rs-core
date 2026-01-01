@@ -5,7 +5,7 @@
 #[cfg(feature = "v1_57")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_57")))]
 use crate::FontColor;
-use crate::{ffi, FontMask, Gravity, Stretch, Style, Variant, Weight};
+use crate::{FontMask, Gravity, Stretch, Style, Variant, Weight, ffi};
 use glib::translate::*;
 
 glib::wrapper! {
@@ -13,8 +13,8 @@ glib::wrapper! {
     pub struct FontDescription(Boxed<ffi::PangoFontDescription>);
 
     match fn {
-        copy => |ptr| ffi::pango_font_description_copy(ptr),
-        free => |ptr| ffi::pango_font_description_free(ptr),
+        copy => |ptr| unsafe { ffi::pango_font_description_copy(ptr) },
+        free => |ptr| unsafe { ffi::pango_font_description_free(ptr) },
         type_ => || ffi::pango_font_description_get_type(),
     }
 }

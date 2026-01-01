@@ -2,9 +2,9 @@
 
 use std::ptr;
 
-use glib::{prelude::*, subclass::prelude::*, translate::*, Error};
+use glib::{Error, prelude::*, subclass::prelude::*, translate::*};
 
-use crate::{ffi, Cancellable, InputStream};
+use crate::{Cancellable, InputStream, ffi};
 
 pub trait InputStreamImpl: Send + ObjectImpl + ObjectSubclass<Type: IsA<InputStream>> {
     fn read(&self, buffer: &mut [u8], cancellable: Option<&Cancellable>) -> Result<usize, Error> {
@@ -118,31 +118,33 @@ unsafe extern "C" fn stream_read<T: InputStreamImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> isize {
-    debug_assert!(count <= isize::MAX as usize);
+    unsafe {
+        debug_assert!(count <= isize::MAX as usize);
 
-    let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.imp();
+        let instance = &*(ptr as *mut T::Instance);
+        let imp = instance.imp();
 
-    match imp.read(
-        if count == 0 {
-            &mut []
-        } else {
-            std::slice::from_raw_parts_mut(buffer as *mut u8, count)
-        },
-        Option::<Cancellable>::from_glib_borrow(cancellable)
-            .as_ref()
-            .as_ref(),
-    ) {
-        Ok(res) => {
-            assert!(res <= isize::MAX as usize);
-            assert!(res <= count);
-            res as isize
-        }
-        Err(e) => {
-            if !err.is_null() {
-                *err = e.into_glib_ptr();
+        match imp.read(
+            if count == 0 {
+                &mut []
+            } else {
+                std::slice::from_raw_parts_mut(buffer as *mut u8, count)
+            },
+            Option::<Cancellable>::from_glib_borrow(cancellable)
+                .as_ref()
+                .as_ref(),
+        ) {
+            Ok(res) => {
+                assert!(res <= isize::MAX as usize);
+                assert!(res <= count);
+                res as isize
             }
-            -1
+            Err(e) => {
+                if !err.is_null() {
+                    *err = e.into_glib_ptr();
+                }
+                -1
+            }
         }
     }
 }
@@ -152,20 +154,22 @@ unsafe extern "C" fn stream_close<T: InputStreamImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> glib::ffi::gboolean {
-    let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.imp();
+    unsafe {
+        let instance = &*(ptr as *mut T::Instance);
+        let imp = instance.imp();
 
-    match imp.close(
-        Option::<Cancellable>::from_glib_borrow(cancellable)
-            .as_ref()
-            .as_ref(),
-    ) {
-        Ok(_) => glib::ffi::GTRUE,
-        Err(e) => {
-            if !err.is_null() {
-                *err = e.into_glib_ptr();
+        match imp.close(
+            Option::<Cancellable>::from_glib_borrow(cancellable)
+                .as_ref()
+                .as_ref(),
+        ) {
+            Ok(_) => glib::ffi::GTRUE,
+            Err(e) => {
+                if !err.is_null() {
+                    *err = e.into_glib_ptr();
+                }
+                glib::ffi::GFALSE
             }
-            glib::ffi::GFALSE
         }
     }
 }
@@ -176,27 +180,29 @@ unsafe extern "C" fn stream_skip<T: InputStreamImpl>(
     cancellable: *mut ffi::GCancellable,
     err: *mut *mut glib::ffi::GError,
 ) -> isize {
-    debug_assert!(count <= isize::MAX as usize);
+    unsafe {
+        debug_assert!(count <= isize::MAX as usize);
 
-    let instance = &*(ptr as *mut T::Instance);
-    let imp = instance.imp();
+        let instance = &*(ptr as *mut T::Instance);
+        let imp = instance.imp();
 
-    match imp.skip(
-        count,
-        Option::<Cancellable>::from_glib_borrow(cancellable)
-            .as_ref()
-            .as_ref(),
-    ) {
-        Ok(res) => {
-            assert!(res <= isize::MAX as usize);
-            assert!(res <= count);
-            res as isize
-        }
-        Err(e) => {
-            if !err.is_null() {
-                *err = e.into_glib_ptr();
+        match imp.skip(
+            count,
+            Option::<Cancellable>::from_glib_borrow(cancellable)
+                .as_ref()
+                .as_ref(),
+        ) {
+            Ok(res) => {
+                assert!(res <= isize::MAX as usize);
+                assert!(res <= count);
+                res as isize
             }
-            -1
+            Err(e) => {
+                if !err.is_null() {
+                    *err = e.into_glib_ptr();
+                }
+                -1
+            }
         }
     }
 }
@@ -314,7 +320,9 @@ mod tests {
         assert_eq!(stream.read(&mut buf, crate::Cancellable::NONE), Ok(16));
         assert_eq!(
             &buf,
-            &[18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]
+            &[
+                18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33
+            ]
         );
 
         let seekable = stream.dynamic_cast_ref::<crate::Seekable>().unwrap();

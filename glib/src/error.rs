@@ -5,7 +5,7 @@
 
 use std::{borrow::Cow, convert::Infallible, error, ffi::CStr, fmt, str};
 
-use crate::{ffi, translate::*, Quark};
+use crate::{Quark, ffi, translate::*};
 
 wrapper! {
     // rustdoc-stripper-ignore-next
@@ -139,8 +139,8 @@ impl fmt::Display for Error {
 impl fmt::Debug for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("Error")
-            .field("domain", unsafe {
-                &crate::Quark::from_glib(self.inner.domain)
+            .field("domain", &unsafe {
+                crate::Quark::from_glib(self.inner.domain)
             })
             .field("code", &self.inner.code)
             .field("message", &self.message())

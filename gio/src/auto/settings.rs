@@ -5,11 +5,11 @@
 #[cfg(feature = "v2_82")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_82")))]
 use crate::SettingsBindFlags;
-use crate::{ffi, Action, SettingsBackend, SettingsSchema};
+use crate::{Action, SettingsBackend, SettingsSchema, ffi};
 use glib::{
     object::ObjectType as _,
     prelude::*,
-    signal::{connect_raw, SignalHandlerId},
+    signal::{SignalHandlerId, connect_raw},
     translate::*,
 };
 use std::boxed::Box as Box_;
@@ -516,11 +516,13 @@ pub trait SettingsExt: IsA<Settings> + 'static {
             key: *mut std::ffi::c_char,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                Settings::from_glib_borrow(this).unsafe_cast_ref(),
-                &glib::GString::from_glib_borrow(key),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    Settings::from_glib_borrow(this).unsafe_cast_ref(),
+                    &glib::GString::from_glib_borrow(key),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -552,8 +554,10 @@ pub trait SettingsExt: IsA<Settings> + 'static {
             key: std::ffi::c_uint,
             f: glib::ffi::gpointer,
         ) -> glib::ffi::gboolean {
-            let f: &F = &*(f as *const F);
-            f(Settings::from_glib_borrow(this).unsafe_cast_ref(), key).into_glib()
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(Settings::from_glib_borrow(this).unsafe_cast_ref(), key).into_glib()
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -582,11 +586,13 @@ pub trait SettingsExt: IsA<Settings> + 'static {
             key: *mut std::ffi::c_char,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                Settings::from_glib_borrow(this).unsafe_cast_ref(),
-                &glib::GString::from_glib_borrow(key),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    Settings::from_glib_borrow(this).unsafe_cast_ref(),
+                    &glib::GString::from_glib_borrow(key),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -615,8 +621,10 @@ pub trait SettingsExt: IsA<Settings> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(Settings::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(Settings::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
@@ -641,8 +649,10 @@ pub trait SettingsExt: IsA<Settings> + 'static {
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(Settings::from_glib_borrow(this).unsafe_cast_ref())
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(Settings::from_glib_borrow(this).unsafe_cast_ref())
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);

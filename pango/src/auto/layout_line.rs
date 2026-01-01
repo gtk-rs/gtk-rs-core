@@ -5,7 +5,7 @@
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 use crate::Direction;
-use crate::{ffi, Rectangle};
+use crate::{Rectangle, ffi};
 use glib::translate::*;
 
 glib::wrapper! {
@@ -13,8 +13,8 @@ glib::wrapper! {
     pub struct LayoutLine(Shared<ffi::PangoLayoutLine>);
 
     match fn {
-        ref => |ptr| ffi::pango_layout_line_ref(ptr),
-        unref => |ptr| ffi::pango_layout_line_unref(ptr),
+        ref => |ptr| unsafe { ffi::pango_layout_line_ref(ptr) },
+        unref => |ptr| unsafe { ffi::pango_layout_line_unref(ptr) },
         type_ => || ffi::pango_layout_line_get_type(),
     }
 }

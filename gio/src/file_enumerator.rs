@@ -1,9 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{prelude::*, FileEnumerator, FileInfo};
+use crate::{FileEnumerator, FileInfo, prelude::*};
 use futures_core::future::LocalBoxFuture;
 use futures_util::FutureExt;
-use glib::translate::{from_glib, from_glib_full, ToGlibPtr};
+use glib::translate::{ToGlibPtr, from_glib, from_glib_full};
 use std::{iter::FusedIterator, task::Poll};
 
 impl Iterator for FileEnumerator {

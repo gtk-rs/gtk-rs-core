@@ -2,7 +2,7 @@
 
 use std::{mem, path, ptr};
 
-use crate::{ffi, translate::*, Error, GString, GStringPtr, KeyFile, KeyFileFlags, PtrSlice};
+use crate::{Error, GString, GStringPtr, KeyFile, KeyFileFlags, PtrSlice, ffi, translate::*};
 
 impl KeyFile {
     #[doc(alias = "g_key_file_save_to_file")]

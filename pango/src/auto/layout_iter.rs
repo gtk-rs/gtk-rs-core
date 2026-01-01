@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, Layout, LayoutLine, LayoutRun, Rectangle};
+use crate::{Layout, LayoutLine, LayoutRun, Rectangle, ffi};
 use glib::translate::*;
 
 glib::wrapper! {
@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct LayoutIter(Boxed<ffi::PangoLayoutIter>);
 
     match fn {
-        copy => |ptr| ffi::pango_layout_iter_copy(mut_override(ptr)),
-        free => |ptr| ffi::pango_layout_iter_free(ptr),
+        copy => |ptr| unsafe { ffi::pango_layout_iter_copy(mut_override(ptr)) },
+        free => |ptr| unsafe { ffi::pango_layout_iter_free(ptr) },
         type_ => || ffi::pango_layout_iter_get_type(),
     }
 }

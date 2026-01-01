@@ -5,9 +5,9 @@ use std::{
     time::{Duration, SystemTime},
 };
 
-use glib::{translate::*, StrV};
+use glib::{StrV, translate::*};
 
-use crate::{ffi, FileAttributeValue, FileInfo};
+use crate::{FileAttributeValue, FileInfo, ffi};
 
 impl FileInfo {
     #[cfg_attr(feature = "v2_62", deprecated)]

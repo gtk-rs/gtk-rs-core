@@ -171,10 +171,16 @@ mod imp {
         }
 
         fn activate(&self) {
-            println!("Waiting for DBus Hello method to be called. Call the following command from another terminal:");
-            println!("dbus-send --print-reply --dest=com.github.gtk-rs.examples.RegisterDBusObject /com/github/gtk_rs/examples/HelloWorld com.github.gtk_rs.examples.HelloWorld.Hello string:YourName");
+            println!(
+                "Waiting for DBus Hello method to be called. Call the following command from another terminal:"
+            );
+            println!(
+                "dbus-send --print-reply --dest=com.github.gtk-rs.examples.RegisterDBusObject /com/github/gtk_rs/examples/HelloWorld com.github.gtk_rs.examples.HelloWorld.Hello string:YourName"
+            );
             println!("Quit with the following command:");
-            println!("dbus-send --print-reply --dest=com.github.gtk-rs.examples.RegisterDBusObject /com/github/gtk_rs/examples/HelloWorld com.github.gtk_rs.examples.HelloWorld.GoodBye");
+            println!(
+                "dbus-send --print-reply --dest=com.github.gtk-rs.examples.RegisterDBusObject /com/github/gtk_rs/examples/HelloWorld com.github.gtk_rs.examples.HelloWorld.GoodBye"
+            );
         }
     }
 }

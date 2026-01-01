@@ -5,7 +5,7 @@ use std::{
     io::{Read, Seek},
 };
 
-use crate::{prelude::*, subclass::prelude::*, InputStream};
+use crate::{InputStream, prelude::*, subclass::prelude::*};
 
 mod imp {
     use std::cell::RefCell;

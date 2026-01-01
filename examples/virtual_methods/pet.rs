@@ -155,7 +155,7 @@ pub trait PetImplExt: PetImpl {
         let parent_class = unsafe { &*(data.as_ref().parent_class() as *const ffi::Class) };
         let pet = parent_class.pet;
 
-        pet(unsafe { self.obj().unsafe_cast_ref() })
+        unsafe { pet(self.obj().unsafe_cast_ref()) }
     }
 
     /// Chains up to the parent implementation of [`PetImpl::feed`]
@@ -164,7 +164,7 @@ pub trait PetImplExt: PetImpl {
         let parent_class = unsafe { &*(data.as_ref().parent_class() as *const ffi::Class) };
         let feed = parent_class.feed;
 
-        feed(unsafe { self.obj().unsafe_cast_ref() });
+        unsafe { feed(self.obj().unsafe_cast_ref()) };
     }
 }
 

@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{ffi, SettingsSchemaKey};
+use crate::{SettingsSchemaKey, ffi};
 use glib::translate::*;
 
 glib::wrapper! {
@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct SettingsSchema(Shared<ffi::GSettingsSchema>);
 
     match fn {
-        ref => |ptr| ffi::g_settings_schema_ref(ptr),
-        unref => |ptr| ffi::g_settings_schema_unref(ptr),
+        ref => |ptr| unsafe { ffi::g_settings_schema_ref(ptr) },
+        unref => |ptr| unsafe { ffi::g_settings_schema_unref(ptr) },
         type_ => || ffi::g_settings_schema_get_type(),
     }
 }

@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct SrvTarget(Boxed<ffi::GSrvTarget>);
 
     match fn {
-        copy => |ptr| ffi::g_srv_target_copy(mut_override(ptr)),
-        free => |ptr| ffi::g_srv_target_free(ptr),
+        copy => |ptr| unsafe { ffi::g_srv_target_copy(mut_override(ptr)) },
+        free => |ptr| unsafe { ffi::g_srv_target_free(ptr) },
         type_ => || ffi::g_srv_target_get_type(),
     }
 }

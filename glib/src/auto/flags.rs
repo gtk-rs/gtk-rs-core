@@ -183,9 +183,11 @@ unsafe impl<'a> crate::value::FromValue<'a> for IOCondition {
 
     #[inline]
     unsafe fn from_value(value: &'a crate::Value) -> Self {
-        from_glib(crate::gobject_ffi::g_value_get_flags(
-            value.to_glib_none().0,
-        ))
+        unsafe {
+            from_glib(crate::gobject_ffi::g_value_get_flags(
+                value.to_glib_none().0,
+            ))
+        }
     }
 }
 
