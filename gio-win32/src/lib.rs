@@ -2,7 +2,7 @@
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![doc = include_str!("../README.md")]
-pub use glib_win32_sys as ffi;
+pub use gio_win32_sys as ffi;
 
 mod auto;
 pub use auto::*;
