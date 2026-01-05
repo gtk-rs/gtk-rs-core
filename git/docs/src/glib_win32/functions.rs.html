@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-win32/src/functions.rs`."><title>functions.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-2eb46af5.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_win32" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (8d670b93d 2025-12-31)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-win32/src/functions.rs`."><title>functions.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-2eb46af5.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_win32" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (e29fcf45e 2026-01-04)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -77,42 +77,45 @@
 <a href=#4 id=4 data-nosnippet>4</a><span class="attr">#[cfg(windows)]
 <a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use </span>std::path::PathBuf;
 <a href=#6 id=6 data-nosnippet>6</a>
-<a href=#7 id=7 data-nosnippet>7</a><span class="attr">#[doc(alias = <span class="string">"g_win32_get_package_installation_directory_of_module"</span>)]
-<a href=#8 id=8 data-nosnippet>8</a>#[doc(alias = <span class="string">"get_package_installation_directory_of_module"</span>)]
-<a href=#9 id=9 data-nosnippet>9</a>#[cfg(all(docsrs, windows))]
-<a href=#10 id=10 data-nosnippet>10</a></span><span class="kw">pub fn </span>package_installation_directory_of_module(
-<a href=#11 id=11 data-nosnippet>11</a>    hmodule: std::os::windows::raw::HANDLE,
-<a href=#12 id=12 data-nosnippet>12</a>) -&gt; <span class="prelude-ty">Result</span>&lt;PathBuf, std::io::Error&gt; {
-<a href=#13 id=13 data-nosnippet>13</a>    <span class="comment">// # Safety
-<a href=#14 id=14 data-nosnippet>14</a>    // The underlying `GetModuleFilenameW` function has three possible
-<a href=#15 id=15 data-nosnippet>15</a>    // outcomes when a raw pointer get passed to it:
-<a href=#16 id=16 data-nosnippet>16</a>    // - When the pointer is a valid HINSTANCE of a DLL (e.g. acquired
-<a href=#17 id=17 data-nosnippet>17</a>    // through the `GetModuleHandleW`), it sets a file path to the
-<a href=#18 id=18 data-nosnippet>18</a>    // assigned "out" buffer and sets the return value to be the length
-<a href=#19 id=19 data-nosnippet>19</a>    // of said path string
-<a href=#20 id=20 data-nosnippet>20</a>    // - When the pointer is null, it sets the full path of the process'
-<a href=#21 id=21 data-nosnippet>21</a>    // executable binary to the assigned buffer and sets the return value
-<a href=#22 id=22 data-nosnippet>22</a>    // to be the length of said string
-<a href=#23 id=23 data-nosnippet>23</a>    // - Whenever the provided buffer size is too small, it will set a
-<a href=#24 id=24 data-nosnippet>24</a>    // truncated version of the path and return the length of said string
-<a href=#25 id=25 data-nosnippet>25</a>    // while also setting the thread-local last-error code to
-<a href=#26 id=26 data-nosnippet>26</a>    // `ERROR_INSUFFICIENT_BUFFER` (evaluates to 0x7A)
-<a href=#27 id=27 data-nosnippet>27</a>    // - When the pointer is not a valid HINSTANCE that isn't NULL (e.g.
-<a href=#28 id=28 data-nosnippet>28</a>    // a pointer to some GKeyFile), it will return 0 and set the last-error
-<a href=#29 id=29 data-nosnippet>29</a>    // code to `ERROR_MOD_NOT_FOUND` (evaluates to 0x7E)
-<a href=#30 id=30 data-nosnippet>30</a>    //
-<a href=#31 id=31 data-nosnippet>31</a>    // The `g_win32_get_package_installation_directory_of_module` already
-<a href=#32 id=32 data-nosnippet>32</a>    // handles all of the outcomes gracefully by:
-<a href=#33 id=33 data-nosnippet>33</a>    // - Preallocating a MAX_PATH-long array of wchar_t for the out buffer,
-<a href=#34 id=34 data-nosnippet>34</a>    // so that outcome #3 can be safely assumed to never happen
-<a href=#35 id=35 data-nosnippet>35</a>    // - Returning NULL when outcome #4 happens
-<a href=#36 id=36 data-nosnippet>36</a>    </span><span class="kw">match unsafe </span>{
-<a href=#37 id=37 data-nosnippet>37</a>        from_glib_full::&lt;<span class="kw">_</span>, <span class="prelude-ty">Option</span>&lt;PathBuf&gt;&gt;(
-<a href=#38 id=38 data-nosnippet>38</a>            ffi::g_win32_get_package_installation_directory_of_module(hmodule),
-<a href=#39 id=39 data-nosnippet>39</a>        )
-<a href=#40 id=40 data-nosnippet>40</a>    } {
-<a href=#41 id=41 data-nosnippet>41</a>        <span class="prelude-val">Some</span>(pb) =&gt; <span class="prelude-val">Ok</span>(pb),
-<a href=#42 id=42 data-nosnippet>42</a>        <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Err</span>(std::io::Error::last_os_error()),
-<a href=#43 id=43 data-nosnippet>43</a>    }
-<a href=#44 id=44 data-nosnippet>44</a>}
+<a href=#7 id=7 data-nosnippet>7</a><span class="attr">#[cfg(windows)]
+<a href=#8 id=8 data-nosnippet>8</a></span><span class="kw">use </span><span class="kw">crate</span>::ffi;
+<a href=#9 id=9 data-nosnippet>9</a>
+<a href=#10 id=10 data-nosnippet>10</a><span class="attr">#[doc(alias = <span class="string">"g_win32_get_package_installation_directory_of_module"</span>)]
+<a href=#11 id=11 data-nosnippet>11</a>#[doc(alias = <span class="string">"get_package_installation_directory_of_module"</span>)]
+<a href=#12 id=12 data-nosnippet>12</a>#[cfg(all(docsrs, windows))]
+<a href=#13 id=13 data-nosnippet>13</a></span><span class="kw">pub fn </span>package_installation_directory_of_module(
+<a href=#14 id=14 data-nosnippet>14</a>    hmodule: std::os::windows::raw::HANDLE,
+<a href=#15 id=15 data-nosnippet>15</a>) -&gt; <span class="prelude-ty">Result</span>&lt;PathBuf, std::io::Error&gt; {
+<a href=#16 id=16 data-nosnippet>16</a>    <span class="comment">// # Safety
+<a href=#17 id=17 data-nosnippet>17</a>    // The underlying `GetModuleFilenameW` function has three possible
+<a href=#18 id=18 data-nosnippet>18</a>    // outcomes when a raw pointer get passed to it:
+<a href=#19 id=19 data-nosnippet>19</a>    // - When the pointer is a valid HINSTANCE of a DLL (e.g. acquired
+<a href=#20 id=20 data-nosnippet>20</a>    // through the `GetModuleHandleW`), it sets a file path to the
+<a href=#21 id=21 data-nosnippet>21</a>    // assigned "out" buffer and sets the return value to be the length
+<a href=#22 id=22 data-nosnippet>22</a>    // of said path string
+<a href=#23 id=23 data-nosnippet>23</a>    // - When the pointer is null, it sets the full path of the process'
+<a href=#24 id=24 data-nosnippet>24</a>    // executable binary to the assigned buffer and sets the return value
+<a href=#25 id=25 data-nosnippet>25</a>    // to be the length of said string
+<a href=#26 id=26 data-nosnippet>26</a>    // - Whenever the provided buffer size is too small, it will set a
+<a href=#27 id=27 data-nosnippet>27</a>    // truncated version of the path and return the length of said string
+<a href=#28 id=28 data-nosnippet>28</a>    // while also setting the thread-local last-error code to
+<a href=#29 id=29 data-nosnippet>29</a>    // `ERROR_INSUFFICIENT_BUFFER` (evaluates to 0x7A)
+<a href=#30 id=30 data-nosnippet>30</a>    // - When the pointer is not a valid HINSTANCE that isn't NULL (e.g.
+<a href=#31 id=31 data-nosnippet>31</a>    // a pointer to some GKeyFile), it will return 0 and set the last-error
+<a href=#32 id=32 data-nosnippet>32</a>    // code to `ERROR_MOD_NOT_FOUND` (evaluates to 0x7E)
+<a href=#33 id=33 data-nosnippet>33</a>    //
+<a href=#34 id=34 data-nosnippet>34</a>    // The `g_win32_get_package_installation_directory_of_module` already
+<a href=#35 id=35 data-nosnippet>35</a>    // handles all of the outcomes gracefully by:
+<a href=#36 id=36 data-nosnippet>36</a>    // - Preallocating a MAX_PATH-long array of wchar_t for the out buffer,
+<a href=#37 id=37 data-nosnippet>37</a>    // so that outcome #3 can be safely assumed to never happen
+<a href=#38 id=38 data-nosnippet>38</a>    // - Returning NULL when outcome #4 happens
+<a href=#39 id=39 data-nosnippet>39</a>    </span><span class="kw">match unsafe </span>{
+<a href=#40 id=40 data-nosnippet>40</a>        from_glib_full::&lt;<span class="kw">_</span>, <span class="prelude-ty">Option</span>&lt;PathBuf&gt;&gt;(
+<a href=#41 id=41 data-nosnippet>41</a>            ffi::g_win32_get_package_installation_directory_of_module(hmodule),
+<a href=#42 id=42 data-nosnippet>42</a>        )
+<a href=#43 id=43 data-nosnippet>43</a>    } {
+<a href=#44 id=44 data-nosnippet>44</a>        <span class="prelude-val">Some</span>(pb) =&gt; <span class="prelude-val">Ok</span>(pb),
+<a href=#45 id=45 data-nosnippet>45</a>        <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Err</span>(std::io::Error::last_os_error()),
+<a href=#46 id=46 data-nosnippet>46</a>    }
+<a href=#47 id=47 data-nosnippet>47</a>}
 </code></pre></div></section></main></body></html>
