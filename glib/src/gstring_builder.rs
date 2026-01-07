@@ -14,7 +14,7 @@ wrapper! {
     match fn {
         copy => |ptr| ffi::g_string_new_len((*ptr).str, (*ptr).len as isize),
         free => |ptr| ffi::g_string_free(ptr, ffi::GTRUE),
-        init => |ptr| unsafe {
+        init => |ptr| {
             let inner = ffi::GString {
                 str: ffi::g_malloc(64) as *mut _,
                 len: 0,

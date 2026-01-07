@@ -83,9 +83,7 @@ unsafe extern "C" fn load<T: TypeModuleImpl>(
         // Nothing is done if loading types has failed, allowing application to drop
         // and dispose the invalid module.
         if res && (*(type_module as *const gobject_ffi::GObject)).ref_count == 1 {
-            unsafe {
-                gobject_ffi::g_object_ref(type_module as _);
-            }
+            gobject_ffi::g_object_ref(type_module as _);
         }
 
         res.into_glib()
