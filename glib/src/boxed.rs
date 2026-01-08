@@ -435,12 +435,14 @@ macro_rules! glib_boxed_wrapper {
             type Target = $ffi_name;
 
             #[inline]
+            #[allow(clippy::macro_metavars_in_unsafe)]
             unsafe fn copy($copy_arg: *const Self::Target) -> *mut Self::Target { unsafe {
                 $copy_expr
             }}
 
             #[inline]
             #[allow(clippy::no_effect)]
+            #[allow(clippy::macro_metavars_in_unsafe)]
             unsafe fn free($free_arg: *mut Self::Target) { unsafe {
                 $free_expr;
             }}
