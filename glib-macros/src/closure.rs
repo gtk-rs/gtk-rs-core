@@ -89,13 +89,13 @@ impl Parse for Closure {
             }
         }
 
-        if let Some((_, ref span)) = upgrade_behaviour {
-            if captures.iter().all(|c| c.kind != CaptureKind::Weak) {
-                return Err(syn::Error::new(
-                    *span,
-                    "upgrade failure attribute can only be used together with weak variable captures",
-                ));
-            }
+        if let Some((_, ref span)) = upgrade_behaviour
+            && captures.iter().all(|c| c.kind != CaptureKind::Weak)
+        {
+            return Err(syn::Error::new(
+                *span,
+                "upgrade failure attribute can only be used together with weak variable captures",
+            ));
         }
 
         let upgrade_behaviour = upgrade_behaviour.map(|x| x.0).unwrap_or_default();

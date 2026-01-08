@@ -28,14 +28,14 @@ pub trait FDMessageExtManual: IsA<FDMessage> + Sized {
     fn steal_fds(&self) -> Vec<RawFd> {
         unsafe {
             let mut length = mem::MaybeUninit::uninit();
-            let ret = FromGlibContainer::from_glib_full_num(
+
+            FromGlibContainer::from_glib_full_num(
                 ffi::g_unix_fd_message_steal_fds(
                     self.as_ref().to_glib_none().0,
                     length.as_mut_ptr(),
                 ),
                 length.assume_init() as usize,
-            );
-            ret
+            )
         }
     }
 }

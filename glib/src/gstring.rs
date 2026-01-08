@@ -281,10 +281,10 @@ impl GStr {
     }
     #[inline]
     fn check_trailing_nul(s: impl AsRef<[u8]>) -> Result<(), GStrError> {
-        if let Some(c) = s.as_ref().last().copied() {
-            if c == 0 {
-                return Ok(());
-            }
+        if let Some(c) = s.as_ref().last().copied()
+            && c == 0
+        {
+            return Ok(());
         }
         Err(GStrError::NoTrailingNul)
     }

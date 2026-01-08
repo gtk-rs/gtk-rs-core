@@ -181,11 +181,11 @@ impl WeakSignalSubscription {
 
 impl Drop for WeakSignalSubscription {
     fn drop(&mut self) {
-        if let Some(id) = self.1.take() {
-            if let Some(connection) = self.0.upgrade() {
-                #[allow(deprecated)]
-                connection.signal_unsubscribe(id);
-            }
+        if let Some(id) = self.1.take()
+            && let Some(connection) = self.0.upgrade()
+        {
+            #[allow(deprecated)]
+            connection.signal_unsubscribe(id);
         }
     }
 }

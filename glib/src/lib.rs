@@ -130,6 +130,7 @@ pub use self::auto::*;
 #[allow(clippy::type_complexity)]
 #[allow(unused_imports)]
 #[allow(non_upper_case_globals)]
+#[allow(clippy::let_and_return)]
 mod auto;
 
 #[cfg(feature = "v2_74")]

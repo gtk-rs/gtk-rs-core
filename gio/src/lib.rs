@@ -111,6 +111,7 @@ pub mod prelude;
 #[allow(clippy::missing_safety_doc)]
 #[allow(clippy::new_ret_no_self)]
 #[allow(unused_imports)]
+#[allow(clippy::let_and_return)]
 mod auto;
 
 mod gio_future;

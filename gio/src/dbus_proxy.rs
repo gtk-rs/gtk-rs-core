@@ -23,12 +23,14 @@ pub trait DBusProxyExtManual: IsA<DBusProxy> + 'static {
             invalidated_properties: *const *const libc::c_char,
             f: glib::ffi::gpointer,
         ) {
-            let f: &F = &*(f as *const F);
-            f(
-                DBusProxy::from_glib_borrow(this).unsafe_cast_ref(),
-                &from_glib_borrow(changed_properties),
-                glib::StrVRef::from_glib_borrow(invalidated_properties),
-            )
+            unsafe {
+                let f: &F = &*(f as *const F);
+                f(
+                    DBusProxy::from_glib_borrow(this).unsafe_cast_ref(),
+                    &from_glib_borrow(changed_properties),
+                    glib::StrVRef::from_glib_borrow(invalidated_properties),
+                )
+            }
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
