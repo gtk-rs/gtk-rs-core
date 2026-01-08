@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct MountEntry(Boxed<ffi::GUnixMountEntry>);
 
     match fn {
-        copy => |ptr| unsafe { ffi::g_unix_mount_entry_copy(ptr) },
-        free => |ptr| unsafe { ffi::g_unix_mount_entry_free(ptr) },
+        copy => |ptr| ffi::g_unix_mount_entry_copy(ptr),
+        free => |ptr| ffi::g_unix_mount_entry_free(ptr),
         type_ => || ffi::g_unix_mount_entry_get_type(),
     }
 }

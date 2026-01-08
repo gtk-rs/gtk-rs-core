@@ -13,8 +13,8 @@ glib::wrapper! {
     pub struct LayoutLine(Shared<ffi::PangoLayoutLine>);
 
     match fn {
-        ref => |ptr| unsafe { ffi::pango_layout_line_ref(ptr) },
-        unref => |ptr| unsafe { ffi::pango_layout_line_unref(ptr) },
+        ref => |ptr| ffi::pango_layout_line_ref(ptr),
+        unref => |ptr| ffi::pango_layout_line_unref(ptr),
         type_ => || ffi::pango_layout_line_get_type(),
     }
 }

@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct DBusNodeInfo(Shared<ffi::GDBusNodeInfo>);
 
     match fn {
-        ref => |ptr| unsafe { ffi::g_dbus_node_info_ref(ptr) },
-        unref => |ptr| unsafe { ffi::g_dbus_node_info_unref(ptr) },
+        ref => |ptr| ffi::g_dbus_node_info_ref(ptr),
+        unref => |ptr| ffi::g_dbus_node_info_unref(ptr),
         type_ => || ffi::g_dbus_node_info_get_type(),
     }
 }

@@ -9,8 +9,8 @@ crate::wrapper! {
     pub struct MarkupParseContext(Shared<ffi::GMarkupParseContext>);
 
     match fn {
-        ref => |ptr| unsafe { ffi::g_markup_parse_context_ref(ptr) },
-        unref => |ptr| unsafe { ffi::g_markup_parse_context_unref(ptr) },
+        ref => |ptr| ffi::g_markup_parse_context_ref(ptr),
+        unref => |ptr| ffi::g_markup_parse_context_unref(ptr),
         type_ => || ffi::g_markup_parse_context_get_type(),
     }
 }

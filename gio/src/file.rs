@@ -593,24 +593,15 @@ pub trait FileExtManual: IsA<File> + Sized {
 
     fn load_contents_future(
         &self,
-    ) -> Pin<
-        Box<
-            dyn std::future::Future<
-                    Output = Result<
-                        (glib::collections::Slice<u8>, Option<glib::GString>),
-                        glib::Error,
-                    >,
-                > + 'static,
-        >,
-    > {
-        Box::pin(crate::GioFuture::new(
-            self,
-            move |obj, cancellable, send| {
-                obj.load_contents_async(Some(cancellable), move |res| {
-                    send.resolve(res);
-                });
-            },
-        ))
+    ) -> impl std::future::Future<
+        Output = Result<(glib::collections::Slice<u8>, Option<glib::GString>), glib::Error>,
+    > + Unpin
+    + 'static {
+        crate::GioFuture::new(self, move |obj, cancellable, send| {
+            obj.load_contents_async(Some(cancellable), move |res| {
+                send.resolve(res);
+            });
+        })
     }
 
     #[doc(alias = "g_file_load_partial_contents_async")]

@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct MountPoint(Boxed<ffi::GUnixMountPoint>);
 
     match fn {
-        copy => |ptr| unsafe { ffi::g_unix_mount_point_copy(ptr) },
-        free => |ptr| unsafe { ffi::g_unix_mount_point_free(ptr) },
+        copy => |ptr| ffi::g_unix_mount_point_copy(ptr),
+        free => |ptr| ffi::g_unix_mount_point_free(ptr),
         type_ => || ffi::g_unix_mount_point_get_type(),
     }
 }

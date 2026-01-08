@@ -9,8 +9,8 @@ crate::wrapper! {
     pub struct Uri(Shared<ffi::GUri>);
 
     match fn {
-        ref => |ptr| unsafe { ffi::g_uri_ref(ptr) },
-        unref => |ptr| unsafe { ffi::g_uri_unref(ptr) },
+        ref => |ptr| ffi::g_uri_ref(ptr),
+        unref => |ptr| ffi::g_uri_unref(ptr),
         type_ => || ffi::g_uri_get_type(),
     }
 }

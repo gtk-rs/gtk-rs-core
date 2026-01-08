@@ -9,8 +9,8 @@ glib::wrapper! {
     pub struct DBusArgInfo(Shared<ffi::GDBusArgInfo>);
 
     match fn {
-        ref => |ptr| unsafe { ffi::g_dbus_arg_info_ref(ptr) },
-        unref => |ptr| unsafe { ffi::g_dbus_arg_info_unref(ptr) },
+        ref => |ptr| ffi::g_dbus_arg_info_ref(ptr),
+        unref => |ptr| ffi::g_dbus_arg_info_unref(ptr),
         type_ => || ffi::g_dbus_arg_info_get_type(),
     }
 }

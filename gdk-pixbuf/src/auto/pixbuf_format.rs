@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct PixbufFormat(Boxed<ffi::GdkPixbufFormat>);
 
     match fn {
-        copy => |ptr| unsafe { ffi::gdk_pixbuf_format_copy(ptr) },
-        free => |ptr| unsafe { ffi::gdk_pixbuf_format_free(ptr) },
+        copy => |ptr| ffi::gdk_pixbuf_format_copy(ptr),
+        free => |ptr| ffi::gdk_pixbuf_format_free(ptr),
         type_ => || ffi::gdk_pixbuf_format_get_type(),
     }
 }

@@ -12,8 +12,8 @@ glib::wrapper! {
     pub struct Attribute(Boxed<ffi::PangoAttribute>);
 
     match fn {
-        copy => |ptr| unsafe { ffi::pango_attribute_copy(ptr) },
-        free => |ptr| unsafe { ffi::pango_attribute_destroy(ptr) },
+        copy => |ptr| ffi::pango_attribute_copy(ptr),
+        free => |ptr| ffi::pango_attribute_destroy(ptr),
         type_ => || ffi::pango_attribute_get_type(),
     }
 }
@@ -24,8 +24,8 @@ glib::wrapper! {
     pub struct Attribute(Boxed<ffi::PangoAttribute>);
 
     match fn {
-        copy => |ptr| unsafe { ffi::pango_attribute_copy(ptr) },
-        free => |ptr| unsafe { ffi::pango_attribute_destroy(ptr) },
+        copy => |ptr| ffi::pango_attribute_copy(ptr),
+        free => |ptr| ffi::pango_attribute_destroy(ptr),
     }
 }
 
