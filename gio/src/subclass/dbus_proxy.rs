@@ -5,9 +5,8 @@
 use glib::{prelude::*, subclass::prelude::*, translate::*};
 
 use crate::{
-    ffi,
+    DBusProxy, ffi,
     subclass::prelude::{AsyncInitableImpl, DBusInterfaceImpl, InitableImpl},
-    DBusProxy,
 };
 
 pub trait DBusProxyImpl:

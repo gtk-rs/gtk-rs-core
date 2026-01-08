@@ -5,8 +5,8 @@ const UDISKS2_OBJECT_PATH: &str = "/org/freedesktop/UDisks2";
 const UDISK2_DRIVE_INTERFACE: &str = "org.freedesktop.UDisks2.Drive";
 const UDISK2_BLOCK_INTERFACE: &str = "org.freedesktop.UDisks2.Block";
 
-pub(crate) async fn new_udisks_object_manager_client(
-) -> Result<gio::DBusObjectManagerClient, glib::Error> {
+pub(crate) async fn new_udisks_object_manager_client()
+-> Result<gio::DBusObjectManagerClient, glib::Error> {
     gio::DBusObjectManagerClient::new_for_bus_future_with_fn(
         gio::BusType::System,
         gio::DBusObjectManagerClientFlags::NONE,
