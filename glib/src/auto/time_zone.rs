@@ -9,8 +9,8 @@ crate::wrapper! {
     pub struct TimeZone(Shared<ffi::GTimeZone>);
 
     match fn {
-        ref => |ptr| unsafe { ffi::g_time_zone_ref(ptr) },
-        unref => |ptr| unsafe { ffi::g_time_zone_unref(ptr) },
+        ref => |ptr| ffi::g_time_zone_ref(ptr),
+        unref => |ptr| ffi::g_time_zone_unref(ptr),
         type_ => || ffi::g_time_zone_get_type(),
     }
 }

@@ -21,7 +21,7 @@ impl Stream for Incoming {
 
     fn poll_next(mut self: Pin<&mut Self>, ctx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
         if self.fut.is_none() {
-            self.fut = Some(self.listener.accept_future());
+            self.fut = Some(Box::pin(self.listener.accept_future()));
         }
 
         let fut = self.fut.as_mut().unwrap();

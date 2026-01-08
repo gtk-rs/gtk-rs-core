@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct GlyphItem(Boxed<ffi::PangoGlyphItem>);
 
     match fn {
-        copy => |ptr| unsafe { ffi::pango_glyph_item_copy(mut_override(ptr)) },
-        free => |ptr| unsafe { ffi::pango_glyph_item_free(ptr) },
+        copy => |ptr| ffi::pango_glyph_item_copy(mut_override(ptr)),
+        free => |ptr| ffi::pango_glyph_item_free(ptr),
         type_ => || ffi::pango_glyph_item_get_type(),
     }
 }

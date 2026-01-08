@@ -76,16 +76,14 @@ pub trait AsyncInitableExt: IsA<AsyncInitable> + 'static {
         &self,
         io_priority: glib::Priority,
     ) -> Pin<Box_<dyn std::future::Future<Output = Result<(), glib::Error>> + 'static>> {
-        unsafe {
-            Box_::pin(crate::GioFuture::new(
-                self,
-                move |obj, cancellable, send| {
-                    obj.init_async(io_priority, Some(cancellable), move |res| {
-                        send.resolve(res);
-                    });
-                },
-            ))
-        }
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| unsafe {
+                obj.init_async(io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 }
 

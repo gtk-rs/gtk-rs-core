@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct AttrList(Shared<ffi::PangoAttrList>);
 
     match fn {
-        ref => |ptr| unsafe { ffi::pango_attr_list_ref(ptr) },
-        unref => |ptr| unsafe { ffi::pango_attr_list_unref(ptr) },
+        ref => |ptr| ffi::pango_attr_list_ref(ptr),
+        unref => |ptr| ffi::pango_attr_list_unref(ptr),
         type_ => || ffi::pango_attr_list_get_type(),
     }
 }

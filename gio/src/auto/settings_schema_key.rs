@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct SettingsSchemaKey(Shared<ffi::GSettingsSchemaKey>);
 
     match fn {
-        ref => |ptr| unsafe { ffi::g_settings_schema_key_ref(ptr) },
-        unref => |ptr| unsafe { ffi::g_settings_schema_key_unref(ptr) },
+        ref => |ptr| ffi::g_settings_schema_key_ref(ptr),
+        unref => |ptr| ffi::g_settings_schema_key_unref(ptr),
         type_ => || ffi::g_settings_schema_key_get_type(),
     }
 }

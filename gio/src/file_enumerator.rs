@@ -23,7 +23,8 @@ pub trait FileEnumeratorExtManual: IsA<FileEnumerator> {
     // rustdoc-stripper-ignore-next
     /// Converts the enumerator into a [`Stream`](futures_core::Stream).
     fn into_stream(self, num_files: i32, priority: glib::Priority) -> FileEnumeratorStream {
-        let future = Some(self.next_files_future(num_files, priority));
+        let future: Option<std::pin::Pin<Box<dyn Future<Output = _>>>> =
+            Some(Box::pin(self.next_files_future(num_files, priority)));
         FileEnumeratorStream {
             enumerator: self.upcast(),
             future,
@@ -83,10 +84,10 @@ impl futures_core::Stream for FileEnumeratorStream {
             Some(mut f) => match f.poll_unpin(cx) {
                 Poll::Ready(Ok(fs)) if fs.is_empty() => Poll::Ready(None),
                 Poll::Ready(Ok(fs)) => {
-                    self.future = Some(
+                    self.future = Some(Box::pin(
                         self.enumerator
                             .next_files_future(self.num_files, self.priority),
-                    );
+                    ));
                     Poll::Ready(Some(Ok(fs)))
                 }
                 Poll::Ready(Err(e)) => Poll::Ready(Some(Err(e))),

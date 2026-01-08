@@ -9,8 +9,8 @@ crate::wrapper! {
     pub struct Source(Shared<ffi::GSource>);
 
     match fn {
-        ref => |ptr| unsafe { ffi::g_source_ref(ptr) },
-        unref => |ptr| unsafe { ffi::g_source_unref(ptr) },
+        ref => |ptr| ffi::g_source_ref(ptr),
+        unref => |ptr| ffi::g_source_unref(ptr),
         type_ => || ffi::g_source_get_type(),
     }
 }

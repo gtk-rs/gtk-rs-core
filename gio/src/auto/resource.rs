@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct Resource(Shared<ffi::GResource>);
 
     match fn {
-        ref => |ptr| unsafe { ffi::g_resource_ref(ptr) },
-        unref => |ptr| unsafe { ffi::g_resource_unref(ptr) },
+        ref => |ptr| ffi::g_resource_ref(ptr),
+        unref => |ptr| ffi::g_resource_unref(ptr),
         type_ => || ffi::g_resource_get_type(),
     }
 }

@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct FileAttributeMatcher(Shared<ffi::GFileAttributeMatcher>);
 
     match fn {
-        ref => |ptr| unsafe { ffi::g_file_attribute_matcher_ref(ptr) },
-        unref => |ptr| unsafe { ffi::g_file_attribute_matcher_unref(ptr) },
+        ref => |ptr| ffi::g_file_attribute_matcher_ref(ptr),
+        unref => |ptr| ffi::g_file_attribute_matcher_unref(ptr),
         type_ => || ffi::g_file_attribute_matcher_get_type(),
     }
 }

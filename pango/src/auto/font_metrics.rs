@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct FontMetrics(Shared<ffi::PangoFontMetrics>);
 
     match fn {
-        ref => |ptr| unsafe { ffi::pango_font_metrics_ref(ptr) },
-        unref => |ptr| unsafe { ffi::pango_font_metrics_unref(ptr) },
+        ref => |ptr| ffi::pango_font_metrics_ref(ptr),
+        unref => |ptr| ffi::pango_font_metrics_unref(ptr),
         type_ => || ffi::pango_font_metrics_get_type(),
     }
 }

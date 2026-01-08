@@ -9,8 +9,8 @@ glib::wrapper! {
     pub struct Color(BoxedInline<ffi::PangoColor>);
 
     match fn {
-        copy => |ptr| unsafe { ffi::pango_color_copy(ptr) },
-        free => |ptr| unsafe { ffi::pango_color_free(ptr) },
+        copy => |ptr| ffi::pango_color_copy(ptr),
+        free => |ptr| ffi::pango_color_free(ptr),
         type_ => || ffi::pango_color_get_type(),
     }
 }

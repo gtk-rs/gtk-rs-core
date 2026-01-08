@@ -9,8 +9,8 @@ crate::wrapper! {
     pub struct KeyFile(Shared<ffi::GKeyFile>);
 
     match fn {
-        ref => |ptr| unsafe { ffi::g_key_file_ref(ptr) },
-        unref => |ptr| unsafe { ffi::g_key_file_unref(ptr) },
+        ref => |ptr| ffi::g_key_file_ref(ptr),
+        unref => |ptr| ffi::g_key_file_unref(ptr),
         type_ => || ffi::g_key_file_get_type(),
     }
 }

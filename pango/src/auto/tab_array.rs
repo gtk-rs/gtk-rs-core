@@ -10,8 +10,8 @@ glib::wrapper! {
     pub struct TabArray(Boxed<ffi::PangoTabArray>);
 
     match fn {
-        copy => |ptr| unsafe { ffi::pango_tab_array_copy(mut_override(ptr)) },
-        free => |ptr| unsafe { ffi::pango_tab_array_free(ptr) },
+        copy => |ptr| ffi::pango_tab_array_copy(mut_override(ptr)),
+        free => |ptr| ffi::pango_tab_array_free(ptr),
         type_ => || ffi::pango_tab_array_get_type(),
     }
 }
