@@ -193,6 +193,18 @@ pub trait DerivedObjectProperties: ObjectSubclass {
 }
 
 // rustdoc-stripper-ignore-next
+/// Trait containing only the signals related functions of `ObjectImpl`.
+/// Implemented by the `signals!` macro.
+/// When implementing `ObjectImpl` you may want to delegate the function calls to this trait.
+pub trait DerivedObjectSignals: ObjectSubclass {
+    // rustdoc-stripper-ignore-next
+    /// Signals installed for this type.
+    fn derived_signals() -> &'static [Signal] {
+        &[]
+    }
+}
+
+// rustdoc-stripper-ignore-next
 /// Extension trait for `glib::Object`'s class struct.
 ///
 /// This contains various class methods and allows subclasses to override signal class handlers.
