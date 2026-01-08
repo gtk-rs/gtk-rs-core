@@ -6,6 +6,7 @@ pub use gio_unix_sys as ffi;
 
 #[allow(unused_imports)]
 #[allow(clippy::derived_hash_with_manual_eq)]
+#[allow(clippy::let_and_return)]
 mod auto;
 pub use auto::*;
 

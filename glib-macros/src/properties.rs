@@ -608,25 +608,24 @@ fn arrange_property_comments(comments: &[Attribute]) -> (Vec<&Attribute>, Vec<&A
     // We start with no tags so if the programmer doesn't split the comments we can still arrange them.
     let mut current_section = &mut untagged;
     for attr in comments {
-        if let syn::Meta::NameValue(meta) = &attr.meta {
-            if let syn::Expr::Lit(expr) = &meta.value {
-                if let syn::Lit::Str(lit_str) = &expr.lit {
-                    // Now that we have the one line of comment, see if we need
-                    // to switch a particular section to be the active one (via
-                    // the header syntax) or add the current line to the active
-                    // section.
-                    match lit_str.value().trim() {
-                        "# Getter" => {
-                            current_section = &mut getter;
-                            saw_section = true;
-                        }
-                        "# Setter" => {
-                            current_section = &mut setter;
-                            saw_section = true;
-                        }
-                        _ => current_section.push(attr),
-                    }
+        if let syn::Meta::NameValue(meta) = &attr.meta
+            && let syn::Expr::Lit(expr) = &meta.value
+            && let syn::Lit::Str(lit_str) = &expr.lit
+        {
+            // Now that we have the one line of comment, see if we need
+            // to switch a particular section to be the active one (via
+            // the header syntax) or add the current line to the active
+            // section.
+            match lit_str.value().trim() {
+                "# Getter" => {
+                    current_section = &mut getter;
+                    saw_section = true;
                 }
+                "# Setter" => {
+                    current_section = &mut setter;
+                    saw_section = true;
+                }
+                _ => current_section.push(attr),
             }
         }
     }

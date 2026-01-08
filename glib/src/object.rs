@@ -2433,11 +2433,9 @@ impl<T: ObjectType> ObjectExt for T {
     #[track_caller]
     fn property<V: for<'b> FromValue<'b> + 'static>(&self, property_name: &str) -> V {
         let prop = self.property_value(property_name);
-        let v = prop
-            .get_owned::<V>()
-            .unwrap_or_else(|e| panic!("Failed to get cast value to a different type {e}"));
 
-        v
+        prop.get_owned::<V>()
+            .unwrap_or_else(|e| panic!("Failed to get cast value to a different type {e}"))
     }
 
     #[track_caller]
@@ -3289,14 +3287,12 @@ fn validate_property_type(
             pspec.value_type().into_glib(),
         ));
 
-        if !valid_type {
-            if let Err(got) = coerce_object_type(property_value, pspec.value_type()) {
-                panic!(
-                    "property '{}' of type '{type_}' can't be set from the given type (expected: '{}', got: '{got}')",
-                    pspec.name(),
-                    pspec.value_type(),
-                );
-            }
+        if !valid_type && let Err(got) = coerce_object_type(property_value, pspec.value_type()) {
+            panic!(
+                "property '{}' of type '{type_}' can't be set from the given type (expected: '{}', got: '{got}')",
+                pspec.name(),
+                pspec.value_type(),
+            );
         }
 
         let changed: bool = from_glib(gobject_ffi::g_param_value_validate(
