@@ -69,11 +69,13 @@ macro_rules! glib_shared_wrapper {
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::shared::SharedMemoryManager for $name $(<$($generic),+>)? {
             type Target = $ffi_name;
 
+            #[allow(clippy::macro_metavars_in_unsafe)]
             #[inline]
             unsafe fn ref_($ref_arg: *mut Self::Target) { unsafe {
                 $ref_expr;
             }}
 
+            #[allow(clippy::macro_metavars_in_unsafe)]
             #[inline]
             #[allow(clippy::no_effect)]
             unsafe fn unref($unref_arg: *mut Self::Target) { unsafe {
