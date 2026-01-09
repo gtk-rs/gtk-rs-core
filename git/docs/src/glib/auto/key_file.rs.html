@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/key_file.rs`."><title>key_file.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-2eb46af5.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (fecb335cb 2026-01-07)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/key_file.rs`."><title>key_file.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-2eb46af5.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (31cd367b9 2026-01-08)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -75,7 +75,7 @@
 <a href=#2 id=2 data-nosnippet>2</a>// from gir-files (https://github.com/gtk-rs/gir-files)
 <a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use </span>crate::{ffi, translate::<span class="kw-2">*</span>, <a href="../bytes.rs.html#15-69">Bytes</a>, <a href="../error.rs.html#10-25">Error</a>, <a href="flags.rs.html#267-288">KeyFileFlags</a>};
+<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use </span>crate::{<a href="../bytes.rs.html#15-69">Bytes</a>, <a href="../error.rs.html#10-25">Error</a>, <a href="flags.rs.html#269-290">KeyFileFlags</a>, ffi, translate::<span class="kw-2">*</span>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><a href="../wrapper.rs.html#276-443">crate::wrapper!</a> {
 <a href=#8 id=8 data-nosnippet>8</a>    <span class="doccomment">/// `GKeyFile` parses .ini-like config files.
@@ -240,7 +240,7 @@
 <a href=#167 id=167 data-nosnippet>167</a>    /// an empty [`KeyFile`][crate::KeyFile].
 <a href=#168 id=168 data-nosnippet>168</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_new"</span>)]
 <a href=#169 id=169 data-nosnippet>169</a>    </span><span class="kw">pub fn </span>new() -&gt; <a href="#7-155">KeyFile</a> {
-<a href=#170 id=170 data-nosnippet>170</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_key_file_new()) }
+<a href=#170 id=170 data-nosnippet>170</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1636-1638">from_glib_full</a>(ffi::g_key_file_new()) }
 <a href=#171 id=171 data-nosnippet>171</a>    }
 <a href=#172 id=172 data-nosnippet>172</a>
 <a href=#173 id=173 data-nosnippet>173</a>    <span class="doccomment">/// Retrieves a comment above @key from @group_name.
@@ -266,19 +266,19 @@
 <a href=#193 id=193 data-nosnippet>193</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#194 id=194 data-nosnippet>194</a>        group_name: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
 <a href=#195 id=195 data-nosnippet>195</a>        key: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
-<a href=#196 id=196 data-nosnippet>196</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="kw">crate</span>::<a href="../gstring.rs.html#1073">GString</a>, <span class="kw">crate</span>::<a href="../error.rs.html#10-25">Error</a>&gt; {
+<a href=#196 id=196 data-nosnippet>196</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="kw">crate</span>::<a href="../gstring.rs.html#1087">GString</a>, <span class="kw">crate</span>::<a href="../error.rs.html#10-25">Error</a>&gt; {
 <a href=#197 id=197 data-nosnippet>197</a>        <span class="kw">unsafe </span>{
 <a href=#198 id=198 data-nosnippet>198</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#199 id=199 data-nosnippet>199</a>            <span class="kw">let </span>ret = ffi::g_key_file_get_comment(
-<a href=#200 id=200 data-nosnippet>200</a>                <a class="self" href="#193">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#201 id=201 data-nosnippet>201</a>                <a href="#194">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#202 id=202 data-nosnippet>202</a>                <a href="#195">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#200 id=200 data-nosnippet>200</a>                <a class="self" href="#193">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#201 id=201 data-nosnippet>201</a>                <a href="#194">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#202 id=202 data-nosnippet>202</a>                <a href="#195">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#203 id=203 data-nosnippet>203</a>                <span class="kw-2">&amp;mut </span><a href="#198">error</a>,
 <a href=#204 id=204 data-nosnippet>204</a>            );
 <a href=#205 id=205 data-nosnippet>205</a>            <span class="kw">if </span><a href="#198">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
-<a href=#206 id=206 data-nosnippet>206</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#199">ret</a>))
+<a href=#206 id=206 data-nosnippet>206</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#199">ret</a>))
 <a href=#207 id=207 data-nosnippet>207</a>            } <span class="kw">else </span>{
-<a href=#208 id=208 data-nosnippet>208</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#198">error</a>))
+<a href=#208 id=208 data-nosnippet>208</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#198">error</a>))
 <a href=#209 id=209 data-nosnippet>209</a>            }
 <a href=#210 id=210 data-nosnippet>210</a>        }
 <a href=#211 id=211 data-nosnippet>211</a>    }
@@ -303,15 +303,15 @@
 <a href=#230 id=230 data-nosnippet>230</a>        <span class="kw">unsafe </span>{
 <a href=#231 id=231 data-nosnippet>231</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#232 id=232 data-nosnippet>232</a>            <span class="kw">let </span>ret = ffi::g_key_file_get_double(
-<a href=#233 id=233 data-nosnippet>233</a>                <a class="self" href="#229">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#234 id=234 data-nosnippet>234</a>                <a href="#229">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#235 id=235 data-nosnippet>235</a>                <a href="#229">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#233 id=233 data-nosnippet>233</a>                <a class="self" href="#229">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#234 id=234 data-nosnippet>234</a>                <a href="#229">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#235 id=235 data-nosnippet>235</a>                <a href="#229">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#236 id=236 data-nosnippet>236</a>                <span class="kw-2">&amp;mut </span><a href="#231">error</a>,
 <a href=#237 id=237 data-nosnippet>237</a>            );
 <a href=#238 id=238 data-nosnippet>238</a>            <span class="kw">if </span><a href="#231">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#239 id=239 data-nosnippet>239</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#232">ret</a>)
 <a href=#240 id=240 data-nosnippet>240</a>            } <span class="kw">else </span>{
-<a href=#241 id=241 data-nosnippet>241</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#231">error</a>))
+<a href=#241 id=241 data-nosnippet>241</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#231">error</a>))
 <a href=#242 id=242 data-nosnippet>242</a>            }
 <a href=#243 id=243 data-nosnippet>243</a>        }
 <a href=#244 id=244 data-nosnippet>244</a>    }
@@ -340,19 +340,19 @@
 <a href=#267 id=267 data-nosnippet>267</a>            <span class="kw">let </span><span class="kw-2">mut </span>length = std::mem::<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">MaybeUninit</a>::<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">uninit</a>();
 <a href=#268 id=268 data-nosnippet>268</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#269 id=269 data-nosnippet>269</a>            <span class="kw">let </span>ret = ffi::g_key_file_get_double_list(
-<a href=#270 id=270 data-nosnippet>270</a>                <a class="self" href="#265">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#271 id=271 data-nosnippet>271</a>                <a href="#265">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#272 id=272 data-nosnippet>272</a>                <a href="#265">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#270 id=270 data-nosnippet>270</a>                <a class="self" href="#265">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#271 id=271 data-nosnippet>271</a>                <a href="#265">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#272 id=272 data-nosnippet>272</a>                <a href="#265">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#273 id=273 data-nosnippet>273</a>                <a href="#267">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
 <a href=#274 id=274 data-nosnippet>274</a>                <span class="kw-2">&amp;mut </span><a href="#268">error</a>,
 <a href=#275 id=275 data-nosnippet>275</a>            );
 <a href=#276 id=276 data-nosnippet>276</a>            <span class="kw">if </span><a href="#268">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
-<a href=#277 id=277 data-nosnippet>277</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(FromGlibContainer::<a href="../translate.rs.html#1925">from_glib_container_num</a>(
+<a href=#277 id=277 data-nosnippet>277</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(FromGlibContainer::<a href="../translate.rs.html#1961">from_glib_container_num</a>(
 <a href=#278 id=278 data-nosnippet>278</a>                    <a href="#269">ret</a>,
 <a href=#279 id=279 data-nosnippet>279</a>                    <a href="#267">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as _</span>,
 <a href=#280 id=280 data-nosnippet>280</a>                ))
 <a href=#281 id=281 data-nosnippet>281</a>            } <span class="kw">else </span>{
-<a href=#282 id=282 data-nosnippet>282</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#268">error</a>))
+<a href=#282 id=282 data-nosnippet>282</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#268">error</a>))
 <a href=#283 id=283 data-nosnippet>283</a>            }
 <a href=#284 id=284 data-nosnippet>284</a>        }
 <a href=#285 id=285 data-nosnippet>285</a>    }
@@ -377,15 +377,15 @@
 <a href=#304 id=304 data-nosnippet>304</a>        <span class="kw">unsafe </span>{
 <a href=#305 id=305 data-nosnippet>305</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#306 id=306 data-nosnippet>306</a>            <span class="kw">let </span>ret = ffi::g_key_file_get_int64(
-<a href=#307 id=307 data-nosnippet>307</a>                <a class="self" href="#303">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#308 id=308 data-nosnippet>308</a>                <a href="#303">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#309 id=309 data-nosnippet>309</a>                <a href="#303">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#307 id=307 data-nosnippet>307</a>                <a class="self" href="#303">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#308 id=308 data-nosnippet>308</a>                <a href="#303">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#309 id=309 data-nosnippet>309</a>                <a href="#303">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#310 id=310 data-nosnippet>310</a>                <span class="kw-2">&amp;mut </span><a href="#305">error</a>,
 <a href=#311 id=311 data-nosnippet>311</a>            );
 <a href=#312 id=312 data-nosnippet>312</a>            <span class="kw">if </span><a href="#305">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#313 id=313 data-nosnippet>313</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#306">ret</a>)
 <a href=#314 id=314 data-nosnippet>314</a>            } <span class="kw">else </span>{
-<a href=#315 id=315 data-nosnippet>315</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#305">error</a>))
+<a href=#315 id=315 data-nosnippet>315</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#305">error</a>))
 <a href=#316 id=316 data-nosnippet>316</a>            }
 <a href=#317 id=317 data-nosnippet>317</a>        }
 <a href=#318 id=318 data-nosnippet>318</a>    }
@@ -412,15 +412,15 @@
 <a href=#339 id=339 data-nosnippet>339</a>        <span class="kw">unsafe </span>{
 <a href=#340 id=340 data-nosnippet>340</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#341 id=341 data-nosnippet>341</a>            <span class="kw">let </span>ret = ffi::g_key_file_get_integer(
-<a href=#342 id=342 data-nosnippet>342</a>                <a class="self" href="#338">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#343 id=343 data-nosnippet>343</a>                <a href="#338">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#344 id=344 data-nosnippet>344</a>                <a href="#338">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#342 id=342 data-nosnippet>342</a>                <a class="self" href="#338">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#343 id=343 data-nosnippet>343</a>                <a href="#338">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#344 id=344 data-nosnippet>344</a>                <a href="#338">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#345 id=345 data-nosnippet>345</a>                <span class="kw-2">&amp;mut </span><a href="#340">error</a>,
 <a href=#346 id=346 data-nosnippet>346</a>            );
 <a href=#347 id=347 data-nosnippet>347</a>            <span class="kw">if </span><a href="#340">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#348 id=348 data-nosnippet>348</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#341">ret</a>)
 <a href=#349 id=349 data-nosnippet>349</a>            } <span class="kw">else </span>{
-<a href=#350 id=350 data-nosnippet>350</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#340">error</a>))
+<a href=#350 id=350 data-nosnippet>350</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#340">error</a>))
 <a href=#351 id=351 data-nosnippet>351</a>            }
 <a href=#352 id=352 data-nosnippet>352</a>        }
 <a href=#353 id=353 data-nosnippet>353</a>    }
@@ -450,19 +450,19 @@
 <a href=#377 id=377 data-nosnippet>377</a>            <span class="kw">let </span><span class="kw-2">mut </span>length = std::mem::<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">MaybeUninit</a>::<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">uninit</a>();
 <a href=#378 id=378 data-nosnippet>378</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#379 id=379 data-nosnippet>379</a>            <span class="kw">let </span>ret = ffi::g_key_file_get_integer_list(
-<a href=#380 id=380 data-nosnippet>380</a>                <a class="self" href="#375">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#381 id=381 data-nosnippet>381</a>                <a href="#375">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#382 id=382 data-nosnippet>382</a>                <a href="#375">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#380 id=380 data-nosnippet>380</a>                <a class="self" href="#375">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#381 id=381 data-nosnippet>381</a>                <a href="#375">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#382 id=382 data-nosnippet>382</a>                <a href="#375">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#383 id=383 data-nosnippet>383</a>                <a href="#377">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
 <a href=#384 id=384 data-nosnippet>384</a>                <span class="kw-2">&amp;mut </span><a href="#378">error</a>,
 <a href=#385 id=385 data-nosnippet>385</a>            );
 <a href=#386 id=386 data-nosnippet>386</a>            <span class="kw">if </span><a href="#378">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
-<a href=#387 id=387 data-nosnippet>387</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(FromGlibContainer::<a href="../translate.rs.html#1925">from_glib_container_num</a>(
+<a href=#387 id=387 data-nosnippet>387</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(FromGlibContainer::<a href="../translate.rs.html#1961">from_glib_container_num</a>(
 <a href=#388 id=388 data-nosnippet>388</a>                    <a href="#379">ret</a>,
 <a href=#389 id=389 data-nosnippet>389</a>                    <a href="#377">length</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() <span class="kw">as _</span>,
 <a href=#390 id=390 data-nosnippet>390</a>                ))
 <a href=#391 id=391 data-nosnippet>391</a>            } <span class="kw">else </span>{
-<a href=#392 id=392 data-nosnippet>392</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#378">error</a>))
+<a href=#392 id=392 data-nosnippet>392</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#378">error</a>))
 <a href=#393 id=393 data-nosnippet>393</a>            }
 <a href=#394 id=394 data-nosnippet>394</a>        }
 <a href=#395 id=395 data-nosnippet>395</a>    }
@@ -494,13 +494,13 @@
 <a href=#421 id=421 data-nosnippet>421</a>        group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#422 id=422 data-nosnippet>422</a>        key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#423 id=423 data-nosnippet>423</a>        locale: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
-<a href=#424 id=424 data-nosnippet>424</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">crate</span>::<a href="../gstring.rs.html#1073">GString</a>&gt; {
+<a href=#424 id=424 data-nosnippet>424</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">crate</span>::<a href="../gstring.rs.html#1087">GString</a>&gt; {
 <a href=#425 id=425 data-nosnippet>425</a>        <span class="kw">unsafe </span>{
-<a href=#426 id=426 data-nosnippet>426</a>            <a href="../translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_key_file_get_locale_for_key(
-<a href=#427 id=427 data-nosnippet>427</a>                <a class="self" href="#420">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#428 id=428 data-nosnippet>428</a>                <a href="#421">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#429 id=429 data-nosnippet>429</a>                <a href="#422">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#430 id=430 data-nosnippet>430</a>                <a href="#423">locale</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#426 id=426 data-nosnippet>426</a>            <a href="../translate.rs.html#1636-1638">from_glib_full</a>(ffi::g_key_file_get_locale_for_key(
+<a href=#427 id=427 data-nosnippet>427</a>                <a class="self" href="#420">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#428 id=428 data-nosnippet>428</a>                <a href="#421">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#429 id=429 data-nosnippet>429</a>                <a href="#422">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#430 id=430 data-nosnippet>430</a>                <a href="#423">locale</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#431 id=431 data-nosnippet>431</a>            ))
 <a href=#432 id=432 data-nosnippet>432</a>        }
 <a href=#433 id=433 data-nosnippet>433</a>    }
@@ -512,8 +512,8 @@
 <a href=#439 id=439 data-nosnippet>439</a>    /// The start group of the key file.
 <a href=#440 id=440 data-nosnippet>440</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_get_start_group"</span>)]
 <a href=#441 id=441 data-nosnippet>441</a>    #[doc(alias = <span class="string">"get_start_group"</span>)]
-<a href=#442 id=442 data-nosnippet>442</a>    </span><span class="kw">pub fn </span>start_group(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">crate</span>::<a href="../gstring.rs.html#1073">GString</a>&gt; {
-<a href=#443 id=443 data-nosnippet>443</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1638-1640">from_glib_full</a>(ffi::g_key_file_get_start_group(<a class="self" href="#442">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)) }
+<a href=#442 id=442 data-nosnippet>442</a>    </span><span class="kw">pub fn </span>start_group(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">crate</span>::<a href="../gstring.rs.html#1087">GString</a>&gt; {
+<a href=#443 id=443 data-nosnippet>443</a>        <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1636-1638">from_glib_full</a>(ffi::g_key_file_get_start_group(<a class="self" href="#442">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>)) }
 <a href=#444 id=444 data-nosnippet>444</a>    }
 <a href=#445 id=445 data-nosnippet>445</a>
 <a href=#446 id=446 data-nosnippet>446</a>    <span class="doccomment">/// Returns the value associated with @key under @group_name as an unsigned
@@ -536,15 +536,15 @@
 <a href=#463 id=463 data-nosnippet>463</a>        <span class="kw">unsafe </span>{
 <a href=#464 id=464 data-nosnippet>464</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#465 id=465 data-nosnippet>465</a>            <span class="kw">let </span>ret = ffi::g_key_file_get_uint64(
-<a href=#466 id=466 data-nosnippet>466</a>                <a class="self" href="#462">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#467 id=467 data-nosnippet>467</a>                <a href="#462">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#468 id=468 data-nosnippet>468</a>                <a href="#462">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#466 id=466 data-nosnippet>466</a>                <a class="self" href="#462">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#467 id=467 data-nosnippet>467</a>                <a href="#462">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#468 id=468 data-nosnippet>468</a>                <a href="#462">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#469 id=469 data-nosnippet>469</a>                <span class="kw-2">&amp;mut </span><a href="#464">error</a>,
 <a href=#470 id=470 data-nosnippet>470</a>            );
 <a href=#471 id=471 data-nosnippet>471</a>            <span class="kw">if </span><a href="#464">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#472 id=472 data-nosnippet>472</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#465">ret</a>)
 <a href=#473 id=473 data-nosnippet>473</a>            } <span class="kw">else </span>{
-<a href=#474 id=474 data-nosnippet>474</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#464">error</a>))
+<a href=#474 id=474 data-nosnippet>474</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#464">error</a>))
 <a href=#475 id=475 data-nosnippet>475</a>            }
 <a href=#476 id=476 data-nosnippet>476</a>        }
 <a href=#477 id=477 data-nosnippet>477</a>    }
@@ -567,19 +567,19 @@
 <a href=#494 id=494 data-nosnippet>494</a>    ///  key cannot be found.
 <a href=#495 id=495 data-nosnippet>495</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_get_value"</span>)]
 <a href=#496 id=496 data-nosnippet>496</a>    #[doc(alias = <span class="string">"get_value"</span>)]
-<a href=#497 id=497 data-nosnippet>497</a>    </span><span class="kw">pub fn </span>value(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="kw">crate</span>::<a href="../gstring.rs.html#1073">GString</a>, <span class="kw">crate</span>::<a href="../error.rs.html#10-25">Error</a>&gt; {
+<a href=#497 id=497 data-nosnippet>497</a>    </span><span class="kw">pub fn </span>value(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="kw">crate</span>::<a href="../gstring.rs.html#1087">GString</a>, <span class="kw">crate</span>::<a href="../error.rs.html#10-25">Error</a>&gt; {
 <a href=#498 id=498 data-nosnippet>498</a>        <span class="kw">unsafe </span>{
 <a href=#499 id=499 data-nosnippet>499</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#500 id=500 data-nosnippet>500</a>            <span class="kw">let </span>ret = ffi::g_key_file_get_value(
-<a href=#501 id=501 data-nosnippet>501</a>                <a class="self" href="#497">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#502 id=502 data-nosnippet>502</a>                <a href="#497">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#503 id=503 data-nosnippet>503</a>                <a href="#497">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#501 id=501 data-nosnippet>501</a>                <a class="self" href="#497">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#502 id=502 data-nosnippet>502</a>                <a href="#497">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#503 id=503 data-nosnippet>503</a>                <a href="#497">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#504 id=504 data-nosnippet>504</a>                <span class="kw-2">&amp;mut </span><a href="#499">error</a>,
 <a href=#505 id=505 data-nosnippet>505</a>            );
 <a href=#506 id=506 data-nosnippet>506</a>            <span class="kw">if </span><a href="#499">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
-<a href=#507 id=507 data-nosnippet>507</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#500">ret</a>))
+<a href=#507 id=507 data-nosnippet>507</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#500">ret</a>))
 <a href=#508 id=508 data-nosnippet>508</a>            } <span class="kw">else </span>{
-<a href=#509 id=509 data-nosnippet>509</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#499">error</a>))
+<a href=#509 id=509 data-nosnippet>509</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#499">error</a>))
 <a href=#510 id=510 data-nosnippet>510</a>            }
 <a href=#511 id=511 data-nosnippet>511</a>        }
 <a href=#512 id=512 data-nosnippet>512</a>    }
@@ -594,9 +594,9 @@
 <a href=#521 id=521 data-nosnippet>521</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_has_group"</span>)]
 <a href=#522 id=522 data-nosnippet>522</a>    </span><span class="kw">pub fn </span>has_group(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
 <a href=#523 id=523 data-nosnippet>523</a>        <span class="kw">unsafe </span>{
-<a href=#524 id=524 data-nosnippet>524</a>            <a href="../translate.rs.html#1421-1423">from_glib</a>(ffi::g_key_file_has_group(
-<a href=#525 id=525 data-nosnippet>525</a>                <a class="self" href="#522">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#526 id=526 data-nosnippet>526</a>                <a href="#522">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#524 id=524 data-nosnippet>524</a>            <a href="../translate.rs.html#1417-1419">from_glib</a>(ffi::g_key_file_has_group(
+<a href=#525 id=525 data-nosnippet>525</a>                <a class="self" href="#522">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#526 id=526 data-nosnippet>526</a>                <a href="#522">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#527 id=527 data-nosnippet>527</a>            ))
 <a href=#528 id=528 data-nosnippet>528</a>        }
 <a href=#529 id=529 data-nosnippet>529</a>    }
@@ -614,12 +614,12 @@
 <a href=#541 id=541 data-nosnippet>541</a>    ///
 <a href=#542 id=542 data-nosnippet>542</a>    /// true if a key file could be loaded, false otherwise
 <a href=#543 id=543 data-nosnippet>543</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_load_from_bytes"</span>)]
-<a href=#544 id=544 data-nosnippet>544</a>    </span><span class="kw">pub fn </span>load_from_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>, bytes: <span class="kw-2">&amp;</span><a href="../bytes.rs.html#15-69">Bytes</a>, flags: <a href="flags.rs.html#267-288">KeyFileFlags</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <span class="kw">crate</span>::<a href="../error.rs.html#10-25">Error</a>&gt; {
+<a href=#544 id=544 data-nosnippet>544</a>    </span><span class="kw">pub fn </span>load_from_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>, bytes: <span class="kw-2">&amp;</span><a href="../bytes.rs.html#15-69">Bytes</a>, flags: <a href="flags.rs.html#269-290">KeyFileFlags</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <span class="kw">crate</span>::<a href="../error.rs.html#10-25">Error</a>&gt; {
 <a href=#545 id=545 data-nosnippet>545</a>        <span class="kw">unsafe </span>{
 <a href=#546 id=546 data-nosnippet>546</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#547 id=547 data-nosnippet>547</a>            <span class="kw">let </span>is_ok = ffi::g_key_file_load_from_bytes(
-<a href=#548 id=548 data-nosnippet>548</a>                <a class="self" href="#544">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#549 id=549 data-nosnippet>549</a>                <a href="#544">bytes</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#548 id=548 data-nosnippet>548</a>                <a class="self" href="#544">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#549 id=549 data-nosnippet>549</a>                <a href="#544">bytes</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#550 id=550 data-nosnippet>550</a>                <a href="#544">flags</a>.<a href="../translate.rs.html#334">into_glib</a>(),
 <a href=#551 id=551 data-nosnippet>551</a>                <span class="kw-2">&amp;mut </span><a href="#546">error</a>,
 <a href=#552 id=552 data-nosnippet>552</a>            );
@@ -627,7 +627,7 @@
 <a href=#554 id=554 data-nosnippet>554</a>            <span class="kw">if </span><a href="#546">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#555 id=555 data-nosnippet>555</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#556 id=556 data-nosnippet>556</a>            } <span class="kw">else </span>{
-<a href=#557 id=557 data-nosnippet>557</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#546">error</a>))
+<a href=#557 id=557 data-nosnippet>557</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#546">error</a>))
 <a href=#558 id=558 data-nosnippet>558</a>            }
 <a href=#559 id=559 data-nosnippet>559</a>        }
 <a href=#560 id=560 data-nosnippet>560</a>    }
@@ -646,13 +646,13 @@
 <a href=#573 id=573 data-nosnippet>573</a>    ///
 <a href=#574 id=574 data-nosnippet>574</a>    /// true if a key file could be loaded, false otherwise
 <a href=#575 id=575 data-nosnippet>575</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_load_from_data"</span>)]
-<a href=#576 id=576 data-nosnippet>576</a>    </span><span class="kw">pub fn </span>load_from_data(<span class="kw-2">&amp;</span><span class="self">self</span>, data: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, flags: <a href="flags.rs.html#267-288">KeyFileFlags</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <span class="kw">crate</span>::<a href="../error.rs.html#10-25">Error</a>&gt; {
+<a href=#576 id=576 data-nosnippet>576</a>    </span><span class="kw">pub fn </span>load_from_data(<span class="kw-2">&amp;</span><span class="self">self</span>, data: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, flags: <a href="flags.rs.html#269-290">KeyFileFlags</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <span class="kw">crate</span>::<a href="../error.rs.html#10-25">Error</a>&gt; {
 <a href=#577 id=577 data-nosnippet>577</a>        <span class="kw">let </span>length = <a href="#576">data</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as _</span>;
 <a href=#578 id=578 data-nosnippet>578</a>        <span class="kw">unsafe </span>{
 <a href=#579 id=579 data-nosnippet>579</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#580 id=580 data-nosnippet>580</a>            <span class="kw">let </span>is_ok = ffi::g_key_file_load_from_data(
-<a href=#581 id=581 data-nosnippet>581</a>                <a class="self" href="#576">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#582 id=582 data-nosnippet>582</a>                <a href="#576">data</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#581 id=581 data-nosnippet>581</a>                <a class="self" href="#576">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#582 id=582 data-nosnippet>582</a>                <a href="#576">data</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#583 id=583 data-nosnippet>583</a>                <a href="#577">length</a>,
 <a href=#584 id=584 data-nosnippet>584</a>                <a href="#576">flags</a>.<a href="../translate.rs.html#334">into_glib</a>(),
 <a href=#585 id=585 data-nosnippet>585</a>                <span class="kw-2">&amp;mut </span><a href="#579">error</a>,
@@ -661,7 +661,7 @@
 <a href=#588 id=588 data-nosnippet>588</a>            <span class="kw">if </span><a href="#579">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#589 id=589 data-nosnippet>589</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#590 id=590 data-nosnippet>590</a>            } <span class="kw">else </span>{
-<a href=#591 id=591 data-nosnippet>591</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#579">error</a>))
+<a href=#591 id=591 data-nosnippet>591</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#579">error</a>))
 <a href=#592 id=592 data-nosnippet>592</a>            }
 <a href=#593 id=593 data-nosnippet>593</a>        }
 <a href=#594 id=594 data-nosnippet>594</a>    }
@@ -686,13 +686,13 @@
 <a href=#613 id=613 data-nosnippet>613</a>    </span><span class="kw">pub fn </span>load_from_file(
 <a href=#614 id=614 data-nosnippet>614</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#615 id=615 data-nosnippet>615</a>        file: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;std::path::<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;,
-<a href=#616 id=616 data-nosnippet>616</a>        flags: <a href="flags.rs.html#267-288">KeyFileFlags</a>,
+<a href=#616 id=616 data-nosnippet>616</a>        flags: <a href="flags.rs.html#269-290">KeyFileFlags</a>,
 <a href=#617 id=617 data-nosnippet>617</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <span class="kw">crate</span>::<a href="../error.rs.html#10-25">Error</a>&gt; {
 <a href=#618 id=618 data-nosnippet>618</a>        <span class="kw">unsafe </span>{
 <a href=#619 id=619 data-nosnippet>619</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#620 id=620 data-nosnippet>620</a>            <span class="kw">let </span>is_ok = ffi::g_key_file_load_from_file(
-<a href=#621 id=621 data-nosnippet>621</a>                <a class="self" href="#614">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#622 id=622 data-nosnippet>622</a>                <a href="#615">file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#621 id=621 data-nosnippet>621</a>                <a class="self" href="#614">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#622 id=622 data-nosnippet>622</a>                <a href="#615">file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#623 id=623 data-nosnippet>623</a>                <a href="#616">flags</a>.<a href="../translate.rs.html#334">into_glib</a>(),
 <a href=#624 id=624 data-nosnippet>624</a>                <span class="kw-2">&amp;mut </span><a href="#619">error</a>,
 <a href=#625 id=625 data-nosnippet>625</a>            );
@@ -700,7 +700,7 @@
 <a href=#627 id=627 data-nosnippet>627</a>            <span class="kw">if </span><a href="#619">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#628 id=628 data-nosnippet>628</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#629 id=629 data-nosnippet>629</a>            } <span class="kw">else </span>{
-<a href=#630 id=630 data-nosnippet>630</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#619">error</a>))
+<a href=#630 id=630 data-nosnippet>630</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#619">error</a>))
 <a href=#631 id=631 data-nosnippet>631</a>            }
 <a href=#632 id=632 data-nosnippet>632</a>        }
 <a href=#633 id=633 data-nosnippet>633</a>    }
@@ -727,16 +727,16 @@
 <a href=#654 id=654 data-nosnippet>654</a>        <span class="kw">unsafe </span>{
 <a href=#655 id=655 data-nosnippet>655</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#656 id=656 data-nosnippet>656</a>            <span class="kw">let </span>is_ok = ffi::g_key_file_remove_comment(
-<a href=#657 id=657 data-nosnippet>657</a>                <a class="self" href="#650">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#658 id=658 data-nosnippet>658</a>                <a href="#651">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#659 id=659 data-nosnippet>659</a>                <a href="#652">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#657 id=657 data-nosnippet>657</a>                <a class="self" href="#650">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#658 id=658 data-nosnippet>658</a>                <a href="#651">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#659 id=659 data-nosnippet>659</a>                <a href="#652">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#660 id=660 data-nosnippet>660</a>                <span class="kw-2">&amp;mut </span><a href="#655">error</a>,
 <a href=#661 id=661 data-nosnippet>661</a>            );
 <a href=#662 id=662 data-nosnippet>662</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == <span class="kw">crate</span>::ffi::GFALSE, !error.is_null());
 <a href=#663 id=663 data-nosnippet>663</a>            <span class="kw">if </span><a href="#655">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#664 id=664 data-nosnippet>664</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#665 id=665 data-nosnippet>665</a>            } <span class="kw">else </span>{
-<a href=#666 id=666 data-nosnippet>666</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#655">error</a>))
+<a href=#666 id=666 data-nosnippet>666</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#655">error</a>))
 <a href=#667 id=667 data-nosnippet>667</a>            }
 <a href=#668 id=668 data-nosnippet>668</a>        }
 <a href=#669 id=669 data-nosnippet>669</a>    }
@@ -754,15 +754,15 @@
 <a href=#681 id=681 data-nosnippet>681</a>        <span class="kw">unsafe </span>{
 <a href=#682 id=682 data-nosnippet>682</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#683 id=683 data-nosnippet>683</a>            <span class="kw">let </span>is_ok = ffi::g_key_file_remove_group(
-<a href=#684 id=684 data-nosnippet>684</a>                <a class="self" href="#680">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#685 id=685 data-nosnippet>685</a>                <a href="#680">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#684 id=684 data-nosnippet>684</a>                <a class="self" href="#680">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#685 id=685 data-nosnippet>685</a>                <a href="#680">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#686 id=686 data-nosnippet>686</a>                <span class="kw-2">&amp;mut </span><a href="#682">error</a>,
 <a href=#687 id=687 data-nosnippet>687</a>            );
 <a href=#688 id=688 data-nosnippet>688</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == <span class="kw">crate</span>::ffi::GFALSE, !error.is_null());
 <a href=#689 id=689 data-nosnippet>689</a>            <span class="kw">if </span><a href="#682">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#690 id=690 data-nosnippet>690</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#691 id=691 data-nosnippet>691</a>            } <span class="kw">else </span>{
-<a href=#692 id=692 data-nosnippet>692</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#682">error</a>))
+<a href=#692 id=692 data-nosnippet>692</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#682">error</a>))
 <a href=#693 id=693 data-nosnippet>693</a>            }
 <a href=#694 id=694 data-nosnippet>694</a>        }
 <a href=#695 id=695 data-nosnippet>695</a>    }
@@ -781,16 +781,16 @@
 <a href=#708 id=708 data-nosnippet>708</a>        <span class="kw">unsafe </span>{
 <a href=#709 id=709 data-nosnippet>709</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#710 id=710 data-nosnippet>710</a>            <span class="kw">let </span>is_ok = ffi::g_key_file_remove_key(
-<a href=#711 id=711 data-nosnippet>711</a>                <a class="self" href="#707">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#712 id=712 data-nosnippet>712</a>                <a href="#707">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#713 id=713 data-nosnippet>713</a>                <a href="#707">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#711 id=711 data-nosnippet>711</a>                <a class="self" href="#707">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#712 id=712 data-nosnippet>712</a>                <a href="#707">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#713 id=713 data-nosnippet>713</a>                <a href="#707">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#714 id=714 data-nosnippet>714</a>                <span class="kw-2">&amp;mut </span><a href="#709">error</a>,
 <a href=#715 id=715 data-nosnippet>715</a>            );
 <a href=#716 id=716 data-nosnippet>716</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == <span class="kw">crate</span>::ffi::GFALSE, !error.is_null());
 <a href=#717 id=717 data-nosnippet>717</a>            <span class="kw">if </span><a href="#709">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#718 id=718 data-nosnippet>718</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#719 id=719 data-nosnippet>719</a>            } <span class="kw">else </span>{
-<a href=#720 id=720 data-nosnippet>720</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#709">error</a>))
+<a href=#720 id=720 data-nosnippet>720</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#709">error</a>))
 <a href=#721 id=721 data-nosnippet>721</a>            }
 <a href=#722 id=722 data-nosnippet>722</a>        }
 <a href=#723 id=723 data-nosnippet>723</a>    }
@@ -808,9 +808,9 @@
 <a href=#735 id=735 data-nosnippet>735</a>    </span><span class="kw">pub fn </span>set_boolean(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
 <a href=#736 id=736 data-nosnippet>736</a>        <span class="kw">unsafe </span>{
 <a href=#737 id=737 data-nosnippet>737</a>            ffi::g_key_file_set_boolean(
-<a href=#738 id=738 data-nosnippet>738</a>                <a class="self" href="#735">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#739 id=739 data-nosnippet>739</a>                <a href="#735">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#740 id=740 data-nosnippet>740</a>                <a href="#735">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#738 id=738 data-nosnippet>738</a>                <a class="self" href="#735">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#739 id=739 data-nosnippet>739</a>                <a href="#735">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#740 id=740 data-nosnippet>740</a>                <a href="#735">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#741 id=741 data-nosnippet>741</a>                <a href="#735">value</a>.<a href="../translate.rs.html#334">into_glib</a>(),
 <a href=#742 id=742 data-nosnippet>742</a>            );
 <a href=#743 id=743 data-nosnippet>743</a>        }
@@ -854,17 +854,17 @@
 <a href=#781 id=781 data-nosnippet>781</a>        <span class="kw">unsafe </span>{
 <a href=#782 id=782 data-nosnippet>782</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#783 id=783 data-nosnippet>783</a>            <span class="kw">let </span>is_ok = ffi::g_key_file_set_comment(
-<a href=#784 id=784 data-nosnippet>784</a>                <a class="self" href="#776">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#785 id=785 data-nosnippet>785</a>                <a href="#777">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#786 id=786 data-nosnippet>786</a>                <a href="#778">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#787 id=787 data-nosnippet>787</a>                <a href="#779">comment</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#784 id=784 data-nosnippet>784</a>                <a class="self" href="#776">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#785 id=785 data-nosnippet>785</a>                <a href="#777">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#786 id=786 data-nosnippet>786</a>                <a href="#778">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#787 id=787 data-nosnippet>787</a>                <a href="#779">comment</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#788 id=788 data-nosnippet>788</a>                <span class="kw-2">&amp;mut </span><a href="#782">error</a>,
 <a href=#789 id=789 data-nosnippet>789</a>            );
 <a href=#790 id=790 data-nosnippet>790</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == <span class="kw">crate</span>::ffi::GFALSE, !error.is_null());
 <a href=#791 id=791 data-nosnippet>791</a>            <span class="kw">if </span><a href="#782">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#792 id=792 data-nosnippet>792</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#793 id=793 data-nosnippet>793</a>            } <span class="kw">else </span>{
-<a href=#794 id=794 data-nosnippet>794</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1638-1640">from_glib_full</a>(<a href="#782">error</a>))
+<a href=#794 id=794 data-nosnippet>794</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../translate.rs.html#1636-1638">from_glib_full</a>(<a href="#782">error</a>))
 <a href=#795 id=795 data-nosnippet>795</a>            }
 <a href=#796 id=796 data-nosnippet>796</a>        }
 <a href=#797 id=797 data-nosnippet>797</a>    }
@@ -882,9 +882,9 @@
 <a href=#809 id=809 data-nosnippet>809</a>    </span><span class="kw">pub fn </span>set_double(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
 <a href=#810 id=810 data-nosnippet>810</a>        <span class="kw">unsafe </span>{
 <a href=#811 id=811 data-nosnippet>811</a>            ffi::g_key_file_set_double(
-<a href=#812 id=812 data-nosnippet>812</a>                <a class="self" href="#809">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#813 id=813 data-nosnippet>813</a>                <a href="#809">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#814 id=814 data-nosnippet>814</a>                <a href="#809">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#812 id=812 data-nosnippet>812</a>                <a class="self" href="#809">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#813 id=813 data-nosnippet>813</a>                <a href="#809">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#814 id=814 data-nosnippet>814</a>                <a href="#809">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#815 id=815 data-nosnippet>815</a>                <a href="#809">value</a>,
 <a href=#816 id=816 data-nosnippet>816</a>            );
 <a href=#817 id=817 data-nosnippet>817</a>        }
@@ -903,9 +903,9 @@
 <a href=#830 id=830 data-nosnippet>830</a>    </span><span class="kw">pub fn </span>set_int64(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>) {
 <a href=#831 id=831 data-nosnippet>831</a>        <span class="kw">unsafe </span>{
 <a href=#832 id=832 data-nosnippet>832</a>            ffi::g_key_file_set_int64(
-<a href=#833 id=833 data-nosnippet>833</a>                <a class="self" href="#830">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#834 id=834 data-nosnippet>834</a>                <a href="#830">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#835 id=835 data-nosnippet>835</a>                <a href="#830">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#833 id=833 data-nosnippet>833</a>                <a class="self" href="#830">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#834 id=834 data-nosnippet>834</a>                <a href="#830">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#835 id=835 data-nosnippet>835</a>                <a href="#830">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#836 id=836 data-nosnippet>836</a>                <a href="#830">value</a>,
 <a href=#837 id=837 data-nosnippet>837</a>            );
 <a href=#838 id=838 data-nosnippet>838</a>        }
@@ -924,9 +924,9 @@
 <a href=#851 id=851 data-nosnippet>851</a>    </span><span class="kw">pub fn </span>set_integer(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
 <a href=#852 id=852 data-nosnippet>852</a>        <span class="kw">unsafe </span>{
 <a href=#853 id=853 data-nosnippet>853</a>            ffi::g_key_file_set_integer(
-<a href=#854 id=854 data-nosnippet>854</a>                <a class="self" href="#851">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#855 id=855 data-nosnippet>855</a>                <a href="#851">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#856 id=856 data-nosnippet>856</a>                <a href="#851">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#854 id=854 data-nosnippet>854</a>                <a class="self" href="#851">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#855 id=855 data-nosnippet>855</a>                <a href="#851">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#856 id=856 data-nosnippet>856</a>                <a href="#851">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#857 id=857 data-nosnippet>857</a>                <a href="#851">value</a>,
 <a href=#858 id=858 data-nosnippet>858</a>            );
 <a href=#859 id=859 data-nosnippet>859</a>        }
@@ -941,7 +941,7 @@
 <a href=#868 id=868 data-nosnippet>868</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_key_file_set_list_separator"</span>)]
 <a href=#869 id=869 data-nosnippet>869</a>    </span><span class="kw">pub fn </span>set_list_separator(<span class="kw-2">&amp;</span><span class="self">self</span>, separator: <span class="kw">crate</span>::<a href="../char.rs.html#53">Char</a>) {
 <a href=#870 id=870 data-nosnippet>870</a>        <span class="kw">unsafe </span>{
-<a href=#871 id=871 data-nosnippet>871</a>            ffi::g_key_file_set_list_separator(<a class="self" href="#869">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#869">separator</a>.<a href="../translate.rs.html#334">into_glib</a>());
+<a href=#871 id=871 data-nosnippet>871</a>            ffi::g_key_file_set_list_separator(<a class="self" href="#869">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>, <a href="#869">separator</a>.<a href="../translate.rs.html#334">into_glib</a>());
 <a href=#872 id=872 data-nosnippet>872</a>        }
 <a href=#873 id=873 data-nosnippet>873</a>    }
 <a href=#874 id=874 data-nosnippet>874</a>
@@ -962,11 +962,11 @@
 <a href=#889 id=889 data-nosnippet>889</a>    </span><span class="kw">pub fn </span>set_locale_string(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, locale: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
 <a href=#890 id=890 data-nosnippet>890</a>        <span class="kw">unsafe </span>{
 <a href=#891 id=891 data-nosnippet>891</a>            ffi::g_key_file_set_locale_string(
-<a href=#892 id=892 data-nosnippet>892</a>                <a class="self" href="#889">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#893 id=893 data-nosnippet>893</a>                <a href="#889">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#894 id=894 data-nosnippet>894</a>                <a href="#889">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#895 id=895 data-nosnippet>895</a>                <a href="#889">locale</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#896 id=896 data-nosnippet>896</a>                <a href="#889">string</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#892 id=892 data-nosnippet>892</a>                <a class="self" href="#889">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#893 id=893 data-nosnippet>893</a>                <a href="#889">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#894 id=894 data-nosnippet>894</a>                <a href="#889">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#895 id=895 data-nosnippet>895</a>                <a href="#889">locale</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#896 id=896 data-nosnippet>896</a>                <a href="#889">string</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#897 id=897 data-nosnippet>897</a>            );
 <a href=#898 id=898 data-nosnippet>898</a>        }
 <a href=#899 id=899 data-nosnippet>899</a>    }
@@ -987,10 +987,10 @@
 <a href=#914 id=914 data-nosnippet>914</a>    </span><span class="kw">pub fn </span>set_string(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
 <a href=#915 id=915 data-nosnippet>915</a>        <span class="kw">unsafe </span>{
 <a href=#916 id=916 data-nosnippet>916</a>            ffi::g_key_file_set_string(
-<a href=#917 id=917 data-nosnippet>917</a>                <a class="self" href="#914">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#918 id=918 data-nosnippet>918</a>                <a href="#914">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#919 id=919 data-nosnippet>919</a>                <a href="#914">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#920 id=920 data-nosnippet>920</a>                <a href="#914">string</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#917 id=917 data-nosnippet>917</a>                <a class="self" href="#914">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#918 id=918 data-nosnippet>918</a>                <a href="#914">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#919 id=919 data-nosnippet>919</a>                <a href="#914">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#920 id=920 data-nosnippet>920</a>                <a href="#914">string</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#921 id=921 data-nosnippet>921</a>            );
 <a href=#922 id=922 data-nosnippet>922</a>        }
 <a href=#923 id=923 data-nosnippet>923</a>    }
@@ -1008,9 +1008,9 @@
 <a href=#935 id=935 data-nosnippet>935</a>    </span><span class="kw">pub fn </span>set_uint64(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>) {
 <a href=#936 id=936 data-nosnippet>936</a>        <span class="kw">unsafe </span>{
 <a href=#937 id=937 data-nosnippet>937</a>            ffi::g_key_file_set_uint64(
-<a href=#938 id=938 data-nosnippet>938</a>                <a class="self" href="#935">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#939 id=939 data-nosnippet>939</a>                <a href="#935">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#940 id=940 data-nosnippet>940</a>                <a href="#935">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#938 id=938 data-nosnippet>938</a>                <a class="self" href="#935">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#939 id=939 data-nosnippet>939</a>                <a href="#935">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#940 id=940 data-nosnippet>940</a>                <a href="#935">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#941 id=941 data-nosnippet>941</a>                <a href="#935">value</a>,
 <a href=#942 id=942 data-nosnippet>942</a>            );
 <a href=#943 id=943 data-nosnippet>943</a>        }
@@ -1032,10 +1032,10 @@
 <a href=#959 id=959 data-nosnippet>959</a>    </span><span class="kw">pub fn </span>set_value(<span class="kw-2">&amp;</span><span class="self">self</span>, group_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
 <a href=#960 id=960 data-nosnippet>960</a>        <span class="kw">unsafe </span>{
 <a href=#961 id=961 data-nosnippet>961</a>            ffi::g_key_file_set_value(
-<a href=#962 id=962 data-nosnippet>962</a>                <a class="self" href="#959">self</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#963 id=963 data-nosnippet>963</a>                <a href="#959">group_name</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#964 id=964 data-nosnippet>964</a>                <a href="#959">key</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#965 id=965 data-nosnippet>965</a>                <a href="#959">value</a>.<a href="../translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#962 id=962 data-nosnippet>962</a>                <a class="self" href="#959">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#963 id=963 data-nosnippet>963</a>                <a href="#959">group_name</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#964 id=964 data-nosnippet>964</a>                <a href="#959">key</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#965 id=965 data-nosnippet>965</a>                <a href="#959">value</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#966 id=966 data-nosnippet>966</a>            );
 <a href=#967 id=967 data-nosnippet>967</a>        }
 <a href=#968 id=968 data-nosnippet>968</a>    }

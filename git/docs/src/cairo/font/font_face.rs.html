@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/font/font_face.rs`."><title>font_face.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-2eb46af5.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (fecb335cb 2026-01-07)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/font/font_face.rs`."><title>font_face.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-2eb46af5.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (31cd367b9 2026-01-08)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -84,7 +84,7 @@
 <a href=#11 id=11 data-nosnippet>11</a>
 <a href=#12 id=12 data-nosnippet>12</a><span class="attr">#[cfg(feature = <span class="string">"freetype"</span>)]
 <a href=#13 id=13 data-nosnippet>13</a></span><span class="kw">use </span><a href="../enums.rs.html#1523-1530"><span class="kw">crate</span>::FtSynthesize</a>;
-<a href=#14 id=14 data-nosnippet>14</a><span class="kw">use </span>crate::{<a href="../../../cairo_sys/index.html">ffi</a>, <a href="../utils.rs.html#21-26">utils::status_to_result</a>, <a href="../error.rs.html#9-104">Error</a>, <a href="../enums.rs.html#631-640">FontSlant</a>, <a href="../enums.rs.html#749-766">FontType</a>, <a href="../enums.rs.html#672-679">FontWeight</a>};
+<a href=#14 id=14 data-nosnippet>14</a><span class="kw">use </span>crate::{<a href="../error.rs.html#9-104">Error</a>, <a href="../enums.rs.html#631-640">FontSlant</a>, <a href="../enums.rs.html#749-766">FontType</a>, <a href="../enums.rs.html#672-679">FontWeight</a>, <a href="../../../cairo_sys/index.html">ffi</a>, <a href="../utils.rs.html#21-26">utils::status_to_result</a>};
 <a href=#15 id=15 data-nosnippet>15</a>
 <a href=#16 id=16 data-nosnippet>16</a><span class="attr">#[cfg(feature = <span class="string">"freetype"</span>)]
 <a href=#17 id=17 data-nosnippet>17</a></span><span class="kw">static </span>FT_FACE_KEY: <span class="kw">crate</span>::<a href="../user_data.rs.html#7-10">UserDataKey</a>&lt;freetype::face::Face&gt; = <span class="kw">crate</span>::<a href="../user_data.rs.html#7-10">UserDataKey</a>::<a href="../user_data.rs.html#15-20">new</a>();
@@ -184,7 +184,7 @@
 <a href=#111 id=111 data-nosnippet>111</a>    <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
 <a href=#112 id=112 data-nosnippet>112</a>    #[inline]
 <a href=#113 id=113 data-nosnippet>113</a>    </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span>ffi::<a href="../../../cairo_sys/struct.cairo_font_face_t.html">cairo_font_face_t</a>) -&gt; <a href="#20-30">FontFace</a> {
-<a href=#114 id=114 data-nosnippet>114</a>        <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#113">ptr</a>)
+<a href=#114 id=114 data-nosnippet>114</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#113">ptr</a>) }
 <a href=#115 id=115 data-nosnippet>115</a>    }
 <a href=#116 id=116 data-nosnippet>116</a>
 <a href=#117 id=117 data-nosnippet>117</a>    <span class="attr">#[cfg(not(feature = <span class="string">"use_glib"</span>))]
@@ -197,7 +197,7 @@
 <a href=#124 id=124 data-nosnippet>124</a>    <span class="attr">#[cfg(feature = <span class="string">"use_glib"</span>)]
 <a href=#125 id=125 data-nosnippet>125</a>    #[inline]
 <a href=#126 id=126 data-nosnippet>126</a>    </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span>ffi::<a href="../../../cairo_sys/struct.cairo_font_face_t.html">cairo_font_face_t</a>) -&gt; <a href="#20-30">FontFace</a> {
-<a href=#127 id=127 data-nosnippet>127</a>        <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="#126">ptr</a>)
+<a href=#127 id=127 data-nosnippet>127</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(<a href="#126">ptr</a>) }
 <a href=#128 id=128 data-nosnippet>128</a>    }
 <a href=#129 id=129 data-nosnippet>129</a>
 <a href=#130 id=130 data-nosnippet>130</a>    <span class="attr">#[cfg(not(feature = <span class="string">"use_glib"</span>))]
@@ -221,7 +221,7 @@
 <a href=#148 id=148 data-nosnippet>148</a>
 <a href=#149 id=149 data-nosnippet>149</a>    <span class="attr">#[doc(alias = <span class="string">"cairo_toy_font_face_get_family"</span>)]
 <a href=#150 id=150 data-nosnippet>150</a>    </span><span class="kw">pub fn </span>toy_get_family(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
-<a href=#151 id=151 data-nosnippet>151</a>        <span class="kw">unsafe </span>{ <a href="#225-231">to_optional_string</a>(ffi::<a href="../../../cairo_sys/fn.cairo_toy_font_face_get_family.html">cairo_toy_font_face_get_family</a>(<a class="self" href="#150">self</a>.<a href="#139-141">to_raw_none</a>())) }
+<a href=#151 id=151 data-nosnippet>151</a>        <span class="kw">unsafe </span>{ <a href="#225-233">to_optional_string</a>(ffi::<a href="../../../cairo_sys/fn.cairo_toy_font_face_get_family.html">cairo_toy_font_face_get_family</a>(<a class="self" href="#150">self</a>.<a href="#139-141">to_raw_none</a>())) }
 <a href=#152 id=152 data-nosnippet>152</a>    }
 <a href=#153 id=153 data-nosnippet>153</a>
 <a href=#154 id=154 data-nosnippet>154</a>    <span class="attr">#[doc(alias = <span class="string">"cairo_toy_font_face_get_slant"</span>)]
@@ -271,7 +271,7 @@
 <a href=#198 id=198 data-nosnippet>198</a>        <a href="../utils.rs.html#21-26">status_to_result</a>(<a href="#197">status</a>)
 <a href=#199 id=199 data-nosnippet>199</a>    }
 <a href=#200 id=200 data-nosnippet>200</a>
-<a href=#201 id=201 data-nosnippet>201</a>    <a href="../user_data.rs.html#44-148">user_data_methods!</a> {
+<a href=#201 id=201 data-nosnippet>201</a>    <a href="../user_data.rs.html#44-150">user_data_methods!</a> {
 <a href=#202 id=202 data-nosnippet>202</a>        ffi::cairo_font_face_get_user_data,
 <a href=#203 id=203 data-nosnippet>203</a>        ffi::cairo_font_face_set_user_data,
 <a href=#204 id=204 data-nosnippet>204</a>    }
@@ -296,10 +296,12 @@
 <a href=#223 id=223 data-nosnippet>223</a>}
 <a href=#224 id=224 data-nosnippet>224</a>
 <a href=#225 id=225 data-nosnippet>225</a><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>to_optional_string(str: <span class="kw-2">*const </span>libc::c_char) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>&gt; {
-<a href=#226 id=226 data-nosnippet>226</a>    <span class="kw">if </span><a href="#225">str</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.const_ptr.html#method.is_null">is_null</a>() {
-<a href=#227 id=227 data-nosnippet>227</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
-<a href=#228 id=228 data-nosnippet>228</a>    } <span class="kw">else </span>{
-<a href=#229 id=229 data-nosnippet>229</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>::<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.from_utf8_lossy">from_utf8_lossy</a>(<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html">CStr</a>::<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">from_ptr</a>(<a href="#225">str</a>).<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_bytes">to_bytes</a>()).<a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#method.into_owned">into_owned</a>())
-<a href=#230 id=230 data-nosnippet>230</a>    }
-<a href=#231 id=231 data-nosnippet>231</a>}
+<a href=#226 id=226 data-nosnippet>226</a>    <span class="kw">unsafe </span>{
+<a href=#227 id=227 data-nosnippet>227</a>        <span class="kw">if </span><a href="#225">str</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.const_ptr.html#method.is_null">is_null</a>() {
+<a href=#228 id=228 data-nosnippet>228</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
+<a href=#229 id=229 data-nosnippet>229</a>        } <span class="kw">else </span>{
+<a href=#230 id=230 data-nosnippet>230</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>::<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.from_utf8_lossy">from_utf8_lossy</a>(<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html">CStr</a>::<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">from_ptr</a>(<a href="#225">str</a>).<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_bytes">to_bytes</a>()).<a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html#method.into_owned">into_owned</a>())
+<a href=#231 id=231 data-nosnippet>231</a>        }
+<a href=#232 id=232 data-nosnippet>232</a>    }
+<a href=#233 id=233 data-nosnippet>233</a>}
 </code></pre></div></section></main></body></html>

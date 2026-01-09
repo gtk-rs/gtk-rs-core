@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/convert.rs`."><title>convert.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-2eb46af5.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (fecb335cb 2026-01-07)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/convert.rs`."><title>convert.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-2eb46af5.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (31cd367b9 2026-01-08)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -75,7 +75,7 @@
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/std/io/index.html">io</a>, <a href="https://doc.rust-lang.org/nightly/std/os/raw/type.c_char.html">os::raw::c_char</a>, <a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">path::PathBuf</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>crate::{ffi, translate::<span class="kw-2">*</span>, <a href="auto/enums.rs.html#60-79">ConvertError</a>, <a href="error.rs.html#10-25">Error</a>, <a href="gstring.rs.html#1073">GString</a>, <a href="auto/enums.rs.html#624-635">NormalizeMode</a>, <a href="collections/slice.rs.html#15-19">Slice</a>};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>crate::{<a href="auto/enums.rs.html#60-79">ConvertError</a>, <a href="error.rs.html#10-25">Error</a>, <a href="gstring.rs.html#1087">GString</a>, <a href="auto/enums.rs.html#624-635">NormalizeMode</a>, <a href="collections/slice.rs.html#15-19">Slice</a>, ffi, translate::<span class="kw-2">*</span>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="comment">// rustdoc-stripper-ignore-next
 <a href=#8 id=8 data-nosnippet>8</a></span><span class="doccomment">/// A wrapper for [`ConvertError`](crate::ConvertError) that can hold an offset into the input
@@ -167,20 +167,20 @@
 <a href=#94 id=94 data-nosnippet>94</a></span><span class="attr">#[doc(alias = <span class="string">"g_convert"</span>)]
 <a href=#95 id=95 data-nosnippet>95</a></span><span class="kw">pub fn </span><a href="../../glib/fn.convert.html">convert</a>(
 <a href=#96 id=96 data-nosnippet>96</a>    str_: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
-<a href=#97 id=97 data-nosnippet>97</a>    to_codeset: <span class="kw">impl </span><a href="gstring.rs.html#2439-2441">IntoGStr</a>,
-<a href=#98 id=98 data-nosnippet>98</a>    from_codeset: <span class="kw">impl </span><a href="gstring.rs.html#2439-2441">IntoGStr</a>,
+<a href=#97 id=97 data-nosnippet>97</a>    to_codeset: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>,
+<a href=#98 id=98 data-nosnippet>98</a>    from_codeset: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>,
 <a href=#99 id=99 data-nosnippet>99</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="collections/slice.rs.html#15-19">Slice</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a href="#11-14">CvtError</a>&gt; {
 <a href=#100 id=100 data-nosnippet>100</a>    <a href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(str_.len() &lt;= isize::MAX <span class="kw">as </span>usize);
 <a href=#101 id=101 data-nosnippet>101</a>    <span class="kw">let </span><span class="kw-2">mut </span>bytes_read = <span class="number">0</span>;
 <a href=#102 id=102 data-nosnippet>102</a>    <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = <span class="number">0</span>;
 <a href=#103 id=103 data-nosnippet>103</a>    <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
-<a href=#104 id=104 data-nosnippet>104</a>    <span class="kw">let </span>result = <a href="#97">to_codeset</a>.<a href="gstring.rs.html#2440">run_with_gstr</a>(|to_codeset| {
-<a href=#105 id=105 data-nosnippet>105</a>        <a href="#98">from_codeset</a>.<a href="gstring.rs.html#2440">run_with_gstr</a>(|from_codeset| <span class="kw">unsafe </span>{
+<a href=#104 id=104 data-nosnippet>104</a>    <span class="kw">let </span>result = <a href="#97">to_codeset</a>.<a href="gstring.rs.html#2475">run_with_gstr</a>(|to_codeset| {
+<a href=#105 id=105 data-nosnippet>105</a>        <a href="#98">from_codeset</a>.<a href="gstring.rs.html#2475">run_with_gstr</a>(|from_codeset| <span class="kw">unsafe </span>{
 <a href=#106 id=106 data-nosnippet>106</a>            ffi::g_convert(
 <a href=#107 id=107 data-nosnippet>107</a>                <a href="#96">str_</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>(),
 <a href=#108 id=108 data-nosnippet>108</a>                <a href="#96">str_</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>,
-<a href=#109 id=109 data-nosnippet>109</a>                <a href="#104">to_codeset</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#110 id=110 data-nosnippet>110</a>                <a href="#105">from_codeset</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#109 id=109 data-nosnippet>109</a>                <a href="#104">to_codeset</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#110 id=110 data-nosnippet>110</a>                <a href="#105">from_codeset</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#111 id=111 data-nosnippet>111</a>                <span class="kw-2">&amp;mut </span><a href="#101">bytes_read</a>,
 <a href=#112 id=112 data-nosnippet>112</a>                <span class="kw-2">&amp;mut </span><a href="#102">bytes_written</a>,
 <a href=#113 id=113 data-nosnippet>113</a>                <span class="kw-2">&amp;mut </span><a href="#103">error</a>,
@@ -188,9 +188,9 @@
 <a href=#115 id=115 data-nosnippet>115</a>        })
 <a href=#116 id=116 data-nosnippet>116</a>    });
 <a href=#117 id=117 data-nosnippet>117</a>    <span class="kw">if </span><a href="#104">result</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
-<a href=#118 id=118 data-nosnippet>118</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="#11-14">CvtError</a>::<a href="#44-53">new</a>(<span class="kw">unsafe </span>{ <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#103">error</a>) }, <a href="#101">bytes_read</a>))
+<a href=#118 id=118 data-nosnippet>118</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="#11-14">CvtError</a>::<a href="#44-53">new</a>(<span class="kw">unsafe </span>{ <a href="translate.rs.html#1636-1638">from_glib_full</a>(<a href="#103">error</a>) }, <a href="#101">bytes_read</a>))
 <a href=#119 id=119 data-nosnippet>119</a>    } <span class="kw">else </span>{
-<a href=#120 id=120 data-nosnippet>120</a>        <span class="kw">let </span>slice = <span class="kw">unsafe </span>{ <a href="collections/slice.rs.html#15-19">Slice</a>::<a href="collections/slice.rs.html#509-523">from_glib_full_num</a>(<a href="#104">result</a>, <a href="#102">bytes_written</a> <span class="kw">as _</span>) };
+<a href=#120 id=120 data-nosnippet>120</a>        <span class="kw">let </span>slice = <span class="kw">unsafe </span>{ <a href="collections/slice.rs.html#15-19">Slice</a>::<a href="collections/slice.rs.html#521-537">from_glib_full_num</a>(<a href="#104">result</a>, <a href="#102">bytes_written</a> <span class="kw">as _</span>) };
 <a href=#121 id=121 data-nosnippet>121</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((<a href="#120">slice</a>, <a href="#101">bytes_read</a>))
 <a href=#122 id=122 data-nosnippet>122</a>    }
 <a href=#123 id=123 data-nosnippet>123</a>}
@@ -242,23 +242,23 @@
 <a href=#169 id=169 data-nosnippet>169</a></span><span class="attr">#[doc(alias = <span class="string">"g_convert_with_fallback"</span>)]
 <a href=#170 id=170 data-nosnippet>170</a></span><span class="kw">pub fn </span><a href="../../glib/fn.convert_with_fallback.html">convert_with_fallback</a>(
 <a href=#171 id=171 data-nosnippet>171</a>    str_: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
-<a href=#172 id=172 data-nosnippet>172</a>    to_codeset: <span class="kw">impl </span><a href="gstring.rs.html#2439-2441">IntoGStr</a>,
-<a href=#173 id=173 data-nosnippet>173</a>    from_codeset: <span class="kw">impl </span><a href="gstring.rs.html#2439-2441">IntoGStr</a>,
-<a href=#174 id=174 data-nosnippet>174</a>    fallback: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2439-2441">IntoGStr</a>&gt;,
+<a href=#172 id=172 data-nosnippet>172</a>    to_codeset: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>,
+<a href=#173 id=173 data-nosnippet>173</a>    from_codeset: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>,
+<a href=#174 id=174 data-nosnippet>174</a>    fallback: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>&gt;,
 <a href=#175 id=175 data-nosnippet>175</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="collections/slice.rs.html#15-19">Slice</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a href="#11-14">CvtError</a>&gt; {
 <a href=#176 id=176 data-nosnippet>176</a>    <a href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(str_.len() &lt;= isize::MAX <span class="kw">as </span>usize);
 <a href=#177 id=177 data-nosnippet>177</a>    <span class="kw">let </span><span class="kw-2">mut </span>bytes_read = <span class="number">0</span>;
 <a href=#178 id=178 data-nosnippet>178</a>    <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = <span class="number">0</span>;
 <a href=#179 id=179 data-nosnippet>179</a>    <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
-<a href=#180 id=180 data-nosnippet>180</a>    <span class="kw">let </span>result = <a href="#172">to_codeset</a>.<a href="gstring.rs.html#2440">run_with_gstr</a>(|to_codeset| {
-<a href=#181 id=181 data-nosnippet>181</a>        <a href="#173">from_codeset</a>.<a href="gstring.rs.html#2440">run_with_gstr</a>(|from_codeset| {
-<a href=#182 id=182 data-nosnippet>182</a>            <a href="#174">fallback</a>.<a href="gstring.rs.html#2516">run_with_gstr</a>(|fallback| <span class="kw">unsafe </span>{
+<a href=#180 id=180 data-nosnippet>180</a>    <span class="kw">let </span>result = <a href="#172">to_codeset</a>.<a href="gstring.rs.html#2475">run_with_gstr</a>(|to_codeset| {
+<a href=#181 id=181 data-nosnippet>181</a>        <a href="#173">from_codeset</a>.<a href="gstring.rs.html#2475">run_with_gstr</a>(|from_codeset| {
+<a href=#182 id=182 data-nosnippet>182</a>            <a href="#174">fallback</a>.<a href="gstring.rs.html#2551">run_with_gstr</a>(|fallback| <span class="kw">unsafe </span>{
 <a href=#183 id=183 data-nosnippet>183</a>                ffi::g_convert_with_fallback(
 <a href=#184 id=184 data-nosnippet>184</a>                    <a href="#171">str_</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>(),
 <a href=#185 id=185 data-nosnippet>185</a>                    <a href="#171">str_</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>,
-<a href=#186 id=186 data-nosnippet>186</a>                    <a href="#180">to_codeset</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#187 id=187 data-nosnippet>187</a>                    <a href="#181">from_codeset</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
-<a href=#188 id=188 data-nosnippet>188</a>                    <a href="#182">fallback</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#186 id=186 data-nosnippet>186</a>                    <a href="#180">to_codeset</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#187 id=187 data-nosnippet>187</a>                    <a href="#181">from_codeset</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+<a href=#188 id=188 data-nosnippet>188</a>                    <a href="#182">fallback</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#189 id=189 data-nosnippet>189</a>                    <span class="kw-2">&amp;mut </span><a href="#177">bytes_read</a>,
 <a href=#190 id=190 data-nosnippet>190</a>                    <span class="kw-2">&amp;mut </span><a href="#178">bytes_written</a>,
 <a href=#191 id=191 data-nosnippet>191</a>                    <span class="kw-2">&amp;mut </span><a href="#179">error</a>,
@@ -267,9 +267,9 @@
 <a href=#194 id=194 data-nosnippet>194</a>        })
 <a href=#195 id=195 data-nosnippet>195</a>    });
 <a href=#196 id=196 data-nosnippet>196</a>    <span class="kw">if </span><a href="#180">result</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
-<a href=#197 id=197 data-nosnippet>197</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="#11-14">CvtError</a>::<a href="#44-53">new</a>(<span class="kw">unsafe </span>{ <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#179">error</a>) }, <a href="#177">bytes_read</a>))
+<a href=#197 id=197 data-nosnippet>197</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="#11-14">CvtError</a>::<a href="#44-53">new</a>(<span class="kw">unsafe </span>{ <a href="translate.rs.html#1636-1638">from_glib_full</a>(<a href="#179">error</a>) }, <a href="#177">bytes_read</a>))
 <a href=#198 id=198 data-nosnippet>198</a>    } <span class="kw">else </span>{
-<a href=#199 id=199 data-nosnippet>199</a>        <span class="kw">let </span>slice = <span class="kw">unsafe </span>{ <a href="collections/slice.rs.html#15-19">Slice</a>::<a href="collections/slice.rs.html#509-523">from_glib_full_num</a>(<a href="#180">result</a>, <a href="#178">bytes_written</a> <span class="kw">as _</span>) };
+<a href=#199 id=199 data-nosnippet>199</a>        <span class="kw">let </span>slice = <span class="kw">unsafe </span>{ <a href="collections/slice.rs.html#15-19">Slice</a>::<a href="collections/slice.rs.html#521-537">from_glib_full_num</a>(<a href="#180">result</a>, <a href="#178">bytes_written</a> <span class="kw">as _</span>) };
 <a href=#200 id=200 data-nosnippet>200</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((<a href="#199">slice</a>, <a href="#177">bytes_read</a>))
 <a href=#201 id=201 data-nosnippet>201</a>    }
 <a href=#202 id=202 data-nosnippet>202</a>}
@@ -333,10 +333,10 @@
 <a href=#260 id=260 data-nosnippet>260</a>    ///  opening the converter failed.
 <a href=#261 id=261 data-nosnippet>261</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_iconv_open"</span>)]
 <a href=#262 id=262 data-nosnippet>262</a>    #[allow(clippy::unnecessary_lazy_evaluations)]
-<a href=#263 id=263 data-nosnippet>263</a>    </span><span class="kw">pub fn </span>new(to_codeset: <span class="kw">impl </span><a href="gstring.rs.html#2439-2441">IntoGStr</a>, from_codeset: <span class="kw">impl </span><a href="gstring.rs.html#2439-2441">IntoGStr</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="self">Self</span>&gt; {
-<a href=#264 id=264 data-nosnippet>264</a>        <span class="kw">let </span>iconv = <a href="#263">to_codeset</a>.<a href="gstring.rs.html#2440">run_with_gstr</a>(|to_codeset| {
-<a href=#265 id=265 data-nosnippet>265</a>            <a href="#263">from_codeset</a>.<a href="gstring.rs.html#2440">run_with_gstr</a>(|from_codeset| <span class="kw">unsafe </span>{
-<a href=#266 id=266 data-nosnippet>266</a>                ffi::g_iconv_open(<a href="#264">to_codeset</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>, <a href="#265">from_codeset</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>)
+<a href=#263 id=263 data-nosnippet>263</a>    </span><span class="kw">pub fn </span>new(to_codeset: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>, from_codeset: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="self">Self</span>&gt; {
+<a href=#264 id=264 data-nosnippet>264</a>        <span class="kw">let </span>iconv = <a href="#263">to_codeset</a>.<a href="gstring.rs.html#2475">run_with_gstr</a>(|to_codeset| {
+<a href=#265 id=265 data-nosnippet>265</a>            <a href="#263">from_codeset</a>.<a href="gstring.rs.html#2475">run_with_gstr</a>(|from_codeset| <span class="kw">unsafe </span>{
+<a href=#266 id=266 data-nosnippet>266</a>                ffi::g_iconv_open(<a href="#264">to_codeset</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>, <a href="#265">from_codeset</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>)
 <a href=#267 id=267 data-nosnippet>267</a>            })
 <a href=#268 id=268 data-nosnippet>268</a>        });
 <a href=#269 id=269 data-nosnippet>269</a>        (<a href="#264">iconv</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize !</a>= -<span class="number">1</span>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| <span class="self">Self</span>(<a href="#264">iconv</a>))
@@ -399,9 +399,9 @@
 <a href=#326 id=326 data-nosnippet>326</a>            )
 <a href=#327 id=327 data-nosnippet>327</a>        };
 <a href=#328 id=328 data-nosnippet>328</a>        <span class="kw">if </span><a href="#318">result</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
-<a href=#329 id=329 data-nosnippet>329</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="#11-14">CvtError</a>::<a href="#44-53">new</a>(<span class="kw">unsafe </span>{ <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#317">error</a>) }, <a href="#315">bytes_read</a>))
+<a href=#329 id=329 data-nosnippet>329</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="#11-14">CvtError</a>::<a href="#44-53">new</a>(<span class="kw">unsafe </span>{ <a href="translate.rs.html#1636-1638">from_glib_full</a>(<a href="#317">error</a>) }, <a href="#315">bytes_read</a>))
 <a href=#330 id=330 data-nosnippet>330</a>        } <span class="kw">else </span>{
-<a href=#331 id=331 data-nosnippet>331</a>            <span class="kw">let </span>slice = <span class="kw">unsafe </span>{ <a href="collections/slice.rs.html#15-19">Slice</a>::<a href="collections/slice.rs.html#509-523">from_glib_full_num</a>(<a href="#318">result</a>, <a href="#316">bytes_written</a> <span class="kw">as _</span>) };
+<a href=#331 id=331 data-nosnippet>331</a>            <span class="kw">let </span>slice = <span class="kw">unsafe </span>{ <a href="collections/slice.rs.html#15-19">Slice</a>::<a href="collections/slice.rs.html#521-537">from_glib_full_num</a>(<a href="#318">result</a>, <a href="#316">bytes_written</a> <span class="kw">as _</span>) };
 <a href=#332 id=332 data-nosnippet>332</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>((<a href="#331">slice</a>, <a href="#315">bytes_read</a>))
 <a href=#333 id=333 data-nosnippet>333</a>        }
 <a href=#334 id=334 data-nosnippet>334</a>    }
@@ -519,13 +519,13 @@
 <a href=#446 id=446 data-nosnippet>446</a>///    return location for the [`None`]-terminated list of encoding names
 <a href=#447 id=447 data-nosnippet>447</a></span><span class="attr">#[doc(alias = <span class="string">"g_get_filename_charsets"</span>)]
 <a href=#448 id=448 data-nosnippet>448</a>#[doc(alias = <span class="string">"get_filename_charsets"</span>)]
-<a href=#449 id=449 data-nosnippet>449</a></span><span class="kw">pub fn </span><a href="../../glib/fn.filename_charsets.html">filename_charsets</a>() -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="gstring.rs.html#1073">GString</a>&gt;) {
+<a href=#449 id=449 data-nosnippet>449</a></span><span class="kw">pub fn </span><a href="../../glib/fn.filename_charsets.html">filename_charsets</a>() -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="gstring.rs.html#1087">GString</a>&gt;) {
 <a href=#450 id=450 data-nosnippet>450</a>    <span class="kw">let </span><span class="kw-2">mut </span>filename_charsets = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#451 id=451 data-nosnippet>451</a>    <span class="kw">unsafe </span>{
 <a href=#452 id=452 data-nosnippet>452</a>        <span class="kw">let </span>is_utf8 = ffi::g_get_filename_charsets(<span class="kw-2">&amp;mut </span><a href="#450">filename_charsets</a>);
 <a href=#453 id=453 data-nosnippet>453</a>        (
-<a href=#454 id=454 data-nosnippet>454</a>            <a href="translate.rs.html#1421-1423">from_glib</a>(<a href="#452">is_utf8</a>),
-<a href=#455 id=455 data-nosnippet>455</a>            FromGlibPtrContainer::<a href="translate.rs.html#1936">from_glib_none</a>(<a href="#450">filename_charsets</a>),
+<a href=#454 id=454 data-nosnippet>454</a>            <a href="translate.rs.html#1417-1419">from_glib</a>(<a href="#452">is_utf8</a>),
+<a href=#455 id=455 data-nosnippet>455</a>            FromGlibPtrContainer::<a href="translate.rs.html#1972">from_glib_none</a>(<a href="#450">filename_charsets</a>),
 <a href=#456 id=456 data-nosnippet>456</a>        )
 <a href=#457 id=457 data-nosnippet>457</a>    }
 <a href=#458 id=458 data-nosnippet>458</a>}
@@ -565,16 +565,16 @@
 <a href=#492 id=492 data-nosnippet>492</a>/// the number of bytes stored in
 <a href=#493 id=493 data-nosnippet>493</a>///                 the output buffer (not including the terminating nul).
 <a href=#494 id=494 data-nosnippet>494</a></span><span class="attr">#[doc(alias = <span class="string">"g_filename_from_utf8"</span>)]
-<a href=#495 id=495 data-nosnippet>495</a></span><span class="kw">pub fn </span><a href="../../glib/fn.filename_from_utf8.html">filename_from_utf8</a>(utf8string: <span class="kw">impl </span><a href="gstring.rs.html#2439-2441">IntoGStr</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">PathBuf</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a href="#11-14">CvtError</a>&gt; {
+<a href=#495 id=495 data-nosnippet>495</a></span><span class="kw">pub fn </span><a href="../../glib/fn.filename_from_utf8.html">filename_from_utf8</a>(utf8string: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">PathBuf</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a href="#11-14">CvtError</a>&gt; {
 <a href=#496 id=496 data-nosnippet>496</a>    <span class="kw">let </span><span class="kw-2">mut </span>bytes_read = <span class="number">0</span>;
 <a href=#497 id=497 data-nosnippet>497</a>    <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = std::mem::<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">MaybeUninit</a>::<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">uninit</a>();
 <a href=#498 id=498 data-nosnippet>498</a>    <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
-<a href=#499 id=499 data-nosnippet>499</a>    <span class="kw">let </span>ret = <a href="#495">utf8string</a>.<a href="gstring.rs.html#2440">run_with_gstr</a>(|utf8string| {
+<a href=#499 id=499 data-nosnippet>499</a>    <span class="kw">let </span>ret = <a href="#495">utf8string</a>.<a href="gstring.rs.html#2475">run_with_gstr</a>(|utf8string| {
 <a href=#500 id=500 data-nosnippet>500</a>        <a href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(utf8string.len() &lt;= isize::MAX <span class="kw">as </span>usize);
 <a href=#501 id=501 data-nosnippet>501</a>        <span class="kw">let </span>len = <a href="#499">utf8string</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>;
 <a href=#502 id=502 data-nosnippet>502</a>        <span class="kw">unsafe </span>{
 <a href=#503 id=503 data-nosnippet>503</a>            ffi::g_filename_from_utf8(
-<a href=#504 id=504 data-nosnippet>504</a>                <a href="#499">utf8string</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#504 id=504 data-nosnippet>504</a>                <a href="#499">utf8string</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#505 id=505 data-nosnippet>505</a>                <a href="#501">len</a>,
 <a href=#506 id=506 data-nosnippet>506</a>                <span class="kw-2">&amp;mut </span><a href="#496">bytes_read</a>,
 <a href=#507 id=507 data-nosnippet>507</a>                <a href="#497">bytes_written</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
@@ -585,12 +585,12 @@
 <a href=#512 id=512 data-nosnippet>512</a>    <span class="kw">if </span><a href="#498">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#513 id=513 data-nosnippet>513</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="kw">unsafe </span>{
 <a href=#514 id=514 data-nosnippet>514</a>            (
-<a href=#515 id=515 data-nosnippet>515</a>                <a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">PathBuf</a>::<a href="translate.rs.html#1930">from_glib_full_num</a>(<a href="#499">ret</a>, <a href="#497">bytes_written</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()),
+<a href=#515 id=515 data-nosnippet>515</a>                <a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">PathBuf</a>::<a href="translate.rs.html#1966">from_glib_full_num</a>(<a href="#499">ret</a>, <a href="#497">bytes_written</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()),
 <a href=#516 id=516 data-nosnippet>516</a>                <a href="#496">bytes_read</a>,
 <a href=#517 id=517 data-nosnippet>517</a>            )
 <a href=#518 id=518 data-nosnippet>518</a>        })
 <a href=#519 id=519 data-nosnippet>519</a>    } <span class="kw">else </span>{
-<a href=#520 id=520 data-nosnippet>520</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<span class="kw">unsafe </span>{ <a href="#11-14">CvtError</a>::<a href="#44-53">new</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#498">error</a>), <a href="#496">bytes_read</a>) })
+<a href=#520 id=520 data-nosnippet>520</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<span class="kw">unsafe </span>{ <a href="#11-14">CvtError</a>::<a href="#44-53">new</a>(<a href="translate.rs.html#1636-1638">from_glib_full</a>(<a href="#498">error</a>), <a href="#496">bytes_read</a>) })
 <a href=#521 id=521 data-nosnippet>521</a>    }
 <a href=#522 id=522 data-nosnippet>522</a>}
 <a href=#523 id=523 data-nosnippet>523</a>
@@ -634,8 +634,8 @@
 <a href=#561 id=561 data-nosnippet>561</a></span><span class="attr">#[doc(alias = <span class="string">"g_filename_to_utf8"</span>)]
 <a href=#562 id=562 data-nosnippet>562</a></span><span class="kw">pub fn </span><a href="../../glib/fn.filename_to_utf8.html">filename_to_utf8</a>(
 <a href=#563 id=563 data-nosnippet>563</a>    opsysstring: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;std::path::<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;,
-<a href=#564 id=564 data-nosnippet>564</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<span class="kw">crate</span>::<a href="gstring.rs.html#1073">GString</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a href="#11-14">CvtError</a>&gt; {
-<a href=#565 id=565 data-nosnippet>565</a>    <span class="kw">let </span>path = <a href="#563">opsysstring</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#441">to_glib_none</a>();
+<a href=#564 id=564 data-nosnippet>564</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<span class="kw">crate</span>::<a href="gstring.rs.html#1087">GString</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a href="#11-14">CvtError</a>&gt; {
+<a href=#565 id=565 data-nosnippet>565</a>    <span class="kw">let </span>path = <a href="#563">opsysstring</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#437">to_glib_none</a>();
 <a href=#566 id=566 data-nosnippet>566</a>    <span class="kw">let </span><span class="kw-2">mut </span>bytes_read = <span class="number">0</span>;
 <a href=#567 id=567 data-nosnippet>567</a>    <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = std::mem::<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">MaybeUninit</a>::<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">uninit</a>();
 <a href=#568 id=568 data-nosnippet>568</a>    <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
@@ -651,12 +651,12 @@
 <a href=#578 id=578 data-nosnippet>578</a>    <span class="kw">if </span><a href="#568">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#579 id=579 data-nosnippet>579</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="kw">unsafe </span>{
 <a href=#580 id=580 data-nosnippet>580</a>            (
-<a href=#581 id=581 data-nosnippet>581</a>                <a href="gstring.rs.html#1073">GString</a>::<a href="translate.rs.html#1930">from_glib_full_num</a>(<a href="#569">ret</a>, <a href="#567">bytes_written</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()),
+<a href=#581 id=581 data-nosnippet>581</a>                <a href="gstring.rs.html#1087">GString</a>::<a href="translate.rs.html#1966">from_glib_full_num</a>(<a href="#569">ret</a>, <a href="#567">bytes_written</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()),
 <a href=#582 id=582 data-nosnippet>582</a>                <a href="#566">bytes_read</a>,
 <a href=#583 id=583 data-nosnippet>583</a>            )
 <a href=#584 id=584 data-nosnippet>584</a>        })
 <a href=#585 id=585 data-nosnippet>585</a>    } <span class="kw">else </span>{
-<a href=#586 id=586 data-nosnippet>586</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<span class="kw">unsafe </span>{ <a href="#11-14">CvtError</a>::<a href="#44-53">new</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#568">error</a>), <a href="#566">bytes_read</a>) })
+<a href=#586 id=586 data-nosnippet>586</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<span class="kw">unsafe </span>{ <a href="#11-14">CvtError</a>::<a href="#44-53">new</a>(<a href="translate.rs.html#1636-1638">from_glib_full</a>(<a href="#568">error</a>), <a href="#566">bytes_read</a>) })
 <a href=#587 id=587 data-nosnippet>587</a>    }
 <a href=#588 id=588 data-nosnippet>588</a>}
 <a href=#589 id=589 data-nosnippet>589</a>
@@ -691,15 +691,15 @@
 <a href=#618 id=618 data-nosnippet>618</a>///                 stored will be the byte offset after the last valid
 <a href=#619 id=619 data-nosnippet>619</a>///                 input sequence.
 <a href=#620 id=620 data-nosnippet>620</a></span><span class="attr">#[doc(alias = <span class="string">"g_locale_from_utf8"</span>)]
-<a href=#621 id=621 data-nosnippet>621</a></span><span class="kw">pub fn </span><a href="../../glib/fn.locale_from_utf8.html">locale_from_utf8</a>(utf8string: <span class="kw">impl </span><a href="gstring.rs.html#2439-2441">IntoGStr</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="collections/slice.rs.html#15-19">Slice</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a href="#11-14">CvtError</a>&gt; {
+<a href=#621 id=621 data-nosnippet>621</a></span><span class="kw">pub fn </span><a href="../../glib/fn.locale_from_utf8.html">locale_from_utf8</a>(utf8string: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="collections/slice.rs.html#15-19">Slice</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a href="#11-14">CvtError</a>&gt; {
 <a href=#622 id=622 data-nosnippet>622</a>    <span class="kw">let </span><span class="kw-2">mut </span>bytes_read = <span class="number">0</span>;
 <a href=#623 id=623 data-nosnippet>623</a>    <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = std::mem::<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">MaybeUninit</a>::<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">uninit</a>();
 <a href=#624 id=624 data-nosnippet>624</a>    <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
-<a href=#625 id=625 data-nosnippet>625</a>    <span class="kw">let </span>ret = <a href="#621">utf8string</a>.<a href="gstring.rs.html#2440">run_with_gstr</a>(|utf8string| {
+<a href=#625 id=625 data-nosnippet>625</a>    <span class="kw">let </span>ret = <a href="#621">utf8string</a>.<a href="gstring.rs.html#2475">run_with_gstr</a>(|utf8string| {
 <a href=#626 id=626 data-nosnippet>626</a>        <a href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(utf8string.len() &lt;= isize::MAX <span class="kw">as </span>usize);
 <a href=#627 id=627 data-nosnippet>627</a>        <span class="kw">unsafe </span>{
 <a href=#628 id=628 data-nosnippet>628</a>            ffi::g_locale_from_utf8(
-<a href=#629 id=629 data-nosnippet>629</a>                <a href="#625">utf8string</a>.<a href="gstring.rs.html#207-209">as_ptr</a>(),
+<a href=#629 id=629 data-nosnippet>629</a>                <a href="#625">utf8string</a>.<a href="gstring.rs.html#217-219">as_ptr</a>(),
 <a href=#630 id=630 data-nosnippet>630</a>                <a href="#625">utf8string</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>,
 <a href=#631 id=631 data-nosnippet>631</a>                <span class="kw-2">&amp;mut </span><a href="#622">bytes_read</a>,
 <a href=#632 id=632 data-nosnippet>632</a>                <a href="#623">bytes_written</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
@@ -710,12 +710,12 @@
 <a href=#637 id=637 data-nosnippet>637</a>    <span class="kw">if </span><a href="#624">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#638 id=638 data-nosnippet>638</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="kw">unsafe </span>{
 <a href=#639 id=639 data-nosnippet>639</a>            (
-<a href=#640 id=640 data-nosnippet>640</a>                <a href="collections/slice.rs.html#15-19">Slice</a>::<a href="collections/slice.rs.html#509-523">from_glib_full_num</a>(<a href="#625">ret</a>, <a href="#623">bytes_written</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() + <span class="number">1</span>),
+<a href=#640 id=640 data-nosnippet>640</a>                <a href="collections/slice.rs.html#15-19">Slice</a>::<a href="collections/slice.rs.html#521-537">from_glib_full_num</a>(<a href="#625">ret</a>, <a href="#623">bytes_written</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>() + <span class="number">1</span>),
 <a href=#641 id=641 data-nosnippet>641</a>                <a href="#622">bytes_read</a>,
 <a href=#642 id=642 data-nosnippet>642</a>            )
 <a href=#643 id=643 data-nosnippet>643</a>        })
 <a href=#644 id=644 data-nosnippet>644</a>    } <span class="kw">else </span>{
-<a href=#645 id=645 data-nosnippet>645</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<span class="kw">unsafe </span>{ <a href="#11-14">CvtError</a>::<a href="#44-53">new</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#624">error</a>), <a href="#622">bytes_read</a>) })
+<a href=#645 id=645 data-nosnippet>645</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<span class="kw">unsafe </span>{ <a href="#11-14">CvtError</a>::<a href="#44-53">new</a>(<a href="translate.rs.html#1636-1638">from_glib_full</a>(<a href="#624">error</a>), <a href="#622">bytes_read</a>) })
 <a href=#646 id=646 data-nosnippet>646</a>    }
 <a href=#647 id=647 data-nosnippet>647</a>}
 <a href=#648 id=648 data-nosnippet>648</a>
@@ -753,14 +753,14 @@
 <a href=#680 id=680 data-nosnippet>680</a>/// the number of bytes stored in the output
 <a href=#681 id=681 data-nosnippet>681</a>///                 buffer (not including the terminating nul).
 <a href=#682 id=682 data-nosnippet>682</a></span><span class="attr">#[doc(alias = <span class="string">"g_locale_to_utf8"</span>)]
-<a href=#683 id=683 data-nosnippet>683</a></span><span class="kw">pub fn </span><a href="../../glib/fn.locale_to_utf8.html">locale_to_utf8</a>(opsysstring: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<span class="kw">crate</span>::<a href="gstring.rs.html#1073">GString</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a href="#11-14">CvtError</a>&gt; {
+<a href=#683 id=683 data-nosnippet>683</a></span><span class="kw">pub fn </span><a href="../../glib/fn.locale_to_utf8.html">locale_to_utf8</a>(opsysstring: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<span class="kw">crate</span>::<a href="gstring.rs.html#1087">GString</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a href="#11-14">CvtError</a>&gt; {
 <a href=#684 id=684 data-nosnippet>684</a>    <span class="kw">let </span>len = <a href="#683">opsysstring</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>;
 <a href=#685 id=685 data-nosnippet>685</a>    <span class="kw">let </span><span class="kw-2">mut </span>bytes_read = <span class="number">0</span>;
 <a href=#686 id=686 data-nosnippet>686</a>    <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = std::mem::<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">MaybeUninit</a>::<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.uninit">uninit</a>();
 <a href=#687 id=687 data-nosnippet>687</a>    <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
 <a href=#688 id=688 data-nosnippet>688</a>    <span class="kw">let </span>ret = <span class="kw">unsafe </span>{
 <a href=#689 id=689 data-nosnippet>689</a>        ffi::g_locale_to_utf8(
-<a href=#690 id=690 data-nosnippet>690</a>            <a href="#683">opsysstring</a>.<a href="translate.rs.html#441">to_glib_none</a>().<span class="number">0</span>,
+<a href=#690 id=690 data-nosnippet>690</a>            <a href="#683">opsysstring</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#691 id=691 data-nosnippet>691</a>            <a href="#684">len</a>,
 <a href=#692 id=692 data-nosnippet>692</a>            <span class="kw-2">&amp;mut </span><a href="#685">bytes_read</a>,
 <a href=#693 id=693 data-nosnippet>693</a>            <a href="#686">bytes_written</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.as_mut_ptr">as_mut_ptr</a>(),
@@ -770,12 +770,12 @@
 <a href=#697 id=697 data-nosnippet>697</a>    <span class="kw">if </span><a href="#687">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#698 id=698 data-nosnippet>698</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="kw">unsafe </span>{
 <a href=#699 id=699 data-nosnippet>699</a>            (
-<a href=#700 id=700 data-nosnippet>700</a>                <a href="gstring.rs.html#1073">GString</a>::<a href="translate.rs.html#1930">from_glib_full_num</a>(<a href="#688">ret</a>, <a href="#686">bytes_written</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()),
+<a href=#700 id=700 data-nosnippet>700</a>                <a href="gstring.rs.html#1087">GString</a>::<a href="translate.rs.html#1966">from_glib_full_num</a>(<a href="#688">ret</a>, <a href="#686">bytes_written</a>.<a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html#method.assume_init">assume_init</a>()),
 <a href=#701 id=701 data-nosnippet>701</a>                <a href="#685">bytes_read</a>,
 <a href=#702 id=702 data-nosnippet>702</a>            )
 <a href=#703 id=703 data-nosnippet>703</a>        })
 <a href=#704 id=704 data-nosnippet>704</a>    } <span class="kw">else </span>{
-<a href=#705 id=705 data-nosnippet>705</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<span class="kw">unsafe </span>{ <a href="#11-14">CvtError</a>::<a href="#44-53">new</a>(<a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#687">error</a>), <a href="#685">bytes_read</a>) })
+<a href=#705 id=705 data-nosnippet>705</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<span class="kw">unsafe </span>{ <a href="#11-14">CvtError</a>::<a href="#44-53">new</a>(<a href="translate.rs.html#1636-1638">from_glib_full</a>(<a href="#687">error</a>), <a href="#685">bytes_read</a>) })
 <a href=#706 id=706 data-nosnippet>706</a>    }
 <a href=#707 id=707 data-nosnippet>707</a>}
 <a href=#708 id=708 data-nosnippet>708</a>
@@ -794,13 +794,13 @@
 <a href=#721 id=721 data-nosnippet>721</a>
 <a href=#722 id=722 data-nosnippet>722</a>        <span class="comment">// NOTE: We assume that u32 and char have the same layout and trust that glib won't give us
 <a href=#723 id=723 data-nosnippet>723</a>        //       invalid UTF-32 codepoints
-<a href=#724 id=724 data-nosnippet>724</a>        </span><a href="collections/slice.rs.html#15-19">Slice</a>::<a href="collections/slice.rs.html#509-523">from_glib_full_num</a>(<a href="#716">str_as_utf32</a>, <a href="#714">items_written</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>)
+<a href=#724 id=724 data-nosnippet>724</a>        </span><a href="collections/slice.rs.html#15-19">Slice</a>::<a href="collections/slice.rs.html#521-537">from_glib_full_num</a>(<a href="#716">str_as_utf32</a>, <a href="#714">items_written</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>)
 <a href=#725 id=725 data-nosnippet>725</a>    }
 <a href=#726 id=726 data-nosnippet>726</a>}
 <a href=#727 id=727 data-nosnippet>727</a>
 <a href=#728 id=728 data-nosnippet>728</a><span class="attr">#[doc(alias = <span class="string">"g_ucs4_to_utf8"</span>)]
 <a href=#729 id=729 data-nosnippet>729</a>#[doc(alias = <span class="string">"ucs4_to_utf8"</span>)]
-<a href=#730 id=730 data-nosnippet>730</a></span><span class="kw">pub fn </span><a href="../../glib/fn.utf32_to_utf8.html">utf32_to_utf8</a>(str: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>]&gt;) -&gt; <a href="gstring.rs.html#1073">GString</a> {
+<a href=#730 id=730 data-nosnippet>730</a></span><span class="kw">pub fn </span><a href="../../glib/fn.utf32_to_utf8.html">utf32_to_utf8</a>(str: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>]&gt;) -&gt; <a href="gstring.rs.html#1087">GString</a> {
 <a href=#731 id=731 data-nosnippet>731</a>    <span class="kw">let </span><span class="kw-2">mut </span>items_read = <span class="number">0</span>;
 <a href=#732 id=732 data-nosnippet>732</a>    <span class="kw">let </span><span class="kw-2">mut </span>items_written = <span class="number">0</span>;
 <a href=#733 id=733 data-nosnippet>733</a>    <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
@@ -819,23 +819,23 @@
 <a href=#746 id=746 data-nosnippet>746</a>            <span class="string">"Rust `char` should always be convertible to UTF-8"
 <a href=#747 id=747 data-nosnippet>747</a>        </span>);
 <a href=#748 id=748 data-nosnippet>748</a>
-<a href=#749 id=749 data-nosnippet>749</a>        <a href="gstring.rs.html#1073">GString</a>::<a href="translate.rs.html#1930">from_glib_full_num</a>(<a href="#736">str_as_utf8</a>, <a href="#732">items_written</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>)
+<a href=#749 id=749 data-nosnippet>749</a>        <a href="gstring.rs.html#1087">GString</a>::<a href="translate.rs.html#1966">from_glib_full_num</a>(<a href="#736">str_as_utf8</a>, <a href="#732">items_written</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>)
 <a href=#750 id=750 data-nosnippet>750</a>    }
 <a href=#751 id=751 data-nosnippet>751</a>}
 <a href=#752 id=752 data-nosnippet>752</a>
 <a href=#753 id=753 data-nosnippet>753</a><span class="attr">#[doc(alias = <span class="string">"g_utf8_casefold"</span>)]
 <a href=#754 id=754 data-nosnippet>754</a>#[doc(alias = <span class="string">"utf8_casefold"</span>)]
-<a href=#755 id=755 data-nosnippet>755</a></span><span class="kw">pub fn </span><a href="../../glib/fn.casefold.html">casefold</a>(str: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) -&gt; <a href="gstring.rs.html#1073">GString</a> {
+<a href=#755 id=755 data-nosnippet>755</a></span><span class="kw">pub fn </span><a href="../../glib/fn.casefold.html">casefold</a>(str: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) -&gt; <a href="gstring.rs.html#1087">GString</a> {
 <a href=#756 id=756 data-nosnippet>756</a>    <span class="kw">unsafe </span>{
 <a href=#757 id=757 data-nosnippet>757</a>        <span class="kw">let </span>str = ffi::g_utf8_casefold(<a href="#755">str</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>().<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.const_ptr.html#method.cast">cast</a>(), <a href="#755">str</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a>);
 <a href=#758 id=758 data-nosnippet>758</a>
-<a href=#759 id=759 data-nosnippet>759</a>        <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#757">str</a>)
+<a href=#759 id=759 data-nosnippet>759</a>        <a href="translate.rs.html#1636-1638">from_glib_full</a>(<a href="#757">str</a>)
 <a href=#760 id=760 data-nosnippet>760</a>    }
 <a href=#761 id=761 data-nosnippet>761</a>}
 <a href=#762 id=762 data-nosnippet>762</a>
 <a href=#763 id=763 data-nosnippet>763</a><span class="attr">#[doc(alias = <span class="string">"g_utf8_normalize"</span>)]
 <a href=#764 id=764 data-nosnippet>764</a>#[doc(alias = <span class="string">"utf8_normalize"</span>)]
-<a href=#765 id=765 data-nosnippet>765</a></span><span class="kw">pub fn </span><a href="../../glib/fn.normalize.html">normalize</a>(str: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, mode: <a href="auto/enums.rs.html#624-635">NormalizeMode</a>) -&gt; <a href="gstring.rs.html#1073">GString</a> {
+<a href=#765 id=765 data-nosnippet>765</a></span><span class="kw">pub fn </span><a href="../../glib/fn.normalize.html">normalize</a>(str: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, mode: <a href="auto/enums.rs.html#624-635">NormalizeMode</a>) -&gt; <a href="gstring.rs.html#1087">GString</a> {
 <a href=#766 id=766 data-nosnippet>766</a>    <span class="kw">unsafe </span>{
 <a href=#767 id=767 data-nosnippet>767</a>        <span class="kw">let </span>str = ffi::g_utf8_normalize(
 <a href=#768 id=768 data-nosnippet>768</a>            <a href="#765">str</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/foreigntype.str.html#method.as_ptr">as_ptr</a>().<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.const_ptr.html#method.cast">cast</a>(),
@@ -843,7 +843,7 @@
 <a href=#770 id=770 data-nosnippet>770</a>            <a href="#765">mode</a>.<a href="translate.rs.html#334">into_glib</a>(),
 <a href=#771 id=771 data-nosnippet>771</a>        );
 <a href=#772 id=772 data-nosnippet>772</a>
-<a href=#773 id=773 data-nosnippet>773</a>        <a href="translate.rs.html#1638-1640">from_glib_full</a>(<a href="#767">str</a>)
+<a href=#773 id=773 data-nosnippet>773</a>        <a href="translate.rs.html#1636-1638">from_glib_full</a>(<a href="#767">str</a>)
 <a href=#774 id=774 data-nosnippet>774</a>    }
 <a href=#775 id=775 data-nosnippet>775</a>}
 <a href=#776 id=776 data-nosnippet>776</a>

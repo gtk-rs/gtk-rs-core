@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/tls_connection.rs`."><title>tls_connection.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-2eb46af5.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (fecb335cb 2026-01-07)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/tls_connection.rs`."><title>tls_connection.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-2eb46af5.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (31cd367b9 2026-01-08)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../../static.files/storage-e2aeef58.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -80,13 +80,13 @@
 <a href=#7 id=7 data-nosnippet>7</a>#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_70"</span>)))]
 <a href=#8 id=8 data-nosnippet>8</a></span><span class="kw">use </span><a href="enums.rs.html#4868-4895"><span class="kw">crate</span>::TlsProtocolVersion</a>;
 <a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span>crate::{
-<a href=#10 id=10 data-nosnippet>10</a>    <a href="../../../gio_sys/index.html">ffi</a>, <a href="async_result.rs.html#8-106">AsyncResult</a>, <a href="cancellable.rs.html#8-86">Cancellable</a>, <a href="io_stream.rs.html#13-94">IOStream</a>, <a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="flags.rs.html#3464-3511">TlsCertificateFlags</a>, <a href="tls_database.rs.html#12-34">TlsDatabase</a>,
-<a href=#11 id=11 data-nosnippet>11</a>    <a href="tls_interaction.rs.html#12-43">TlsInteraction</a>, <a href="enums.rs.html#5017-5029">TlsRehandshakeMode</a>,
+<a href=#10 id=10 data-nosnippet>10</a>    <a href="async_result.rs.html#8-106">AsyncResult</a>, <a href="cancellable.rs.html#8-86">Cancellable</a>, <a href="io_stream.rs.html#13-94">IOStream</a>, <a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="flags.rs.html#3464-3511">TlsCertificateFlags</a>, <a href="tls_database.rs.html#12-34">TlsDatabase</a>,
+<a href=#11 id=11 data-nosnippet>11</a>    <a href="tls_interaction.rs.html#12-43">TlsInteraction</a>, <a href="enums.rs.html#5017-5029">TlsRehandshakeMode</a>, <a href="../../../gio_sys/index.html">ffi</a>,
 <a href=#12 id=12 data-nosnippet>12</a>};
 <a href=#13 id=13 data-nosnippet>13</a><span class="kw">use </span>glib::{
 <a href=#14 id=14 data-nosnippet>14</a>    <a href="../../../glib/object/trait.ObjectType.html">object::ObjectType</a> <span class="kw">as _</span>,
 <a href=#15 id=15 data-nosnippet>15</a>    prelude::<span class="kw-2">*</span>,
-<a href=#16 id=16 data-nosnippet>16</a>    signal::{<a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>, <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>},
+<a href=#16 id=16 data-nosnippet>16</a>    signal::{<a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>, <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>},
 <a href=#17 id=17 data-nosnippet>17</a>    translate::<span class="kw-2">*</span>,
 <a href=#18 id=18 data-nosnippet>18</a>};
 <a href=#19 id=19 data-nosnippet>19</a><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>};
@@ -635,591 +635,617 @@
 <a href=#562 id=562 data-nosnippet>562</a>            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::<a href="../../../gio_sys/struct.GAsyncResult.html">GAsyncResult</a>,
 <a href=#563 id=563 data-nosnippet>563</a>            user_data: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
 <a href=#564 id=564 data-nosnippet>564</a>        ) {
-<a href=#565 id=565 data-nosnippet>565</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
-<a href=#566 id=566 data-nosnippet>566</a>            ffi::<a href="../../../gio_sys/fn.g_tls_connection_handshake_finish.html">g_tls_connection_handshake_finish</a>(<a href="#561">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#562">res</a>, <span class="kw-2">&amp;mut </span><a href="#565">error</a>);
-<a href=#567 id=567 data-nosnippet>567</a>            <span class="kw">let </span>result = <span class="kw">if </span><a href="#565">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
-<a href=#568 id=568 data-nosnippet>568</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
-<a href=#569 id=569 data-nosnippet>569</a>            } <span class="kw">else </span>{
-<a href=#570 id=570 data-nosnippet>570</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#565">error</a>))
-<a href=#571 id=571 data-nosnippet>571</a>            };
-<a href=#572 id=572 data-nosnippet>572</a>            <span class="kw">let </span>callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;glib::thread_guard::<a href="../../../glib/thread_guard/struct.ThreadGuard.html">ThreadGuard</a>&lt;P&gt;&gt; =
-<a href=#573 id=573 data-nosnippet>573</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">from_raw</a>(<a href="#563">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-<a href=#574 id=574 data-nosnippet>574</a>            <span class="kw">let </span>callback: P = <a href="#572">callback</a>.<a href="../../../glib/thread_guard/struct.ThreadGuard.html#method.into_inner">into_inner</a>();
-<a href=#575 id=575 data-nosnippet>575</a>            <a href="#574">callback</a>(<a href="#567">result</a>);
-<a href=#576 id=576 data-nosnippet>576</a>        }
-<a href=#577 id=577 data-nosnippet>577</a>        <span class="kw">let </span>callback = handshake_async_trampoline::&lt;P&gt;;
-<a href=#578 id=578 data-nosnippet>578</a>        <span class="kw">unsafe </span>{
-<a href=#579 id=579 data-nosnippet>579</a>            ffi::<a href="../../../gio_sys/fn.g_tls_connection_handshake_async.html">g_tls_connection_handshake_async</a>(
-<a href=#580 id=580 data-nosnippet>580</a>                <a class="self" href="#541">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#581 id=581 data-nosnippet>581</a>                <a href="#542">io_priority</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
-<a href=#582 id=582 data-nosnippet>582</a>                <a href="#543">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#582">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#583 id=583 data-nosnippet>583</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#577">callback</a>),
-<a href=#584 id=584 data-nosnippet>584</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#556">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#585 id=585 data-nosnippet>585</a>            );
-<a href=#586 id=586 data-nosnippet>586</a>        }
-<a href=#587 id=587 data-nosnippet>587</a>    }
-<a href=#588 id=588 data-nosnippet>588</a>
-<a href=#589 id=589 data-nosnippet>589</a>    <span class="kw">fn </span>handshake_future(
-<a href=#590 id=590 data-nosnippet>590</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#591 id=591 data-nosnippet>591</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
-<a href=#592 id=592 data-nosnippet>592</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
-<a href=#593 id=593 data-nosnippet>593</a>        <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">pin</a>(<span class="kw">crate</span>::<a href="../gio_future.rs.html#16-21">GioFuture</a>::<a href="../gio_future.rs.html#38-45">new</a>(
-<a href=#594 id=594 data-nosnippet>594</a>            <a class="self" href="#590">self</a>,
-<a href=#595 id=595 data-nosnippet>595</a>            <span class="kw">move </span>|obj, cancellable, send| {
-<a href=#596 id=596 data-nosnippet>596</a>                <a href="#595">obj</a>.<a href="#540-587">handshake_async</a>(<a href="#591">io_priority</a>, <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#595">cancellable</a>), <span class="kw">move </span>|res| {
-<a href=#597 id=597 data-nosnippet>597</a>                    <a href="#595">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#596">res</a>);
-<a href=#598 id=598 data-nosnippet>598</a>                });
-<a href=#599 id=599 data-nosnippet>599</a>            },
-<a href=#600 id=600 data-nosnippet>600</a>        ))
-<a href=#601 id=601 data-nosnippet>601</a>    }
-<a href=#602 id=602 data-nosnippet>602</a>
-<a href=#603 id=603 data-nosnippet>603</a>    <span class="doccomment">/// This sets the certificate that @self will present to its peer
-<a href=#604 id=604 data-nosnippet>604</a>    /// during the TLS handshake. For a #GTlsServerConnection, it is
-<a href=#605 id=605 data-nosnippet>605</a>    /// mandatory to set this, and that will normally be done at construct
-<a href=#606 id=606 data-nosnippet>606</a>    /// time.
-<a href=#607 id=607 data-nosnippet>607</a>    ///
-<a href=#608 id=608 data-nosnippet>608</a>    /// For a #GTlsClientConnection, this is optional. If a handshake fails
-<a href=#609 id=609 data-nosnippet>609</a>    /// with [`TlsError::CertificateRequired`][crate::TlsError::CertificateRequired], that means that the server
-<a href=#610 id=610 data-nosnippet>610</a>    /// requires a certificate, and if you try connecting again, you should
-<a href=#611 id=611 data-nosnippet>611</a>    /// call this method first. You can call
-<a href=#612 id=612 data-nosnippet>612</a>    /// g_tls_client_connection_get_accepted_cas() on the failed connection
-<a href=#613 id=613 data-nosnippet>613</a>    /// to get a list of Certificate Authorities that the server will
-<a href=#614 id=614 data-nosnippet>614</a>    /// accept certificates from.
-<a href=#615 id=615 data-nosnippet>615</a>    ///
-<a href=#616 id=616 data-nosnippet>616</a>    /// (It is also possible that a server will allow the connection with
-<a href=#617 id=617 data-nosnippet>617</a>    /// or without a certificate; in that case, if you don't provide a
-<a href=#618 id=618 data-nosnippet>618</a>    /// certificate, you can tell that the server requested one by the fact
-<a href=#619 id=619 data-nosnippet>619</a>    /// that g_tls_client_connection_get_accepted_cas() will return
-<a href=#620 id=620 data-nosnippet>620</a>    /// non-[`None`].)
-<a href=#621 id=621 data-nosnippet>621</a>    /// ## `certificate`
-<a href=#622 id=622 data-nosnippet>622</a>    /// the certificate to use for @self
-<a href=#623 id=623 data-nosnippet>623</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_set_certificate"</span>)]
-<a href=#624 id=624 data-nosnippet>624</a>    #[doc(alias = <span class="string">"certificate"</span>)]
-<a href=#625 id=625 data-nosnippet>625</a>    </span><span class="kw">fn </span>set_certificate(<span class="kw-2">&amp;</span><span class="self">self</span>, certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt;) {
-<a href=#626 id=626 data-nosnippet>626</a>        <span class="kw">unsafe </span>{
-<a href=#627 id=627 data-nosnippet>627</a>            ffi::<a href="../../../gio_sys/fn.g_tls_connection_set_certificate.html">g_tls_connection_set_certificate</a>(
-<a href=#628 id=628 data-nosnippet>628</a>                <a class="self" href="#625">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#629 id=629 data-nosnippet>629</a>                <a href="#625">certificate</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#630 id=630 data-nosnippet>630</a>            );
-<a href=#631 id=631 data-nosnippet>631</a>        }
-<a href=#632 id=632 data-nosnippet>632</a>    }
-<a href=#633 id=633 data-nosnippet>633</a>
-<a href=#634 id=634 data-nosnippet>634</a>    <span class="doccomment">/// Sets the certificate database that is used to verify peer certificates.
-<a href=#635 id=635 data-nosnippet>635</a>    /// This is set to the default database by default. See
-<a href=#636 id=636 data-nosnippet>636</a>    /// g_tls_backend_get_default_database(). If set to [`None`], then
-<a href=#637 id=637 data-nosnippet>637</a>    /// peer certificate validation will always set the
-<a href=#638 id=638 data-nosnippet>638</a>    /// [`TlsCertificateFlags::UNKNOWN_CA`][crate::TlsCertificateFlags::UNKNOWN_CA] error (meaning
-<a href=#639 id=639 data-nosnippet>639</a>    /// #GTlsConnection::accept-certificate will always be emitted on
-<a href=#640 id=640 data-nosnippet>640</a>    /// client-side connections, unless that bit is not set in
-<a href=#641 id=641 data-nosnippet>641</a>    /// #GTlsClientConnection:validation-flags).
-<a href=#642 id=642 data-nosnippet>642</a>    ///
-<a href=#643 id=643 data-nosnippet>643</a>    /// There are nonintuitive security implications when using a non-default
-<a href=#644 id=644 data-nosnippet>644</a>    /// database. See #GTlsConnection:database for details.
-<a href=#645 id=645 data-nosnippet>645</a>    /// ## `database`
-<a href=#646 id=646 data-nosnippet>646</a>    /// a #GTlsDatabase
-<a href=#647 id=647 data-nosnippet>647</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_set_database"</span>)]
-<a href=#648 id=648 data-nosnippet>648</a>    #[doc(alias = <span class="string">"database"</span>)]
-<a href=#649 id=649 data-nosnippet>649</a>    </span><span class="kw">fn </span>set_database(<span class="kw-2">&amp;</span><span class="self">self</span>, database: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="tls_database.rs.html#12-34">TlsDatabase</a>&gt;&gt;) {
-<a href=#650 id=650 data-nosnippet>650</a>        <span class="kw">unsafe </span>{
-<a href=#651 id=651 data-nosnippet>651</a>            ffi::<a href="../../../gio_sys/fn.g_tls_connection_set_database.html">g_tls_connection_set_database</a>(
-<a href=#652 id=652 data-nosnippet>652</a>                <a class="self" href="#649">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#653 id=653 data-nosnippet>653</a>                <a href="#649">database</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#653">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#654 id=654 data-nosnippet>654</a>            );
-<a href=#655 id=655 data-nosnippet>655</a>        }
-<a href=#656 id=656 data-nosnippet>656</a>    }
-<a href=#657 id=657 data-nosnippet>657</a>
-<a href=#658 id=658 data-nosnippet>658</a>    <span class="doccomment">/// Set the object that will be used to interact with the user. It will be used
-<a href=#659 id=659 data-nosnippet>659</a>    /// for things like prompting the user for passwords.
-<a href=#660 id=660 data-nosnippet>660</a>    ///
-<a href=#661 id=661 data-nosnippet>661</a>    /// The @interaction argument will normally be a derived subclass of
-<a href=#662 id=662 data-nosnippet>662</a>    /// #GTlsInteraction. [`None`] can also be provided if no user interaction
-<a href=#663 id=663 data-nosnippet>663</a>    /// should occur for this connection.
-<a href=#664 id=664 data-nosnippet>664</a>    /// ## `interaction`
-<a href=#665 id=665 data-nosnippet>665</a>    /// an interaction object, or [`None`]
-<a href=#666 id=666 data-nosnippet>666</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_set_interaction"</span>)]
-<a href=#667 id=667 data-nosnippet>667</a>    #[doc(alias = <span class="string">"interaction"</span>)]
-<a href=#668 id=668 data-nosnippet>668</a>    </span><span class="kw">fn </span>set_interaction(<span class="kw-2">&amp;</span><span class="self">self</span>, interaction: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt;&gt;) {
-<a href=#669 id=669 data-nosnippet>669</a>        <span class="kw">unsafe </span>{
-<a href=#670 id=670 data-nosnippet>670</a>            ffi::<a href="../../../gio_sys/fn.g_tls_connection_set_interaction.html">g_tls_connection_set_interaction</a>(
-<a href=#671 id=671 data-nosnippet>671</a>                <a class="self" href="#668">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#672 id=672 data-nosnippet>672</a>                <a href="#668">interaction</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#672">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#673 id=673 data-nosnippet>673</a>            );
-<a href=#674 id=674 data-nosnippet>674</a>        }
-<a href=#675 id=675 data-nosnippet>675</a>    }
-<a href=#676 id=676 data-nosnippet>676</a>
-<a href=#677 id=677 data-nosnippet>677</a>    <span class="doccomment">/// Since GLib 2.64, changing the rehandshake mode is no longer supported
-<a href=#678 id=678 data-nosnippet>678</a>    /// and will have no effect. With TLS 1.3, rehandshaking has been removed from
-<a href=#679 id=679 data-nosnippet>679</a>    /// the TLS protocol, replaced by separate post-handshake authentication and
-<a href=#680 id=680 data-nosnippet>680</a>    /// rekey operations.
-<a href=#681 id=681 data-nosnippet>681</a>    ///
-<a href=#682 id=682 data-nosnippet>682</a>    /// # Deprecated since 2.60
+<a href=#565 id=565 data-nosnippet>565</a>            <span class="kw">unsafe </span>{
+<a href=#566 id=566 data-nosnippet>566</a>                <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
+<a href=#567 id=567 data-nosnippet>567</a>                ffi::<a href="../../../gio_sys/fn.g_tls_connection_handshake_finish.html">g_tls_connection_handshake_finish</a>(<a href="#561">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#562">res</a>, <span class="kw-2">&amp;mut </span><a href="#566">error</a>);
+<a href=#568 id=568 data-nosnippet>568</a>                <span class="kw">let </span>result = <span class="kw">if </span><a href="#566">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
+<a href=#569 id=569 data-nosnippet>569</a>                    <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
+<a href=#570 id=570 data-nosnippet>570</a>                } <span class="kw">else </span>{
+<a href=#571 id=571 data-nosnippet>571</a>                    <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#566">error</a>))
+<a href=#572 id=572 data-nosnippet>572</a>                };
+<a href=#573 id=573 data-nosnippet>573</a>                <span class="kw">let </span>callback: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;glib::thread_guard::<a href="../../../glib/thread_guard/struct.ThreadGuard.html">ThreadGuard</a>&lt;P&gt;&gt; =
+<a href=#574 id=574 data-nosnippet>574</a>                    <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">from_raw</a>(<a href="#563">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+<a href=#575 id=575 data-nosnippet>575</a>                <span class="kw">let </span>callback: P = <a href="#573">callback</a>.<a href="../../../glib/thread_guard/struct.ThreadGuard.html#method.into_inner">into_inner</a>();
+<a href=#576 id=576 data-nosnippet>576</a>                <a href="#575">callback</a>(<a href="#568">result</a>);
+<a href=#577 id=577 data-nosnippet>577</a>            }
+<a href=#578 id=578 data-nosnippet>578</a>        }
+<a href=#579 id=579 data-nosnippet>579</a>        <span class="kw">let </span>callback = handshake_async_trampoline::&lt;P&gt;;
+<a href=#580 id=580 data-nosnippet>580</a>        <span class="kw">unsafe </span>{
+<a href=#581 id=581 data-nosnippet>581</a>            ffi::<a href="../../../gio_sys/fn.g_tls_connection_handshake_async.html">g_tls_connection_handshake_async</a>(
+<a href=#582 id=582 data-nosnippet>582</a>                <a class="self" href="#541">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#583 id=583 data-nosnippet>583</a>                <a href="#542">io_priority</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
+<a href=#584 id=584 data-nosnippet>584</a>                <a href="#543">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#584">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#585 id=585 data-nosnippet>585</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#579">callback</a>),
+<a href=#586 id=586 data-nosnippet>586</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#556">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#587 id=587 data-nosnippet>587</a>            );
+<a href=#588 id=588 data-nosnippet>588</a>        }
+<a href=#589 id=589 data-nosnippet>589</a>    }
+<a href=#590 id=590 data-nosnippet>590</a>
+<a href=#591 id=591 data-nosnippet>591</a>    <span class="kw">fn </span>handshake_future(
+<a href=#592 id=592 data-nosnippet>592</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
+<a href=#593 id=593 data-nosnippet>593</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
+<a href=#594 id=594 data-nosnippet>594</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
+<a href=#595 id=595 data-nosnippet>595</a>        <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">pin</a>(<span class="kw">crate</span>::<a href="../gio_future.rs.html#16-21">GioFuture</a>::<a href="../gio_future.rs.html#38-45">new</a>(
+<a href=#596 id=596 data-nosnippet>596</a>            <a class="self" href="#592">self</a>,
+<a href=#597 id=597 data-nosnippet>597</a>            <span class="kw">move </span>|obj, cancellable, send| {
+<a href=#598 id=598 data-nosnippet>598</a>                <a href="#597">obj</a>.<a href="#540-589">handshake_async</a>(<a href="#593">io_priority</a>, <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#597">cancellable</a>), <span class="kw">move </span>|res| {
+<a href=#599 id=599 data-nosnippet>599</a>                    <a href="#597">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#598">res</a>);
+<a href=#600 id=600 data-nosnippet>600</a>                });
+<a href=#601 id=601 data-nosnippet>601</a>            },
+<a href=#602 id=602 data-nosnippet>602</a>        ))
+<a href=#603 id=603 data-nosnippet>603</a>    }
+<a href=#604 id=604 data-nosnippet>604</a>
+<a href=#605 id=605 data-nosnippet>605</a>    <span class="doccomment">/// This sets the certificate that @self will present to its peer
+<a href=#606 id=606 data-nosnippet>606</a>    /// during the TLS handshake. For a #GTlsServerConnection, it is
+<a href=#607 id=607 data-nosnippet>607</a>    /// mandatory to set this, and that will normally be done at construct
+<a href=#608 id=608 data-nosnippet>608</a>    /// time.
+<a href=#609 id=609 data-nosnippet>609</a>    ///
+<a href=#610 id=610 data-nosnippet>610</a>    /// For a #GTlsClientConnection, this is optional. If a handshake fails
+<a href=#611 id=611 data-nosnippet>611</a>    /// with [`TlsError::CertificateRequired`][crate::TlsError::CertificateRequired], that means that the server
+<a href=#612 id=612 data-nosnippet>612</a>    /// requires a certificate, and if you try connecting again, you should
+<a href=#613 id=613 data-nosnippet>613</a>    /// call this method first. You can call
+<a href=#614 id=614 data-nosnippet>614</a>    /// g_tls_client_connection_get_accepted_cas() on the failed connection
+<a href=#615 id=615 data-nosnippet>615</a>    /// to get a list of Certificate Authorities that the server will
+<a href=#616 id=616 data-nosnippet>616</a>    /// accept certificates from.
+<a href=#617 id=617 data-nosnippet>617</a>    ///
+<a href=#618 id=618 data-nosnippet>618</a>    /// (It is also possible that a server will allow the connection with
+<a href=#619 id=619 data-nosnippet>619</a>    /// or without a certificate; in that case, if you don't provide a
+<a href=#620 id=620 data-nosnippet>620</a>    /// certificate, you can tell that the server requested one by the fact
+<a href=#621 id=621 data-nosnippet>621</a>    /// that g_tls_client_connection_get_accepted_cas() will return
+<a href=#622 id=622 data-nosnippet>622</a>    /// non-[`None`].)
+<a href=#623 id=623 data-nosnippet>623</a>    /// ## `certificate`
+<a href=#624 id=624 data-nosnippet>624</a>    /// the certificate to use for @self
+<a href=#625 id=625 data-nosnippet>625</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_set_certificate"</span>)]
+<a href=#626 id=626 data-nosnippet>626</a>    #[doc(alias = <span class="string">"certificate"</span>)]
+<a href=#627 id=627 data-nosnippet>627</a>    </span><span class="kw">fn </span>set_certificate(<span class="kw-2">&amp;</span><span class="self">self</span>, certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="tls_certificate.rs.html#17-192">TlsCertificate</a>&gt;) {
+<a href=#628 id=628 data-nosnippet>628</a>        <span class="kw">unsafe </span>{
+<a href=#629 id=629 data-nosnippet>629</a>            ffi::<a href="../../../gio_sys/fn.g_tls_connection_set_certificate.html">g_tls_connection_set_certificate</a>(
+<a href=#630 id=630 data-nosnippet>630</a>                <a class="self" href="#627">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#631 id=631 data-nosnippet>631</a>                <a href="#627">certificate</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#632 id=632 data-nosnippet>632</a>            );
+<a href=#633 id=633 data-nosnippet>633</a>        }
+<a href=#634 id=634 data-nosnippet>634</a>    }
+<a href=#635 id=635 data-nosnippet>635</a>
+<a href=#636 id=636 data-nosnippet>636</a>    <span class="doccomment">/// Sets the certificate database that is used to verify peer certificates.
+<a href=#637 id=637 data-nosnippet>637</a>    /// This is set to the default database by default. See
+<a href=#638 id=638 data-nosnippet>638</a>    /// g_tls_backend_get_default_database(). If set to [`None`], then
+<a href=#639 id=639 data-nosnippet>639</a>    /// peer certificate validation will always set the
+<a href=#640 id=640 data-nosnippet>640</a>    /// [`TlsCertificateFlags::UNKNOWN_CA`][crate::TlsCertificateFlags::UNKNOWN_CA] error (meaning
+<a href=#641 id=641 data-nosnippet>641</a>    /// #GTlsConnection::accept-certificate will always be emitted on
+<a href=#642 id=642 data-nosnippet>642</a>    /// client-side connections, unless that bit is not set in
+<a href=#643 id=643 data-nosnippet>643</a>    /// #GTlsClientConnection:validation-flags).
+<a href=#644 id=644 data-nosnippet>644</a>    ///
+<a href=#645 id=645 data-nosnippet>645</a>    /// There are nonintuitive security implications when using a non-default
+<a href=#646 id=646 data-nosnippet>646</a>    /// database. See #GTlsConnection:database for details.
+<a href=#647 id=647 data-nosnippet>647</a>    /// ## `database`
+<a href=#648 id=648 data-nosnippet>648</a>    /// a #GTlsDatabase
+<a href=#649 id=649 data-nosnippet>649</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_set_database"</span>)]
+<a href=#650 id=650 data-nosnippet>650</a>    #[doc(alias = <span class="string">"database"</span>)]
+<a href=#651 id=651 data-nosnippet>651</a>    </span><span class="kw">fn </span>set_database(<span class="kw-2">&amp;</span><span class="self">self</span>, database: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="tls_database.rs.html#12-34">TlsDatabase</a>&gt;&gt;) {
+<a href=#652 id=652 data-nosnippet>652</a>        <span class="kw">unsafe </span>{
+<a href=#653 id=653 data-nosnippet>653</a>            ffi::<a href="../../../gio_sys/fn.g_tls_connection_set_database.html">g_tls_connection_set_database</a>(
+<a href=#654 id=654 data-nosnippet>654</a>                <a class="self" href="#651">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#655 id=655 data-nosnippet>655</a>                <a href="#651">database</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#655">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#656 id=656 data-nosnippet>656</a>            );
+<a href=#657 id=657 data-nosnippet>657</a>        }
+<a href=#658 id=658 data-nosnippet>658</a>    }
+<a href=#659 id=659 data-nosnippet>659</a>
+<a href=#660 id=660 data-nosnippet>660</a>    <span class="doccomment">/// Set the object that will be used to interact with the user. It will be used
+<a href=#661 id=661 data-nosnippet>661</a>    /// for things like prompting the user for passwords.
+<a href=#662 id=662 data-nosnippet>662</a>    ///
+<a href=#663 id=663 data-nosnippet>663</a>    /// The @interaction argument will normally be a derived subclass of
+<a href=#664 id=664 data-nosnippet>664</a>    /// #GTlsInteraction. [`None`] can also be provided if no user interaction
+<a href=#665 id=665 data-nosnippet>665</a>    /// should occur for this connection.
+<a href=#666 id=666 data-nosnippet>666</a>    /// ## `interaction`
+<a href=#667 id=667 data-nosnippet>667</a>    /// an interaction object, or [`None`]
+<a href=#668 id=668 data-nosnippet>668</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_set_interaction"</span>)]
+<a href=#669 id=669 data-nosnippet>669</a>    #[doc(alias = <span class="string">"interaction"</span>)]
+<a href=#670 id=670 data-nosnippet>670</a>    </span><span class="kw">fn </span>set_interaction(<span class="kw-2">&amp;</span><span class="self">self</span>, interaction: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt;&gt;) {
+<a href=#671 id=671 data-nosnippet>671</a>        <span class="kw">unsafe </span>{
+<a href=#672 id=672 data-nosnippet>672</a>            ffi::<a href="../../../gio_sys/fn.g_tls_connection_set_interaction.html">g_tls_connection_set_interaction</a>(
+<a href=#673 id=673 data-nosnippet>673</a>                <a class="self" href="#670">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#674 id=674 data-nosnippet>674</a>                <a href="#670">interaction</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#674">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#675 id=675 data-nosnippet>675</a>            );
+<a href=#676 id=676 data-nosnippet>676</a>        }
+<a href=#677 id=677 data-nosnippet>677</a>    }
+<a href=#678 id=678 data-nosnippet>678</a>
+<a href=#679 id=679 data-nosnippet>679</a>    <span class="doccomment">/// Since GLib 2.64, changing the rehandshake mode is no longer supported
+<a href=#680 id=680 data-nosnippet>680</a>    /// and will have no effect. With TLS 1.3, rehandshaking has been removed from
+<a href=#681 id=681 data-nosnippet>681</a>    /// the TLS protocol, replaced by separate post-handshake authentication and
+<a href=#682 id=682 data-nosnippet>682</a>    /// rekey operations.
 <a href=#683 id=683 data-nosnippet>683</a>    ///
-<a href=#684 id=684 data-nosnippet>684</a>    /// Changing the rehandshake mode is no longer
-<a href=#685 id=685 data-nosnippet>685</a>    ///   required for compatibility. Also, rehandshaking has been removed
-<a href=#686 id=686 data-nosnippet>686</a>    ///   from the TLS protocol in TLS 1.3.
-<a href=#687 id=687 data-nosnippet>687</a>    /// ## `mode`
-<a href=#688 id=688 data-nosnippet>688</a>    /// the rehandshaking mode
-<a href=#689 id=689 data-nosnippet>689</a>    </span><span class="attr">#[cfg_attr(feature = <span class="string">"v2_60"</span>, deprecated = <span class="string">"Since 2.60"</span>)]
-<a href=#690 id=690 data-nosnippet>690</a>    #[allow(deprecated)]
-<a href=#691 id=691 data-nosnippet>691</a>    #[doc(alias = <span class="string">"g_tls_connection_set_rehandshake_mode"</span>)]
-<a href=#692 id=692 data-nosnippet>692</a>    #[doc(alias = <span class="string">"rehandshake-mode"</span>)]
-<a href=#693 id=693 data-nosnippet>693</a>    </span><span class="kw">fn </span>set_rehandshake_mode(<span class="kw-2">&amp;</span><span class="self">self</span>, mode: <a href="enums.rs.html#5017-5029">TlsRehandshakeMode</a>) {
-<a href=#694 id=694 data-nosnippet>694</a>        <span class="kw">unsafe </span>{
-<a href=#695 id=695 data-nosnippet>695</a>            ffi::<a href="../../../gio_sys/fn.g_tls_connection_set_rehandshake_mode.html">g_tls_connection_set_rehandshake_mode</a>(
-<a href=#696 id=696 data-nosnippet>696</a>                <a class="self" href="#693">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#697 id=697 data-nosnippet>697</a>                <a href="#693">mode</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
-<a href=#698 id=698 data-nosnippet>698</a>            );
-<a href=#699 id=699 data-nosnippet>699</a>        }
-<a href=#700 id=700 data-nosnippet>700</a>    }
-<a href=#701 id=701 data-nosnippet>701</a>
-<a href=#702 id=702 data-nosnippet>702</a>    <span class="doccomment">/// Sets whether or not @self expects a proper TLS close notification
-<a href=#703 id=703 data-nosnippet>703</a>    /// before the connection is closed. If this is [`true`] (the default),
-<a href=#704 id=704 data-nosnippet>704</a>    /// then @self will expect to receive a TLS close notification from its
-<a href=#705 id=705 data-nosnippet>705</a>    /// peer before the connection is closed, and will return a
-<a href=#706 id=706 data-nosnippet>706</a>    /// [`TlsError::Eof`][crate::TlsError::Eof] error if the connection is closed without proper
-<a href=#707 id=707 data-nosnippet>707</a>    /// notification (since this may indicate a network error, or
-<a href=#708 id=708 data-nosnippet>708</a>    /// man-in-the-middle attack).
-<a href=#709 id=709 data-nosnippet>709</a>    ///
-<a href=#710 id=710 data-nosnippet>710</a>    /// In some protocols, the application will know whether or not the
-<a href=#711 id=711 data-nosnippet>711</a>    /// connection was closed cleanly based on application-level data
-<a href=#712 id=712 data-nosnippet>712</a>    /// (because the application-level data includes a length field, or is
-<a href=#713 id=713 data-nosnippet>713</a>    /// somehow self-delimiting); in this case, the close notify is
-<a href=#714 id=714 data-nosnippet>714</a>    /// redundant and sometimes omitted. (TLS 1.1 explicitly allows this;
-<a href=#715 id=715 data-nosnippet>715</a>    /// in TLS 1.0 it is technically an error, but often done anyway.) You
-<a href=#716 id=716 data-nosnippet>716</a>    /// can use g_tls_connection_set_require_close_notify() to tell @self
-<a href=#717 id=717 data-nosnippet>717</a>    /// to allow an "unannounced" connection close, in which case the close
-<a href=#718 id=718 data-nosnippet>718</a>    /// will show up as a 0-length read, as in a non-TLS
-<a href=#719 id=719 data-nosnippet>719</a>    /// #GSocketConnection, and it is up to the application to check that
-<a href=#720 id=720 data-nosnippet>720</a>    /// the data has been fully received.
-<a href=#721 id=721 data-nosnippet>721</a>    ///
-<a href=#722 id=722 data-nosnippet>722</a>    /// Note that this only affects the behavior when the peer closes the
-<a href=#723 id=723 data-nosnippet>723</a>    /// connection; when the application calls g_io_stream_close() itself
-<a href=#724 id=724 data-nosnippet>724</a>    /// on @self, this will send a close notification regardless of the
-<a href=#725 id=725 data-nosnippet>725</a>    /// setting of this property. If you explicitly want to do an unclean
-<a href=#726 id=726 data-nosnippet>726</a>    /// close, you can close @self's #GTlsConnection:base-io-stream rather
-<a href=#727 id=727 data-nosnippet>727</a>    /// than closing @self itself, but note that this may only be done when no other
-<a href=#728 id=728 data-nosnippet>728</a>    /// operations are pending on @self or the base I/O stream.
-<a href=#729 id=729 data-nosnippet>729</a>    /// ## `require_close_notify`
-<a href=#730 id=730 data-nosnippet>730</a>    /// whether or not to require close notification
-<a href=#731 id=731 data-nosnippet>731</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_set_require_close_notify"</span>)]
-<a href=#732 id=732 data-nosnippet>732</a>    #[doc(alias = <span class="string">"require-close-notify"</span>)]
-<a href=#733 id=733 data-nosnippet>733</a>    </span><span class="kw">fn </span>set_require_close_notify(<span class="kw-2">&amp;</span><span class="self">self</span>, require_close_notify: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
-<a href=#734 id=734 data-nosnippet>734</a>        <span class="kw">unsafe </span>{
-<a href=#735 id=735 data-nosnippet>735</a>            ffi::<a href="../../../gio_sys/fn.g_tls_connection_set_require_close_notify.html">g_tls_connection_set_require_close_notify</a>(
-<a href=#736 id=736 data-nosnippet>736</a>                <a class="self" href="#733">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#737 id=737 data-nosnippet>737</a>                <a href="#733">require_close_notify</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
-<a href=#738 id=738 data-nosnippet>738</a>            );
-<a href=#739 id=739 data-nosnippet>739</a>        }
-<a href=#740 id=740 data-nosnippet>740</a>    }
-<a href=#741 id=741 data-nosnippet>741</a>
-<a href=#742 id=742 data-nosnippet>742</a>    <span class="doccomment">/// The list of application-layer protocols that the connection
-<a href=#743 id=743 data-nosnippet>743</a>    /// advertises that it is willing to speak. See
-<a href=#744 id=744 data-nosnippet>744</a>    /// g_tls_connection_set_advertised_protocols().
-<a href=#745 id=745 data-nosnippet>745</a>    </span><span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
-<a href=#746 id=746 data-nosnippet>746</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
-<a href=#747 id=747 data-nosnippet>747</a>    #[doc(alias = <span class="string">"advertised-protocols"</span>)]
-<a href=#748 id=748 data-nosnippet>748</a>    </span><span class="kw">fn </span>advertised_protocols(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;glib::<a href="../../../glib/gstring/struct.GString.html">GString</a>&gt; {
-<a href=#749 id=749 data-nosnippet>749</a>        ObjectExt::<a href="../../../glib/object/trait.ObjectExt.html#tymethod.property">property</a>(<a class="self" href="#748">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>(), <span class="string">"advertised-protocols"</span>)
-<a href=#750 id=750 data-nosnippet>750</a>    }
-<a href=#751 id=751 data-nosnippet>751</a>
-<a href=#752 id=752 data-nosnippet>752</a>    <span class="doccomment">/// The #GIOStream that the connection wraps. The connection holds a reference
-<a href=#753 id=753 data-nosnippet>753</a>    /// to this stream, and may run operations on the stream from other threads
-<a href=#754 id=754 data-nosnippet>754</a>    /// throughout its lifetime. Consequently, after the #GIOStream has been
-<a href=#755 id=755 data-nosnippet>755</a>    /// constructed, application code may only run its own operations on this
-<a href=#756 id=756 data-nosnippet>756</a>    /// stream when no #GIOStream operations are running.
-<a href=#757 id=757 data-nosnippet>757</a>    </span><span class="attr">#[doc(alias = <span class="string">"base-io-stream"</span>)]
-<a href=#758 id=758 data-nosnippet>758</a>    </span><span class="kw">fn </span>base_io_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="io_stream.rs.html#13-94">IOStream</a>&gt; {
-<a href=#759 id=759 data-nosnippet>759</a>        ObjectExt::<a href="../../../glib/object/trait.ObjectExt.html#tymethod.property">property</a>(<a class="self" href="#758">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>(), <span class="string">"base-io-stream"</span>)
-<a href=#760 id=760 data-nosnippet>760</a>    }
-<a href=#761 id=761 data-nosnippet>761</a>
-<a href=#762 id=762 data-nosnippet>762</a>    <span class="doccomment">/// Emitted during the TLS handshake after the peer certificate has
-<a href=#763 id=763 data-nosnippet>763</a>    /// been received. You can examine @peer_cert's certification path by
-<a href=#764 id=764 data-nosnippet>764</a>    /// calling g_tls_certificate_get_issuer() on it.
-<a href=#765 id=765 data-nosnippet>765</a>    ///
-<a href=#766 id=766 data-nosnippet>766</a>    /// For a client-side connection, @peer_cert is the server's
-<a href=#767 id=767 data-nosnippet>767</a>    /// certificate, and the signal will only be emitted if the
-<a href=#768 id=768 data-nosnippet>768</a>    /// certificate was not acceptable according to @conn's
-<a href=#769 id=769 data-nosnippet>769</a>    /// #GTlsClientConnection:validation_flags. If you would like the
-<a href=#770 id=770 data-nosnippet>770</a>    /// certificate to be accepted despite @errors, return [`true`] from the
-<a href=#771 id=771 data-nosnippet>771</a>    /// signal handler. Otherwise, if no handler accepts the certificate,
-<a href=#772 id=772 data-nosnippet>772</a>    /// the handshake will fail with [`TlsError::BadCertificate`][crate::TlsError::BadCertificate].
-<a href=#773 id=773 data-nosnippet>773</a>    ///
-<a href=#774 id=774 data-nosnippet>774</a>    /// GLib guarantees that if certificate verification fails, this signal
-<a href=#775 id=775 data-nosnippet>775</a>    /// will be emitted with at least one error will be set in @errors, but
-<a href=#776 id=776 data-nosnippet>776</a>    /// it does not guarantee that all possible errors will be set.
-<a href=#777 id=777 data-nosnippet>777</a>    /// Accordingly, you may not safely decide to ignore any particular
-<a href=#778 id=778 data-nosnippet>778</a>    /// type of error. For example, it would be incorrect to ignore
-<a href=#779 id=779 data-nosnippet>779</a>    /// [`TlsCertificateFlags::EXPIRED`][crate::TlsCertificateFlags::EXPIRED] if you want to allow expired
-<a href=#780 id=780 data-nosnippet>780</a>    /// certificates, because this could potentially be the only error flag
-<a href=#781 id=781 data-nosnippet>781</a>    /// set even if other problems exist with the certificate.
-<a href=#782 id=782 data-nosnippet>782</a>    ///
-<a href=#783 id=783 data-nosnippet>783</a>    /// For a server-side connection, @peer_cert is the certificate
-<a href=#784 id=784 data-nosnippet>784</a>    /// presented by the client, if this was requested via the server's
-<a href=#785 id=785 data-nosnippet>785</a>    /// #GTlsServerConnection:authentication_mode. On the server side,
-<a href=#786 id=786 data-nosnippet>786</a>    /// the signal is always emitted when the client presents a
-<a href=#787 id=787 data-nosnippet>787</a>    /// certificate, and the certificate will only be accepted if a
-<a href=#788 id=788 data-nosnippet>788</a>    /// handler returns [`true`].
-<a href=#789 id=789 data-nosnippet>789</a>    ///
-<a href=#790 id=790 data-nosnippet>790</a>    /// Note that if this signal is emitted as part of asynchronous I/O
-<a href=#791 id=791 data-nosnippet>791</a>    /// in the main thread, then you should not attempt to interact with
-<a href=#792 id=792 data-nosnippet>792</a>    /// the user before returning from the signal handler. If you want to
-<a href=#793 id=793 data-nosnippet>793</a>    /// let the user decide whether or not to accept the certificate, you
-<a href=#794 id=794 data-nosnippet>794</a>    /// would have to return [`false`] from the signal handler on the first
-<a href=#795 id=795 data-nosnippet>795</a>    /// attempt, and then after the connection attempt returns a
-<a href=#796 id=796 data-nosnippet>796</a>    /// [`TlsError::BadCertificate`][crate::TlsError::BadCertificate], you can interact with the user, and
-<a href=#797 id=797 data-nosnippet>797</a>    /// if the user decides to accept the certificate, remember that fact,
-<a href=#798 id=798 data-nosnippet>798</a>    /// create a new connection, and return [`true`] from the signal handler
-<a href=#799 id=799 data-nosnippet>799</a>    /// the next time.
-<a href=#800 id=800 data-nosnippet>800</a>    ///
-<a href=#801 id=801 data-nosnippet>801</a>    /// If you are doing I/O in another thread, you do not
-<a href=#802 id=802 data-nosnippet>802</a>    /// need to worry about this, and can simply block in the signal
-<a href=#803 id=803 data-nosnippet>803</a>    /// handler until the UI thread returns an answer.
-<a href=#804 id=804 data-nosnippet>804</a>    /// ## `peer_cert`
-<a href=#805 id=805 data-nosnippet>805</a>    /// the peer's #GTlsCertificate
-<a href=#806 id=806 data-nosnippet>806</a>    /// ## `errors`
-<a href=#807 id=807 data-nosnippet>807</a>    /// the problems with @peer_cert.
-<a href=#808 id=808 data-nosnippet>808</a>    ///
-<a href=#809 id=809 data-nosnippet>809</a>    /// # Returns
+<a href=#684 id=684 data-nosnippet>684</a>    /// # Deprecated since 2.60
+<a href=#685 id=685 data-nosnippet>685</a>    ///
+<a href=#686 id=686 data-nosnippet>686</a>    /// Changing the rehandshake mode is no longer
+<a href=#687 id=687 data-nosnippet>687</a>    ///   required for compatibility. Also, rehandshaking has been removed
+<a href=#688 id=688 data-nosnippet>688</a>    ///   from the TLS protocol in TLS 1.3.
+<a href=#689 id=689 data-nosnippet>689</a>    /// ## `mode`
+<a href=#690 id=690 data-nosnippet>690</a>    /// the rehandshaking mode
+<a href=#691 id=691 data-nosnippet>691</a>    </span><span class="attr">#[cfg_attr(feature = <span class="string">"v2_60"</span>, deprecated = <span class="string">"Since 2.60"</span>)]
+<a href=#692 id=692 data-nosnippet>692</a>    #[allow(deprecated)]
+<a href=#693 id=693 data-nosnippet>693</a>    #[doc(alias = <span class="string">"g_tls_connection_set_rehandshake_mode"</span>)]
+<a href=#694 id=694 data-nosnippet>694</a>    #[doc(alias = <span class="string">"rehandshake-mode"</span>)]
+<a href=#695 id=695 data-nosnippet>695</a>    </span><span class="kw">fn </span>set_rehandshake_mode(<span class="kw-2">&amp;</span><span class="self">self</span>, mode: <a href="enums.rs.html#5017-5029">TlsRehandshakeMode</a>) {
+<a href=#696 id=696 data-nosnippet>696</a>        <span class="kw">unsafe </span>{
+<a href=#697 id=697 data-nosnippet>697</a>            ffi::<a href="../../../gio_sys/fn.g_tls_connection_set_rehandshake_mode.html">g_tls_connection_set_rehandshake_mode</a>(
+<a href=#698 id=698 data-nosnippet>698</a>                <a class="self" href="#695">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#699 id=699 data-nosnippet>699</a>                <a href="#695">mode</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
+<a href=#700 id=700 data-nosnippet>700</a>            );
+<a href=#701 id=701 data-nosnippet>701</a>        }
+<a href=#702 id=702 data-nosnippet>702</a>    }
+<a href=#703 id=703 data-nosnippet>703</a>
+<a href=#704 id=704 data-nosnippet>704</a>    <span class="doccomment">/// Sets whether or not @self expects a proper TLS close notification
+<a href=#705 id=705 data-nosnippet>705</a>    /// before the connection is closed. If this is [`true`] (the default),
+<a href=#706 id=706 data-nosnippet>706</a>    /// then @self will expect to receive a TLS close notification from its
+<a href=#707 id=707 data-nosnippet>707</a>    /// peer before the connection is closed, and will return a
+<a href=#708 id=708 data-nosnippet>708</a>    /// [`TlsError::Eof`][crate::TlsError::Eof] error if the connection is closed without proper
+<a href=#709 id=709 data-nosnippet>709</a>    /// notification (since this may indicate a network error, or
+<a href=#710 id=710 data-nosnippet>710</a>    /// man-in-the-middle attack).
+<a href=#711 id=711 data-nosnippet>711</a>    ///
+<a href=#712 id=712 data-nosnippet>712</a>    /// In some protocols, the application will know whether or not the
+<a href=#713 id=713 data-nosnippet>713</a>    /// connection was closed cleanly based on application-level data
+<a href=#714 id=714 data-nosnippet>714</a>    /// (because the application-level data includes a length field, or is
+<a href=#715 id=715 data-nosnippet>715</a>    /// somehow self-delimiting); in this case, the close notify is
+<a href=#716 id=716 data-nosnippet>716</a>    /// redundant and sometimes omitted. (TLS 1.1 explicitly allows this;
+<a href=#717 id=717 data-nosnippet>717</a>    /// in TLS 1.0 it is technically an error, but often done anyway.) You
+<a href=#718 id=718 data-nosnippet>718</a>    /// can use g_tls_connection_set_require_close_notify() to tell @self
+<a href=#719 id=719 data-nosnippet>719</a>    /// to allow an "unannounced" connection close, in which case the close
+<a href=#720 id=720 data-nosnippet>720</a>    /// will show up as a 0-length read, as in a non-TLS
+<a href=#721 id=721 data-nosnippet>721</a>    /// #GSocketConnection, and it is up to the application to check that
+<a href=#722 id=722 data-nosnippet>722</a>    /// the data has been fully received.
+<a href=#723 id=723 data-nosnippet>723</a>    ///
+<a href=#724 id=724 data-nosnippet>724</a>    /// Note that this only affects the behavior when the peer closes the
+<a href=#725 id=725 data-nosnippet>725</a>    /// connection; when the application calls g_io_stream_close() itself
+<a href=#726 id=726 data-nosnippet>726</a>    /// on @self, this will send a close notification regardless of the
+<a href=#727 id=727 data-nosnippet>727</a>    /// setting of this property. If you explicitly want to do an unclean
+<a href=#728 id=728 data-nosnippet>728</a>    /// close, you can close @self's #GTlsConnection:base-io-stream rather
+<a href=#729 id=729 data-nosnippet>729</a>    /// than closing @self itself, but note that this may only be done when no other
+<a href=#730 id=730 data-nosnippet>730</a>    /// operations are pending on @self or the base I/O stream.
+<a href=#731 id=731 data-nosnippet>731</a>    /// ## `require_close_notify`
+<a href=#732 id=732 data-nosnippet>732</a>    /// whether or not to require close notification
+<a href=#733 id=733 data-nosnippet>733</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_tls_connection_set_require_close_notify"</span>)]
+<a href=#734 id=734 data-nosnippet>734</a>    #[doc(alias = <span class="string">"require-close-notify"</span>)]
+<a href=#735 id=735 data-nosnippet>735</a>    </span><span class="kw">fn </span>set_require_close_notify(<span class="kw-2">&amp;</span><span class="self">self</span>, require_close_notify: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
+<a href=#736 id=736 data-nosnippet>736</a>        <span class="kw">unsafe </span>{
+<a href=#737 id=737 data-nosnippet>737</a>            ffi::<a href="../../../gio_sys/fn.g_tls_connection_set_require_close_notify.html">g_tls_connection_set_require_close_notify</a>(
+<a href=#738 id=738 data-nosnippet>738</a>                <a class="self" href="#735">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#739 id=739 data-nosnippet>739</a>                <a href="#735">require_close_notify</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>(),
+<a href=#740 id=740 data-nosnippet>740</a>            );
+<a href=#741 id=741 data-nosnippet>741</a>        }
+<a href=#742 id=742 data-nosnippet>742</a>    }
+<a href=#743 id=743 data-nosnippet>743</a>
+<a href=#744 id=744 data-nosnippet>744</a>    <span class="doccomment">/// The list of application-layer protocols that the connection
+<a href=#745 id=745 data-nosnippet>745</a>    /// advertises that it is willing to speak. See
+<a href=#746 id=746 data-nosnippet>746</a>    /// g_tls_connection_set_advertised_protocols().
+<a href=#747 id=747 data-nosnippet>747</a>    </span><span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
+<a href=#748 id=748 data-nosnippet>748</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
+<a href=#749 id=749 data-nosnippet>749</a>    #[doc(alias = <span class="string">"advertised-protocols"</span>)]
+<a href=#750 id=750 data-nosnippet>750</a>    </span><span class="kw">fn </span>advertised_protocols(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;glib::<a href="../../../glib/gstring/struct.GString.html">GString</a>&gt; {
+<a href=#751 id=751 data-nosnippet>751</a>        ObjectExt::<a href="../../../glib/object/trait.ObjectExt.html#tymethod.property">property</a>(<a class="self" href="#750">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>(), <span class="string">"advertised-protocols"</span>)
+<a href=#752 id=752 data-nosnippet>752</a>    }
+<a href=#753 id=753 data-nosnippet>753</a>
+<a href=#754 id=754 data-nosnippet>754</a>    <span class="doccomment">/// The #GIOStream that the connection wraps. The connection holds a reference
+<a href=#755 id=755 data-nosnippet>755</a>    /// to this stream, and may run operations on the stream from other threads
+<a href=#756 id=756 data-nosnippet>756</a>    /// throughout its lifetime. Consequently, after the #GIOStream has been
+<a href=#757 id=757 data-nosnippet>757</a>    /// constructed, application code may only run its own operations on this
+<a href=#758 id=758 data-nosnippet>758</a>    /// stream when no #GIOStream operations are running.
+<a href=#759 id=759 data-nosnippet>759</a>    </span><span class="attr">#[doc(alias = <span class="string">"base-io-stream"</span>)]
+<a href=#760 id=760 data-nosnippet>760</a>    </span><span class="kw">fn </span>base_io_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="io_stream.rs.html#13-94">IOStream</a>&gt; {
+<a href=#761 id=761 data-nosnippet>761</a>        ObjectExt::<a href="../../../glib/object/trait.ObjectExt.html#tymethod.property">property</a>(<a class="self" href="#760">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>(), <span class="string">"base-io-stream"</span>)
+<a href=#762 id=762 data-nosnippet>762</a>    }
+<a href=#763 id=763 data-nosnippet>763</a>
+<a href=#764 id=764 data-nosnippet>764</a>    <span class="doccomment">/// Emitted during the TLS handshake after the peer certificate has
+<a href=#765 id=765 data-nosnippet>765</a>    /// been received. You can examine @peer_cert's certification path by
+<a href=#766 id=766 data-nosnippet>766</a>    /// calling g_tls_certificate_get_issuer() on it.
+<a href=#767 id=767 data-nosnippet>767</a>    ///
+<a href=#768 id=768 data-nosnippet>768</a>    /// For a client-side connection, @peer_cert is the server's
+<a href=#769 id=769 data-nosnippet>769</a>    /// certificate, and the signal will only be emitted if the
+<a href=#770 id=770 data-nosnippet>770</a>    /// certificate was not acceptable according to @conn's
+<a href=#771 id=771 data-nosnippet>771</a>    /// #GTlsClientConnection:validation_flags. If you would like the
+<a href=#772 id=772 data-nosnippet>772</a>    /// certificate to be accepted despite @errors, return [`true`] from the
+<a href=#773 id=773 data-nosnippet>773</a>    /// signal handler. Otherwise, if no handler accepts the certificate,
+<a href=#774 id=774 data-nosnippet>774</a>    /// the handshake will fail with [`TlsError::BadCertificate`][crate::TlsError::BadCertificate].
+<a href=#775 id=775 data-nosnippet>775</a>    ///
+<a href=#776 id=776 data-nosnippet>776</a>    /// GLib guarantees that if certificate verification fails, this signal
+<a href=#777 id=777 data-nosnippet>777</a>    /// will be emitted with at least one error will be set in @errors, but
+<a href=#778 id=778 data-nosnippet>778</a>    /// it does not guarantee that all possible errors will be set.
+<a href=#779 id=779 data-nosnippet>779</a>    /// Accordingly, you may not safely decide to ignore any particular
+<a href=#780 id=780 data-nosnippet>780</a>    /// type of error. For example, it would be incorrect to ignore
+<a href=#781 id=781 data-nosnippet>781</a>    /// [`TlsCertificateFlags::EXPIRED`][crate::TlsCertificateFlags::EXPIRED] if you want to allow expired
+<a href=#782 id=782 data-nosnippet>782</a>    /// certificates, because this could potentially be the only error flag
+<a href=#783 id=783 data-nosnippet>783</a>    /// set even if other problems exist with the certificate.
+<a href=#784 id=784 data-nosnippet>784</a>    ///
+<a href=#785 id=785 data-nosnippet>785</a>    /// For a server-side connection, @peer_cert is the certificate
+<a href=#786 id=786 data-nosnippet>786</a>    /// presented by the client, if this was requested via the server's
+<a href=#787 id=787 data-nosnippet>787</a>    /// #GTlsServerConnection:authentication_mode. On the server side,
+<a href=#788 id=788 data-nosnippet>788</a>    /// the signal is always emitted when the client presents a
+<a href=#789 id=789 data-nosnippet>789</a>    /// certificate, and the certificate will only be accepted if a
+<a href=#790 id=790 data-nosnippet>790</a>    /// handler returns [`true`].
+<a href=#791 id=791 data-nosnippet>791</a>    ///
+<a href=#792 id=792 data-nosnippet>792</a>    /// Note that if this signal is emitted as part of asynchronous I/O
+<a href=#793 id=793 data-nosnippet>793</a>    /// in the main thread, then you should not attempt to interact with
+<a href=#794 id=794 data-nosnippet>794</a>    /// the user before returning from the signal handler. If you want to
+<a href=#795 id=795 data-nosnippet>795</a>    /// let the user decide whether or not to accept the certificate, you
+<a href=#796 id=796 data-nosnippet>796</a>    /// would have to return [`false`] from the signal handler on the first
+<a href=#797 id=797 data-nosnippet>797</a>    /// attempt, and then after the connection attempt returns a
+<a href=#798 id=798 data-nosnippet>798</a>    /// [`TlsError::BadCertificate`][crate::TlsError::BadCertificate], you can interact with the user, and
+<a href=#799 id=799 data-nosnippet>799</a>    /// if the user decides to accept the certificate, remember that fact,
+<a href=#800 id=800 data-nosnippet>800</a>    /// create a new connection, and return [`true`] from the signal handler
+<a href=#801 id=801 data-nosnippet>801</a>    /// the next time.
+<a href=#802 id=802 data-nosnippet>802</a>    ///
+<a href=#803 id=803 data-nosnippet>803</a>    /// If you are doing I/O in another thread, you do not
+<a href=#804 id=804 data-nosnippet>804</a>    /// need to worry about this, and can simply block in the signal
+<a href=#805 id=805 data-nosnippet>805</a>    /// handler until the UI thread returns an answer.
+<a href=#806 id=806 data-nosnippet>806</a>    /// ## `peer_cert`
+<a href=#807 id=807 data-nosnippet>807</a>    /// the peer's #GTlsCertificate
+<a href=#808 id=808 data-nosnippet>808</a>    /// ## `errors`
+<a href=#809 id=809 data-nosnippet>809</a>    /// the problems with @peer_cert.
 <a href=#810 id=810 data-nosnippet>810</a>    ///
-<a href=#811 id=811 data-nosnippet>811</a>    /// [`true`] to accept @peer_cert (which will also
-<a href=#812 id=812 data-nosnippet>812</a>    /// immediately end the signal emission). [`false`] to allow the signal
-<a href=#813 id=813 data-nosnippet>813</a>    /// emission to continue, which will cause the handshake to fail if
-<a href=#814 id=814 data-nosnippet>814</a>    /// no one else overrides it.
-<a href=#815 id=815 data-nosnippet>815</a>    </span><span class="attr">#[doc(alias = <span class="string">"accept-certificate"</span>)]
-<a href=#816 id=816 data-nosnippet>816</a>    </span><span class="kw">fn </span>connect_accept_certificate&lt;
-<a href=#817 id=817 data-nosnippet>817</a>        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="flags.rs.html#3464-3511">TlsCertificateFlags</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <span class="lifetime">'static</span>,
-<a href=#818 id=818 data-nosnippet>818</a>    &gt;(
-<a href=#819 id=819 data-nosnippet>819</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#820 id=820 data-nosnippet>820</a>        f: F,
-<a href=#821 id=821 data-nosnippet>821</a>    ) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
-<a href=#822 id=822 data-nosnippet>822</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>accept_certificate_trampoline&lt;
-<a href=#823 id=823 data-nosnippet>823</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
-<a href=#824 id=824 data-nosnippet>824</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P, <span class="kw-2">&amp;</span><a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="flags.rs.html#3464-3511">TlsCertificateFlags</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <span class="lifetime">'static</span>,
-<a href=#825 id=825 data-nosnippet>825</a>        &gt;(
-<a href=#826 id=826 data-nosnippet>826</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
-<a href=#827 id=827 data-nosnippet>827</a>            peer_cert: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsCertificate.html">GTlsCertificate</a>,
-<a href=#828 id=828 data-nosnippet>828</a>            errors: ffi::<a href="../../../gio_sys/type.GTlsCertificateFlags.html">GTlsCertificateFlags</a>,
-<a href=#829 id=829 data-nosnippet>829</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#830 id=830 data-nosnippet>830</a>        ) -&gt; glib::ffi::<a href="../../../glib_sys/type.gboolean.html">gboolean</a> {
-<a href=#831 id=831 data-nosnippet>831</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#829">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#832 id=832 data-nosnippet>832</a>            <a href="#831">f</a>(
-<a href=#833 id=833 data-nosnippet>833</a>                <a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#826">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>(),
-<a href=#834 id=834 data-nosnippet>834</a>                <span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#827">peer_cert</a>),
-<a href=#835 id=835 data-nosnippet>835</a>                <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#828">errors</a>),
-<a href=#836 id=836 data-nosnippet>836</a>            )
-<a href=#837 id=837 data-nosnippet>837</a>            .<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>()
-<a href=#838 id=838 data-nosnippet>838</a>        }
-<a href=#839 id=839 data-nosnippet>839</a>        <span class="kw">unsafe </span>{
-<a href=#840 id=840 data-nosnippet>840</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#820">f</a>);
-<a href=#841 id=841 data-nosnippet>841</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-<a href=#842 id=842 data-nosnippet>842</a>                <a class="self" href="#819">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#843 id=843 data-nosnippet>843</a>                <span class="string">c"accept-certificate"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#844 id=844 data-nosnippet>844</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-<a href=#845 id=845 data-nosnippet>845</a>                    accept_certificate_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-<a href=#846 id=846 data-nosnippet>846</a>                )),
-<a href=#847 id=847 data-nosnippet>847</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#840">f</a>),
-<a href=#848 id=848 data-nosnippet>848</a>            )
-<a href=#849 id=849 data-nosnippet>849</a>        }
-<a href=#850 id=850 data-nosnippet>850</a>    }
-<a href=#851 id=851 data-nosnippet>851</a>
-<a href=#852 id=852 data-nosnippet>852</a>    <span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
-<a href=#853 id=853 data-nosnippet>853</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
-<a href=#854 id=854 data-nosnippet>854</a>    #[doc(alias = <span class="string">"advertised-protocols"</span>)]
-<a href=#855 id=855 data-nosnippet>855</a>    </span><span class="kw">fn </span>connect_advertised_protocols_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
-<a href=#856 id=856 data-nosnippet>856</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_advertised_protocols_trampoline&lt;
-<a href=#857 id=857 data-nosnippet>857</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
-<a href=#858 id=858 data-nosnippet>858</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
-<a href=#859 id=859 data-nosnippet>859</a>        &gt;(
-<a href=#860 id=860 data-nosnippet>860</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
-<a href=#861 id=861 data-nosnippet>861</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#862 id=862 data-nosnippet>862</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#863 id=863 data-nosnippet>863</a>        ) {
-<a href=#864 id=864 data-nosnippet>864</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#862">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#865 id=865 data-nosnippet>865</a>            <a href="#864">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#860">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
-<a href=#866 id=866 data-nosnippet>866</a>        }
-<a href=#867 id=867 data-nosnippet>867</a>        <span class="kw">unsafe </span>{
-<a href=#868 id=868 data-nosnippet>868</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#855">f</a>);
-<a href=#869 id=869 data-nosnippet>869</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-<a href=#870 id=870 data-nosnippet>870</a>                <a class="self" href="#855">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#871 id=871 data-nosnippet>871</a>                <span class="string">c"notify::advertised-protocols"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#872 id=872 data-nosnippet>872</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-<a href=#873 id=873 data-nosnippet>873</a>                    notify_advertised_protocols_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-<a href=#874 id=874 data-nosnippet>874</a>                )),
-<a href=#875 id=875 data-nosnippet>875</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#868">f</a>),
-<a href=#876 id=876 data-nosnippet>876</a>            )
-<a href=#877 id=877 data-nosnippet>877</a>        }
-<a href=#878 id=878 data-nosnippet>878</a>    }
-<a href=#879 id=879 data-nosnippet>879</a>
-<a href=#880 id=880 data-nosnippet>880</a>    <span class="attr">#[doc(alias = <span class="string">"certificate"</span>)]
-<a href=#881 id=881 data-nosnippet>881</a>    </span><span class="kw">fn </span>connect_certificate_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
-<a href=#882 id=882 data-nosnippet>882</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_certificate_trampoline&lt;
-<a href=#883 id=883 data-nosnippet>883</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
-<a href=#884 id=884 data-nosnippet>884</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
-<a href=#885 id=885 data-nosnippet>885</a>        &gt;(
-<a href=#886 id=886 data-nosnippet>886</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
-<a href=#887 id=887 data-nosnippet>887</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#888 id=888 data-nosnippet>888</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#889 id=889 data-nosnippet>889</a>        ) {
-<a href=#890 id=890 data-nosnippet>890</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#888">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#891 id=891 data-nosnippet>891</a>            <a href="#890">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#886">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
-<a href=#892 id=892 data-nosnippet>892</a>        }
-<a href=#893 id=893 data-nosnippet>893</a>        <span class="kw">unsafe </span>{
-<a href=#894 id=894 data-nosnippet>894</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#881">f</a>);
-<a href=#895 id=895 data-nosnippet>895</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-<a href=#896 id=896 data-nosnippet>896</a>                <a class="self" href="#881">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#897 id=897 data-nosnippet>897</a>                <span class="string">c"notify::certificate"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#898 id=898 data-nosnippet>898</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-<a href=#899 id=899 data-nosnippet>899</a>                    notify_certificate_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-<a href=#900 id=900 data-nosnippet>900</a>                )),
-<a href=#901 id=901 data-nosnippet>901</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#894">f</a>),
-<a href=#902 id=902 data-nosnippet>902</a>            )
-<a href=#903 id=903 data-nosnippet>903</a>        }
-<a href=#904 id=904 data-nosnippet>904</a>    }
-<a href=#905 id=905 data-nosnippet>905</a>
-<a href=#906 id=906 data-nosnippet>906</a>    <span class="attr">#[cfg(feature = <span class="string">"v2_70"</span>)]
-<a href=#907 id=907 data-nosnippet>907</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_70"</span>)))]
-<a href=#908 id=908 data-nosnippet>908</a>    #[doc(alias = <span class="string">"ciphersuite-name"</span>)]
-<a href=#909 id=909 data-nosnippet>909</a>    </span><span class="kw">fn </span>connect_ciphersuite_name_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
-<a href=#910 id=910 data-nosnippet>910</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_ciphersuite_name_trampoline&lt;
-<a href=#911 id=911 data-nosnippet>911</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
-<a href=#912 id=912 data-nosnippet>912</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
-<a href=#913 id=913 data-nosnippet>913</a>        &gt;(
-<a href=#914 id=914 data-nosnippet>914</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
-<a href=#915 id=915 data-nosnippet>915</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#916 id=916 data-nosnippet>916</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#917 id=917 data-nosnippet>917</a>        ) {
-<a href=#918 id=918 data-nosnippet>918</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#916">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#919 id=919 data-nosnippet>919</a>            <a href="#918">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#914">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
-<a href=#920 id=920 data-nosnippet>920</a>        }
-<a href=#921 id=921 data-nosnippet>921</a>        <span class="kw">unsafe </span>{
-<a href=#922 id=922 data-nosnippet>922</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#909">f</a>);
-<a href=#923 id=923 data-nosnippet>923</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-<a href=#924 id=924 data-nosnippet>924</a>                <a class="self" href="#909">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#925 id=925 data-nosnippet>925</a>                <span class="string">c"notify::ciphersuite-name"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#926 id=926 data-nosnippet>926</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-<a href=#927 id=927 data-nosnippet>927</a>                    notify_ciphersuite_name_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-<a href=#928 id=928 data-nosnippet>928</a>                )),
-<a href=#929 id=929 data-nosnippet>929</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#922">f</a>),
-<a href=#930 id=930 data-nosnippet>930</a>            )
-<a href=#931 id=931 data-nosnippet>931</a>        }
-<a href=#932 id=932 data-nosnippet>932</a>    }
-<a href=#933 id=933 data-nosnippet>933</a>
-<a href=#934 id=934 data-nosnippet>934</a>    <span class="attr">#[doc(alias = <span class="string">"database"</span>)]
-<a href=#935 id=935 data-nosnippet>935</a>    </span><span class="kw">fn </span>connect_database_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
-<a href=#936 id=936 data-nosnippet>936</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_database_trampoline&lt;
-<a href=#937 id=937 data-nosnippet>937</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
-<a href=#938 id=938 data-nosnippet>938</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
-<a href=#939 id=939 data-nosnippet>939</a>        &gt;(
-<a href=#940 id=940 data-nosnippet>940</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
-<a href=#941 id=941 data-nosnippet>941</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#942 id=942 data-nosnippet>942</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#943 id=943 data-nosnippet>943</a>        ) {
-<a href=#944 id=944 data-nosnippet>944</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#942">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#945 id=945 data-nosnippet>945</a>            <a href="#944">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#940">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
-<a href=#946 id=946 data-nosnippet>946</a>        }
-<a href=#947 id=947 data-nosnippet>947</a>        <span class="kw">unsafe </span>{
-<a href=#948 id=948 data-nosnippet>948</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#935">f</a>);
-<a href=#949 id=949 data-nosnippet>949</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-<a href=#950 id=950 data-nosnippet>950</a>                <a class="self" href="#935">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#951 id=951 data-nosnippet>951</a>                <span class="string">c"notify::database"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#952 id=952 data-nosnippet>952</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-<a href=#953 id=953 data-nosnippet>953</a>                    notify_database_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-<a href=#954 id=954 data-nosnippet>954</a>                )),
-<a href=#955 id=955 data-nosnippet>955</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#948">f</a>),
-<a href=#956 id=956 data-nosnippet>956</a>            )
-<a href=#957 id=957 data-nosnippet>957</a>        }
-<a href=#958 id=958 data-nosnippet>958</a>    }
-<a href=#959 id=959 data-nosnippet>959</a>
-<a href=#960 id=960 data-nosnippet>960</a>    <span class="attr">#[doc(alias = <span class="string">"interaction"</span>)]
-<a href=#961 id=961 data-nosnippet>961</a>    </span><span class="kw">fn </span>connect_interaction_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
-<a href=#962 id=962 data-nosnippet>962</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_interaction_trampoline&lt;
-<a href=#963 id=963 data-nosnippet>963</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
-<a href=#964 id=964 data-nosnippet>964</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
-<a href=#965 id=965 data-nosnippet>965</a>        &gt;(
-<a href=#966 id=966 data-nosnippet>966</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
-<a href=#967 id=967 data-nosnippet>967</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#968 id=968 data-nosnippet>968</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#969 id=969 data-nosnippet>969</a>        ) {
-<a href=#970 id=970 data-nosnippet>970</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#968">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#971 id=971 data-nosnippet>971</a>            <a href="#970">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#966">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
-<a href=#972 id=972 data-nosnippet>972</a>        }
-<a href=#973 id=973 data-nosnippet>973</a>        <span class="kw">unsafe </span>{
-<a href=#974 id=974 data-nosnippet>974</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#961">f</a>);
-<a href=#975 id=975 data-nosnippet>975</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-<a href=#976 id=976 data-nosnippet>976</a>                <a class="self" href="#961">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#977 id=977 data-nosnippet>977</a>                <span class="string">c"notify::interaction"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#978 id=978 data-nosnippet>978</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-<a href=#979 id=979 data-nosnippet>979</a>                    notify_interaction_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-<a href=#980 id=980 data-nosnippet>980</a>                )),
-<a href=#981 id=981 data-nosnippet>981</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#974">f</a>),
-<a href=#982 id=982 data-nosnippet>982</a>            )
-<a href=#983 id=983 data-nosnippet>983</a>        }
-<a href=#984 id=984 data-nosnippet>984</a>    }
-<a href=#985 id=985 data-nosnippet>985</a>
-<a href=#986 id=986 data-nosnippet>986</a>    <span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
-<a href=#987 id=987 data-nosnippet>987</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
-<a href=#988 id=988 data-nosnippet>988</a>    #[doc(alias = <span class="string">"negotiated-protocol"</span>)]
-<a href=#989 id=989 data-nosnippet>989</a>    </span><span class="kw">fn </span>connect_negotiated_protocol_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
-<a href=#990 id=990 data-nosnippet>990</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_negotiated_protocol_trampoline&lt;
-<a href=#991 id=991 data-nosnippet>991</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
-<a href=#992 id=992 data-nosnippet>992</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
-<a href=#993 id=993 data-nosnippet>993</a>        &gt;(
-<a href=#994 id=994 data-nosnippet>994</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
-<a href=#995 id=995 data-nosnippet>995</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#996 id=996 data-nosnippet>996</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#997 id=997 data-nosnippet>997</a>        ) {
-<a href=#998 id=998 data-nosnippet>998</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#996">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#999 id=999 data-nosnippet>999</a>            <a href="#998">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#994">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
-<a href=#1000 id=1000 data-nosnippet>1000</a>        }
-<a href=#1001 id=1001 data-nosnippet>1001</a>        <span class="kw">unsafe </span>{
-<a href=#1002 id=1002 data-nosnippet>1002</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#989">f</a>);
-<a href=#1003 id=1003 data-nosnippet>1003</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-<a href=#1004 id=1004 data-nosnippet>1004</a>                <a class="self" href="#989">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#1005 id=1005 data-nosnippet>1005</a>                <span class="string">c"notify::negotiated-protocol"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#1006 id=1006 data-nosnippet>1006</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-<a href=#1007 id=1007 data-nosnippet>1007</a>                    notify_negotiated_protocol_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-<a href=#1008 id=1008 data-nosnippet>1008</a>                )),
-<a href=#1009 id=1009 data-nosnippet>1009</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#1002">f</a>),
-<a href=#1010 id=1010 data-nosnippet>1010</a>            )
-<a href=#1011 id=1011 data-nosnippet>1011</a>        }
-<a href=#1012 id=1012 data-nosnippet>1012</a>    }
-<a href=#1013 id=1013 data-nosnippet>1013</a>
-<a href=#1014 id=1014 data-nosnippet>1014</a>    <span class="attr">#[doc(alias = <span class="string">"peer-certificate"</span>)]
-<a href=#1015 id=1015 data-nosnippet>1015</a>    </span><span class="kw">fn </span>connect_peer_certificate_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
-<a href=#1016 id=1016 data-nosnippet>1016</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_peer_certificate_trampoline&lt;
-<a href=#1017 id=1017 data-nosnippet>1017</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
-<a href=#1018 id=1018 data-nosnippet>1018</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
-<a href=#1019 id=1019 data-nosnippet>1019</a>        &gt;(
-<a href=#1020 id=1020 data-nosnippet>1020</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
-<a href=#1021 id=1021 data-nosnippet>1021</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#1022 id=1022 data-nosnippet>1022</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#1023 id=1023 data-nosnippet>1023</a>        ) {
-<a href=#1024 id=1024 data-nosnippet>1024</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1022">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#1025 id=1025 data-nosnippet>1025</a>            <a href="#1024">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#1020">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
-<a href=#1026 id=1026 data-nosnippet>1026</a>        }
-<a href=#1027 id=1027 data-nosnippet>1027</a>        <span class="kw">unsafe </span>{
-<a href=#1028 id=1028 data-nosnippet>1028</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#1015">f</a>);
-<a href=#1029 id=1029 data-nosnippet>1029</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-<a href=#1030 id=1030 data-nosnippet>1030</a>                <a class="self" href="#1015">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#1031 id=1031 data-nosnippet>1031</a>                <span class="string">c"notify::peer-certificate"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#1032 id=1032 data-nosnippet>1032</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-<a href=#1033 id=1033 data-nosnippet>1033</a>                    notify_peer_certificate_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-<a href=#1034 id=1034 data-nosnippet>1034</a>                )),
-<a href=#1035 id=1035 data-nosnippet>1035</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#1028">f</a>),
-<a href=#1036 id=1036 data-nosnippet>1036</a>            )
-<a href=#1037 id=1037 data-nosnippet>1037</a>        }
-<a href=#1038 id=1038 data-nosnippet>1038</a>    }
-<a href=#1039 id=1039 data-nosnippet>1039</a>
-<a href=#1040 id=1040 data-nosnippet>1040</a>    <span class="attr">#[doc(alias = <span class="string">"peer-certificate-errors"</span>)]
-<a href=#1041 id=1041 data-nosnippet>1041</a>    </span><span class="kw">fn </span>connect_peer_certificate_errors_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(
-<a href=#1042 id=1042 data-nosnippet>1042</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#1043 id=1043 data-nosnippet>1043</a>        f: F,
-<a href=#1044 id=1044 data-nosnippet>1044</a>    ) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
-<a href=#1045 id=1045 data-nosnippet>1045</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_peer_certificate_errors_trampoline&lt;
-<a href=#1046 id=1046 data-nosnippet>1046</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
-<a href=#1047 id=1047 data-nosnippet>1047</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
-<a href=#1048 id=1048 data-nosnippet>1048</a>        &gt;(
-<a href=#1049 id=1049 data-nosnippet>1049</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
-<a href=#1050 id=1050 data-nosnippet>1050</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#1051 id=1051 data-nosnippet>1051</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#1052 id=1052 data-nosnippet>1052</a>        ) {
-<a href=#1053 id=1053 data-nosnippet>1053</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1051">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#1054 id=1054 data-nosnippet>1054</a>            <a href="#1053">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#1049">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#811 id=811 data-nosnippet>811</a>    /// # Returns
+<a href=#812 id=812 data-nosnippet>812</a>    ///
+<a href=#813 id=813 data-nosnippet>813</a>    /// [`true`] to accept @peer_cert (which will also
+<a href=#814 id=814 data-nosnippet>814</a>    /// immediately end the signal emission). [`false`] to allow the signal
+<a href=#815 id=815 data-nosnippet>815</a>    /// emission to continue, which will cause the handshake to fail if
+<a href=#816 id=816 data-nosnippet>816</a>    /// no one else overrides it.
+<a href=#817 id=817 data-nosnippet>817</a>    </span><span class="attr">#[doc(alias = <span class="string">"accept-certificate"</span>)]
+<a href=#818 id=818 data-nosnippet>818</a>    </span><span class="kw">fn </span>connect_accept_certificate&lt;
+<a href=#819 id=819 data-nosnippet>819</a>        F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="flags.rs.html#3464-3511">TlsCertificateFlags</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <span class="lifetime">'static</span>,
+<a href=#820 id=820 data-nosnippet>820</a>    &gt;(
+<a href=#821 id=821 data-nosnippet>821</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
+<a href=#822 id=822 data-nosnippet>822</a>        f: F,
+<a href=#823 id=823 data-nosnippet>823</a>    ) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+<a href=#824 id=824 data-nosnippet>824</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>accept_certificate_trampoline&lt;
+<a href=#825 id=825 data-nosnippet>825</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
+<a href=#826 id=826 data-nosnippet>826</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P, <span class="kw-2">&amp;</span><a href="tls_certificate.rs.html#17-192">TlsCertificate</a>, <a href="flags.rs.html#3464-3511">TlsCertificateFlags</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <span class="lifetime">'static</span>,
+<a href=#827 id=827 data-nosnippet>827</a>        &gt;(
+<a href=#828 id=828 data-nosnippet>828</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
+<a href=#829 id=829 data-nosnippet>829</a>            peer_cert: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsCertificate.html">GTlsCertificate</a>,
+<a href=#830 id=830 data-nosnippet>830</a>            errors: ffi::<a href="../../../gio_sys/type.GTlsCertificateFlags.html">GTlsCertificateFlags</a>,
+<a href=#831 id=831 data-nosnippet>831</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#832 id=832 data-nosnippet>832</a>        ) -&gt; glib::ffi::<a href="../../../glib_sys/type.gboolean.html">gboolean</a> {
+<a href=#833 id=833 data-nosnippet>833</a>            <span class="kw">unsafe </span>{
+<a href=#834 id=834 data-nosnippet>834</a>                <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#831">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+<a href=#835 id=835 data-nosnippet>835</a>                <a href="#834">f</a>(
+<a href=#836 id=836 data-nosnippet>836</a>                    <a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#828">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>(),
+<a href=#837 id=837 data-nosnippet>837</a>                    <span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#829">peer_cert</a>),
+<a href=#838 id=838 data-nosnippet>838</a>                    <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(<a href="#830">errors</a>),
+<a href=#839 id=839 data-nosnippet>839</a>                )
+<a href=#840 id=840 data-nosnippet>840</a>                .<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>()
+<a href=#841 id=841 data-nosnippet>841</a>            }
+<a href=#842 id=842 data-nosnippet>842</a>        }
+<a href=#843 id=843 data-nosnippet>843</a>        <span class="kw">unsafe </span>{
+<a href=#844 id=844 data-nosnippet>844</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#822">f</a>);
+<a href=#845 id=845 data-nosnippet>845</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+<a href=#846 id=846 data-nosnippet>846</a>                <a class="self" href="#821">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#847 id=847 data-nosnippet>847</a>                <span class="string">c"accept-certificate"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+<a href=#848 id=848 data-nosnippet>848</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#849 id=849 data-nosnippet>849</a>                    accept_certificate_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+<a href=#850 id=850 data-nosnippet>850</a>                )),
+<a href=#851 id=851 data-nosnippet>851</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#844">f</a>),
+<a href=#852 id=852 data-nosnippet>852</a>            )
+<a href=#853 id=853 data-nosnippet>853</a>        }
+<a href=#854 id=854 data-nosnippet>854</a>    }
+<a href=#855 id=855 data-nosnippet>855</a>
+<a href=#856 id=856 data-nosnippet>856</a>    <span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
+<a href=#857 id=857 data-nosnippet>857</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
+<a href=#858 id=858 data-nosnippet>858</a>    #[doc(alias = <span class="string">"advertised-protocols"</span>)]
+<a href=#859 id=859 data-nosnippet>859</a>    </span><span class="kw">fn </span>connect_advertised_protocols_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+<a href=#860 id=860 data-nosnippet>860</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_advertised_protocols_trampoline&lt;
+<a href=#861 id=861 data-nosnippet>861</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
+<a href=#862 id=862 data-nosnippet>862</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
+<a href=#863 id=863 data-nosnippet>863</a>        &gt;(
+<a href=#864 id=864 data-nosnippet>864</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
+<a href=#865 id=865 data-nosnippet>865</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#866 id=866 data-nosnippet>866</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#867 id=867 data-nosnippet>867</a>        ) {
+<a href=#868 id=868 data-nosnippet>868</a>            <span class="kw">unsafe </span>{
+<a href=#869 id=869 data-nosnippet>869</a>                <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#866">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+<a href=#870 id=870 data-nosnippet>870</a>                <a href="#869">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#864">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#871 id=871 data-nosnippet>871</a>            }
+<a href=#872 id=872 data-nosnippet>872</a>        }
+<a href=#873 id=873 data-nosnippet>873</a>        <span class="kw">unsafe </span>{
+<a href=#874 id=874 data-nosnippet>874</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#859">f</a>);
+<a href=#875 id=875 data-nosnippet>875</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+<a href=#876 id=876 data-nosnippet>876</a>                <a class="self" href="#859">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#877 id=877 data-nosnippet>877</a>                <span class="string">c"notify::advertised-protocols"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+<a href=#878 id=878 data-nosnippet>878</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#879 id=879 data-nosnippet>879</a>                    notify_advertised_protocols_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+<a href=#880 id=880 data-nosnippet>880</a>                )),
+<a href=#881 id=881 data-nosnippet>881</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#874">f</a>),
+<a href=#882 id=882 data-nosnippet>882</a>            )
+<a href=#883 id=883 data-nosnippet>883</a>        }
+<a href=#884 id=884 data-nosnippet>884</a>    }
+<a href=#885 id=885 data-nosnippet>885</a>
+<a href=#886 id=886 data-nosnippet>886</a>    <span class="attr">#[doc(alias = <span class="string">"certificate"</span>)]
+<a href=#887 id=887 data-nosnippet>887</a>    </span><span class="kw">fn </span>connect_certificate_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+<a href=#888 id=888 data-nosnippet>888</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_certificate_trampoline&lt;
+<a href=#889 id=889 data-nosnippet>889</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
+<a href=#890 id=890 data-nosnippet>890</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
+<a href=#891 id=891 data-nosnippet>891</a>        &gt;(
+<a href=#892 id=892 data-nosnippet>892</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
+<a href=#893 id=893 data-nosnippet>893</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#894 id=894 data-nosnippet>894</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#895 id=895 data-nosnippet>895</a>        ) {
+<a href=#896 id=896 data-nosnippet>896</a>            <span class="kw">unsafe </span>{
+<a href=#897 id=897 data-nosnippet>897</a>                <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#894">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+<a href=#898 id=898 data-nosnippet>898</a>                <a href="#897">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#892">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#899 id=899 data-nosnippet>899</a>            }
+<a href=#900 id=900 data-nosnippet>900</a>        }
+<a href=#901 id=901 data-nosnippet>901</a>        <span class="kw">unsafe </span>{
+<a href=#902 id=902 data-nosnippet>902</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#887">f</a>);
+<a href=#903 id=903 data-nosnippet>903</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+<a href=#904 id=904 data-nosnippet>904</a>                <a class="self" href="#887">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#905 id=905 data-nosnippet>905</a>                <span class="string">c"notify::certificate"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+<a href=#906 id=906 data-nosnippet>906</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#907 id=907 data-nosnippet>907</a>                    notify_certificate_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+<a href=#908 id=908 data-nosnippet>908</a>                )),
+<a href=#909 id=909 data-nosnippet>909</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#902">f</a>),
+<a href=#910 id=910 data-nosnippet>910</a>            )
+<a href=#911 id=911 data-nosnippet>911</a>        }
+<a href=#912 id=912 data-nosnippet>912</a>    }
+<a href=#913 id=913 data-nosnippet>913</a>
+<a href=#914 id=914 data-nosnippet>914</a>    <span class="attr">#[cfg(feature = <span class="string">"v2_70"</span>)]
+<a href=#915 id=915 data-nosnippet>915</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_70"</span>)))]
+<a href=#916 id=916 data-nosnippet>916</a>    #[doc(alias = <span class="string">"ciphersuite-name"</span>)]
+<a href=#917 id=917 data-nosnippet>917</a>    </span><span class="kw">fn </span>connect_ciphersuite_name_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+<a href=#918 id=918 data-nosnippet>918</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_ciphersuite_name_trampoline&lt;
+<a href=#919 id=919 data-nosnippet>919</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
+<a href=#920 id=920 data-nosnippet>920</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
+<a href=#921 id=921 data-nosnippet>921</a>        &gt;(
+<a href=#922 id=922 data-nosnippet>922</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
+<a href=#923 id=923 data-nosnippet>923</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#924 id=924 data-nosnippet>924</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#925 id=925 data-nosnippet>925</a>        ) {
+<a href=#926 id=926 data-nosnippet>926</a>            <span class="kw">unsafe </span>{
+<a href=#927 id=927 data-nosnippet>927</a>                <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#924">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+<a href=#928 id=928 data-nosnippet>928</a>                <a href="#927">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#922">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#929 id=929 data-nosnippet>929</a>            }
+<a href=#930 id=930 data-nosnippet>930</a>        }
+<a href=#931 id=931 data-nosnippet>931</a>        <span class="kw">unsafe </span>{
+<a href=#932 id=932 data-nosnippet>932</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#917">f</a>);
+<a href=#933 id=933 data-nosnippet>933</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+<a href=#934 id=934 data-nosnippet>934</a>                <a class="self" href="#917">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#935 id=935 data-nosnippet>935</a>                <span class="string">c"notify::ciphersuite-name"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+<a href=#936 id=936 data-nosnippet>936</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#937 id=937 data-nosnippet>937</a>                    notify_ciphersuite_name_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+<a href=#938 id=938 data-nosnippet>938</a>                )),
+<a href=#939 id=939 data-nosnippet>939</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#932">f</a>),
+<a href=#940 id=940 data-nosnippet>940</a>            )
+<a href=#941 id=941 data-nosnippet>941</a>        }
+<a href=#942 id=942 data-nosnippet>942</a>    }
+<a href=#943 id=943 data-nosnippet>943</a>
+<a href=#944 id=944 data-nosnippet>944</a>    <span class="attr">#[doc(alias = <span class="string">"database"</span>)]
+<a href=#945 id=945 data-nosnippet>945</a>    </span><span class="kw">fn </span>connect_database_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+<a href=#946 id=946 data-nosnippet>946</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_database_trampoline&lt;
+<a href=#947 id=947 data-nosnippet>947</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
+<a href=#948 id=948 data-nosnippet>948</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
+<a href=#949 id=949 data-nosnippet>949</a>        &gt;(
+<a href=#950 id=950 data-nosnippet>950</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
+<a href=#951 id=951 data-nosnippet>951</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#952 id=952 data-nosnippet>952</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#953 id=953 data-nosnippet>953</a>        ) {
+<a href=#954 id=954 data-nosnippet>954</a>            <span class="kw">unsafe </span>{
+<a href=#955 id=955 data-nosnippet>955</a>                <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#952">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+<a href=#956 id=956 data-nosnippet>956</a>                <a href="#955">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#950">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#957 id=957 data-nosnippet>957</a>            }
+<a href=#958 id=958 data-nosnippet>958</a>        }
+<a href=#959 id=959 data-nosnippet>959</a>        <span class="kw">unsafe </span>{
+<a href=#960 id=960 data-nosnippet>960</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#945">f</a>);
+<a href=#961 id=961 data-nosnippet>961</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+<a href=#962 id=962 data-nosnippet>962</a>                <a class="self" href="#945">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#963 id=963 data-nosnippet>963</a>                <span class="string">c"notify::database"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+<a href=#964 id=964 data-nosnippet>964</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#965 id=965 data-nosnippet>965</a>                    notify_database_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+<a href=#966 id=966 data-nosnippet>966</a>                )),
+<a href=#967 id=967 data-nosnippet>967</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#960">f</a>),
+<a href=#968 id=968 data-nosnippet>968</a>            )
+<a href=#969 id=969 data-nosnippet>969</a>        }
+<a href=#970 id=970 data-nosnippet>970</a>    }
+<a href=#971 id=971 data-nosnippet>971</a>
+<a href=#972 id=972 data-nosnippet>972</a>    <span class="attr">#[doc(alias = <span class="string">"interaction"</span>)]
+<a href=#973 id=973 data-nosnippet>973</a>    </span><span class="kw">fn </span>connect_interaction_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+<a href=#974 id=974 data-nosnippet>974</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_interaction_trampoline&lt;
+<a href=#975 id=975 data-nosnippet>975</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
+<a href=#976 id=976 data-nosnippet>976</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
+<a href=#977 id=977 data-nosnippet>977</a>        &gt;(
+<a href=#978 id=978 data-nosnippet>978</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
+<a href=#979 id=979 data-nosnippet>979</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#980 id=980 data-nosnippet>980</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#981 id=981 data-nosnippet>981</a>        ) {
+<a href=#982 id=982 data-nosnippet>982</a>            <span class="kw">unsafe </span>{
+<a href=#983 id=983 data-nosnippet>983</a>                <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#980">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+<a href=#984 id=984 data-nosnippet>984</a>                <a href="#983">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#978">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#985 id=985 data-nosnippet>985</a>            }
+<a href=#986 id=986 data-nosnippet>986</a>        }
+<a href=#987 id=987 data-nosnippet>987</a>        <span class="kw">unsafe </span>{
+<a href=#988 id=988 data-nosnippet>988</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#973">f</a>);
+<a href=#989 id=989 data-nosnippet>989</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+<a href=#990 id=990 data-nosnippet>990</a>                <a class="self" href="#973">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#991 id=991 data-nosnippet>991</a>                <span class="string">c"notify::interaction"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+<a href=#992 id=992 data-nosnippet>992</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#993 id=993 data-nosnippet>993</a>                    notify_interaction_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+<a href=#994 id=994 data-nosnippet>994</a>                )),
+<a href=#995 id=995 data-nosnippet>995</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#988">f</a>),
+<a href=#996 id=996 data-nosnippet>996</a>            )
+<a href=#997 id=997 data-nosnippet>997</a>        }
+<a href=#998 id=998 data-nosnippet>998</a>    }
+<a href=#999 id=999 data-nosnippet>999</a>
+<a href=#1000 id=1000 data-nosnippet>1000</a>    <span class="attr">#[cfg(feature = <span class="string">"v2_60"</span>)]
+<a href=#1001 id=1001 data-nosnippet>1001</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_60"</span>)))]
+<a href=#1002 id=1002 data-nosnippet>1002</a>    #[doc(alias = <span class="string">"negotiated-protocol"</span>)]
+<a href=#1003 id=1003 data-nosnippet>1003</a>    </span><span class="kw">fn </span>connect_negotiated_protocol_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+<a href=#1004 id=1004 data-nosnippet>1004</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_negotiated_protocol_trampoline&lt;
+<a href=#1005 id=1005 data-nosnippet>1005</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
+<a href=#1006 id=1006 data-nosnippet>1006</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
+<a href=#1007 id=1007 data-nosnippet>1007</a>        &gt;(
+<a href=#1008 id=1008 data-nosnippet>1008</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
+<a href=#1009 id=1009 data-nosnippet>1009</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#1010 id=1010 data-nosnippet>1010</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#1011 id=1011 data-nosnippet>1011</a>        ) {
+<a href=#1012 id=1012 data-nosnippet>1012</a>            <span class="kw">unsafe </span>{
+<a href=#1013 id=1013 data-nosnippet>1013</a>                <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1010">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+<a href=#1014 id=1014 data-nosnippet>1014</a>                <a href="#1013">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#1008">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#1015 id=1015 data-nosnippet>1015</a>            }
+<a href=#1016 id=1016 data-nosnippet>1016</a>        }
+<a href=#1017 id=1017 data-nosnippet>1017</a>        <span class="kw">unsafe </span>{
+<a href=#1018 id=1018 data-nosnippet>1018</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#1003">f</a>);
+<a href=#1019 id=1019 data-nosnippet>1019</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+<a href=#1020 id=1020 data-nosnippet>1020</a>                <a class="self" href="#1003">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#1021 id=1021 data-nosnippet>1021</a>                <span class="string">c"notify::negotiated-protocol"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+<a href=#1022 id=1022 data-nosnippet>1022</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#1023 id=1023 data-nosnippet>1023</a>                    notify_negotiated_protocol_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+<a href=#1024 id=1024 data-nosnippet>1024</a>                )),
+<a href=#1025 id=1025 data-nosnippet>1025</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#1018">f</a>),
+<a href=#1026 id=1026 data-nosnippet>1026</a>            )
+<a href=#1027 id=1027 data-nosnippet>1027</a>        }
+<a href=#1028 id=1028 data-nosnippet>1028</a>    }
+<a href=#1029 id=1029 data-nosnippet>1029</a>
+<a href=#1030 id=1030 data-nosnippet>1030</a>    <span class="attr">#[doc(alias = <span class="string">"peer-certificate"</span>)]
+<a href=#1031 id=1031 data-nosnippet>1031</a>    </span><span class="kw">fn </span>connect_peer_certificate_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+<a href=#1032 id=1032 data-nosnippet>1032</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_peer_certificate_trampoline&lt;
+<a href=#1033 id=1033 data-nosnippet>1033</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
+<a href=#1034 id=1034 data-nosnippet>1034</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
+<a href=#1035 id=1035 data-nosnippet>1035</a>        &gt;(
+<a href=#1036 id=1036 data-nosnippet>1036</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
+<a href=#1037 id=1037 data-nosnippet>1037</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#1038 id=1038 data-nosnippet>1038</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#1039 id=1039 data-nosnippet>1039</a>        ) {
+<a href=#1040 id=1040 data-nosnippet>1040</a>            <span class="kw">unsafe </span>{
+<a href=#1041 id=1041 data-nosnippet>1041</a>                <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1038">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+<a href=#1042 id=1042 data-nosnippet>1042</a>                <a href="#1041">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#1036">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#1043 id=1043 data-nosnippet>1043</a>            }
+<a href=#1044 id=1044 data-nosnippet>1044</a>        }
+<a href=#1045 id=1045 data-nosnippet>1045</a>        <span class="kw">unsafe </span>{
+<a href=#1046 id=1046 data-nosnippet>1046</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#1031">f</a>);
+<a href=#1047 id=1047 data-nosnippet>1047</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+<a href=#1048 id=1048 data-nosnippet>1048</a>                <a class="self" href="#1031">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#1049 id=1049 data-nosnippet>1049</a>                <span class="string">c"notify::peer-certificate"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+<a href=#1050 id=1050 data-nosnippet>1050</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#1051 id=1051 data-nosnippet>1051</a>                    notify_peer_certificate_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+<a href=#1052 id=1052 data-nosnippet>1052</a>                )),
+<a href=#1053 id=1053 data-nosnippet>1053</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#1046">f</a>),
+<a href=#1054 id=1054 data-nosnippet>1054</a>            )
 <a href=#1055 id=1055 data-nosnippet>1055</a>        }
-<a href=#1056 id=1056 data-nosnippet>1056</a>        <span class="kw">unsafe </span>{
-<a href=#1057 id=1057 data-nosnippet>1057</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#1043">f</a>);
-<a href=#1058 id=1058 data-nosnippet>1058</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-<a href=#1059 id=1059 data-nosnippet>1059</a>                <a class="self" href="#1042">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#1060 id=1060 data-nosnippet>1060</a>                <span class="string">c"notify::peer-certificate-errors"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#1061 id=1061 data-nosnippet>1061</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-<a href=#1062 id=1062 data-nosnippet>1062</a>                    notify_peer_certificate_errors_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-<a href=#1063 id=1063 data-nosnippet>1063</a>                )),
-<a href=#1064 id=1064 data-nosnippet>1064</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#1057">f</a>),
-<a href=#1065 id=1065 data-nosnippet>1065</a>            )
-<a href=#1066 id=1066 data-nosnippet>1066</a>        }
-<a href=#1067 id=1067 data-nosnippet>1067</a>    }
-<a href=#1068 id=1068 data-nosnippet>1068</a>
-<a href=#1069 id=1069 data-nosnippet>1069</a>    <span class="attr">#[cfg(feature = <span class="string">"v2_70"</span>)]
-<a href=#1070 id=1070 data-nosnippet>1070</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_70"</span>)))]
-<a href=#1071 id=1071 data-nosnippet>1071</a>    #[doc(alias = <span class="string">"protocol-version"</span>)]
-<a href=#1072 id=1072 data-nosnippet>1072</a>    </span><span class="kw">fn </span>connect_protocol_version_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
-<a href=#1073 id=1073 data-nosnippet>1073</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_protocol_version_trampoline&lt;
-<a href=#1074 id=1074 data-nosnippet>1074</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
-<a href=#1075 id=1075 data-nosnippet>1075</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
-<a href=#1076 id=1076 data-nosnippet>1076</a>        &gt;(
-<a href=#1077 id=1077 data-nosnippet>1077</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
-<a href=#1078 id=1078 data-nosnippet>1078</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#1079 id=1079 data-nosnippet>1079</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#1080 id=1080 data-nosnippet>1080</a>        ) {
-<a href=#1081 id=1081 data-nosnippet>1081</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1079">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#1082 id=1082 data-nosnippet>1082</a>            <a href="#1081">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#1077">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
-<a href=#1083 id=1083 data-nosnippet>1083</a>        }
-<a href=#1084 id=1084 data-nosnippet>1084</a>        <span class="kw">unsafe </span>{
-<a href=#1085 id=1085 data-nosnippet>1085</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#1072">f</a>);
-<a href=#1086 id=1086 data-nosnippet>1086</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-<a href=#1087 id=1087 data-nosnippet>1087</a>                <a class="self" href="#1072">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#1088 id=1088 data-nosnippet>1088</a>                <span class="string">c"notify::protocol-version"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#1089 id=1089 data-nosnippet>1089</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-<a href=#1090 id=1090 data-nosnippet>1090</a>                    notify_protocol_version_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-<a href=#1091 id=1091 data-nosnippet>1091</a>                )),
-<a href=#1092 id=1092 data-nosnippet>1092</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#1085">f</a>),
-<a href=#1093 id=1093 data-nosnippet>1093</a>            )
-<a href=#1094 id=1094 data-nosnippet>1094</a>        }
-<a href=#1095 id=1095 data-nosnippet>1095</a>    }
-<a href=#1096 id=1096 data-nosnippet>1096</a>
-<a href=#1097 id=1097 data-nosnippet>1097</a>    <span class="attr">#[cfg_attr(feature = <span class="string">"v2_60"</span>, deprecated = <span class="string">"Since 2.60"</span>)]
-<a href=#1098 id=1098 data-nosnippet>1098</a>    #[doc(alias = <span class="string">"rehandshake-mode"</span>)]
-<a href=#1099 id=1099 data-nosnippet>1099</a>    </span><span class="kw">fn </span>connect_rehandshake_mode_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
-<a href=#1100 id=1100 data-nosnippet>1100</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_rehandshake_mode_trampoline&lt;
-<a href=#1101 id=1101 data-nosnippet>1101</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
-<a href=#1102 id=1102 data-nosnippet>1102</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
-<a href=#1103 id=1103 data-nosnippet>1103</a>        &gt;(
-<a href=#1104 id=1104 data-nosnippet>1104</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
-<a href=#1105 id=1105 data-nosnippet>1105</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#1106 id=1106 data-nosnippet>1106</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#1107 id=1107 data-nosnippet>1107</a>        ) {
-<a href=#1108 id=1108 data-nosnippet>1108</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1106">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#1109 id=1109 data-nosnippet>1109</a>            <a href="#1108">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#1104">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
-<a href=#1110 id=1110 data-nosnippet>1110</a>        }
-<a href=#1111 id=1111 data-nosnippet>1111</a>        <span class="kw">unsafe </span>{
-<a href=#1112 id=1112 data-nosnippet>1112</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#1099">f</a>);
-<a href=#1113 id=1113 data-nosnippet>1113</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-<a href=#1114 id=1114 data-nosnippet>1114</a>                <a class="self" href="#1099">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#1115 id=1115 data-nosnippet>1115</a>                <span class="string">c"notify::rehandshake-mode"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#1116 id=1116 data-nosnippet>1116</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-<a href=#1117 id=1117 data-nosnippet>1117</a>                    notify_rehandshake_mode_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-<a href=#1118 id=1118 data-nosnippet>1118</a>                )),
-<a href=#1119 id=1119 data-nosnippet>1119</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#1112">f</a>),
-<a href=#1120 id=1120 data-nosnippet>1120</a>            )
-<a href=#1121 id=1121 data-nosnippet>1121</a>        }
-<a href=#1122 id=1122 data-nosnippet>1122</a>    }
-<a href=#1123 id=1123 data-nosnippet>1123</a>
-<a href=#1124 id=1124 data-nosnippet>1124</a>    <span class="attr">#[doc(alias = <span class="string">"require-close-notify"</span>)]
-<a href=#1125 id=1125 data-nosnippet>1125</a>    </span><span class="kw">fn </span>connect_require_close_notify_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
-<a href=#1126 id=1126 data-nosnippet>1126</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_require_close_notify_trampoline&lt;
-<a href=#1127 id=1127 data-nosnippet>1127</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
-<a href=#1128 id=1128 data-nosnippet>1128</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
-<a href=#1129 id=1129 data-nosnippet>1129</a>        &gt;(
-<a href=#1130 id=1130 data-nosnippet>1130</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
-<a href=#1131 id=1131 data-nosnippet>1131</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#1132 id=1132 data-nosnippet>1132</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#1133 id=1133 data-nosnippet>1133</a>        ) {
-<a href=#1134 id=1134 data-nosnippet>1134</a>            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1132">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#1135 id=1135 data-nosnippet>1135</a>            <a href="#1134">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#1130">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
-<a href=#1136 id=1136 data-nosnippet>1136</a>        }
-<a href=#1137 id=1137 data-nosnippet>1137</a>        <span class="kw">unsafe </span>{
-<a href=#1138 id=1138 data-nosnippet>1138</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#1125">f</a>);
-<a href=#1139 id=1139 data-nosnippet>1139</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-<a href=#1140 id=1140 data-nosnippet>1140</a>                <a class="self" href="#1125">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#1141 id=1141 data-nosnippet>1141</a>                <span class="string">c"notify::require-close-notify"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-<a href=#1142 id=1142 data-nosnippet>1142</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-<a href=#1143 id=1143 data-nosnippet>1143</a>                    notify_require_close_notify_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-<a href=#1144 id=1144 data-nosnippet>1144</a>                )),
-<a href=#1145 id=1145 data-nosnippet>1145</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#1138">f</a>),
-<a href=#1146 id=1146 data-nosnippet>1146</a>            )
-<a href=#1147 id=1147 data-nosnippet>1147</a>        }
-<a href=#1148 id=1148 data-nosnippet>1148</a>    }
-<a href=#1149 id=1149 data-nosnippet>1149</a>}
-<a href=#1150 id=1150 data-nosnippet>1150</a>
-<a href=#1151 id=1151 data-nosnippet>1151</a><span class="kw">impl</span>&lt;O: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;&gt; <a href="#248-1149">TlsConnectionExt</a> <span class="kw">for </span>O {}
+<a href=#1056 id=1056 data-nosnippet>1056</a>    }
+<a href=#1057 id=1057 data-nosnippet>1057</a>
+<a href=#1058 id=1058 data-nosnippet>1058</a>    <span class="attr">#[doc(alias = <span class="string">"peer-certificate-errors"</span>)]
+<a href=#1059 id=1059 data-nosnippet>1059</a>    </span><span class="kw">fn </span>connect_peer_certificate_errors_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(
+<a href=#1060 id=1060 data-nosnippet>1060</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
+<a href=#1061 id=1061 data-nosnippet>1061</a>        f: F,
+<a href=#1062 id=1062 data-nosnippet>1062</a>    ) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+<a href=#1063 id=1063 data-nosnippet>1063</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_peer_certificate_errors_trampoline&lt;
+<a href=#1064 id=1064 data-nosnippet>1064</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
+<a href=#1065 id=1065 data-nosnippet>1065</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
+<a href=#1066 id=1066 data-nosnippet>1066</a>        &gt;(
+<a href=#1067 id=1067 data-nosnippet>1067</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
+<a href=#1068 id=1068 data-nosnippet>1068</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#1069 id=1069 data-nosnippet>1069</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#1070 id=1070 data-nosnippet>1070</a>        ) {
+<a href=#1071 id=1071 data-nosnippet>1071</a>            <span class="kw">unsafe </span>{
+<a href=#1072 id=1072 data-nosnippet>1072</a>                <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1069">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+<a href=#1073 id=1073 data-nosnippet>1073</a>                <a href="#1072">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#1067">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#1074 id=1074 data-nosnippet>1074</a>            }
+<a href=#1075 id=1075 data-nosnippet>1075</a>        }
+<a href=#1076 id=1076 data-nosnippet>1076</a>        <span class="kw">unsafe </span>{
+<a href=#1077 id=1077 data-nosnippet>1077</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#1061">f</a>);
+<a href=#1078 id=1078 data-nosnippet>1078</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+<a href=#1079 id=1079 data-nosnippet>1079</a>                <a class="self" href="#1060">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#1080 id=1080 data-nosnippet>1080</a>                <span class="string">c"notify::peer-certificate-errors"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+<a href=#1081 id=1081 data-nosnippet>1081</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#1082 id=1082 data-nosnippet>1082</a>                    notify_peer_certificate_errors_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+<a href=#1083 id=1083 data-nosnippet>1083</a>                )),
+<a href=#1084 id=1084 data-nosnippet>1084</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#1077">f</a>),
+<a href=#1085 id=1085 data-nosnippet>1085</a>            )
+<a href=#1086 id=1086 data-nosnippet>1086</a>        }
+<a href=#1087 id=1087 data-nosnippet>1087</a>    }
+<a href=#1088 id=1088 data-nosnippet>1088</a>
+<a href=#1089 id=1089 data-nosnippet>1089</a>    <span class="attr">#[cfg(feature = <span class="string">"v2_70"</span>)]
+<a href=#1090 id=1090 data-nosnippet>1090</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v2_70"</span>)))]
+<a href=#1091 id=1091 data-nosnippet>1091</a>    #[doc(alias = <span class="string">"protocol-version"</span>)]
+<a href=#1092 id=1092 data-nosnippet>1092</a>    </span><span class="kw">fn </span>connect_protocol_version_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+<a href=#1093 id=1093 data-nosnippet>1093</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_protocol_version_trampoline&lt;
+<a href=#1094 id=1094 data-nosnippet>1094</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
+<a href=#1095 id=1095 data-nosnippet>1095</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
+<a href=#1096 id=1096 data-nosnippet>1096</a>        &gt;(
+<a href=#1097 id=1097 data-nosnippet>1097</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
+<a href=#1098 id=1098 data-nosnippet>1098</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#1099 id=1099 data-nosnippet>1099</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#1100 id=1100 data-nosnippet>1100</a>        ) {
+<a href=#1101 id=1101 data-nosnippet>1101</a>            <span class="kw">unsafe </span>{
+<a href=#1102 id=1102 data-nosnippet>1102</a>                <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1099">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+<a href=#1103 id=1103 data-nosnippet>1103</a>                <a href="#1102">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#1097">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#1104 id=1104 data-nosnippet>1104</a>            }
+<a href=#1105 id=1105 data-nosnippet>1105</a>        }
+<a href=#1106 id=1106 data-nosnippet>1106</a>        <span class="kw">unsafe </span>{
+<a href=#1107 id=1107 data-nosnippet>1107</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#1092">f</a>);
+<a href=#1108 id=1108 data-nosnippet>1108</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+<a href=#1109 id=1109 data-nosnippet>1109</a>                <a class="self" href="#1092">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#1110 id=1110 data-nosnippet>1110</a>                <span class="string">c"notify::protocol-version"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+<a href=#1111 id=1111 data-nosnippet>1111</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#1112 id=1112 data-nosnippet>1112</a>                    notify_protocol_version_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+<a href=#1113 id=1113 data-nosnippet>1113</a>                )),
+<a href=#1114 id=1114 data-nosnippet>1114</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#1107">f</a>),
+<a href=#1115 id=1115 data-nosnippet>1115</a>            )
+<a href=#1116 id=1116 data-nosnippet>1116</a>        }
+<a href=#1117 id=1117 data-nosnippet>1117</a>    }
+<a href=#1118 id=1118 data-nosnippet>1118</a>
+<a href=#1119 id=1119 data-nosnippet>1119</a>    <span class="attr">#[cfg_attr(feature = <span class="string">"v2_60"</span>, deprecated = <span class="string">"Since 2.60"</span>)]
+<a href=#1120 id=1120 data-nosnippet>1120</a>    #[doc(alias = <span class="string">"rehandshake-mode"</span>)]
+<a href=#1121 id=1121 data-nosnippet>1121</a>    </span><span class="kw">fn </span>connect_rehandshake_mode_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+<a href=#1122 id=1122 data-nosnippet>1122</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_rehandshake_mode_trampoline&lt;
+<a href=#1123 id=1123 data-nosnippet>1123</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
+<a href=#1124 id=1124 data-nosnippet>1124</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
+<a href=#1125 id=1125 data-nosnippet>1125</a>        &gt;(
+<a href=#1126 id=1126 data-nosnippet>1126</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
+<a href=#1127 id=1127 data-nosnippet>1127</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#1128 id=1128 data-nosnippet>1128</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#1129 id=1129 data-nosnippet>1129</a>        ) {
+<a href=#1130 id=1130 data-nosnippet>1130</a>            <span class="kw">unsafe </span>{
+<a href=#1131 id=1131 data-nosnippet>1131</a>                <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1128">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+<a href=#1132 id=1132 data-nosnippet>1132</a>                <a href="#1131">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#1126">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#1133 id=1133 data-nosnippet>1133</a>            }
+<a href=#1134 id=1134 data-nosnippet>1134</a>        }
+<a href=#1135 id=1135 data-nosnippet>1135</a>        <span class="kw">unsafe </span>{
+<a href=#1136 id=1136 data-nosnippet>1136</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#1121">f</a>);
+<a href=#1137 id=1137 data-nosnippet>1137</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+<a href=#1138 id=1138 data-nosnippet>1138</a>                <a class="self" href="#1121">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#1139 id=1139 data-nosnippet>1139</a>                <span class="string">c"notify::rehandshake-mode"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+<a href=#1140 id=1140 data-nosnippet>1140</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#1141 id=1141 data-nosnippet>1141</a>                    notify_rehandshake_mode_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+<a href=#1142 id=1142 data-nosnippet>1142</a>                )),
+<a href=#1143 id=1143 data-nosnippet>1143</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#1136">f</a>),
+<a href=#1144 id=1144 data-nosnippet>1144</a>            )
+<a href=#1145 id=1145 data-nosnippet>1145</a>        }
+<a href=#1146 id=1146 data-nosnippet>1146</a>    }
+<a href=#1147 id=1147 data-nosnippet>1147</a>
+<a href=#1148 id=1148 data-nosnippet>1148</a>    <span class="attr">#[doc(alias = <span class="string">"require-close-notify"</span>)]
+<a href=#1149 id=1149 data-nosnippet>1149</a>    </span><span class="kw">fn </span>connect_require_close_notify_notify&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+<a href=#1150 id=1150 data-nosnippet>1150</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>notify_require_close_notify_trampoline&lt;
+<a href=#1151 id=1151 data-nosnippet>1151</a>            P: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;,
+<a href=#1152 id=1152 data-nosnippet>1152</a>            F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>P) + <span class="lifetime">'static</span>,
+<a href=#1153 id=1153 data-nosnippet>1153</a>        &gt;(
+<a href=#1154 id=1154 data-nosnippet>1154</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GTlsConnection.html">GTlsConnection</a>,
+<a href=#1155 id=1155 data-nosnippet>1155</a>            _param_spec: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#1156 id=1156 data-nosnippet>1156</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#1157 id=1157 data-nosnippet>1157</a>        ) {
+<a href=#1158 id=1158 data-nosnippet>1158</a>            <span class="kw">unsafe </span>{
+<a href=#1159 id=1159 data-nosnippet>1159</a>                <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1156">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+<a href=#1160 id=1160 data-nosnippet>1160</a>                <a href="#1159">f</a>(<a href="#21-237">TlsConnection</a>::<a href="../../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#1154">this</a>).<a href="../../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#1161 id=1161 data-nosnippet>1161</a>            }
+<a href=#1162 id=1162 data-nosnippet>1162</a>        }
+<a href=#1163 id=1163 data-nosnippet>1163</a>        <span class="kw">unsafe </span>{
+<a href=#1164 id=1164 data-nosnippet>1164</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#1149">f</a>);
+<a href=#1165 id=1165 data-nosnippet>1165</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+<a href=#1166 id=1166 data-nosnippet>1166</a>                <a class="self" href="#1149">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#1167 id=1167 data-nosnippet>1167</a>                <span class="string">c"notify::require-close-notify"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+<a href=#1168 id=1168 data-nosnippet>1168</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#1169 id=1169 data-nosnippet>1169</a>                    notify_require_close_notify_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+<a href=#1170 id=1170 data-nosnippet>1170</a>                )),
+<a href=#1171 id=1171 data-nosnippet>1171</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#1164">f</a>),
+<a href=#1172 id=1172 data-nosnippet>1172</a>            )
+<a href=#1173 id=1173 data-nosnippet>1173</a>        }
+<a href=#1174 id=1174 data-nosnippet>1174</a>    }
+<a href=#1175 id=1175 data-nosnippet>1175</a>}
+<a href=#1176 id=1176 data-nosnippet>1176</a>
+<a href=#1177 id=1177 data-nosnippet>1177</a><span class="kw">impl</span>&lt;O: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#21-237">TlsConnection</a>&gt;&gt; <a href="#248-1175">TlsConnectionExt</a> <span class="kw">for </span>O {}
 </code></pre></div></section></main></body></html>
