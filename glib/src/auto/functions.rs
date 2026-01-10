@@ -628,7 +628,7 @@ pub fn set_application_name(application_name: &str) {
 }
 
 #[doc(alias = "g_setenv")]
-pub fn setenv(
+pub unsafe fn setenv(
     variable: impl AsRef<std::ffi::OsStr>,
     value: impl AsRef<std::ffi::OsStr>,
     overwrite: bool,
@@ -834,7 +834,7 @@ pub fn unlink(filename: impl AsRef<std::path::Path>) -> i32 {
 }
 
 #[doc(alias = "g_unsetenv")]
-pub fn unsetenv(variable: impl AsRef<std::ffi::OsStr>) {
+pub unsafe fn unsetenv(variable: impl AsRef<std::ffi::OsStr>) {
     unsafe {
         ffi::g_unsetenv(variable.as_ref().to_glib_none().0);
     }
