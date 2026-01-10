@@ -217,8 +217,10 @@ mod tests {
     fn check_setenv(val: &str) {
         let _data = lock().lock().unwrap();
 
-        crate::setenv(VAR_NAME, val, true).unwrap();
-        assert_eq!(env::var_os(VAR_NAME), Some(val.into()));
+        unsafe {
+            crate::setenv(VAR_NAME, val, true).unwrap();
+            assert_eq!(env::var_os(VAR_NAME), Some(val.into()));
+        }
     }
 
     #[test]
