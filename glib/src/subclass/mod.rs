@@ -101,7 +101,7 @@
 //!     }
 //!
 //!     // Trait used to override virtual methods of glib::Object. It requires
-//!     // that the associated `Type` implement the `IsA<Object>` trait declaring that
+//!     // that the associated `Type` implements the `IsA<Object>` trait declaring that
 //!     // it can be upcasted to glib::Object, ensuring that virtual methods defined by
 //!     // a class can only be overridden by its subclasses.
 //!     //
