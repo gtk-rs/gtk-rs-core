@@ -188,7 +188,7 @@
 //! //   raw GType instance pointer defined above
 //! // - the core `IsA<Object>` trait declaring that `SimpleObject` is a subclass of `Object`
 //! // - any public methods on the subclass (what would be declared in a public header file if
-//!      one were implementing `SimpleObject` in C)
+//! //   one were implementing `SimpleObject` in C)
 //! glib::wrapper! {
 //!     pub struct SimpleObject(ObjectSubclass<imp::SimpleObject>);
 //! }
