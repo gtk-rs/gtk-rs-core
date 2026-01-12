@@ -216,17 +216,17 @@
 //!
 //! // The Rust structs defined above produce roughly the following instance memory layout:
 //! //
-//! //                    vtable populated with functions proxying imp::SimpleObject::ObjectImpl
-//! //                    | during class_init
-//! //                    | (see `unsafe impl<T: ObjectImpl>IsSubclassable<T> for Object`)
-//! //                   ffi::GObjectClass
+//! //       vtable populated with functions proxying imp::SimpleObject::ObjectImpl
+//! //       during class_init (see `unsafe impl<T: ObjectImpl>IsSubclassable<T> for Object`)
+//! //                                      |
+//! //                                     ffi::GObjectClass
+//! //                                      ^
+//! //                                      |
+//! //                                     ffi::GObject (first member of instance struct)
+//! //                                      |
+//! // |--private data (imp::SimpleObject)--|--instance struct (basic::InstanceStruct)--|
 //! //                    ^
 //! //                    |
-//! //                   ffi::GObject (first member of instance struct)
-//! //                    |
-//! // |---private data---|---instance struct (basic::InstanceStruct)---|
-//! //        |           ^
-//! //  imp::SimpleObject |
 //! //                    |
 //! //               SimpleObject
 //!
