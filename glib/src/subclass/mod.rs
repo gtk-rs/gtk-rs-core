@@ -225,10 +225,10 @@
 //! //                                     ffi::GObject (first member of instance struct)
 //! //                                      |
 //! // |--private data (imp::SimpleObject)--|--instance struct (basic::InstanceStruct)--|
-//! //                    ^
-//! //                    |
-//! //                    |
-//! //               SimpleObject
+//! //                                      ^
+//! //                                      |
+//! //                                      |
+//! //                                 SimpleObject
 //!
 //! pub fn main() {
 //!     let obj = SimpleObject::new();
