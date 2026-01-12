@@ -55,7 +55,7 @@
 //! }
 //!
 //!
-//! // Implementing a GObject subclass requires defining two Rust types
+//! // Implementing a GObject subclass requires two Rust types
 //! // working closely in tandem.
 //! mod imp {
 //!     use super::*;
@@ -183,12 +183,18 @@
 //! }
 //!
 //!
-//! // Create a wrapper type implementing:
+//! // Create a type implementing:
 //! // - the basic traits to support Rust memory management functionality on the
 //! //   raw GType instance pointer defined above
 //! // - the core `IsA<Object>` trait declaring that `SimpleObject` is a subclass of `Object`
-//! // - any public methods on the subclass (what would be declared in a public header file if
-//! //   one were implementing `SimpleObject` in C)
+//! // - any public methods on the subclass
+//!
+//! // This type provides the external interface to the `SimpleObject` class. It is
+//! // analogous to an opaque C pointer `SimpleObject*` that would be declared
+//! // in the public header file simpleobject.h if one were to define `SimpleObject`
+//! // in simpleobject.c. The methods defined here correspond to the functions
+//! // declared in simpleobject.h.
+//! //
 //! glib::wrapper! {
 //!     pub struct SimpleObject(ObjectSubclass<imp::SimpleObject>);
 //! }
@@ -200,17 +206,26 @@
 //!     }
 //! }
 //!
+//! // This is the Rust analog of a C declaration like
+//! //
+//! // /* simpleobject.h */
+//! // #include <glib-object.h>
+//! // G_DECLARE_FINAL_TYPE (SimpleObject, simple_object, ...)
+//! // SimpleObject* simple_object_new();
+//! //
+//!
 //! // The Rust structs defined above produce roughly the following instance memory layout:
 //! //
 //! //                    vtable populated with functions proxying imp::SimpleObject::ObjectImpl
 //! //                    | during class_init
 //! //                    | (see `unsafe impl<T: ObjectImpl>IsSubclassable<T> for Object`)
 //! //                   ffi::GObjectClass
+//! //                    ^
 //! //                    |
 //! //                   ffi::GObject (first member of instance struct)
 //! //                    |
 //! // |---private data---|---instance struct (basic::InstanceStruct)---|
-//! //        |           |
+//! //        |           ^
 //! //  imp::SimpleObject |
 //! //                    |
 //! //               SimpleObject
