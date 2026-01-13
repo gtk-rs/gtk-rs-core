@@ -279,14 +279,14 @@ impl EnumValue {
     // rustdoc-stripper-ignore-next
     /// Get name corresponding to the value.
     #[doc(alias = "get_name")]
-    pub fn name(&self) -> &'static str {
+    pub fn name<'a>(&self) -> &'a str {
         unsafe { CStr::from_ptr(self.0.value_name).to_str().unwrap() }
     }
 
     // rustdoc-stripper-ignore-next
     /// Get nick corresponding to the value.
     #[doc(alias = "get_nick")]
-    pub fn nick(&self) -> &'static str {
+    pub fn nick<'a>(&self) -> &'a str {
         unsafe { CStr::from_ptr(self.0.value_nick).to_str().unwrap() }
     }
 
@@ -874,14 +874,14 @@ impl FlagsValue {
     // rustdoc-stripper-ignore-next
     /// Get name corresponding to the value.
     #[doc(alias = "get_name")]
-    pub fn name(&self) -> &'static str {
+    pub fn name<'a>(&self) -> &'a str {
         unsafe { CStr::from_ptr(self.0.value_name).to_str().unwrap() }
     }
 
     // rustdoc-stripper-ignore-next
     /// Get nick corresponding to the value.
     #[doc(alias = "get_nick")]
-    pub fn nick(&self) -> &'static str {
+    pub fn nick<'a>(&self) -> &'a str {
         unsafe { CStr::from_ptr(self.0.value_nick).to_str().unwrap() }
     }
 
