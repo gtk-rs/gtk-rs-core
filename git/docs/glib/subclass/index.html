@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Module containing infrastructure for subclassing `GObject`s and registering boxed types."><title>glib::subclass - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-77263533.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (a3f2d5abe 2026-01-09)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Module containing infrastructure for subclassing `GObject`s and registering boxed types."><title>glib::subclass - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-77263533.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (2f1bd3f37 2026-01-12)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,7 @@
 </script>
 
 
-<rustdoc-topbar><h2><a href="#">Module subclass</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../glib/index.html">glib</a><span class="version">0.22.0-alpha.2</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module subclass</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#example-for-registering-a-glibobject-subclass" title="Example for registering a `glib::Object` subclass">Example for registering a <code>glib::Object</code> subclass</a></li><li><a href="#example-for-registering-a-glibobject-subclass-within-a-module" title="Example for registering a `glib::Object` subclass within a module">Example for registering a <code>glib::Object</code> subclass within a module</a></li><li><a href="#example-for-registering-a-glibobject-subclass-within-a-plugin" title="Example for registering a `glib::Object` subclass within a plugin">Example for registering a <code>glib::Object</code> subclass within a plugin</a></li></ul><h3><a href="#reexports">Module Items</a></h3><ul class="block"><li><a href="#reexports" title="Re-exports">Re-exports</a></li><li><a href="#modules" title="Modules">Modules</a></li><li><a href="#structs" title="Structs">Structs</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="../index.html">In crate glib</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">glib</a></div><h1>Module <span>subclass</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/glib/subclass/mod.rs.html#3-467">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Module containing infrastructure for subclassing <code>GObject</code>s and registering boxed types.</p>
+<rustdoc-topbar><h2><a href="#">Module subclass</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../glib/index.html">glib</a><span class="version">0.22.0-alpha.2</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module subclass</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#example-for-registering-a-glibobject-subclass" title="Example for registering a `glib::Object` subclass">Example for registering a <code>glib::Object</code> subclass</a></li><li><a href="#example-for-registering-a-glibobject-subclass-within-a-module" title="Example for registering a `glib::Object` subclass within a module">Example for registering a <code>glib::Object</code> subclass within a module</a></li><li><a href="#example-for-registering-a-glibobject-subclass-within-a-plugin" title="Example for registering a `glib::Object` subclass within a plugin">Example for registering a <code>glib::Object</code> subclass within a plugin</a></li></ul><h3><a href="#reexports">Module Items</a></h3><ul class="block"><li><a href="#reexports" title="Re-exports">Re-exports</a></li><li><a href="#modules" title="Modules">Modules</a></li><li><a href="#structs" title="Structs">Structs</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="../index.html">In crate glib</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">glib</a></div><h1>Module <span>subclass</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/glib/subclass/mod.rs.html#3-524">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Module containing infrastructure for subclassing <code>GObject</code>s and registering boxed types.</p>
 <h2 id="example-for-registering-a-glibobject-subclass"><a class="doc-anchor" href="#example-for-registering-a-glibobject-subclass">§</a>Example for registering a <code>glib::Object</code> subclass</h2>
 <p>The following code implements a subclass of <code>glib::Object</code> with a
 string-typed “name” property.</p>
@@ -120,12 +120,15 @@ string-typed “name” property.</p>
     }
 }
 
-<span class="kw">mod </span>imp {
+
+<span class="comment">// Implementing a GObject subclass requires two Rust types
+// working closely in tandem.
+</span><span class="kw">mod </span>imp {
     <span class="kw">use </span>super::<span class="kw-2">*</span>;
 
     <span class="comment">// This is the struct containing all state carried with
-    // the new type. Generally this has to make use of
-    // interior mutability.
+    // the new type. It will be stored in the GType's instance-private data.
+    // Generally this has to make use of interior mutability.
     // If it implements the `Default` trait, then `Self::default()`
     // will be called every time a new instance is created.
     </span><span class="attr">#[derive(Default)]
@@ -138,7 +141,10 @@ string-typed “name” property.</p>
 
     <span class="comment">// ObjectSubclass is the trait that defines the new type and
     // contains all information needed by the GObject type system,
-    // including the new type's name, parent type, etc.
+    // including the new type's name, parent type, etc. The implementation
+    // struct is mapped to the type's instance-private data. This information is
+    // registered with the Glib runtime in the `register_type()` function.
+
     // If you do not want to implement `Default`, you can provide
     // a `new()` method.
     </span><span class="attr">#[glib::object_subclass]
@@ -146,7 +152,10 @@ string-typed “name” property.</p>
         <span class="comment">// This type name must be unique per process.
         </span><span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"SimpleObject"</span>;
 
-        <span class="kw">type </span>Type = <span class="kw">super</span>::SimpleObject;
+        <span class="comment">// The wrapper around the raw GType instance struct
+        // (of type `ObjectSubclass::Instance`) providing memory management functionality
+        // and defining class relationships in terms of Rust types
+        </span><span class="kw">type </span>Type = <span class="kw">super</span>::SimpleObject;
 
         <span class="comment">// The parent type this one is inheriting from.
         // Optional, if not specified it defaults to `glib::Object`
@@ -157,7 +166,14 @@ string-typed “name” property.</p>
         </span><span class="kw">type </span>Interfaces = ();
     }
 
-    <span class="comment">// Trait that is used to override virtual methods of glib::Object.
+    <span class="comment">// Trait used to override virtual methods of glib::Object. It requires
+    // that the associated `Type` implements the `IsA&lt;Object&gt;` trait declaring that
+    // it can be upcasted to glib::Object, ensuring that virtual methods defined by
+    // a class can only be overridden by its subclasses.
+    //
+    // The Rust bindings for GObject generate function wrappers proxying these
+    // methods of the private instance struct and initialize the subclass's vtable
+    // with those wrappers during object instantiation.
     </span><span class="kw">impl </span>ObjectImpl <span class="kw">for </span>SimpleObject {
         <span class="comment">// Called once in the very beginning to list all properties of this class.
         </span><span class="kw">fn </span>properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>[glib::ParamSpec] {
@@ -232,7 +248,19 @@ string-typed “name” property.</p>
     }
 }
 
-<span class="comment">// Optionally, define a wrapper type to make it more ergonomic to use from Rust
+
+<span class="comment">// Create a type implementing:
+// - the basic traits to support Rust memory management functionality on the
+//   raw GType instance pointer defined above
+// - the core `IsA&lt;Object&gt;` trait declaring that `SimpleObject` is a subclass of `Object`
+// - any public methods on the subclass
+
+// This type provides the external interface to the `SimpleObject` class. It is
+// analogous to an opaque C pointer `SimpleObject*` that would be declared
+// in the public header file simpleobject.h if one were to define `SimpleObject`
+// in simpleobject.c. The methods defined here correspond to the functions
+// declared in simpleobject.h.
+//
 </span><span class="macro">glib::wrapper!</span> {
     <span class="kw">pub struct </span>SimpleObject(ObjectSubclass&lt;imp::SimpleObject&gt;);
 }
@@ -244,10 +272,39 @@ string-typed “name” property.</p>
     }
 }
 
-<span class="kw">pub fn </span>main() {
+<span class="comment">// This is the Rust analog of a C declaration like
+//
+// /* simpleobject.h */
+// #include &lt;glib-object.h&gt;
+// G_DECLARE_FINAL_TYPE (SimpleObject, simple_object, ...)
+// SimpleObject* simple_object_new();
+//
+
+// The Rust structs defined above produce roughly the following instance memory layout:
+//
+//       vtable populated with functions proxying imp::SimpleObject::ObjectImpl
+//       during class_init (see `unsafe impl&lt;T: ObjectImpl&gt;IsSubclassable&lt;T&gt; for Object`)
+//                                      |
+//                                     ffi::GObjectClass
+//                                      ^
+//                                      |
+//                                     ffi::GObject (first member of instance struct)
+//                                      |
+// |--private data (imp::SimpleObject)--|--instance struct (basic::InstanceStruct)--|
+//                                      ^
+//                                      |
+//                                      |
+//                                 SimpleObject
+
+</span><span class="kw">pub fn </span>main() {
     <span class="kw">let </span>obj = SimpleObject::new();
 
     <span class="comment">// Get the name property and change its value.
+    // The `ObjectExt` trait provides implementations of
+    // `glib::Object`'s public methods on the (wrappers of)
+    // GObject subclasses. These invoke the corresponding GObject
+    // virtual methods across the FFI interface, which in turn proxy
+    // the `ObjectImpl` methods on the private instance struct above.
     </span><span class="macro">assert_eq!</span>(obj.property::&lt;<span class="prelude-ty">Option</span>&lt;String&gt;&gt;(<span class="string">"name"</span>), <span class="prelude-val">None</span>);
     obj.set_property(<span class="string">"name"</span>, <span class="string">"test"</span>);
     <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>obj.property::&lt;String&gt;(<span class="string">"name"</span>), <span class="string">"test"</span>);
