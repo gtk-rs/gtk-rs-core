@@ -709,68 +709,6 @@ pub trait FileExtManual: IsA<File> + Sized {
         }
     }
 
-    #[doc(alias = "g_file_measure_disk_usage")]
-    fn measure_disk_usage(
-        &self,
-        flags: crate::FileMeasureFlags,
-        cancellable: Option<&impl IsA<Cancellable>>,
-        progress_callback: Option<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>,
-    ) -> Result<(u64, u64, u64), glib::Error> {
-        let progress_callback_data: Box<
-            Option<RefCell<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>>,
-        > = Box::new(progress_callback.map(RefCell::new));
-        unsafe extern "C" fn progress_callback_func(
-            reporting: glib::ffi::gboolean,
-            current_size: u64,
-            num_dirs: u64,
-            num_files: u64,
-            user_data: glib::ffi::gpointer,
-        ) {
-            unsafe {
-                let reporting = from_glib(reporting);
-                let callback: &Option<RefCell<Box<dyn Fn(bool, u64, u64, u64) + 'static>>> =
-                    &*(user_data as *mut _);
-                if let Some(ref callback) = *callback {
-                    (*callback.borrow_mut())(reporting, current_size, num_dirs, num_files)
-                } else {
-                    panic!("cannot get closure...")
-                };
-            }
-        }
-        let progress_callback = if progress_callback_data.is_some() {
-            Some(progress_callback_func as _)
-        } else {
-            None
-        };
-        let super_callback0: Box<Option<RefCell<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>>> =
-            progress_callback_data;
-        unsafe {
-            let mut disk_usage = mem::MaybeUninit::uninit();
-            let mut num_dirs = mem::MaybeUninit::uninit();
-            let mut num_files = mem::MaybeUninit::uninit();
-            let mut error = ptr::null_mut();
-            let _ = ffi::g_file_measure_disk_usage(
-                self.as_ref().to_glib_none().0,
-                flags.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
-                progress_callback,
-                Box::into_raw(super_callback0) as *mut _,
-                disk_usage.as_mut_ptr(),
-                num_dirs.as_mut_ptr(),
-                num_files.as_mut_ptr(),
-                &mut error,
-            );
-            let disk_usage = disk_usage.assume_init();
-            let num_dirs = num_dirs.assume_init();
-            let num_files = num_files.assume_init();
-            if error.is_null() {
-                Ok((disk_usage, num_dirs, num_files))
-            } else {
-                Err(from_glib_full(error))
-            }
-        }
-    }
-
     #[doc(alias = "g_file_measure_disk_usage_async")]
     fn measure_disk_usage_async<P: FnOnce(Result<(u64, u64, u64), glib::Error>) + 'static>(
         &self,

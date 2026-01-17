@@ -970,10 +970,10 @@ mod imp {
             &self,
             _flags: FileMeasureFlags,
             _cancellable: Option<&Cancellable>,
-            progress_callback: Option<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>,
+            progress_callback: Option<&mut dyn FnMut(bool, u64, u64, u64)>,
         ) -> Result<(u64, u64, u64), Error> {
             // Simulate a measure disk operation
-            if let Some(mut callback) = progress_callback {
+            if let Some(callback) = progress_callback {
                 for i in 0..10u64 {
                     // Simulate progress
                     callback(true, i * 10, i, i * 5);
@@ -3188,8 +3188,8 @@ fn file_measure_disk_usage() {
     let res = my_custom_file.measure_disk_usage(
         FileMeasureFlags::NONE,
         Cancellable::NONE,
-        Some(Box::new(
-            move |reporting: bool, current_size, num_dirs, num_files| {
+        Some(
+            &mut move |reporting: bool, current_size, num_dirs, num_files| {
                 if reporting {
                     assert!(!completed);
                 }
@@ -3201,7 +3201,7 @@ fn file_measure_disk_usage() {
                 nb_dirs = num_dirs;
                 nb_files = num_files;
             },
-        )),
+        ),
     );
     assert!(res.is_ok(), "{}", res.unwrap_err());
     let result = res.unwrap();
@@ -3212,8 +3212,8 @@ fn file_measure_disk_usage() {
     let res = my_file.measure_disk_usage(
         FileMeasureFlags::NONE,
         Cancellable::NONE,
-        Some(Box::new(
-            move |reporting: bool, current_size, num_dirs, num_files| {
+        Some(
+            &mut move |reporting: bool, current_size, num_dirs, num_files| {
                 if reporting {
                     assert!(!completed);
                 }
@@ -3225,7 +3225,7 @@ fn file_measure_disk_usage() {
                 nb_dirs = num_dirs;
                 nb_files = num_files;
             },
-        )),
+        ),
     );
     assert!(res.is_ok(), "{}", res.unwrap_err());
     let expected = res.unwrap();
