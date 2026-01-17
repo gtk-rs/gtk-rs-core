@@ -6,6 +6,7 @@ mod application;
 mod async_initable;
 mod dbus_interface;
 mod dbus_proxy;
+mod file;
 mod file_enumerator;
 mod file_monitor;
 mod initable;
@@ -30,6 +31,7 @@ pub mod prelude {
         async_initable::{AsyncInitableImpl, AsyncInitableImplExt},
         dbus_interface::{DBusInterfaceImpl, DBusInterfaceImplExt},
         dbus_proxy::{DBusProxyImpl, DBusProxyImplExt},
+        file::{FileImpl, FileImplExt},
         file_enumerator::{FileEnumeratorImpl, FileEnumeratorImplExt},
         file_monitor::{FileMonitorImpl, FileMonitorImplExt},
         initable::{InitableImpl, InitableImplExt},
