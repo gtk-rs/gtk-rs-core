@@ -123,6 +123,12 @@ pub use crate::io_extension::*;
 mod io_extension_point;
 pub use crate::io_extension_point::*;
 
+mod io_module;
+pub use crate::io_module::*;
+
+mod io_module_scope;
+pub use crate::io_module_scope::*;
+
 mod task;
 pub use crate::task::*;
 
