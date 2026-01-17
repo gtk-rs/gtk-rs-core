@@ -76,11 +76,14 @@ impl FileAttributeValue<'_> {
     pub(crate) fn as_ptr(&self) -> glib::ffi::gpointer {
         self.0.as_ptr()
     }
+
+    pub(crate) fn for_pointer(type_: FileAttributeType, value_p: *mut std::ffi::c_void) -> Self {
+        Self(FileAttributeValueInner::Pointer(type_, value_p))
+    }
 }
 
 #[derive(Debug)]
 pub(crate) enum FileAttributeValueInner<'a> {
-    #[allow(dead_code)] // TODO remove this allow attribute when Pointer will be used by this crate
     Pointer(FileAttributeType, glib::ffi::gpointer),
     String(<&'a str as ToGlibPtr<'a, *mut libc::c_char>>::Storage),
     ByteString(&'a CStr),
