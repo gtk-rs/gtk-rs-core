@@ -4,9 +4,9 @@
 
 use crate::{
     AppInfo, AsyncResult, Cancellable, DriveStartFlags, FileAttributeInfoList, FileCopyFlags,
-    FileCreateFlags, FileEnumerator, FileIOStream, FileInfo, FileInputStream, FileMonitor,
-    FileMonitorFlags, FileOutputStream, FileQueryInfoFlags, FileType, Mount, MountMountFlags,
-    MountOperation, MountUnmountFlags, ffi,
+    FileCreateFlags, FileEnumerator, FileIOStream, FileInfo, FileInputStream, FileMeasureFlags,
+    FileMonitor, FileMonitorFlags, FileOutputStream, FileQueryInfoFlags, FileType, Mount,
+    MountMountFlags, MountOperation, MountUnmountFlags, ffi,
 };
 use glib::{prelude::*, translate::*};
 use std::{boxed::Box as Box_, pin::Pin};
@@ -1037,6 +1037,68 @@ pub trait FileExt: IsA<File> + 'static {
             debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
             if error.is_null() {
                 Ok(())
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
+
+    #[doc(alias = "g_file_measure_disk_usage")]
+    fn measure_disk_usage(
+        &self,
+        flags: FileMeasureFlags,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        progress_callback: Option<&mut dyn FnMut(bool, u64, u64, u64)>,
+    ) -> Result<(u64, u64, u64), glib::Error> {
+        let mut progress_callback_data: Option<&mut dyn FnMut(bool, u64, u64, u64)> =
+            progress_callback;
+        unsafe extern "C" fn progress_callback_func(
+            reporting: glib::ffi::gboolean,
+            current_size: u64,
+            num_dirs: u64,
+            num_files: u64,
+            data: glib::ffi::gpointer,
+        ) {
+            unsafe {
+                let reporting = from_glib(reporting);
+                let callback = data as *mut Option<&mut dyn FnMut(bool, u64, u64, u64)>;
+                if let Some(ref mut callback) = *callback {
+                    callback(reporting, current_size, num_dirs, num_files)
+                } else {
+                    panic!("cannot get closure...")
+                }
+            }
+        }
+        let progress_callback = if progress_callback_data.is_some() {
+            Some(progress_callback_func as _)
+        } else {
+            None
+        };
+        let super_callback0: &mut Option<&mut dyn FnMut(bool, u64, u64, u64)> =
+            &mut progress_callback_data;
+        unsafe {
+            let mut disk_usage = std::mem::MaybeUninit::uninit();
+            let mut num_dirs = std::mem::MaybeUninit::uninit();
+            let mut num_files = std::mem::MaybeUninit::uninit();
+            let mut error = std::ptr::null_mut();
+            let is_ok = ffi::g_file_measure_disk_usage(
+                self.as_ref().to_glib_none().0,
+                flags.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                progress_callback,
+                super_callback0 as *mut _ as *mut _,
+                disk_usage.as_mut_ptr(),
+                num_dirs.as_mut_ptr(),
+                num_files.as_mut_ptr(),
+                &mut error,
+            );
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            if error.is_null() {
+                Ok((
+                    disk_usage.assume_init(),
+                    num_dirs.assume_init(),
+                    num_files.assume_init(),
+                ))
             } else {
                 Err(from_glib_full(error))
             }

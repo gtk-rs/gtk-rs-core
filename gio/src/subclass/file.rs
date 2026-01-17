@@ -13,7 +13,7 @@ use crate::{
 
 use libc::{c_char, c_uint};
 
-use std::{boxed::Box, cell::RefCell, path::PathBuf};
+use std::{boxed::Box, path::PathBuf};
 
 // Support custom implementation of virtual functions defined in `gio::ffi::GFileIface` except pairs `xxx_async/xxx_finish` for which GIO provides a default implementation.
 pub trait FileImpl: ObjectImpl + ObjectSubclass<Type: IsA<File>> {
@@ -384,7 +384,7 @@ pub trait FileImpl: ObjectImpl + ObjectSubclass<Type: IsA<File>> {
         &self,
         flags: FileMeasureFlags,
         cancellable: Option<&Cancellable>,
-        progress_callback: Option<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>,
+        progress_callback: Option<&mut dyn FnMut(bool, u64, u64, u64)>,
     ) -> Result<(u64, u64, u64), Error> {
         self.parent_measure_disk_usage(flags, cancellable, progress_callback)
     }
@@ -2210,36 +2210,37 @@ pub trait FileImplExt: FileImpl {
         &self,
         flags: FileMeasureFlags,
         cancellable: Option<&Cancellable>,
-        progress_callback: Option<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>,
+        progress_callback: Option<&mut dyn FnMut(bool, u64, u64, u64)>,
     ) -> Result<(u64, u64, u64), Error> {
-        let progress_callback_data: Box<
-            Option<RefCell<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>>,
-        > = Box::new(progress_callback.map(RefCell::new));
-        unsafe extern "C" fn progress_callback_func(
-            reporting: glib::ffi::gboolean,
-            current_size: u64,
-            num_dirs: u64,
-            num_files: u64,
-            user_data: glib::ffi::gpointer,
-        ) {
-            unsafe {
-                let reporting = from_glib(reporting);
-                let callback: &Option<RefCell<Box<dyn Fn(bool, u64, u64, u64) + 'static>>> =
-                    &*(user_data as *mut _);
-                if let Some(ref callback) = *callback {
-                    (*callback.borrow_mut())(reporting, current_size, num_dirs, num_files)
-                } else {
-                    panic!("cannot get closure...")
-                };
-            }
-        }
-        let progress_callback = if progress_callback_data.is_some() {
-            Some(progress_callback_func as _)
-        } else {
-            None
-        };
-        let super_callback0: Box<Option<RefCell<Box<dyn FnMut(bool, u64, u64, u64) + 'static>>>> =
-            progress_callback_data;
+        let mut super_callback0 = progress_callback;
+        let (progress_callback, progress_callback_data) =
+            super_callback0
+                .as_mut()
+                .map_or((None, std::ptr::null_mut()), |progress_callback| {
+                    unsafe extern "C" fn progress_callback_trampoline(
+                        reporting: glib::ffi::gboolean,
+                        current_size: u64,
+                        num_dirs: u64,
+                        num_files: u64,
+                        user_data: glib::ffi::gpointer,
+                    ) {
+                        unsafe {
+                            let progress_callback: &mut Box<
+                                dyn FnMut(bool, u64, u64, u64) + 'static,
+                            > = &mut *(user_data as *mut _);
+                            progress_callback(
+                                from_glib(reporting),
+                                current_size,
+                                num_dirs,
+                                num_files,
+                            )
+                        }
+                    }
+                    (
+                        Some(progress_callback_trampoline as _),
+                        progress_callback as *mut &mut dyn FnMut(bool, u64, u64, u64) as *mut _,
+                    )
+                });
 
         unsafe {
             let type_data = Self::type_data();
@@ -2258,7 +2259,7 @@ pub trait FileImplExt: FileImpl {
                 flags.into_glib(),
                 cancellable.to_glib_none().0,
                 progress_callback,
-                Box::into_raw(super_callback0) as *mut _,
+                progress_callback_data,
                 &mut disk_usage,
                 &mut num_dirs,
                 &mut num_files,
@@ -3758,20 +3759,26 @@ unsafe extern "C" fn file_measure_disk_usage<T: FileImpl>(
         let instance = &*(file as *mut T::Instance);
         let imp = instance.imp();
         let cancellable = Option::<Cancellable>::from_glib_none(cancellable);
-        let progress_callback = progress_callback.map(|callback| {
-            Box::new(
-                move |reporting: bool, current_size: u64, num_dirs: u64, num_files: u64| {
-                    callback(
-                        reporting.into_glib(),
-                        current_size,
-                        num_dirs,
-                        num_files,
-                        progress_callback_data,
-                    )
-                },
-            ) as Box<dyn FnMut(bool, u64, u64, u64) + 'static>
+        let mut progress_callback = progress_callback.map(|callback| {
+            move |reporting: bool, current_size: u64, num_dirs: u64, num_files: u64| {
+                callback(
+                    reporting.into_glib(),
+                    current_size,
+                    num_dirs,
+                    num_files,
+                    progress_callback_data,
+                )
+            }
         });
-        let res = imp.measure_disk_usage(from_glib(flags), cancellable.as_ref(), progress_callback);
+        let progress_callback_ref = progress_callback
+            .as_mut()
+            .map(|f| f as &mut dyn FnMut(bool, u64, u64, u64));
+
+        let res = imp.measure_disk_usage(
+            from_glib(flags),
+            cancellable.as_ref(),
+            progress_callback_ref,
+        );
         match res {
             Ok((disk_usage_, num_dirs_, num_files_)) => {
                 if !disk_usage.is_null() {
