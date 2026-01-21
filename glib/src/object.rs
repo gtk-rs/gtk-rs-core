@@ -3,7 +3,15 @@
 // rustdoc-stripper-ignore-next
 //! `IMPL` Object wrapper implementation and `Object` binding.
 
-use std::{cmp, fmt, hash, marker::PhantomData, mem, mem::ManuallyDrop, ops, pin::Pin, ptr};
+use std::{
+    cmp, fmt, hash,
+    marker::PhantomData,
+    mem::{self, ManuallyDrop},
+    ops,
+    pin::Pin,
+    ptr,
+    sync::Arc,
+};
 
 use crate::{
     Closure, PtrSlice, RustClosure, SignalHandlerId, Type, Value,
@@ -3149,9 +3157,12 @@ impl<T: ObjectType> ObjectExt for T {
     #[inline]
     fn downgrade(&self) -> WeakRef<T> {
         unsafe {
-            let w = WeakRef(Box::pin(mem::zeroed()), PhantomData);
+            let w = WeakRef(Arc::pin(WeakRefInner {
+                ffi: mem::zeroed(),
+                phantom: PhantomData,
+            }));
             gobject_ffi::g_weak_ref_init(
-                mut_override(&*w.0),
+                mut_override(&w.0.ffi),
                 self.as_object_ref().to_glib_none().0,
             );
             w
@@ -3500,7 +3511,13 @@ impl<T: ObjectType> WeakRefNotify<T> {
 /// A weak reference to an object.
 #[derive(Debug)]
 #[doc(alias = "GWeakRef")]
-pub struct WeakRef<T: ObjectType>(Pin<Box<gobject_ffi::GWeakRef>>, PhantomData<*mut T>);
+pub struct WeakRef<T: ObjectType>(Pin<Arc<WeakRefInner<T>>>);
+
+#[derive(Debug)]
+struct WeakRefInner<T: ObjectType> {
+    ffi: gobject_ffi::GWeakRef,
+    phantom: PhantomData<*mut T>,
+}
 
 impl<T: ObjectType> WeakRef<T> {
     // rustdoc-stripper-ignore-next
@@ -3510,11 +3527,11 @@ impl<T: ObjectType> WeakRef<T> {
     #[inline]
     pub fn new() -> WeakRef<T> {
         unsafe {
-            let mut w = WeakRef(Box::pin(mem::zeroed()), PhantomData);
-            gobject_ffi::g_weak_ref_init(
-                Pin::as_mut(&mut w.0).get_unchecked_mut(),
-                ptr::null_mut(),
-            );
+            let w = WeakRef(Arc::pin(WeakRefInner {
+                ffi: mem::zeroed(),
+                phantom: PhantomData,
+            }));
+            gobject_ffi::g_weak_ref_init(mut_override(&w.0.ffi), ptr::null_mut());
             w
         }
     }
@@ -3526,7 +3543,7 @@ impl<T: ObjectType> WeakRef<T> {
     pub fn set(&self, obj: Option<&T>) {
         unsafe {
             gobject_ffi::g_weak_ref_set(
-                mut_override(Pin::as_ref(&self.0).get_ref()),
+                mut_override(&self.0.ffi),
                 obj.map_or(std::ptr::null_mut(), |obj| {
                     obj.as_object_ref().to_glib_none().0
                 }),
@@ -3542,7 +3559,7 @@ impl<T: ObjectType> WeakRef<T> {
     #[inline]
     pub fn upgrade(&self) -> Option<T> {
         unsafe {
-            let ptr = gobject_ffi::g_weak_ref_get(mut_override(Pin::as_ref(&self.0).get_ref()));
+            let ptr = gobject_ffi::g_weak_ref_get(mut_override(&self.0.ffi));
             if ptr.is_null() {
                 None
             } else {
@@ -3553,11 +3570,11 @@ impl<T: ObjectType> WeakRef<T> {
     }
 }
 
-impl<T: ObjectType> Drop for WeakRef<T> {
+impl<T: ObjectType> Drop for WeakRefInner<T> {
     #[inline]
     fn drop(&mut self) {
         unsafe {
-            gobject_ffi::g_weak_ref_clear(Pin::as_mut(&mut self.0).get_unchecked_mut());
+            gobject_ffi::g_weak_ref_clear(&mut self.ffi);
         }
     }
 }
@@ -3565,17 +3582,7 @@ impl<T: ObjectType> Drop for WeakRef<T> {
 impl<T: ObjectType> Clone for WeakRef<T> {
     #[inline]
     fn clone(&self) -> Self {
-        unsafe {
-            let o = self.upgrade();
-
-            let mut c = WeakRef(Box::pin(mem::zeroed()), PhantomData);
-            gobject_ffi::g_weak_ref_init(
-                Pin::as_mut(&mut c.0).get_unchecked_mut(),
-                o.to_glib_none().0 as *mut gobject_ffi::GObject,
-            );
-
-            c
-        }
+        Self(self.0.clone())
     }
 }
 
@@ -3586,27 +3593,27 @@ impl<T: ObjectType> Default for WeakRef<T> {
     }
 }
 
-unsafe impl<T: ObjectType + Sync + Sync> Sync for WeakRef<T> {}
-unsafe impl<T: ObjectType + Send + Sync> Send for WeakRef<T> {}
+unsafe impl<T: ObjectType + Send + Sync> Sync for WeakRefInner<T> {}
+unsafe impl<T: ObjectType + Send + Sync> Send for WeakRefInner<T> {}
 
 impl<T: ObjectType> PartialEq for WeakRef<T> {
     #[inline]
     fn eq(&self, other: &Self) -> bool {
-        unsafe { self.0.priv_.p == other.0.priv_.p }
+        unsafe { self.0.ffi.priv_.p == other.0.ffi.priv_.p }
     }
 }
 
 impl<T: ObjectType> PartialEq<T> for WeakRef<T> {
     #[inline]
     fn eq(&self, other: &T) -> bool {
-        unsafe { self.0.priv_.p == other.as_ptr() as *mut std::os::raw::c_void }
+        unsafe { self.0.ffi.priv_.p == other.as_ptr() as *mut std::os::raw::c_void }
     }
 }
 
 impl<T: ObjectType> PartialOrd for WeakRef<T> {
     #[inline]
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
-        unsafe { self.0.priv_.p.partial_cmp(&other.0.priv_.p) }
+        unsafe { self.0.ffi.priv_.p.partial_cmp(&other.0.ffi.priv_.p) }
     }
 }
 
