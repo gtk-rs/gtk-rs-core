@@ -2548,16 +2548,23 @@ pub const NONE_STR: Option<&'static str> = None;
 /// A trait to accept both <code>[Option]&lt;&[str]></code> or <code>[Option]&lt;&[GStr]></code> as
 /// an argument.
 pub trait IntoOptionalGStr {
-    fn run_with_gstr<T, F: FnOnce(Option<&GStr>) -> T>(self, f: F) -> T;
+    fn run_with_optional_gstr<T, F: FnOnce(Option<&GStr>) -> T>(self, f: F) -> T;
 }
 
 impl<S: IntoGStr> IntoOptionalGStr for Option<S> {
     #[inline]
-    fn run_with_gstr<T, F: FnOnce(Option<&GStr>) -> T>(self, f: F) -> T {
+    fn run_with_optional_gstr<T, F: FnOnce(Option<&GStr>) -> T>(self, f: F) -> T {
         match self {
             Some(t) => t.run_with_gstr(|s| f(Some(s))),
             None => f(None),
         }
+    }
+}
+
+impl<S: IntoGStr> IntoOptionalGStr for S {
+    #[inline]
+    fn run_with_optional_gstr<T, F: FnOnce(Option<&GStr>) -> T>(self, f: F) -> T {
+        self.run_with_gstr(|s| f(Some(s)))
     }
 }
 
