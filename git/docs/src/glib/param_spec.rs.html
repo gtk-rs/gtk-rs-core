@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/param_spec.rs`."><title>param_spec.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-77263533.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.94.0-nightly (fe98ddcfc 2026-01-17)" data-channel="nightly" data-search-js="search-9e2438ea.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-c38705f0.js" ><script src="../../static.files/storage-e2aeef58.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-7bab91a1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/param_spec.rs`."><title>param_spec.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-0bd2dfd4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (f134bbc78 2026-01-24)" data-channel="nightly" data-search-js="search-86d08462.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-f9617a14.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-12f88f4f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-ffcac47a.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">glib/</div>param_spec.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-4"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">glib/</div>param_spec.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-4"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::{
 <a href=#4 id=4 data-nosnippet>4</a>    <a href="https://doc.rust-lang.org/nightly/core/char/convert/struct.CharTryFromError.html">char::CharTryFromError</a>,
@@ -81,7 +81,7 @@
 <a href=#8 id=8 data-nosnippet>8</a>};
 <a href=#9 id=9 data-nosnippet>9</a>
 <a href=#10 id=10 data-nosnippet>10</a><span class="kw">use </span>crate::{
-<a href=#11 id=11 data-nosnippet>11</a>    <a href="object.rs.html#1388-1391">Object</a>, <a href="gobject/flags.rs.html#5-56">ParamFlags</a>, <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#490-533">Value</a>, ffi, <a href="../../gobject_sys/index.html">gobject_ffi</a>,
+<a href=#11 id=11 data-nosnippet>11</a>    <a href="object.rs.html#1388-1391">Object</a>, <a href="gobject/flags.rs.html#5-56">ParamFlags</a>, <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#490-533">Value</a>, ffi, gobject_ffi,
 <a href=#12 id=12 data-nosnippet>12</a>    object::{<a href="object.rs.html#4183">Interface</a>, <a href="object.rs.html#4383">InterfaceRef</a>, <a href="object.rs.html#4178">IsClass</a>, <a href="object.rs.html#4410">IsInterface</a>, <a href="object.rs.html#1392">ObjectClass</a>},
 <a href=#13 id=13 data-nosnippet>13</a>    prelude::<span class="kw-2">*</span>,
 <a href=#14 id=14 data-nosnippet>14</a>    translate::<span class="kw-2">*</span>,
@@ -105,7 +105,7 @@
 <a href=#32 id=32 data-nosnippet>32</a>    /// This is an Abstract Base Class, you cannot instantiate it.
 <a href=#33 id=33 data-nosnippet>33</a>    </span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#34 id=34 data-nosnippet>34</a>    #[doc(alias = <span class="string">"GParamSpec"</span>)]
-<a href=#35 id=35 data-nosnippet>35</a>    </span><span class="kw">pub struct </span><a href="#18-41">ParamSpec</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpec.html">GParamSpec</a>&gt;);
+<a href=#35 id=35 data-nosnippet>35</a>    </span><span class="kw">pub struct </span><a href="#18-41">ParamSpec</a>(Shared&lt;gobject_ffi::GParamSpec&gt;);
 <a href=#36 id=36 data-nosnippet>36</a>
 <a href=#37 id=37 data-nosnippet>37</a>    <span class="kw">match fn </span>{
 <a href=#38 id=38 data-nosnippet>38</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr),
@@ -116,7 +116,7 @@
 <a href=#43 id=43 data-nosnippet>43</a><span class="kw">impl </span><a href="types.rs.html#290-294">StaticType</a> <span class="kw">for </span><a href="#18-41">ParamSpec</a> {
 <a href=#44 id=44 data-nosnippet>44</a>    <span class="attr">#[inline]
 <a href=#45 id=45 data-nosnippet>45</a>    </span><span class="kw">fn </span>static_type() -&gt; <a href="types.rs.html#22">Type</a> {
-<a href=#46 id=46 data-nosnippet>46</a>        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(gobject_ffi::<a href="../../gobject_sys/constant.G_TYPE_PARAM.html">G_TYPE_PARAM</a>) }
+<a href=#46 id=46 data-nosnippet>46</a>        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1417-1419">from_glib</a>(gobject_ffi::G_TYPE_PARAM) }
 <a href=#47 id=47 data-nosnippet>47</a>    }
 <a href=#48 id=48 data-nosnippet>48</a>}
 <a href=#49 id=49 data-nosnippet>49</a>
@@ -134,7 +134,7 @@
 <a href=#61 id=61 data-nosnippet>61</a>
 <a href=#62 id=62 data-nosnippet>62</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">crate</span>::<a href="value.rs.html#490-533">Value</a>) -&gt; <span class="self">Self </span>{
 <a href=#63 id=63 data-nosnippet>63</a>        <span class="kw">unsafe </span>{
-<a href=#64 id=64 data-nosnippet>64</a>            <span class="kw">let </span>ptr = gobject_ffi::<a href="../../gobject_sys/fn.g_value_dup_param.html">g_value_dup_param</a>(<a href="#62">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+<a href=#64 id=64 data-nosnippet>64</a>            <span class="kw">let </span>ptr = gobject_ffi::g_value_dup_param(<a href="#62">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
 <a href=#65 id=65 data-nosnippet>65</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
 <a href=#66 id=66 data-nosnippet>66</a>            <a href="translate.rs.html#1636-1638">from_glib_full</a>(<a href="#64">ptr</a>)
 <a href=#67 id=67 data-nosnippet>67</a>        }
@@ -151,9 +151,9 @@
 <a href=#78 id=78 data-nosnippet>78</a>                std::mem::size_of::&lt;<span class="self">Self</span>&gt;(),
 <a href=#79 id=79 data-nosnippet>79</a>                std::mem::size_of::&lt;<span class="kw">crate</span>::ffi::gpointer&gt;()
 <a href=#80 id=80 data-nosnippet>80</a>            );
-<a href=#81 id=81 data-nosnippet>81</a>            <span class="kw">let </span>value = <span class="kw-2">&amp;*</span>(<a href="#75">value</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">crate</span>::<a href="value.rs.html#490-533">Value</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">crate</span>::gobject_ffi::<a href="../../gobject_sys/struct.GValue.html">GValue</a>);
+<a href=#81 id=81 data-nosnippet>81</a>            <span class="kw">let </span>value = <span class="kw-2">&amp;*</span>(<a href="#75">value</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">crate</span>::<a href="value.rs.html#490-533">Value</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">crate</span>::gobject_ffi::GValue);
 <a href=#82 id=82 data-nosnippet>82</a>            <span class="kw">let </span>ptr = <span class="kw-2">&amp;</span><a href="#81">value</a>.data[<span class="number">0</span>].v_pointer <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">crate</span>::ffi::gpointer
-<a href=#83 id=83 data-nosnippet>83</a>                <span class="kw">as </span><span class="kw-2">*const *const </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpec.html">GParamSpec</a>;
+<a href=#83 id=83 data-nosnippet>83</a>                <span class="kw">as </span><span class="kw-2">*const *const </span>gobject_ffi::GParamSpec;
 <a href=#84 id=84 data-nosnippet>84</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!(<span class="kw-2">*</span>ptr).is_null());
 <a href=#85 id=85 data-nosnippet>85</a>            <span class="kw-2">&amp;*</span>(<a href="#82">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#18-41">ParamSpec</a>)
 <a href=#86 id=86 data-nosnippet>86</a>        }
@@ -165,7 +165,7 @@
 <a href=#92 id=92 data-nosnippet>92</a>    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::<a href="value.rs.html#490-533">Value</a> {
 <a href=#93 id=93 data-nosnippet>93</a>        <span class="kw">unsafe </span>{
 <a href=#94 id=94 data-nosnippet>94</a>            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::<a href="value.rs.html#490-533">Value</a>::<a href="value.rs.html#559-565">from_type_unchecked</a>(<a href="#18-41">ParamSpec</a>::<a href="types.rs.html#293">static_type</a>());
-<a href=#95 id=95 data-nosnippet>95</a>            gobject_ffi::<a href="../../gobject_sys/fn.g_value_take_param.html">g_value_take_param</a>(<a href="#94">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#92">self</a>.<a href="translate.rs.html#452-454">to_glib_full</a>());
+<a href=#95 id=95 data-nosnippet>95</a>            gobject_ffi::g_value_take_param(<a href="#94">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#92">self</a>.<a href="translate.rs.html#452-454">to_glib_full</a>());
 <a href=#96 id=96 data-nosnippet>96</a>            <a href="#94">value</a>
 <a href=#97 id=97 data-nosnippet>97</a>        }
 <a href=#98 id=98 data-nosnippet>98</a>    }
@@ -181,7 +181,7 @@
 <a href=#108 id=108 data-nosnippet>108</a>    </span><span class="kw">fn </span>from(s: <a href="#18-41">ParamSpec</a>) -&gt; <span class="self">Self </span>{
 <a href=#109 id=109 data-nosnippet>109</a>        <span class="kw">unsafe </span>{
 <a href=#110 id=110 data-nosnippet>110</a>            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::<a href="value.rs.html#490-533">Value</a>::<a href="value.rs.html#559-565">from_type_unchecked</a>(<a href="#18-41">ParamSpec</a>::<a href="types.rs.html#293">static_type</a>());
-<a href=#111 id=111 data-nosnippet>111</a>            gobject_ffi::<a href="../../gobject_sys/fn.g_value_take_param.html">g_value_take_param</a>(<a href="#110">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#108">s</a>.<a href="translate.rs.html#715">into_glib_ptr</a>());
+<a href=#111 id=111 data-nosnippet>111</a>            gobject_ffi::g_value_take_param(<a href="#110">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#108">s</a>.<a href="translate.rs.html#715">into_glib_ptr</a>());
 <a href=#112 id=112 data-nosnippet>112</a>            <a href="#110">value</a>
 <a href=#113 id=113 data-nosnippet>113</a>        }
 <a href=#114 id=114 data-nosnippet>114</a>    }
@@ -192,7 +192,7 @@
 <a href=#119 id=119 data-nosnippet>119</a>    <span class="kw">fn </span>to_value_optional(s: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <span class="kw">crate</span>::<a href="value.rs.html#490-533">Value</a> {
 <a href=#120 id=120 data-nosnippet>120</a>        <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::<a href="value.rs.html#490-533">Value</a>::for_value_type::&lt;<span class="self">Self</span>&gt;();
 <a href=#121 id=121 data-nosnippet>121</a>        <span class="kw">unsafe </span>{
-<a href=#122 id=122 data-nosnippet>122</a>            gobject_ffi::<a href="../../gobject_sys/fn.g_value_take_param.html">g_value_take_param</a>(<a href="#120">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#119">s</a>.<a href="translate.rs.html#452-454">to_glib_full</a>());
+<a href=#122 id=122 data-nosnippet>122</a>            gobject_ffi::g_value_take_param(<a href="#120">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#119">s</a>.<a href="translate.rs.html#452-454">to_glib_full</a>());
 <a href=#123 id=123 data-nosnippet>123</a>        }
 <a href=#124 id=124 data-nosnippet>124</a>
 <a href=#125 id=125 data-nosnippet>125</a>        <a href="#120">value</a>
@@ -260,7 +260,7 @@
 <a href=#187 id=187 data-nosnippet>187</a>    #[inline]
 <a href=#188 id=188 data-nosnippet>188</a>    </span><span class="kw">pub fn </span>value_is_valid(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#490-533">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
 <a href=#189 id=189 data-nosnippet>189</a>        <span class="kw">unsafe </span>{
-<a href=#190 id=190 data-nosnippet>190</a>            <a href="translate.rs.html#1417-1419">from_glib</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_value_is_valid.html">g_param_value_is_valid</a>(
+<a href=#190 id=190 data-nosnippet>190</a>            <a href="translate.rs.html#1417-1419">from_glib</a>(gobject_ffi::g_param_value_is_valid(
 <a href=#191 id=191 data-nosnippet>191</a>                <a class="self" href="#188">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#192 id=192 data-nosnippet>192</a>                <a href="#188">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#193 id=193 data-nosnippet>193</a>            ))
@@ -289,7 +289,7 @@
 <a href=#216 id=216 data-nosnippet>216</a>    #[inline]
 <a href=#217 id=217 data-nosnippet>217</a>    </span><span class="kw">pub fn </span>blurb(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; {
 <a href=#218 id=218 data-nosnippet>218</a>        <span class="kw">unsafe </span>{
-<a href=#219 id=219 data-nosnippet>219</a>            <span class="kw">let </span>ptr = gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_get_blurb.html">g_param_spec_get_blurb</a>(<a class="self" href="#217">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+<a href=#219 id=219 data-nosnippet>219</a>            <span class="kw">let </span>ptr = gobject_ffi::g_param_spec_get_blurb(<a class="self" href="#217">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
 <a href=#220 id=220 data-nosnippet>220</a>            <span class="kw">if </span><a href="#219">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.const_ptr.html#method.is_null">is_null</a>() {
 <a href=#221 id=221 data-nosnippet>221</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
 <a href=#222 id=222 data-nosnippet>222</a>            } <span class="kw">else </span>{
@@ -310,7 +310,7 @@
 <a href=#237 id=237 data-nosnippet>237</a>    #[inline]
 <a href=#238 id=238 data-nosnippet>238</a>    </span><span class="kw">pub fn </span>default_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="value.rs.html#490-533">Value</a> {
 <a href=#239 id=239 data-nosnippet>239</a>        <span class="kw">unsafe </span>{
-<a href=#240 id=240 data-nosnippet>240</a>            <span class="kw-2">&amp;*</span>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_get_default_value.html">g_param_spec_get_default_value</a>(<a class="self" href="#238">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>)
+<a href=#240 id=240 data-nosnippet>240</a>            <span class="kw-2">&amp;*</span>(gobject_ffi::g_param_spec_get_default_value(<a class="self" href="#238">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>)
 <a href=#241 id=241 data-nosnippet>241</a>                <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">crate</span>::<a href="value.rs.html#490-533">Value</a>)
 <a href=#242 id=242 data-nosnippet>242</a>        }
 <a href=#243 id=243 data-nosnippet>243</a>    }
@@ -328,7 +328,7 @@
 <a href=#255 id=255 data-nosnippet>255</a>    #[inline]
 <a href=#256 id=256 data-nosnippet>256</a>    </span><span class="kw">pub fn </span>name&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
 <a href=#257 id=257 data-nosnippet>257</a>        <span class="kw">unsafe </span>{
-<a href=#258 id=258 data-nosnippet>258</a>            <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html">CStr</a>::<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">from_ptr</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_get_name.html">g_param_spec_get_name</a>(<a class="self" href="#256">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>))
+<a href=#258 id=258 data-nosnippet>258</a>            <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html">CStr</a>::<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">from_ptr</a>(gobject_ffi::g_param_spec_get_name(<a class="self" href="#256">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>))
 <a href=#259 id=259 data-nosnippet>259</a>                .<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_str">to_str</a>()
 <a href=#260 id=260 data-nosnippet>260</a>                .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
 <a href=#261 id=261 data-nosnippet>261</a>        }
@@ -344,7 +344,7 @@
 <a href=#271 id=271 data-nosnippet>271</a>    #[inline]
 <a href=#272 id=272 data-nosnippet>272</a>    </span><span class="kw">pub fn </span>name_quark(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::<a href="quark.rs.html#10">Quark</a> {
 <a href=#273 id=273 data-nosnippet>273</a>        <span class="kw">unsafe </span>{
-<a href=#274 id=274 data-nosnippet>274</a>            <a href="translate.rs.html#1417-1419">from_glib</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_get_name_quark.html">g_param_spec_get_name_quark</a>(
+<a href=#274 id=274 data-nosnippet>274</a>            <a href="translate.rs.html#1417-1419">from_glib</a>(gobject_ffi::g_param_spec_get_name_quark(
 <a href=#275 id=275 data-nosnippet>275</a>                <a class="self" href="#272">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#276 id=276 data-nosnippet>276</a>            ))
 <a href=#277 id=277 data-nosnippet>277</a>        }
@@ -366,7 +366,7 @@
 <a href=#293 id=293 data-nosnippet>293</a>    #[inline]
 <a href=#294 id=294 data-nosnippet>294</a>    </span><span class="kw">pub fn </span>nick(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
 <a href=#295 id=295 data-nosnippet>295</a>        <span class="kw">unsafe </span>{
-<a href=#296 id=296 data-nosnippet>296</a>            <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html">CStr</a>::<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">from_ptr</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_get_nick.html">g_param_spec_get_nick</a>(<a class="self" href="#294">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>))
+<a href=#296 id=296 data-nosnippet>296</a>            <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html">CStr</a>::<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.from_ptr">from_ptr</a>(gobject_ffi::g_param_spec_get_nick(<a class="self" href="#294">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>))
 <a href=#297 id=297 data-nosnippet>297</a>                .<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.to_str">to_str</a>()
 <a href=#298 id=298 data-nosnippet>298</a>                .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>()
 <a href=#299 id=299 data-nosnippet>299</a>        }
@@ -393,7 +393,7 @@
 <a href=#320 id=320 data-nosnippet>320</a>    #[inline]
 <a href=#321 id=321 data-nosnippet>321</a>    </span><span class="kw">pub fn </span>redirect_target(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#18-41">ParamSpec</a>&gt; {
 <a href=#322 id=322 data-nosnippet>322</a>        <span class="kw">unsafe </span>{
-<a href=#323 id=323 data-nosnippet>323</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_get_redirect_target.html">g_param_spec_get_redirect_target</a>(
+<a href=#323 id=323 data-nosnippet>323</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::g_param_spec_get_redirect_target(
 <a href=#324 id=324 data-nosnippet>324</a>                <a class="self" href="#321">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#325 id=325 data-nosnippet>325</a>            ))
 <a href=#326 id=326 data-nosnippet>326</a>        }
@@ -429,7 +429,7 @@
 <a href=#356 id=356 data-nosnippet>356</a>    #[inline]
 <a href=#357 id=357 data-nosnippet>357</a>    </span><span class="kw">pub fn </span>is_valid_name(name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
 <a href=#358 id=358 data-nosnippet>358</a>        <span class="kw">unsafe </span>{
-<a href=#359 id=359 data-nosnippet>359</a>            <a href="translate.rs.html#1417-1419">from_glib</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_is_valid_name.html">g_param_spec_is_valid_name</a>(
+<a href=#359 id=359 data-nosnippet>359</a>            <a href="translate.rs.html#1417-1419">from_glib</a>(gobject_ffi::g_param_spec_is_valid_name(
 <a href=#360 id=360 data-nosnippet>360</a>                <a href="#357">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#361 id=361 data-nosnippet>361</a>            ))
 <a href=#362 id=362 data-nosnippet>362</a>        }
@@ -437,7 +437,7 @@
 <a href=#364 id=364 data-nosnippet>364</a>}
 <a href=#365 id=365 data-nosnippet>365</a>
 <a href=#366 id=366 data-nosnippet>366</a><span class="kw">pub unsafe trait </span><a href="../../glib/trait.ParamSpecType.html">ParamSpecType</a>:
-<a href=#367 id=367 data-nosnippet>367</a>    <a href="types.rs.html#290-294">StaticType</a> + <a href="translate.rs.html#1579-1585">FromGlibPtrFull</a>&lt;<span class="kw-2">*mut </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpec.html">GParamSpec</a>&gt; + <span class="lifetime">'static
+<a href=#367 id=367 data-nosnippet>367</a>    <a href="types.rs.html#290-294">StaticType</a> + <a href="translate.rs.html#1579-1585">FromGlibPtrFull</a>&lt;<span class="kw-2">*mut </span>gobject_ffi::GParamSpec&gt; + <span class="lifetime">'static
 <a href=#368 id=368 data-nosnippet>368</a></span>{
 <a href=#369 id=369 data-nosnippet>369</a>}
 <a href=#370 id=370 data-nosnippet>370</a>
@@ -555,7 +555,7 @@
 <a href=#482 id=482 data-nosnippet>482</a>            }
 <a href=#483 id=483 data-nosnippet>483</a>
 <a href=#484 id=484 data-nosnippet>484</a>            <span class="attr">#[inline]
-<a href=#485 id=485 data-nosnippet>485</a>            </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpec.html">GParamSpec</a> {
+<a href=#485 id=485 data-nosnippet>485</a>            </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>gobject_ffi::GParamSpec {
 <a href=#486 id=486 data-nosnippet>486</a>                <span class="macro-nonterminal">$crate::translate::ToGlibPtr:</span>:&lt;<span class="kw-2">*const </span><span class="macro-nonterminal">$ffi_type</span>&gt;::to_glib_full(<span class="self">self</span>) <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_
 <a href=#487 id=487 data-nosnippet>487</a>            </span>}
 <a href=#488 id=488 data-nosnippet>488</a>        }
@@ -571,7 +571,7 @@
 <a href=#498 id=498 data-nosnippet>498</a>            }
 <a href=#499 id=499 data-nosnippet>499</a>
 <a href=#500 id=500 data-nosnippet>500</a>            <span class="attr">#[inline]
-<a href=#501 id=501 data-nosnippet>501</a>            </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpec.html">GParamSpec</a> {
+<a href=#501 id=501 data-nosnippet>501</a>            </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>gobject_ffi::GParamSpec {
 <a href=#502 id=502 data-nosnippet>502</a>                <span class="macro-nonterminal">$crate::translate::ToGlibPtr:</span>:&lt;<span class="kw-2">*mut </span><span class="macro-nonterminal">$ffi_type</span>&gt;::to_glib_full(<span class="self">self</span>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_
 <a href=#503 id=503 data-nosnippet>503</a>            </span>}
 <a href=#504 id=504 data-nosnippet>504</a>        }
@@ -579,7 +579,7 @@
 <a href=#506 id=506 data-nosnippet>506</a>        <span class="attr">#[doc(hidden)]
 <a href=#507 id=507 data-nosnippet>507</a>        </span><span class="kw">impl </span>IntoGlibPtr&lt;<span class="kw-2">*mut </span>gobject_ffi::GParamSpec&gt; <span class="kw">for </span><span class="macro-nonterminal">$rust_type </span>{
 <a href=#508 id=508 data-nosnippet>508</a>            <span class="attr">#[inline]
-<a href=#509 id=509 data-nosnippet>509</a>            </span><span class="kw">fn </span>into_glib_ptr(<span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpec.html">GParamSpec</a> {
+<a href=#509 id=509 data-nosnippet>509</a>            </span><span class="kw">fn </span>into_glib_ptr(<span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>gobject_ffi::GParamSpec {
 <a href=#510 id=510 data-nosnippet>510</a>                <span class="kw">let </span>s = std::mem::ManuallyDrop::new(<span class="self">self</span>);
 <a href=#511 id=511 data-nosnippet>511</a>                s.to_glib_none().<span class="number">0
 <a href=#512 id=512 data-nosnippet>512</a>            </span>}
@@ -588,7 +588,7 @@
 <a href=#515 id=515 data-nosnippet>515</a>        <span class="attr">#[doc(hidden)]
 <a href=#516 id=516 data-nosnippet>516</a>        </span><span class="kw">impl </span>IntoGlibPtr&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpec&gt; <span class="kw">for </span><span class="macro-nonterminal">$rust_type </span>{
 <a href=#517 id=517 data-nosnippet>517</a>            <span class="attr">#[inline]
-<a href=#518 id=518 data-nosnippet>518</a>            </span><span class="kw">fn </span>into_glib_ptr(<span class="self">self</span>) -&gt; <span class="kw-2">*const </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpec.html">GParamSpec</a> {
+<a href=#518 id=518 data-nosnippet>518</a>            </span><span class="kw">fn </span>into_glib_ptr(<span class="self">self</span>) -&gt; <span class="kw-2">*const </span>gobject_ffi::GParamSpec {
 <a href=#519 id=519 data-nosnippet>519</a>                <span class="kw">let </span>s = std::mem::ManuallyDrop::new(<span class="self">self</span>);
 <a href=#520 id=520 data-nosnippet>520</a>                s.to_glib_none().<span class="number">0
 <a href=#521 id=521 data-nosnippet>521</a>            </span>}
@@ -597,7 +597,7 @@
 <a href=#524 id=524 data-nosnippet>524</a>        <span class="attr">#[doc(hidden)]
 <a href=#525 id=525 data-nosnippet>525</a>        </span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpec&gt; <span class="kw">for </span><span class="macro-nonterminal">$rust_type </span>{
 <a href=#526 id=526 data-nosnippet>526</a>            <span class="attr">#[inline]
-<a href=#527 id=527 data-nosnippet>527</a>            </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*const </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpec.html">GParamSpec</a>) -&gt; <span class="self">Self </span>{ <span class="kw">unsafe </span>{
+<a href=#527 id=527 data-nosnippet>527</a>            </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*const </span>gobject_ffi::GParamSpec) -&gt; <span class="self">Self </span>{ <span class="kw">unsafe </span>{
 <a href=#528 id=528 data-nosnippet>528</a>                from_glib_none(ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="macro-nonterminal">$ffi_type</span>)
 <a href=#529 id=529 data-nosnippet>529</a>            }}
 <a href=#530 id=530 data-nosnippet>530</a>        }
@@ -605,7 +605,7 @@
 <a href=#532 id=532 data-nosnippet>532</a>        <span class="attr">#[doc(hidden)]
 <a href=#533 id=533 data-nosnippet>533</a>        </span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span>gobject_ffi::GParamSpec&gt; <span class="kw">for </span><span class="macro-nonterminal">$rust_type </span>{
 <a href=#534 id=534 data-nosnippet>534</a>            <span class="attr">#[inline]
-<a href=#535 id=535 data-nosnippet>535</a>            </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpec.html">GParamSpec</a>) -&gt; <span class="self">Self </span>{ <span class="kw">unsafe </span>{
+<a href=#535 id=535 data-nosnippet>535</a>            </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span>gobject_ffi::GParamSpec) -&gt; <span class="self">Self </span>{ <span class="kw">unsafe </span>{
 <a href=#536 id=536 data-nosnippet>536</a>                from_glib_none(ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="macro-nonterminal">$ffi_type</span>)
 <a href=#537 id=537 data-nosnippet>537</a>            }}
 <a href=#538 id=538 data-nosnippet>538</a>        }
@@ -613,7 +613,7 @@
 <a href=#540 id=540 data-nosnippet>540</a>        <span class="attr">#[doc(hidden)]
 <a href=#541 id=541 data-nosnippet>541</a>        </span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpec&gt; <span class="kw">for </span><span class="macro-nonterminal">$rust_type </span>{
 <a href=#542 id=542 data-nosnippet>542</a>            <span class="attr">#[inline]
-<a href=#543 id=543 data-nosnippet>543</a>            </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*const </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpec.html">GParamSpec</a>) -&gt; <a href="translate.rs.html#277">Borrowed</a>&lt;<span class="self">Self</span>&gt; { <span class="kw">unsafe </span>{
+<a href=#543 id=543 data-nosnippet>543</a>            </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*const </span>gobject_ffi::GParamSpec) -&gt; <a href="translate.rs.html#277">Borrowed</a>&lt;<span class="self">Self</span>&gt; { <span class="kw">unsafe </span>{
 <a href=#544 id=544 data-nosnippet>544</a>                from_glib_borrow(ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="macro-nonterminal">$ffi_type</span>)
 <a href=#545 id=545 data-nosnippet>545</a>            }}
 <a href=#546 id=546 data-nosnippet>546</a>        }
@@ -621,7 +621,7 @@
 <a href=#548 id=548 data-nosnippet>548</a>        <span class="attr">#[doc(hidden)]
 <a href=#549 id=549 data-nosnippet>549</a>        </span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span>gobject_ffi::GParamSpec&gt; <span class="kw">for </span><span class="macro-nonterminal">$rust_type </span>{
 <a href=#550 id=550 data-nosnippet>550</a>            <span class="attr">#[inline]
-<a href=#551 id=551 data-nosnippet>551</a>            </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpec.html">GParamSpec</a>) -&gt; <a href="translate.rs.html#277">Borrowed</a>&lt;<span class="self">Self</span>&gt; { <span class="kw">unsafe </span>{
+<a href=#551 id=551 data-nosnippet>551</a>            </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span>gobject_ffi::GParamSpec) -&gt; <a href="translate.rs.html#277">Borrowed</a>&lt;<span class="self">Self</span>&gt; { <span class="kw">unsafe </span>{
 <a href=#552 id=552 data-nosnippet>552</a>                from_glib_borrow(ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="macro-nonterminal">$ffi_type</span>)
 <a href=#553 id=553 data-nosnippet>553</a>            }}
 <a href=#554 id=554 data-nosnippet>554</a>        }
@@ -629,7 +629,7 @@
 <a href=#556 id=556 data-nosnippet>556</a>        <span class="attr">#[doc(hidden)]
 <a href=#557 id=557 data-nosnippet>557</a>        </span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span>gobject_ffi::GParamSpec&gt; <span class="kw">for </span><span class="macro-nonterminal">$rust_type </span>{
 <a href=#558 id=558 data-nosnippet>558</a>            <span class="attr">#[inline]
-<a href=#559 id=559 data-nosnippet>559</a>            </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpec.html">GParamSpec</a>) -&gt; <span class="self">Self </span>{ <span class="kw">unsafe </span>{
+<a href=#559 id=559 data-nosnippet>559</a>            </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span>gobject_ffi::GParamSpec) -&gt; <span class="self">Self </span>{ <span class="kw">unsafe </span>{
 <a href=#560 id=560 data-nosnippet>560</a>                from_glib_full(ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="macro-nonterminal">$ffi_type</span>)
 <a href=#561 id=561 data-nosnippet>561</a>            }}
 <a href=#562 id=562 data-nosnippet>562</a>        }
@@ -918,7 +918,7 @@
 <a href=#845 id=845 data-nosnippet>845</a><a href="wrapper.rs.html#276-443">wrapper!</a> {
 <a href=#846 id=846 data-nosnippet>846</a>    <span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#847 id=847 data-nosnippet>847</a>    #[doc(alias = <span class="string">"GParamSpecChar"</span>)]
-<a href=#848 id=848 data-nosnippet>848</a>    </span><span class="kw">pub struct </span><a href="#845-854">ParamSpecChar</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecChar.html">GParamSpecChar</a>&gt;);
+<a href=#848 id=848 data-nosnippet>848</a>    </span><span class="kw">pub struct </span><a href="#845-854">ParamSpecChar</a>(Shared&lt;gobject_ffi::GParamSpecChar&gt;);
 <a href=#849 id=849 data-nosnippet>849</a>
 <a href=#850 id=850 data-nosnippet>850</a>    <span class="kw">match fn </span>{
 <a href=#851 id=851 data-nosnippet>851</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecChar,
@@ -938,7 +938,7 @@
 <a href=#865 id=865 data-nosnippet>865</a><a href="wrapper.rs.html#276-443">wrapper!</a> {
 <a href=#866 id=866 data-nosnippet>866</a>    <span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#867 id=867 data-nosnippet>867</a>    #[doc(alias = <span class="string">"GParamSpecUChar"</span>)]
-<a href=#868 id=868 data-nosnippet>868</a>    </span><span class="kw">pub struct </span><a href="#865-874">ParamSpecUChar</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecUChar.html">GParamSpecUChar</a>&gt;);
+<a href=#868 id=868 data-nosnippet>868</a>    </span><span class="kw">pub struct </span><a href="#865-874">ParamSpecUChar</a>(Shared&lt;gobject_ffi::GParamSpecUChar&gt;);
 <a href=#869 id=869 data-nosnippet>869</a>
 <a href=#870 id=870 data-nosnippet>870</a>    <span class="kw">match fn </span>{
 <a href=#871 id=871 data-nosnippet>871</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecUChar,
@@ -963,7 +963,7 @@
 <a href=#890 id=890 data-nosnippet>890</a><a href="wrapper.rs.html#276-443">wrapper!</a> {
 <a href=#891 id=891 data-nosnippet>891</a>    <span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#892 id=892 data-nosnippet>892</a>    #[doc(alias = <span class="string">"GParamSpecBoolean"</span>)]
-<a href=#893 id=893 data-nosnippet>893</a>    </span><span class="kw">pub struct </span><a href="#890-899">ParamSpecBoolean</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecBoolean.html">GParamSpecBoolean</a>&gt;);
+<a href=#893 id=893 data-nosnippet>893</a>    </span><span class="kw">pub struct </span><a href="#890-899">ParamSpecBoolean</a>(Shared&lt;gobject_ffi::GParamSpecBoolean&gt;);
 <a href=#894 id=894 data-nosnippet>894</a>
 <a href=#895 id=895 data-nosnippet>895</a>    <span class="kw">match fn </span>{
 <a href=#896 id=896 data-nosnippet>896</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecBoolean,
@@ -992,7 +992,7 @@
 <a href=#919 id=919 data-nosnippet>919</a>        flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
 <a href=#920 id=920 data-nosnippet>920</a>    ) -&gt; <a href="#18-41">ParamSpec</a> {
 <a href=#921 id=921 data-nosnippet>921</a>        <span class="kw">unsafe </span>{
-<a href=#922 id=922 data-nosnippet>922</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_boolean.html">g_param_spec_boolean</a>(
+<a href=#922 id=922 data-nosnippet>922</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::g_param_spec_boolean(
 <a href=#923 id=923 data-nosnippet>923</a>                <a href="#915">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#924 id=924 data-nosnippet>924</a>                <a href="#916">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#925 id=925 data-nosnippet>925</a>                <a href="#917">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
@@ -1014,7 +1014,7 @@
 <a href=#941 id=941 data-nosnippet>941</a><a href="wrapper.rs.html#276-443">wrapper!</a> {
 <a href=#942 id=942 data-nosnippet>942</a>    <span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#943 id=943 data-nosnippet>943</a>    #[doc(alias = <span class="string">"GParamSpecInt"</span>)]
-<a href=#944 id=944 data-nosnippet>944</a>    </span><span class="kw">pub struct </span><a href="#941-950">ParamSpecInt</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecInt.html">GParamSpecInt</a>&gt;);
+<a href=#944 id=944 data-nosnippet>944</a>    </span><span class="kw">pub struct </span><a href="#941-950">ParamSpecInt</a>(Shared&lt;gobject_ffi::GParamSpecInt&gt;);
 <a href=#945 id=945 data-nosnippet>945</a>
 <a href=#946 id=946 data-nosnippet>946</a>    <span class="kw">match fn </span>{
 <a href=#947 id=947 data-nosnippet>947</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecInt,
@@ -1034,7 +1034,7 @@
 <a href=#961 id=961 data-nosnippet>961</a><a href="wrapper.rs.html#276-443">wrapper!</a> {
 <a href=#962 id=962 data-nosnippet>962</a>    <span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#963 id=963 data-nosnippet>963</a>    #[doc(alias = <span class="string">"GParamSpecUInt"</span>)]
-<a href=#964 id=964 data-nosnippet>964</a>    </span><span class="kw">pub struct </span><a href="#961-970">ParamSpecUInt</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecUInt.html">GParamSpecUInt</a>&gt;);
+<a href=#964 id=964 data-nosnippet>964</a>    </span><span class="kw">pub struct </span><a href="#961-970">ParamSpecUInt</a>(Shared&lt;gobject_ffi::GParamSpecUInt&gt;);
 <a href=#965 id=965 data-nosnippet>965</a>
 <a href=#966 id=966 data-nosnippet>966</a>    <span class="kw">match fn </span>{
 <a href=#967 id=967 data-nosnippet>967</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecUInt,
@@ -1059,7 +1059,7 @@
 <a href=#986 id=986 data-nosnippet>986</a><a href="wrapper.rs.html#276-443">wrapper!</a> {
 <a href=#987 id=987 data-nosnippet>987</a>    <span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#988 id=988 data-nosnippet>988</a>    #[doc(alias = <span class="string">"GParamSpecLong"</span>)]
-<a href=#989 id=989 data-nosnippet>989</a>    </span><span class="kw">pub struct </span><a href="#986-995">ParamSpecLong</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecLong.html">GParamSpecLong</a>&gt;);
+<a href=#989 id=989 data-nosnippet>989</a>    </span><span class="kw">pub struct </span><a href="#986-995">ParamSpecLong</a>(Shared&lt;gobject_ffi::GParamSpecLong&gt;);
 <a href=#990 id=990 data-nosnippet>990</a>
 <a href=#991 id=991 data-nosnippet>991</a>    <span class="kw">match fn </span>{
 <a href=#992 id=992 data-nosnippet>992</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecLong,
@@ -1084,7 +1084,7 @@
 <a href=#1011 id=1011 data-nosnippet>1011</a><a href="wrapper.rs.html#276-443">wrapper!</a> {
 <a href=#1012 id=1012 data-nosnippet>1012</a>    <span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1013 id=1013 data-nosnippet>1013</a>    #[doc(alias = <span class="string">"GParamSpecULong"</span>)]
-<a href=#1014 id=1014 data-nosnippet>1014</a>    </span><span class="kw">pub struct </span><a href="#1011-1020">ParamSpecULong</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecULong.html">GParamSpecULong</a>&gt;);
+<a href=#1014 id=1014 data-nosnippet>1014</a>    </span><span class="kw">pub struct </span><a href="#1011-1020">ParamSpecULong</a>(Shared&lt;gobject_ffi::GParamSpecULong&gt;);
 <a href=#1015 id=1015 data-nosnippet>1015</a>
 <a href=#1016 id=1016 data-nosnippet>1016</a>    <span class="kw">match fn </span>{
 <a href=#1017 id=1017 data-nosnippet>1017</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecULong,
@@ -1109,7 +1109,7 @@
 <a href=#1036 id=1036 data-nosnippet>1036</a><a href="wrapper.rs.html#276-443">wrapper!</a> {
 <a href=#1037 id=1037 data-nosnippet>1037</a>    <span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1038 id=1038 data-nosnippet>1038</a>    #[doc(alias = <span class="string">"GParamSpecInt64"</span>)]
-<a href=#1039 id=1039 data-nosnippet>1039</a>    </span><span class="kw">pub struct </span><a href="#1036-1045">ParamSpecInt64</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecInt64.html">GParamSpecInt64</a>&gt;);
+<a href=#1039 id=1039 data-nosnippet>1039</a>    </span><span class="kw">pub struct </span><a href="#1036-1045">ParamSpecInt64</a>(Shared&lt;gobject_ffi::GParamSpecInt64&gt;);
 <a href=#1040 id=1040 data-nosnippet>1040</a>
 <a href=#1041 id=1041 data-nosnippet>1041</a>    <span class="kw">match fn </span>{
 <a href=#1042 id=1042 data-nosnippet>1042</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecInt64,
@@ -1134,7 +1134,7 @@
 <a href=#1061 id=1061 data-nosnippet>1061</a><a href="wrapper.rs.html#276-443">wrapper!</a> {
 <a href=#1062 id=1062 data-nosnippet>1062</a>    <span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1063 id=1063 data-nosnippet>1063</a>    #[doc(alias = <span class="string">"GParamSpecUInt64"</span>)]
-<a href=#1064 id=1064 data-nosnippet>1064</a>    </span><span class="kw">pub struct </span><a href="#1061-1070">ParamSpecUInt64</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecUInt64.html">GParamSpecUInt64</a>&gt;);
+<a href=#1064 id=1064 data-nosnippet>1064</a>    </span><span class="kw">pub struct </span><a href="#1061-1070">ParamSpecUInt64</a>(Shared&lt;gobject_ffi::GParamSpecUInt64&gt;);
 <a href=#1065 id=1065 data-nosnippet>1065</a>
 <a href=#1066 id=1066 data-nosnippet>1066</a>    <span class="kw">match fn </span>{
 <a href=#1067 id=1067 data-nosnippet>1067</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecUInt64,
@@ -1159,7 +1159,7 @@
 <a href=#1086 id=1086 data-nosnippet>1086</a><a href="wrapper.rs.html#276-443">wrapper!</a> {
 <a href=#1087 id=1087 data-nosnippet>1087</a>    <span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1088 id=1088 data-nosnippet>1088</a>    #[doc(alias = <span class="string">"GParamSpecUnichar"</span>)]
-<a href=#1089 id=1089 data-nosnippet>1089</a>    </span><span class="kw">pub struct </span><a href="#1086-1095">ParamSpecUnichar</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecUnichar.html">GParamSpecUnichar</a>&gt;);
+<a href=#1089 id=1089 data-nosnippet>1089</a>    </span><span class="kw">pub struct </span><a href="#1086-1095">ParamSpecUnichar</a>(Shared&lt;gobject_ffi::GParamSpecUnichar&gt;);
 <a href=#1090 id=1090 data-nosnippet>1090</a>
 <a href=#1091 id=1091 data-nosnippet>1091</a>    <span class="kw">match fn </span>{
 <a href=#1092 id=1092 data-nosnippet>1092</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecUnichar,
@@ -1182,7 +1182,7 @@
 <a href=#1109 id=1109 data-nosnippet>1109</a>        flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
 <a href=#1110 id=1110 data-nosnippet>1110</a>    ) -&gt; <a href="#18-41">ParamSpec</a> {
 <a href=#1111 id=1111 data-nosnippet>1111</a>        <span class="kw">unsafe </span>{
-<a href=#1112 id=1112 data-nosnippet>1112</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_unichar.html">g_param_spec_unichar</a>(
+<a href=#1112 id=1112 data-nosnippet>1112</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::g_param_spec_unichar(
 <a href=#1113 id=1113 data-nosnippet>1113</a>                <a href="#1105">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1114 id=1114 data-nosnippet>1114</a>                <a href="#1106">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1115 id=1115 data-nosnippet>1115</a>                <a href="#1107">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
@@ -1205,7 +1205,7 @@
 <a href=#1132 id=1132 data-nosnippet>1132</a><a href="wrapper.rs.html#276-443">wrapper!</a> {
 <a href=#1133 id=1133 data-nosnippet>1133</a>    <span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1134 id=1134 data-nosnippet>1134</a>    #[doc(alias = <span class="string">"GParamSpecEnum"</span>)]
-<a href=#1135 id=1135 data-nosnippet>1135</a>    </span><span class="kw">pub struct </span><a href="#1132-1141">ParamSpecEnum</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecEnum.html">GParamSpecEnum</a>&gt;);
+<a href=#1135 id=1135 data-nosnippet>1135</a>    </span><span class="kw">pub struct </span><a href="#1132-1141">ParamSpecEnum</a>(Shared&lt;gobject_ffi::GParamSpecEnum&gt;);
 <a href=#1136 id=1136 data-nosnippet>1136</a>
 <a href=#1137 id=1137 data-nosnippet>1137</a>    <span class="kw">match fn </span>{
 <a href=#1138 id=1138 data-nosnippet>1138</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecEnum,
@@ -1224,7 +1224,7 @@
 <a href=#1151 id=1151 data-nosnippet>1151</a>        flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
 <a href=#1152 id=1152 data-nosnippet>1152</a>    ) -&gt; <a href="#18-41">ParamSpec</a> {
 <a href=#1153 id=1153 data-nosnippet>1153</a>        <span class="kw">unsafe </span>{
-<a href=#1154 id=1154 data-nosnippet>1154</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_enum.html">g_param_spec_enum</a>(
+<a href=#1154 id=1154 data-nosnippet>1154</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::g_param_spec_enum(
 <a href=#1155 id=1155 data-nosnippet>1155</a>                <a href="#1146">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1156 id=1156 data-nosnippet>1156</a>                <a href="#1147">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1157 id=1157 data-nosnippet>1157</a>                <a href="#1148">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
@@ -1239,7 +1239,7 @@
 <a href=#1166 id=1166 data-nosnippet>1166</a>    #[inline]
 <a href=#1167 id=1167 data-nosnippet>1167</a>    </span><span class="kw">pub fn </span>enum_class(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::<a href="enums.rs.html#61">EnumClass</a> {
 <a href=#1168 id=1168 data-nosnippet>1168</a>        <span class="kw">unsafe </span>{
-<a href=#1169 id=1169 data-nosnippet>1169</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecEnum.html">GParamSpecEnum</a>&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#1167">self</a>).<span class="number">0</span>;
+<a href=#1169 id=1169 data-nosnippet>1169</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecEnum&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#1167">self</a>).<span class="number">0</span>;
 <a href=#1170 id=1170 data-nosnippet>1170</a>
 <a href=#1171 id=1171 data-nosnippet>1171</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!(<span class="kw-2">*</span>ptr).enum_class.is_null());
 <a href=#1172 id=1172 data-nosnippet>1172</a>
@@ -1265,7 +1265,7 @@
 <a href=#1192 id=1192 data-nosnippet>1192</a>    <span class="attr">#[inline]
 <a href=#1193 id=1193 data-nosnippet>1193</a>    </span><span class="kw">pub fn </span>default_value_as_i32(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
 <a href=#1194 id=1194 data-nosnippet>1194</a>        <span class="kw">unsafe </span>{
-<a href=#1195 id=1195 data-nosnippet>1195</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecEnum.html">GParamSpecEnum</a>&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#1193">self</a>).<span class="number">0</span>;
+<a href=#1195 id=1195 data-nosnippet>1195</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecEnum&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#1193">self</a>).<span class="number">0</span>;
 <a href=#1196 id=1196 data-nosnippet>1196</a>            (<span class="kw-2">*</span><a href="#1195">ptr</a>).default_value
 <a href=#1197 id=1197 data-nosnippet>1197</a>        }
 <a href=#1198 id=1198 data-nosnippet>1198</a>    }
@@ -1349,7 +1349,7 @@
 <a href=#1276 id=1276 data-nosnippet>1276</a><a href="wrapper.rs.html#276-443">wrapper!</a> {
 <a href=#1277 id=1277 data-nosnippet>1277</a>    <span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1278 id=1278 data-nosnippet>1278</a>    #[doc(alias = <span class="string">"GParamSpecFlags"</span>)]
-<a href=#1279 id=1279 data-nosnippet>1279</a>    </span><span class="kw">pub struct </span><a href="#1276-1285">ParamSpecFlags</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecFlags.html">GParamSpecFlags</a>&gt;);
+<a href=#1279 id=1279 data-nosnippet>1279</a>    </span><span class="kw">pub struct </span><a href="#1276-1285">ParamSpecFlags</a>(Shared&lt;gobject_ffi::GParamSpecFlags&gt;);
 <a href=#1280 id=1280 data-nosnippet>1280</a>
 <a href=#1281 id=1281 data-nosnippet>1281</a>    <span class="kw">match fn </span>{
 <a href=#1282 id=1282 data-nosnippet>1282</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecFlags,
@@ -1368,7 +1368,7 @@
 <a href=#1295 id=1295 data-nosnippet>1295</a>        flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
 <a href=#1296 id=1296 data-nosnippet>1296</a>    ) -&gt; <a href="#18-41">ParamSpec</a> {
 <a href=#1297 id=1297 data-nosnippet>1297</a>        <span class="kw">unsafe </span>{
-<a href=#1298 id=1298 data-nosnippet>1298</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_flags.html">g_param_spec_flags</a>(
+<a href=#1298 id=1298 data-nosnippet>1298</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::g_param_spec_flags(
 <a href=#1299 id=1299 data-nosnippet>1299</a>                <a href="#1290">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1300 id=1300 data-nosnippet>1300</a>                <a href="#1291">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1301 id=1301 data-nosnippet>1301</a>                <a href="#1292">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
@@ -1383,7 +1383,7 @@
 <a href=#1310 id=1310 data-nosnippet>1310</a>    #[inline]
 <a href=#1311 id=1311 data-nosnippet>1311</a>    </span><span class="kw">pub fn </span>flags_class(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::<a href="enums.rs.html#417">FlagsClass</a> {
 <a href=#1312 id=1312 data-nosnippet>1312</a>        <span class="kw">unsafe </span>{
-<a href=#1313 id=1313 data-nosnippet>1313</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecFlags.html">GParamSpecFlags</a>&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#1311">self</a>).<span class="number">0</span>;
+<a href=#1313 id=1313 data-nosnippet>1313</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecFlags&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#1311">self</a>).<span class="number">0</span>;
 <a href=#1314 id=1314 data-nosnippet>1314</a>
 <a href=#1315 id=1315 data-nosnippet>1315</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!(<span class="kw-2">*</span>ptr).flags_class.is_null());
 <a href=#1316 id=1316 data-nosnippet>1316</a>
@@ -1409,7 +1409,7 @@
 <a href=#1336 id=1336 data-nosnippet>1336</a>    <span class="attr">#[inline]
 <a href=#1337 id=1337 data-nosnippet>1337</a>    </span><span class="kw">pub fn </span>default_value_as_u32(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
 <a href=#1338 id=1338 data-nosnippet>1338</a>        <span class="kw">unsafe </span>{
-<a href=#1339 id=1339 data-nosnippet>1339</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecFlags.html">GParamSpecFlags</a>&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#1337">self</a>).<span class="number">0</span>;
+<a href=#1339 id=1339 data-nosnippet>1339</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecFlags&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#1337">self</a>).<span class="number">0</span>;
 <a href=#1340 id=1340 data-nosnippet>1340</a>            (<span class="kw-2">*</span><a href="#1339">ptr</a>).default_value
 <a href=#1341 id=1341 data-nosnippet>1341</a>        }
 <a href=#1342 id=1342 data-nosnippet>1342</a>    }
@@ -1489,7 +1489,7 @@
 <a href=#1416 id=1416 data-nosnippet>1416</a>    <span class="doccomment">/// A [`ParamSpec`][crate::ParamSpec] derived structure that contains the meta data for float properties.
 <a href=#1417 id=1417 data-nosnippet>1417</a>    </span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1418 id=1418 data-nosnippet>1418</a>    #[doc(alias = <span class="string">"GParamSpecFloat"</span>)]
-<a href=#1419 id=1419 data-nosnippet>1419</a>    </span><span class="kw">pub struct </span><a href="#1415-1425">ParamSpecFloat</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecFloat.html">GParamSpecFloat</a>&gt;);
+<a href=#1419 id=1419 data-nosnippet>1419</a>    </span><span class="kw">pub struct </span><a href="#1415-1425">ParamSpecFloat</a>(Shared&lt;gobject_ffi::GParamSpecFloat&gt;);
 <a href=#1420 id=1420 data-nosnippet>1420</a>
 <a href=#1421 id=1421 data-nosnippet>1421</a>    <span class="kw">match fn </span>{
 <a href=#1422 id=1422 data-nosnippet>1422</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecFloat,
@@ -1515,7 +1515,7 @@
 <a href=#1442 id=1442 data-nosnippet>1442</a>    <span class="doccomment">/// A [`ParamSpec`][crate::ParamSpec] derived structure that contains the meta data for double properties.
 <a href=#1443 id=1443 data-nosnippet>1443</a>    </span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1444 id=1444 data-nosnippet>1444</a>    #[doc(alias = <span class="string">"GParamSpecDouble"</span>)]
-<a href=#1445 id=1445 data-nosnippet>1445</a>    </span><span class="kw">pub struct </span><a href="#1441-1451">ParamSpecDouble</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecDouble.html">GParamSpecDouble</a>&gt;);
+<a href=#1445 id=1445 data-nosnippet>1445</a>    </span><span class="kw">pub struct </span><a href="#1441-1451">ParamSpecDouble</a>(Shared&lt;gobject_ffi::GParamSpecDouble&gt;);
 <a href=#1446 id=1446 data-nosnippet>1446</a>
 <a href=#1447 id=1447 data-nosnippet>1447</a>    <span class="kw">match fn </span>{
 <a href=#1448 id=1448 data-nosnippet>1448</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecDouble,
@@ -1542,7 +1542,7 @@
 <a href=#1469 id=1469 data-nosnippet>1469</a>    /// properties.
 <a href=#1470 id=1470 data-nosnippet>1470</a>    </span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1471 id=1471 data-nosnippet>1471</a>    #[doc(alias = <span class="string">"GParamSpecString"</span>)]
-<a href=#1472 id=1472 data-nosnippet>1472</a>    </span><span class="kw">pub struct </span><a href="#1467-1478">ParamSpecString</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecString.html">GParamSpecString</a>&gt;);
+<a href=#1472 id=1472 data-nosnippet>1472</a>    </span><span class="kw">pub struct </span><a href="#1467-1478">ParamSpecString</a>(Shared&lt;gobject_ffi::GParamSpecString&gt;);
 <a href=#1473 id=1473 data-nosnippet>1473</a>
 <a href=#1474 id=1474 data-nosnippet>1474</a>    <span class="kw">match fn </span>{
 <a href=#1475 id=1475 data-nosnippet>1475</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecString,
@@ -1580,7 +1580,7 @@
 <a href=#1507 id=1507 data-nosnippet>1507</a>    ) -&gt; <a href="#18-41">ParamSpec</a> {
 <a href=#1508 id=1508 data-nosnippet>1508</a>        <span class="kw">let </span>default_value = <a href="#1505">default_value</a>.<a href="translate.rs.html#437">to_glib_none</a>();
 <a href=#1509 id=1509 data-nosnippet>1509</a>        <span class="kw">unsafe </span>{
-<a href=#1510 id=1510 data-nosnippet>1510</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_string.html">g_param_spec_string</a>(
+<a href=#1510 id=1510 data-nosnippet>1510</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::g_param_spec_string(
 <a href=#1511 id=1511 data-nosnippet>1511</a>                <a href="#1502">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1512 id=1512 data-nosnippet>1512</a>                <a href="#1503">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1513 id=1513 data-nosnippet>1513</a>                <a href="#1504">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
@@ -1657,7 +1657,7 @@
 <a href=#1584 id=1584 data-nosnippet>1584</a>    /// properties.
 <a href=#1585 id=1585 data-nosnippet>1585</a>    </span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1586 id=1586 data-nosnippet>1586</a>    #[doc(alias = <span class="string">"GParamSpecParam"</span>)]
-<a href=#1587 id=1587 data-nosnippet>1587</a>    </span><span class="kw">pub struct </span><a href="#1582-1593">ParamSpecParam</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecParam.html">GParamSpecParam</a>&gt;);
+<a href=#1587 id=1587 data-nosnippet>1587</a>    </span><span class="kw">pub struct </span><a href="#1582-1593">ParamSpecParam</a>(Shared&lt;gobject_ffi::GParamSpecParam&gt;);
 <a href=#1588 id=1588 data-nosnippet>1588</a>
 <a href=#1589 id=1589 data-nosnippet>1589</a>    <span class="kw">match fn </span>{
 <a href=#1590 id=1590 data-nosnippet>1590</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecParam,
@@ -1676,7 +1676,7 @@
 <a href=#1603 id=1603 data-nosnippet>1603</a>    ) -&gt; <a href="#18-41">ParamSpec</a> {
 <a href=#1604 id=1604 data-nosnippet>1604</a>        <a href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(param_type.is_a(<span class="kw">crate</span>::Type::PARAM_SPEC));
 <a href=#1605 id=1605 data-nosnippet>1605</a>        <span class="kw">unsafe </span>{
-<a href=#1606 id=1606 data-nosnippet>1606</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_param.html">g_param_spec_param</a>(
+<a href=#1606 id=1606 data-nosnippet>1606</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::g_param_spec_param(
 <a href=#1607 id=1607 data-nosnippet>1607</a>                <a href="#1598">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1608 id=1608 data-nosnippet>1608</a>                <a href="#1599">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1609 id=1609 data-nosnippet>1609</a>                <a href="#1600">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
@@ -1700,7 +1700,7 @@
 <a href=#1627 id=1627 data-nosnippet>1627</a>    <span class="doccomment">/// A [`ParamSpec`][crate::ParamSpec] derived structure that contains the meta data for boxed properties.
 <a href=#1628 id=1628 data-nosnippet>1628</a>    </span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1629 id=1629 data-nosnippet>1629</a>    #[doc(alias = <span class="string">"GParamSpecBoxed"</span>)]
-<a href=#1630 id=1630 data-nosnippet>1630</a>    </span><span class="kw">pub struct </span><a href="#1626-1636">ParamSpecBoxed</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecBoxed.html">GParamSpecBoxed</a>&gt;);
+<a href=#1630 id=1630 data-nosnippet>1630</a>    </span><span class="kw">pub struct </span><a href="#1626-1636">ParamSpecBoxed</a>(Shared&lt;gobject_ffi::GParamSpecBoxed&gt;);
 <a href=#1631 id=1631 data-nosnippet>1631</a>
 <a href=#1632 id=1632 data-nosnippet>1632</a>    <span class="kw">match fn </span>{
 <a href=#1633 id=1633 data-nosnippet>1633</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecBoxed,
@@ -1718,7 +1718,7 @@
 <a href=#1645 id=1645 data-nosnippet>1645</a>        flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
 <a href=#1646 id=1646 data-nosnippet>1646</a>    ) -&gt; <a href="#18-41">ParamSpec</a> {
 <a href=#1647 id=1647 data-nosnippet>1647</a>        <span class="kw">unsafe </span>{
-<a href=#1648 id=1648 data-nosnippet>1648</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_boxed.html">g_param_spec_boxed</a>(
+<a href=#1648 id=1648 data-nosnippet>1648</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::g_param_spec_boxed(
 <a href=#1649 id=1649 data-nosnippet>1649</a>                <a href="#1641">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1650 id=1650 data-nosnippet>1650</a>                <a href="#1642">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1651 id=1651 data-nosnippet>1651</a>                <a href="#1643">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
@@ -1789,7 +1789,7 @@
 <a href=#1716 id=1716 data-nosnippet>1716</a>    <span class="doccomment">/// A [`ParamSpec`][crate::ParamSpec] derived structure that contains the meta data for pointer properties.
 <a href=#1717 id=1717 data-nosnippet>1717</a>    </span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1718 id=1718 data-nosnippet>1718</a>    #[doc(alias = <span class="string">"GParamSpecPointer"</span>)]
-<a href=#1719 id=1719 data-nosnippet>1719</a>    </span><span class="kw">pub struct </span><a href="#1715-1725">ParamSpecPointer</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecPointer.html">GParamSpecPointer</a>&gt;);
+<a href=#1719 id=1719 data-nosnippet>1719</a>    </span><span class="kw">pub struct </span><a href="#1715-1725">ParamSpecPointer</a>(Shared&lt;gobject_ffi::GParamSpecPointer&gt;);
 <a href=#1720 id=1720 data-nosnippet>1720</a>
 <a href=#1721 id=1721 data-nosnippet>1721</a>    <span class="kw">match fn </span>{
 <a href=#1722 id=1722 data-nosnippet>1722</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecPointer,
@@ -1810,7 +1810,7 @@
 <a href=#1737 id=1737 data-nosnippet>1737</a>        flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
 <a href=#1738 id=1738 data-nosnippet>1738</a>    ) -&gt; <a href="#18-41">ParamSpec</a> {
 <a href=#1739 id=1739 data-nosnippet>1739</a>        <span class="kw">unsafe </span>{
-<a href=#1740 id=1740 data-nosnippet>1740</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_pointer.html">g_param_spec_pointer</a>(
+<a href=#1740 id=1740 data-nosnippet>1740</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::g_param_spec_pointer(
 <a href=#1741 id=1741 data-nosnippet>1741</a>                <a href="#1734">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1742 id=1742 data-nosnippet>1742</a>                <a href="#1735">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1743 id=1743 data-nosnippet>1743</a>                <a href="#1736">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
@@ -1830,7 +1830,7 @@
 <a href=#1757 id=1757 data-nosnippet>1757</a>    <span class="doccomment">/// A [`ParamSpec`][crate::ParamSpec] derived structure that contains the meta data for `GValueArray` properties.
 <a href=#1758 id=1758 data-nosnippet>1758</a>    </span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1759 id=1759 data-nosnippet>1759</a>    #[doc(alias = <span class="string">"GParamSpecValueArray"</span>)]
-<a href=#1760 id=1760 data-nosnippet>1760</a>    </span><span class="kw">pub struct </span><a href="#1756-1766">ParamSpecValueArray</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecValueArray.html">GParamSpecValueArray</a>&gt;);
+<a href=#1760 id=1760 data-nosnippet>1760</a>    </span><span class="kw">pub struct </span><a href="#1756-1766">ParamSpecValueArray</a>(Shared&lt;gobject_ffi::GParamSpecValueArray&gt;);
 <a href=#1761 id=1761 data-nosnippet>1761</a>
 <a href=#1762 id=1762 data-nosnippet>1762</a>    <span class="kw">match fn </span>{
 <a href=#1763 id=1763 data-nosnippet>1763</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecValueArray,
@@ -1852,7 +1852,7 @@
 <a href=#1779 id=1779 data-nosnippet>1779</a>        flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
 <a href=#1780 id=1780 data-nosnippet>1780</a>    ) -&gt; <a href="#18-41">ParamSpec</a> {
 <a href=#1781 id=1781 data-nosnippet>1781</a>        <span class="kw">unsafe </span>{
-<a href=#1782 id=1782 data-nosnippet>1782</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_value_array.html">g_param_spec_value_array</a>(
+<a href=#1782 id=1782 data-nosnippet>1782</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::g_param_spec_value_array(
 <a href=#1783 id=1783 data-nosnippet>1783</a>                <a href="#1775">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1784 id=1784 data-nosnippet>1784</a>                <a href="#1776">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1785 id=1785 data-nosnippet>1785</a>                <a href="#1777">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
@@ -1866,13 +1866,13 @@
 <a href=#1793 id=1793 data-nosnippet>1793</a>    #[inline]
 <a href=#1794 id=1794 data-nosnippet>1794</a>    </span><span class="kw">pub fn </span>element_spec(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="#18-41">ParamSpec</a>&gt; {
 <a href=#1795 id=1795 data-nosnippet>1795</a>        <span class="kw">unsafe </span>{
-<a href=#1796 id=1796 data-nosnippet>1796</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecValueArray.html">GParamSpecValueArray</a>&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#1794">self</a>).<span class="number">0</span>;
+<a href=#1796 id=1796 data-nosnippet>1796</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecValueArray&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#1794">self</a>).<span class="number">0</span>;
 <a href=#1797 id=1797 data-nosnippet>1797</a>
 <a href=#1798 id=1798 data-nosnippet>1798</a>            <span class="kw">if </span>(<span class="kw-2">*</span><a href="#1796">ptr</a>).element_spec.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#1799 id=1799 data-nosnippet>1799</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
 <a href=#1800 id=1800 data-nosnippet>1800</a>            } <span class="kw">else </span>{
 <a href=#1801 id=1801 data-nosnippet>1801</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(
-<a href=#1802 id=1802 data-nosnippet>1802</a>                    <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><a href="#1796">ptr</a>).element_spec <span class="kw">as </span><span class="kw-2">*const *mut </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpec.html">GParamSpec</a>
+<a href=#1802 id=1802 data-nosnippet>1802</a>                    <span class="kw-2">&amp;*</span>(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><a href="#1796">ptr</a>).element_spec <span class="kw">as </span><span class="kw-2">*const *mut </span>gobject_ffi::GParamSpec
 <a href=#1803 id=1803 data-nosnippet>1803</a>                        <span class="kw">as </span><span class="kw-2">*const </span><a href="#18-41">ParamSpec</a>),
 <a href=#1804 id=1804 data-nosnippet>1804</a>                )
 <a href=#1805 id=1805 data-nosnippet>1805</a>            }
@@ -1883,7 +1883,7 @@
 <a href=#1810 id=1810 data-nosnippet>1810</a>    #[inline]
 <a href=#1811 id=1811 data-nosnippet>1811</a>    </span><span class="kw">pub fn </span>fixed_n_elements(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
 <a href=#1812 id=1812 data-nosnippet>1812</a>        <span class="kw">unsafe </span>{
-<a href=#1813 id=1813 data-nosnippet>1813</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecValueArray.html">GParamSpecValueArray</a>&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#1811">self</a>).<span class="number">0</span>;
+<a href=#1813 id=1813 data-nosnippet>1813</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecValueArray&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#1811">self</a>).<span class="number">0</span>;
 <a href=#1814 id=1814 data-nosnippet>1814</a>
 <a href=#1815 id=1815 data-nosnippet>1815</a>            (<span class="kw-2">*</span><a href="#1813">ptr</a>).fixed_n_elements
 <a href=#1816 id=1816 data-nosnippet>1816</a>        }
@@ -1955,7 +1955,7 @@
 <a href=#1882 id=1882 data-nosnippet>1882</a>    <span class="doccomment">/// A [`ParamSpec`][crate::ParamSpec] derived structure that contains the meta data for object properties.
 <a href=#1883 id=1883 data-nosnippet>1883</a>    </span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1884 id=1884 data-nosnippet>1884</a>    #[doc(alias = <span class="string">"GParamSpecObject"</span>)]
-<a href=#1885 id=1885 data-nosnippet>1885</a>    </span><span class="kw">pub struct </span><a href="#1881-1891">ParamSpecObject</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecObject.html">GParamSpecObject</a>&gt;);
+<a href=#1885 id=1885 data-nosnippet>1885</a>    </span><span class="kw">pub struct </span><a href="#1881-1891">ParamSpecObject</a>(Shared&lt;gobject_ffi::GParamSpecObject&gt;);
 <a href=#1886 id=1886 data-nosnippet>1886</a>
 <a href=#1887 id=1887 data-nosnippet>1887</a>    <span class="kw">match fn </span>{
 <a href=#1888 id=1888 data-nosnippet>1888</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecObject,
@@ -1977,7 +1977,7 @@
 <a href=#1904 id=1904 data-nosnippet>1904</a>        flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
 <a href=#1905 id=1905 data-nosnippet>1905</a>    ) -&gt; <a href="#18-41">ParamSpec</a> {
 <a href=#1906 id=1906 data-nosnippet>1906</a>        <span class="kw">unsafe </span>{
-<a href=#1907 id=1907 data-nosnippet>1907</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_object.html">g_param_spec_object</a>(
+<a href=#1907 id=1907 data-nosnippet>1907</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::g_param_spec_object(
 <a href=#1908 id=1908 data-nosnippet>1908</a>                <a href="#1900">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1909 id=1909 data-nosnippet>1909</a>                <a href="#1901">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1910 id=1910 data-nosnippet>1910</a>                <a href="#1902">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
@@ -2058,7 +2058,7 @@
 <a href=#1985 id=1985 data-nosnippet>1985</a>    /// unless you are implementing a new base type similar to GObject.
 <a href=#1986 id=1986 data-nosnippet>1986</a>    </span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#1987 id=1987 data-nosnippet>1987</a>    #[doc(alias = <span class="string">"GParamSpecOverride"</span>)]
-<a href=#1988 id=1988 data-nosnippet>1988</a>    </span><span class="kw">pub struct </span><a href="#1974-1994">ParamSpecOverride</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecOverride.html">GParamSpecOverride</a>&gt;);
+<a href=#1988 id=1988 data-nosnippet>1988</a>    </span><span class="kw">pub struct </span><a href="#1974-1994">ParamSpecOverride</a>(Shared&lt;gobject_ffi::GParamSpecOverride&gt;);
 <a href=#1989 id=1989 data-nosnippet>1989</a>
 <a href=#1990 id=1990 data-nosnippet>1990</a>    <span class="kw">match fn </span>{
 <a href=#1991 id=1991 data-nosnippet>1991</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecOverride,
@@ -2074,7 +2074,7 @@
 <a href=#2001 id=2001 data-nosnippet>2001</a><span class="kw">impl </span><a href="#1974-1994">ParamSpecOverride</a> {
 <a href=#2002 id=2002 data-nosnippet>2002</a>    <span class="kw">unsafe fn </span>new_unchecked(name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, overridden: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;<a href="#18-41">ParamSpec</a>&gt;) -&gt; <a href="#18-41">ParamSpec</a> {
 <a href=#2003 id=2003 data-nosnippet>2003</a>        <span class="kw">unsafe </span>{
-<a href=#2004 id=2004 data-nosnippet>2004</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_override.html">g_param_spec_override</a>(
+<a href=#2004 id=2004 data-nosnippet>2004</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::g_param_spec_override(
 <a href=#2005 id=2005 data-nosnippet>2005</a>                <a href="#2002">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#2006 id=2006 data-nosnippet>2006</a>                <a href="#2002">overridden</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#2007 id=2007 data-nosnippet>2007</a>            ))
@@ -2134,7 +2134,7 @@
 <a href=#2061 id=2061 data-nosnippet>2061</a>    #[inline]
 <a href=#2062 id=2062 data-nosnippet>2062</a>    </span><span class="kw">pub fn </span>overridden(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#18-41">ParamSpec</a> {
 <a href=#2063 id=2063 data-nosnippet>2063</a>        <span class="kw">unsafe </span>{
-<a href=#2064 id=2064 data-nosnippet>2064</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecOverride.html">GParamSpecOverride</a>&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#2062">self</a>).<span class="number">0</span>;
+<a href=#2064 id=2064 data-nosnippet>2064</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecOverride&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#2062">self</a>).<span class="number">0</span>;
 <a href=#2065 id=2065 data-nosnippet>2065</a>
 <a href=#2066 id=2066 data-nosnippet>2066</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>((<span class="kw-2">*</span><a href="#2064">ptr</a>).overridden)
 <a href=#2067 id=2067 data-nosnippet>2067</a>        }
@@ -2173,7 +2173,7 @@
 <a href=#2100 id=2100 data-nosnippet>2100</a>    <span class="doccomment">/// A [`ParamSpec`][crate::ParamSpec] derived structure that contains the meta data for `GType` properties.
 <a href=#2101 id=2101 data-nosnippet>2101</a>    </span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#2102 id=2102 data-nosnippet>2102</a>    #[doc(alias = <span class="string">"GParamSpecGType"</span>)]
-<a href=#2103 id=2103 data-nosnippet>2103</a>    </span><span class="kw">pub struct </span><a href="#2099-2109">ParamSpecGType</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecGType.html">GParamSpecGType</a>&gt;);
+<a href=#2103 id=2103 data-nosnippet>2103</a>    </span><span class="kw">pub struct </span><a href="#2099-2109">ParamSpecGType</a>(Shared&lt;gobject_ffi::GParamSpecGType&gt;);
 <a href=#2104 id=2104 data-nosnippet>2104</a>
 <a href=#2105 id=2105 data-nosnippet>2105</a>    <span class="kw">match fn </span>{
 <a href=#2106 id=2106 data-nosnippet>2106</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecGType,
@@ -2191,7 +2191,7 @@
 <a href=#2118 id=2118 data-nosnippet>2118</a>        flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
 <a href=#2119 id=2119 data-nosnippet>2119</a>    ) -&gt; <a href="#18-41">ParamSpec</a> {
 <a href=#2120 id=2120 data-nosnippet>2120</a>        <span class="kw">unsafe </span>{
-<a href=#2121 id=2121 data-nosnippet>2121</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_gtype.html">g_param_spec_gtype</a>(
+<a href=#2121 id=2121 data-nosnippet>2121</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::g_param_spec_gtype(
 <a href=#2122 id=2122 data-nosnippet>2122</a>                <a href="#2114">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#2123 id=2123 data-nosnippet>2123</a>                <a href="#2115">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#2124 id=2124 data-nosnippet>2124</a>                <a href="#2116">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
@@ -2220,7 +2220,7 @@
 <a href=#2147 id=2147 data-nosnippet>2147</a>    /// values compare equal.
 <a href=#2148 id=2148 data-nosnippet>2148</a>    </span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#2149 id=2149 data-nosnippet>2149</a>    #[doc(alias = <span class="string">"GParamSpecVariant"</span>)]
-<a href=#2150 id=2150 data-nosnippet>2150</a>    </span><span class="kw">pub struct </span><a href="#2140-2156">ParamSpecVariant</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecVariant.html">GParamSpecVariant</a>&gt;);
+<a href=#2150 id=2150 data-nosnippet>2150</a>    </span><span class="kw">pub struct </span><a href="#2140-2156">ParamSpecVariant</a>(Shared&lt;gobject_ffi::GParamSpecVariant&gt;);
 <a href=#2151 id=2151 data-nosnippet>2151</a>
 <a href=#2152 id=2152 data-nosnippet>2152</a>    <span class="kw">match fn </span>{
 <a href=#2153 id=2153 data-nosnippet>2153</a>        <span class="kw-2">ref </span>=&gt; |ptr| gobject_ffi::g_param_spec_ref_sink(ptr <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpec) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GParamSpecVariant,
@@ -2250,7 +2250,7 @@
 <a href=#2177 id=2177 data-nosnippet>2177</a>        flags: <a href="gobject/flags.rs.html#5-56">ParamFlags</a>,
 <a href=#2178 id=2178 data-nosnippet>2178</a>    ) -&gt; <a href="#18-41">ParamSpec</a> {
 <a href=#2179 id=2179 data-nosnippet>2179</a>        <span class="kw">unsafe </span>{
-<a href=#2180 id=2180 data-nosnippet>2180</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::<a href="../../gobject_sys/fn.g_param_spec_variant.html">g_param_spec_variant</a>(
+<a href=#2180 id=2180 data-nosnippet>2180</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(gobject_ffi::g_param_spec_variant(
 <a href=#2181 id=2181 data-nosnippet>2181</a>                <a href="#2172">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#2182 id=2182 data-nosnippet>2182</a>                <a href="#2173">nick</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#2183 id=2183 data-nosnippet>2183</a>                <a href="#2174">blurb</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>().<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
@@ -2265,7 +2265,7 @@
 <a href=#2192 id=2192 data-nosnippet>2192</a>    #[inline]
 <a href=#2193 id=2193 data-nosnippet>2193</a>    </span><span class="kw">pub fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">crate</span>::<a href="variant_type.rs.html#507-509">VariantTy</a>&gt; {
 <a href=#2194 id=2194 data-nosnippet>2194</a>        <span class="kw">unsafe </span>{
-<a href=#2195 id=2195 data-nosnippet>2195</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::<a href="../../gobject_sys/struct.GParamSpecVariant.html">GParamSpecVariant</a>&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#2193">self</a>).<span class="number">0</span>;
+<a href=#2195 id=2195 data-nosnippet>2195</a>            <span class="kw">let </span>ptr = ToGlibPtr::&lt;<span class="kw-2">*const </span>gobject_ffi::GParamSpecVariant&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<a class="self" href="#2193">self</a>).<span class="number">0</span>;
 <a href=#2196 id=2196 data-nosnippet>2196</a>
 <a href=#2197 id=2197 data-nosnippet>2197</a>            <span class="kw">if </span>(<span class="kw-2">*</span><a href="#2195">ptr</a>).type_.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
 <a href=#2198 id=2198 data-nosnippet>2198</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
