@@ -78,6 +78,29 @@ impl MarkupParseContext {
         }
     }
 
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    #[doc(alias = "g_markup_parse_context_get_tag_start")]
+    #[doc(alias = "get_tag_start")]
+    pub fn tag_start(&self) -> (usize, usize, usize) {
+        unsafe {
+            let mut line_number = std::mem::MaybeUninit::uninit();
+            let mut char_number = std::mem::MaybeUninit::uninit();
+            let mut offset = std::mem::MaybeUninit::uninit();
+            ffi::g_markup_parse_context_get_tag_start(
+                self.to_glib_none().0,
+                line_number.as_mut_ptr(),
+                char_number.as_mut_ptr(),
+                offset.as_mut_ptr(),
+            );
+            (
+                line_number.assume_init(),
+                char_number.assume_init(),
+                offset.assume_init(),
+            )
+        }
+    }
+
     #[doc(alias = "g_markup_parse_context_parse")]
     pub fn parse(&self, text: &str) -> Result<(), crate::Error> {
         let text_len = text.len() as _;
