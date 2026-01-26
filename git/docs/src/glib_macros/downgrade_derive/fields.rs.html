@@ -74,7 +74,7 @@
 <nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">glib_macros/downgrade_derive/</div>fields.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.105/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a>;
-<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.43/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote</a>};
+<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.44/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote</a>};
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.114/syn/data/enum.Fields.html">Fields</a>, <a href="https://docs.rs/syn/2.0.114/syn/data/struct.FieldsNamed.html">FieldsNamed</a>, <a href="https://docs.rs/syn/2.0.114/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a>, Ident, <a href="https://docs.rs/syn/2.0.114/syn/ty/enum.Type.html">Type</a>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span><a href="../utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>;
@@ -184,33 +184,33 @@
 <a href=#111 id=111 data-nosnippet>111</a>            <span class="kw">let </span>weak_fields: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw">_</span>&gt; = <a href="#105">fields</a>
 <a href=#112 id=112 data-nosnippet>112</a>                .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>()
 <a href=#113 id=113 data-nosnippet>113</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.map">map</a>(|ty| {
-<a href=#114 id=114 data-nosnippet>114</a>                    <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#114 id=114 data-nosnippet>114</a>                    <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#115 id=115 data-nosnippet>115</a>                        &lt;#ty <span class="kw">as </span>#glib::clone::Downgrade&gt;::Weak
 <a href=#116 id=116 data-nosnippet>116</a>                    }
 <a href=#117 id=117 data-nosnippet>117</a>                })
 <a href=#118 id=118 data-nosnippet>118</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.collect">collect</a>();
 <a href=#119 id=119 data-nosnippet>119</a>
 <a href=#120 id=120 data-nosnippet>120</a>            <span class="kw">let </span>field_ident: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.105/proc_macro2/struct.Ident.html">Ident</a>&gt; =
-<a href=#121 id=121 data-nosnippet>121</a>                (<span class="number">0</span>..fields.len()).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.map">map</a>(|i| <a href="https://docs.rs/quote/1.0.43/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"_{}"</span>, i)).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.collect">collect</a>();
+<a href=#121 id=121 data-nosnippet>121</a>                (<span class="number">0</span>..fields.len()).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.map">map</a>(|i| <a href="https://docs.rs/quote/1.0.44/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"_{}"</span>, i)).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.collect">collect</a>();
 <a href=#122 id=122 data-nosnippet>122</a>
 <a href=#123 id=123 data-nosnippet>123</a>            <a href="#10-21">DowngradeStructParts</a> {
-<a href=#124 id=124 data-nosnippet>124</a>                weak_fields: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#124 id=124 data-nosnippet>124</a>                weak_fields: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#125 id=125 data-nosnippet>125</a>                    (#(
 <a href=#126 id=126 data-nosnippet>126</a>                        #weak_fields
 <a href=#127 id=127 data-nosnippet>127</a>                    ),<span class="kw-2">*</span>)
 <a href=#128 id=128 data-nosnippet>128</a>                },
-<a href=#129 id=129 data-nosnippet>129</a>                end_of_struct: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a>(;),
-<a href=#130 id=130 data-nosnippet>130</a>                destruct: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#129 id=129 data-nosnippet>129</a>                end_of_struct: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a>(;),
+<a href=#130 id=130 data-nosnippet>130</a>                destruct: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#131 id=131 data-nosnippet>131</a>                    (#(
 <a href=#132 id=132 data-nosnippet>132</a>                        #field_ident
 <a href=#133 id=133 data-nosnippet>133</a>                    ),<span class="kw-2">*</span>)
 <a href=#134 id=134 data-nosnippet>134</a>                },
-<a href=#135 id=135 data-nosnippet>135</a>                downgrade: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#135 id=135 data-nosnippet>135</a>                downgrade: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#136 id=136 data-nosnippet>136</a>                    (#(
 <a href=#137 id=137 data-nosnippet>137</a>                        #glib::clone::Downgrade::downgrade(#field_ident)
 <a href=#138 id=138 data-nosnippet>138</a>                    ),<span class="kw-2">*</span>)
 <a href=#139 id=139 data-nosnippet>139</a>                },
-<a href=#140 id=140 data-nosnippet>140</a>                upgrade: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#140 id=140 data-nosnippet>140</a>                upgrade: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#141 id=141 data-nosnippet>141</a>                    (#(
 <a href=#142 id=142 data-nosnippet>142</a>                        #glib::clone::Upgrade::upgrade(#field_ident)<span class="question-mark">?
 <a href=#143 id=143 data-nosnippet>143</a>                    </span>),<span class="kw-2">*</span>)
@@ -227,7 +227,7 @@
 <a href=#154 id=154 data-nosnippet>154</a>            <span class="kw">let </span>weak_fields: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw">_</span>&gt; = <a href="#148">fields</a>
 <a href=#155 id=155 data-nosnippet>155</a>                .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>()
 <a href=#156 id=156 data-nosnippet>156</a>                .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.map">map</a>(|(ident, ty)| {
-<a href=#157 id=157 data-nosnippet>157</a>                    <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#157 id=157 data-nosnippet>157</a>                    <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#158 id=158 data-nosnippet>158</a>                        #ident: &lt;#ty <span class="kw">as </span>#glib::clone::Downgrade&gt;::Weak
 <a href=#159 id=159 data-nosnippet>159</a>                    }
 <a href=#160 id=160 data-nosnippet>160</a>                })
@@ -236,23 +236,23 @@
 <a href=#163 id=163 data-nosnippet>163</a>            <span class="kw">let </span>field_ident: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw">_</span>&gt; = <a href="#148">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.map">map</a>(|(ident, _ty)| <a href="#163">ident</a>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.collect">collect</a>();
 <a href=#164 id=164 data-nosnippet>164</a>
 <a href=#165 id=165 data-nosnippet>165</a>            <a href="#10-21">DowngradeStructParts</a> {
-<a href=#166 id=166 data-nosnippet>166</a>                weak_fields: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#166 id=166 data-nosnippet>166</a>                weak_fields: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#167 id=167 data-nosnippet>167</a>                    {#(
 <a href=#168 id=168 data-nosnippet>168</a>                        #weak_fields
 <a href=#169 id=169 data-nosnippet>169</a>                    ),<span class="kw-2">*</span>}
 <a href=#170 id=170 data-nosnippet>170</a>                },
-<a href=#171 id=171 data-nosnippet>171</a>                end_of_struct: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a>(),
-<a href=#172 id=172 data-nosnippet>172</a>                destruct: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#171 id=171 data-nosnippet>171</a>                end_of_struct: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a>(),
+<a href=#172 id=172 data-nosnippet>172</a>                destruct: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#173 id=173 data-nosnippet>173</a>                    {#(
 <a href=#174 id=174 data-nosnippet>174</a>                        #field_ident
 <a href=#175 id=175 data-nosnippet>175</a>                    ),<span class="kw-2">*</span>}
 <a href=#176 id=176 data-nosnippet>176</a>                },
-<a href=#177 id=177 data-nosnippet>177</a>                downgrade: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#177 id=177 data-nosnippet>177</a>                downgrade: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#178 id=178 data-nosnippet>178</a>                    {#(
 <a href=#179 id=179 data-nosnippet>179</a>                        #field_ident: #glib::clone::Downgrade::downgrade(#field_ident)
 <a href=#180 id=180 data-nosnippet>180</a>                    ),<span class="kw-2">*</span>}
 <a href=#181 id=181 data-nosnippet>181</a>                },
-<a href=#182 id=182 data-nosnippet>182</a>                upgrade: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#182 id=182 data-nosnippet>182</a>                upgrade: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#183 id=183 data-nosnippet>183</a>                    {#(
 <a href=#184 id=184 data-nosnippet>184</a>                        #field_ident: #glib::clone::Upgrade::upgrade(#field_ident)<span class="question-mark">?
 <a href=#185 id=185 data-nosnippet>185</a>                    </span>),<span class="kw-2">*</span>}
@@ -260,11 +260,11 @@
 <a href=#187 id=187 data-nosnippet>187</a>            }
 <a href=#188 id=188 data-nosnippet>188</a>        }
 <a href=#189 id=189 data-nosnippet>189</a>        Fields::<a href="https://docs.rs/syn/2.0.114/syn/data/enum.Fields.html#variant.Unit">Unit</a> =&gt; <a href="#10-21">DowngradeStructParts</a> {
-<a href=#190 id=190 data-nosnippet>190</a>            weak_fields: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {},
-<a href=#191 id=191 data-nosnippet>191</a>            end_of_struct: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> { ; },
-<a href=#192 id=192 data-nosnippet>192</a>            destruct: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {},
-<a href=#193 id=193 data-nosnippet>193</a>            downgrade: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {},
-<a href=#194 id=194 data-nosnippet>194</a>            upgrade: <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {},
+<a href=#190 id=190 data-nosnippet>190</a>            weak_fields: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {},
+<a href=#191 id=191 data-nosnippet>191</a>            end_of_struct: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> { ; },
+<a href=#192 id=192 data-nosnippet>192</a>            destruct: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {},
+<a href=#193 id=193 data-nosnippet>193</a>            downgrade: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {},
+<a href=#194 id=194 data-nosnippet>194</a>            upgrade: <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {},
 <a href=#195 id=195 data-nosnippet>195</a>        },
 <a href=#196 id=196 data-nosnippet>196</a>    }
 <a href=#197 id=197 data-nosnippet>197</a>}

@@ -74,7 +74,7 @@
 <nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">glib_macros/downgrade_derive/</div>structs.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a>;
-<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.43/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote</a>};
+<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.44/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote</a>};
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.114/syn/generics/struct.Generics.html">Generics</a>, Ident};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span><span class="kw">super</span>::fields::{<a href="fields.rs.html#10-21">DowngradeStructParts</a>, <a href="fields.rs.html#101-197">derive_downgrade_fields</a>};
@@ -160,7 +160,7 @@
 <a href=#87 id=87 data-nosnippet>87</a>    data_struct: syn::<a href="https://docs.rs/syn/2.0.114/syn/derive/struct.DataStruct.html">DataStruct</a>,
 <a href=#88 id=88 data-nosnippet>88</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
 <a href=#89 id=89 data-nosnippet>89</a>    <span class="kw">let </span>glib = <a href="../utils.rs.html#188-215">crate_ident_new</a>();
-<a href=#90 id=90 data-nosnippet>90</a>    <span class="kw">let </span>weak_type = <a href="https://docs.rs/quote/1.0.43/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"{}Weak"</span>, ident);
+<a href=#90 id=90 data-nosnippet>90</a>    <span class="kw">let </span>weak_type = <a href="https://docs.rs/quote/1.0.44/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"{}Weak"</span>, ident);
 <a href=#91 id=91 data-nosnippet>91</a>
 <a href=#92 id=92 data-nosnippet>92</a>    <span class="kw">let </span><a href="fields.rs.html#10-21">DowngradeStructParts</a> {
 <a href=#93 id=93 data-nosnippet>93</a>        weak_fields,
@@ -170,7 +170,7 @@
 <a href=#97 id=97 data-nosnippet>97</a>        upgrade,
 <a href=#98 id=98 data-nosnippet>98</a>    } = <a href="fields.rs.html#101-197">derive_downgrade_fields</a>(<a href="#87">data_struct</a>.fields);
 <a href=#99 id=99 data-nosnippet>99</a>
-<a href=#100 id=100 data-nosnippet>100</a>    <span class="kw">let </span>derived = <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#100 id=100 data-nosnippet>100</a>    <span class="kw">let </span>derived = <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#101 id=101 data-nosnippet>101</a>        <span class="kw">pub struct </span>#weak_type #generics #weak_fields #end_of_struct
 <a href=#102 id=102 data-nosnippet>102</a>
 <a href=#103 id=103 data-nosnippet>103</a>        <span class="kw">impl </span>#generics #glib::clone::Downgrade <span class="kw">for </span>#ident #generics {

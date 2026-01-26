@@ -73,7 +73,7 @@
 
 <nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">glib_macros/</div>value_delegate_derive.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
-<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span><a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote::quote</a>;
+<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span><a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote::quote</a>;
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.114/syn/macro.Token.html">Token</a>, <a href="https://docs.rs/syn/2.0.114/syn/parse/trait.Parse.html">parse::Parse</a>};
 <a href=#5 id=5 data-nosnippet>5</a>
 <a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span><a href="utils.rs.html#188-215"><span class="kw">crate</span>::utils::crate_ident_new</a>;
@@ -197,13 +197,13 @@
 <a href=#124 id=124 data-nosnippet>124</a>    <span class="comment">// this must be called in a context where `this` is defined.
 <a href=#125 id=125 data-nosnippet>125</a>    </span><span class="kw">let </span>delegate_value = <span class="kw">match </span><a href="#118">mode</a> {
 <a href=#126 id=126 data-nosnippet>126</a>        DeriveMode::<a href="#10">From</a> =&gt; {
-<a href=#127 id=127 data-nosnippet>127</a>            <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a>(&lt;#delegated_ty <span class="kw">as </span>std::convert::From&lt;<span class="kw">_</span>&gt;&gt;::from(this))
+<a href=#127 id=127 data-nosnippet>127</a>            <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a>(&lt;#delegated_ty <span class="kw">as </span>std::convert::From&lt;<span class="kw">_</span>&gt;&gt;::from(this))
 <a href=#128 id=128 data-nosnippet>128</a>        }
-<a href=#129 id=129 data-nosnippet>129</a>        DeriveMode::<a href="#12">Private</a> =&gt; <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a>(this.<span class="number">0</span>),
+<a href=#129 id=129 data-nosnippet>129</a>        DeriveMode::<a href="#12">Private</a> =&gt; <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a>(this.<span class="number">0</span>),
 <a href=#130 id=130 data-nosnippet>130</a>    };
 <a href=#131 id=131 data-nosnippet>131</a>
 <a href=#132 id=132 data-nosnippet>132</a>    <span class="kw">let </span>to_value_optional = <a href="#119">nullable</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then">then</a>(|| {
-<a href=#133 id=133 data-nosnippet>133</a>        <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#133 id=133 data-nosnippet>133</a>        <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#134 id=134 data-nosnippet>134</a>            <span class="kw">impl </span>#crate_ident::value::ToValueOptional <span class="kw">for </span>#ident {
 <a href=#135 id=135 data-nosnippet>135</a>                <span class="kw">fn </span>to_value_optional(s: ::core::option::Option&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; #crate_ident::value::Value {
 <a href=#136 id=136 data-nosnippet>136</a>                    <span class="kw">if let </span>::core::option::Option::Some(this) = s {
@@ -218,14 +218,14 @@
 <a href=#145 id=145 data-nosnippet>145</a>
 <a href=#146 id=146 data-nosnippet>146</a>    <span class="kw">let </span>from_value = <span class="kw">match </span><a href="#118">mode</a> {
 <a href=#147 id=147 data-nosnippet>147</a>        DeriveMode::<a href="#10">From</a> =&gt; {
-<a href=#148 id=148 data-nosnippet>148</a>            <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a>(#ident::from(&lt;#delegated_ty <span class="kw">as </span>#crate_ident::value::FromValue&lt;<span class="lifetime">'a</span>&gt;&gt;::from_value(value)))
+<a href=#148 id=148 data-nosnippet>148</a>            <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a>(#ident::from(&lt;#delegated_ty <span class="kw">as </span>#crate_ident::value::FromValue&lt;<span class="lifetime">'a</span>&gt;&gt;::from_value(value)))
 <a href=#149 id=149 data-nosnippet>149</a>        }
 <a href=#150 id=150 data-nosnippet>150</a>        DeriveMode::<a href="#12">Private</a> =&gt; {
-<a href=#151 id=151 data-nosnippet>151</a>            <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a>(#ident(&lt;#delegated_ty <span class="kw">as </span>#crate_ident::value::FromValue&lt;<span class="lifetime">'a</span>&gt;&gt;::from_value(value)))
+<a href=#151 id=151 data-nosnippet>151</a>            <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a>(#ident(&lt;#delegated_ty <span class="kw">as </span>#crate_ident::value::FromValue&lt;<span class="lifetime">'a</span>&gt;&gt;::from_value(value)))
 <a href=#152 id=152 data-nosnippet>152</a>        }
 <a href=#153 id=153 data-nosnippet>153</a>    };
 <a href=#154 id=154 data-nosnippet>154</a>
-<a href=#155 id=155 data-nosnippet>155</a>    <span class="kw">let </span>res = <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#155 id=155 data-nosnippet>155</a>    <span class="kw">let </span>res = <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#156 id=156 data-nosnippet>156</a>        <span class="kw">impl </span>#crate_ident::prelude::StaticType <span class="kw">for </span>#ident {
 <a href=#157 id=157 data-nosnippet>157</a>            <span class="kw">fn </span>static_type() -&gt; glib::types::Type {
 <a href=#158 id=158 data-nosnippet>158</a>                &lt;#delegated_ty <span class="kw">as </span>#crate_ident::prelude::StaticType&gt;::static_type()

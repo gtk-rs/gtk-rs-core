@@ -74,7 +74,7 @@
 <nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">glib_macros/downgrade_derive/</div>enums.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a>;
-<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.43/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote</a>};
+<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.44/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote</a>};
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.114/syn/generics/struct.Generics.html">Generics</a>, Ident};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span><span class="kw">super</span>::fields::{<a href="fields.rs.html#10-21">DowngradeStructParts</a>, <a href="fields.rs.html#101-197">derive_downgrade_fields</a>};
@@ -144,7 +144,7 @@
 <a href=#71 id=71 data-nosnippet>71</a>    data_enum: syn::<a href="https://docs.rs/syn/2.0.114/syn/derive/struct.DataEnum.html">DataEnum</a>,
 <a href=#72 id=72 data-nosnippet>72</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
 <a href=#73 id=73 data-nosnippet>73</a>    <span class="kw">let </span>glib = <a href="../utils.rs.html#188-215">crate_ident_new</a>();
-<a href=#74 id=74 data-nosnippet>74</a>    <span class="kw">let </span>weak_type = <a href="https://docs.rs/quote/1.0.43/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"{}Weak"</span>, ident);
+<a href=#74 id=74 data-nosnippet>74</a>    <span class="kw">let </span>weak_type = <a href="https://docs.rs/quote/1.0.44/quote/macro.format_ident.html">format_ident!</a>(<span class="string">"{}Weak"</span>, ident);
 <a href=#75 id=75 data-nosnippet>75</a>
 <a href=#76 id=76 data-nosnippet>76</a>    <span class="kw">let </span>variants: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;(<a href="https://docs.rs/proc-macro2/1.0.105/proc_macro2/struct.Ident.html">Ident</a>, <a href="fields.rs.html#10-21">DowngradeStructParts</a>)&gt; = <a href="#71">data_enum</a>
 <a href=#77 id=77 data-nosnippet>77</a>        .variants
@@ -156,7 +156,7 @@
 <a href=#83 id=83 data-nosnippet>83</a>        .<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.iter">iter</a>()
 <a href=#84 id=84 data-nosnippet>84</a>        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.map">map</a>(|(ident, parts)| {
 <a href=#85 id=85 data-nosnippet>85</a>            <span class="kw">let </span>weak_fields = <span class="kw-2">&amp;</span><a href="#84">parts</a>.weak_fields;
-<a href=#86 id=86 data-nosnippet>86</a>            <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#86 id=86 data-nosnippet>86</a>            <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#87 id=87 data-nosnippet>87</a>                #ident #weak_fields
 <a href=#88 id=88 data-nosnippet>88</a>            }
 <a href=#89 id=89 data-nosnippet>89</a>        })
@@ -167,7 +167,7 @@
 <a href=#94 id=94 data-nosnippet>94</a>        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.map">map</a>(|(ident, parts)| {
 <a href=#95 id=95 data-nosnippet>95</a>            <span class="kw">let </span>destruct = <span class="kw-2">&amp;</span><a href="#94">parts</a>.destruct;
 <a href=#96 id=96 data-nosnippet>96</a>            <span class="kw">let </span>downgrade = <span class="kw-2">&amp;</span><a href="#94">parts</a>.downgrade;
-<a href=#97 id=97 data-nosnippet>97</a>            <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#97 id=97 data-nosnippet>97</a>            <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#98 id=98 data-nosnippet>98</a>                Self::#ident #destruct =&gt; <span class="self">Self</span>::Weak::#ident #downgrade
 <a href=#99 id=99 data-nosnippet>99</a>            }
 <a href=#100 id=100 data-nosnippet>100</a>        })
@@ -178,13 +178,13 @@
 <a href=#105 id=105 data-nosnippet>105</a>        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.map">map</a>(|(ident, parts)| {
 <a href=#106 id=106 data-nosnippet>106</a>            <span class="kw">let </span>destruct = <span class="kw-2">&amp;</span><a href="#105">parts</a>.destruct;
 <a href=#107 id=107 data-nosnippet>107</a>            <span class="kw">let </span>upgrade = <span class="kw-2">&amp;</span><a href="#105">parts</a>.upgrade;
-<a href=#108 id=108 data-nosnippet>108</a>            <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#108 id=108 data-nosnippet>108</a>            <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#109 id=109 data-nosnippet>109</a>                Self::#ident #destruct =&gt; <span class="self">Self</span>::Strong::#ident #upgrade
 <a href=#110 id=110 data-nosnippet>110</a>            }
 <a href=#111 id=111 data-nosnippet>111</a>        })
 <a href=#112 id=112 data-nosnippet>112</a>        .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.collect">collect</a>();
 <a href=#113 id=113 data-nosnippet>113</a>
-<a href=#114 id=114 data-nosnippet>114</a>    <span class="kw">let </span>derived = <a href="https://docs.rs/quote/1.0.43/quote/macro.quote.html">quote!</a> {
+<a href=#114 id=114 data-nosnippet>114</a>    <span class="kw">let </span>derived = <a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote!</a> {
 <a href=#115 id=115 data-nosnippet>115</a>        <span class="kw">pub enum </span>#weak_type #generics {#(
 <a href=#116 id=116 data-nosnippet>116</a>            #weak_variants
 <a href=#117 id=117 data-nosnippet>117</a>        ),<span class="kw-2">*</span>}
