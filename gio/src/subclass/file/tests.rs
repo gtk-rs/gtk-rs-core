@@ -227,6 +227,24 @@ mod imp {
             }
         }
 
+        fn enumerate_children_future(
+            &self,
+            attributes: &str,
+            flags: FileQueryInfoFlags,
+            _priority: glib::Priority,
+        ) -> std::pin::Pin<
+            Box<dyn std::future::Future<Output = Result<FileEnumerator, Error>> + 'static>,
+        > {
+            let attributes = String::from(attributes);
+            Box::pin(GioFuture::new(
+                &self.ref_counted(),
+                move |self_, cancellable, send| {
+                    let res = self_.enumerate_children(&attributes, flags, Some(cancellable));
+                    send.resolve(res);
+                },
+            ))
+        }
+
         fn query_info(
             &self,
             attributes: &str,
@@ -1471,6 +1489,77 @@ fn file_enumerate_children() {
 
     // both children should equal
     assert_eq!(my_custom_children, expected)
+}
+
+#[test]
+fn file_enumerate_children_future() {
+    // run test in a main context dedicated and configured as the thread default one
+    let _ = glib::MainContext::new().with_thread_default(|| {
+        // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::enumerate_children_async/finish`
+        let my_custom_file =
+            MyCustomFile::with_type_state("/my_file", FileType::Regular, MyFileState::Exist);
+        let res = glib::MainContext::ref_thread_default().block_on(
+            my_custom_file.enumerate_children_future(
+                "*",
+                FileQueryInfoFlags::NONE,
+                glib::Priority::DEFAULT,
+            ),
+        );
+        assert!(res.is_err(), "unexpected enumerator");
+        let err = res.unwrap_err();
+
+        // invoke `MyFile` implementation of `crate::ffi::GFileIface::enumerate_children_async/finish`
+        let my_file = MyFile::with_type_state("/my_file", FileType::Regular, MyFileState::Exist);
+        let res =
+            glib::MainContext::ref_thread_default().block_on(my_file.enumerate_children_future(
+                "*",
+                FileQueryInfoFlags::NONE,
+                glib::Priority::DEFAULT,
+            ));
+        assert!(res.is_err(), "unexpected enumerator");
+        let expected = res.unwrap_err();
+
+        // both errors should equal
+        assert_eq!(err.message(), expected.message());
+        assert_eq!(err.kind::<IOErrorEnum>(), expected.kind::<IOErrorEnum>());
+
+        // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::enumerate_children_async/finish`
+        let my_custom_parent =
+            MyCustomFile::with_children("/my_parent", vec!["my_file1", "my_file2"]);
+        let res = glib::MainContext::ref_thread_default().block_on(
+            my_custom_parent.enumerate_children_future(
+                "*",
+                FileQueryInfoFlags::NONE,
+                glib::Priority::DEFAULT,
+            ),
+        );
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let my_custom_enumerator = res.unwrap();
+        let res = my_custom_enumerator
+            .map(|res| res.map(|file_info| file_info.name()))
+            .collect::<Result<Vec<_>, _>>();
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let my_custom_children = res.unwrap();
+
+        // invoke `MyFile` implementation of `crate::ffi::GFileIface::enumerate_children_async/finish`
+        let my_parent = MyFile::with_children("/my_parent", vec!["my_file1", "my_file2"]);
+        let res =
+            glib::MainContext::ref_thread_default().block_on(my_parent.enumerate_children_future(
+                "*",
+                FileQueryInfoFlags::NONE,
+                glib::Priority::DEFAULT,
+            ));
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let my_enumerator = res.unwrap();
+        let res = my_enumerator
+            .map(|res| res.map(|file_info| file_info.name()))
+            .collect::<Result<Vec<_>, _>>();
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let expected = res.unwrap();
+
+        // both children should equal
+        assert_eq!(my_custom_children, expected)
+    });
 }
 
 #[test]
