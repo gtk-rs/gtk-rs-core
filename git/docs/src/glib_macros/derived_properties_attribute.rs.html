@@ -73,13 +73,13 @@
 
 <nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">glib_macros/</div>derived_properties_attribute.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-2"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
-<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.105/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.105/proc_macro2/struct.TokenStream.html">TokenStream</a>};
+<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.106/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.106/proc_macro2/struct.TokenStream.html">TokenStream</a>};
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span><a href="https://docs.rs/quote/1.0.44/quote/macro.quote.html">quote::quote</a>;
 <a href=#5 id=5 data-nosnippet>5</a>
 <a href=#6 id=6 data-nosnippet>6</a><span class="kw">pub const </span>WRONG_PLACE_MSG: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> =
 <a href=#7 id=7 data-nosnippet>7</a>    <span class="string">"This macro should be used on `impl` block for `glib::ObjectImpl` trait"</span>;
 <a href=#8 id=8 data-nosnippet>8</a>
-<a href=#9 id=9 data-nosnippet>9</a><span class="kw">pub fn </span>impl_derived_properties(input: <span class="kw-2">&amp;</span>syn::<a href="https://docs.rs/syn/2.0.114/syn/item/struct.ItemImpl.html">ItemImpl</a>) -&gt; syn::<a href="https://docs.rs/syn/2.0.114/syn/error/type.Result.html">Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.105/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
+<a href=#9 id=9 data-nosnippet>9</a><span class="kw">pub fn </span>impl_derived_properties(input: <span class="kw-2">&amp;</span>syn::<a href="https://docs.rs/syn/2.0.114/syn/item/struct.ItemImpl.html">ItemImpl</a>) -&gt; syn::<a href="https://docs.rs/syn/2.0.114/syn/error/type.Result.html">Result</a>&lt;<a href="https://docs.rs/proc-macro2/1.0.106/proc_macro2/struct.TokenStream.html">TokenStream</a>&gt; {
 <a href=#10 id=10 data-nosnippet>10</a>    <span class="kw">let </span>syn::<a href="https://docs.rs/syn/2.0.114/syn/item/struct.ItemImpl.html">ItemImpl</a> {
 <a href=#11 id=11 data-nosnippet>11</a>        attrs,
 <a href=#12 id=12 data-nosnippet>12</a>        generics,
@@ -91,7 +91,7 @@
 <a href=#18 id=18 data-nosnippet>18</a>
 <a href=#19 id=19 data-nosnippet>19</a>    <span class="kw">let </span>trait_path = <span class="kw-2">&amp;</span><a href="#13">trait_</a>
 <a href=#20 id=20 data-nosnippet>20</a>        .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>()
-<a href=#21 id=21 data-nosnippet>21</a>        .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| syn::<a href="https://docs.rs/syn/2.0.114/syn/error/struct.Error.html">Error</a>::<a href="https://docs.rs/syn/2.0.114/syn/error/struct.Error.html#method.new">new</a>(<a href="https://docs.rs/proc-macro2/1.0.105/proc_macro2/struct.Span.html">Span</a>::<a href="https://docs.rs/proc-macro2/1.0.105/proc_macro2/struct.Span.html#method.call_site">call_site</a>(), <a href="#6-7">WRONG_PLACE_MSG</a>))<span class="question-mark">?
+<a href=#21 id=21 data-nosnippet>21</a>        .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| syn::<a href="https://docs.rs/syn/2.0.114/syn/error/struct.Error.html">Error</a>::<a href="https://docs.rs/syn/2.0.114/syn/error/struct.Error.html#method.new">new</a>(<a href="https://docs.rs/proc-macro2/1.0.106/proc_macro2/struct.Span.html">Span</a>::<a href="https://docs.rs/proc-macro2/1.0.106/proc_macro2/struct.Span.html#method.call_site">call_site</a>(), <a href="#6-7">WRONG_PLACE_MSG</a>))<span class="question-mark">?
 <a href=#22 id=22 data-nosnippet>22</a>        </span>.<span class="number">1</span>;
 <a href=#23 id=23 data-nosnippet>23</a>
 <a href=#24 id=24 data-nosnippet>24</a>    <span class="kw">let </span><span class="kw-2">mut </span>has_property = <span class="bool-val">false</span>;
