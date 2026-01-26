@@ -4231,6 +4231,14 @@ unsafe extern "C" {
         line_number: *mut c_int,
         char_number: *mut c_int,
     );
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_markup_parse_context_get_tag_start(
+        context: *mut GMarkupParseContext,
+        line_number: *mut size_t,
+        char_number: *mut size_t,
+        offset: *mut size_t,
+    );
     pub fn g_markup_parse_context_get_user_data(context: *mut GMarkupParseContext) -> gpointer;
     pub fn g_markup_parse_context_parse(
         context: *mut GMarkupParseContext,
@@ -7208,7 +7216,7 @@ unsafe extern "C" {
     ) -> *mut *mut c_char;
     pub fn g_strsplit_set(
         string: *const c_char,
-        delimiters: *const c_char,
+        delimiters: *const u8,
         max_tokens: c_int,
     ) -> *mut *mut c_char;
     pub fn g_strstr_len(
