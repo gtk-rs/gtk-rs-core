@@ -313,6 +313,22 @@ mod imp {
             self.query_info(attributes, FileQueryInfoFlags::NONE, cancellable)
         }
 
+        fn query_filesystem_info_future(
+            &self,
+            attributes: &str,
+            _priority: glib::Priority,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<FileInfo, Error>> + 'static>>
+        {
+            let attributes = String::from(attributes);
+            Box::pin(GioFuture::new(
+                &self.ref_counted(),
+                move |self_, cancellable, send| {
+                    let res = self_.query_filesystem_info(&attributes, Some(cancellable));
+                    send.resolve(res);
+                },
+            ))
+        }
+
         fn find_enclosing_mount(&self, _cancellable: Option<&Cancellable>) -> Result<Mount, Error> {
             Err(Error::new(
                 IOErrorEnum::NotSupported,
@@ -1671,6 +1687,39 @@ fn file_query_filesystem_info() {
         file_info.attribute_as_string("xattr::key2"),
         expected.attribute_as_string("xattr::key2")
     );
+}
+
+#[test]
+fn file_query_filesystem_info_future() {
+    // run test in a main context dedicated and configured as the thread default one
+    let _ = glib::MainContext::new().with_thread_default(|| {
+        // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::query_filesystem_info_async/finish`
+        let my_custom_file =
+            MyCustomFile::with_xattr("/my_file", vec!["xattr::key1=value1", "xattr::key2=value2"]);
+        let res = glib::MainContext::ref_thread_default()
+            .block_on(my_custom_file.query_filesystem_info_future("*", glib::Priority::DEFAULT));
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let file_info = res.unwrap();
+
+        // invoke `MyFile` implementation of `crate::ffi::GFileIface::query_filesystem_info_async/finish`
+        let my_file =
+            MyFile::with_xattr("/my_file", vec!["xattr::key1=value1", "xattr::key2=value2"]);
+        let res = glib::MainContext::ref_thread_default()
+            .block_on(my_file.query_filesystem_info_future("*", glib::Priority::DEFAULT));
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let expected = res.unwrap();
+
+        // both results should equal
+        assert_eq!(file_info.name(), expected.name());
+        assert_eq!(
+            file_info.attribute_as_string("xattr::key1"),
+            expected.attribute_as_string("xattr::key1")
+        );
+        assert_eq!(
+            file_info.attribute_as_string("xattr::key2"),
+            expected.attribute_as_string("xattr::key2")
+        );
+    });
 }
 
 #[test]
