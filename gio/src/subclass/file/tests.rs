@@ -362,6 +362,22 @@ mod imp {
             Ok(Self::Type::new(path).upcast())
         }
 
+        fn set_display_name_future(
+            &self,
+            display_name: &str,
+            _priority: glib::Priority,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<File, Error>> + 'static>>
+        {
+            let display_name = String::from(display_name);
+            Box::pin(GioFuture::new(
+                &self.ref_counted(),
+                move |self_, cancellable, send| {
+                    let res = self_.set_display_name(&display_name, Some(cancellable));
+                    send.resolve(res);
+                },
+            ))
+        }
+
         fn query_settable_attributes(
             &self,
             _cancellable: Option<&Cancellable>,
@@ -1794,6 +1810,30 @@ fn file_set_display_name() {
 
     // both new paths should equal
     assert_eq!(renamed.path(), expected.path());
+}
+
+#[test]
+fn file_set_display_name_future() {
+    // run test in a main context dedicated and configured as the thread default one
+    let _ = glib::MainContext::new().with_thread_default(|| {
+        // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::set_display_name_async/finish`
+        let my_custom_file = MyCustomFile::new("/my_file");
+        let res = glib::MainContext::ref_thread_default().block_on(
+            my_custom_file.set_display_name_future("my_file_new_name", glib::Priority::DEFAULT),
+        );
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let renamed = res.unwrap();
+
+        // invoke `MyFile` implementation of `crate::ffi::GFileIface::set_display_name_async/finish`
+        let my_file = MyFile::new("/my_file");
+        let res = glib::MainContext::ref_thread_default()
+            .block_on(my_file.set_display_name_future("my_file_new_name", glib::Priority::DEFAULT));
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let expected = res.unwrap();
+
+        // both new paths should equal
+        assert_eq!(renamed.path(), expected.path());
+    });
 }
 
 #[test]
