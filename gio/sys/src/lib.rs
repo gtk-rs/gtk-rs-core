@@ -142,6 +142,12 @@ pub const G_DRIVE_START_STOP_TYPE_NETWORK: GDriveStartStopType = 2;
 pub const G_DRIVE_START_STOP_TYPE_MULTIDISK: GDriveStartStopType = 3;
 pub const G_DRIVE_START_STOP_TYPE_PASSWORD: GDriveStartStopType = 4;
 
+pub type GEcnCodePoint = c_int;
+pub const G_ECN_NO_ECN: GEcnCodePoint = 0;
+pub const G_ECN_ECT_1: GEcnCodePoint = 1;
+pub const G_ECN_ECT_0: GEcnCodePoint = 2;
+pub const G_ECN_ECT_CE: GEcnCodePoint = 3;
+
 pub type GEmblemOrigin = c_int;
 pub const G_EMBLEM_ORIGIN_UNKNOWN: GEmblemOrigin = 0;
 pub const G_EMBLEM_ORIGIN_DEVICE: GEmblemOrigin = 1;
@@ -3910,6 +3916,34 @@ pub struct _GIOStreamPrivate {
 }
 
 pub type GIOStreamPrivate = _GIOStreamPrivate;
+
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct GIPTosMessageClass {
+    pub parent_class: GSocketControlMessageClass,
+}
+
+impl ::std::fmt::Debug for GIPTosMessageClass {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GIPTosMessageClass @ {self:p}"))
+            .field("parent_class", &self.parent_class)
+            .finish()
+    }
+}
+
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct GIPv6TclassMessageClass {
+    pub parent_class: GSocketControlMessageClass,
+}
+
+impl ::std::fmt::Debug for GIPv6TclassMessageClass {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GIPv6TclassMessageClass @ {self:p}"))
+            .field("parent_class", &self.parent_class)
+            .finish()
+    }
+}
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -7693,6 +7727,34 @@ impl ::std::fmt::Debug for GIOStream {
     }
 }
 
+#[repr(C)]
+#[allow(dead_code)]
+pub struct GIPTosMessage {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
+
+impl ::std::fmt::Debug for GIPTosMessage {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GIPTosMessage @ {self:p}"))
+            .finish()
+    }
+}
+
+#[repr(C)]
+#[allow(dead_code)]
+pub struct GIPv6TclassMessage {
+    _data: [u8; 0],
+    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+}
+
+impl ::std::fmt::Debug for GIPv6TclassMessage {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GIPv6TclassMessage @ {self:p}"))
+            .finish()
+    }
+}
+
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct GInetAddress {
@@ -9179,6 +9241,13 @@ unsafe extern "C" {
     // GDriveStartStopType
     //=========================================================================
     pub fn g_drive_start_stop_type_get_type() -> GType;
+
+    //=========================================================================
+    // GEcnCodePoint
+    //=========================================================================
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_ecn_code_point_get_type() -> GType;
 
     //=========================================================================
     // GEmblemOrigin
@@ -11779,6 +11848,38 @@ unsafe extern "C" {
         callback: GAsyncReadyCallback,
         user_data: gpointer,
     );
+
+    //=========================================================================
+    // GIPTosMessage
+    //=========================================================================
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_ip_tos_message_get_type() -> GType;
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_ip_tos_message_new(dscp: u8, ecn: GEcnCodePoint) -> *mut GSocketControlMessage;
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_ip_tos_message_get_dscp(message: *mut GIPTosMessage) -> u8;
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_ip_tos_message_get_ecn(message: *mut GIPTosMessage) -> GEcnCodePoint;
+
+    //=========================================================================
+    // GIPv6TclassMessage
+    //=========================================================================
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_ipv6_tclass_message_get_type() -> GType;
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_ipv6_tclass_message_new(dscp: u8, ecn: GEcnCodePoint) -> *mut GSocketControlMessage;
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_ipv6_tclass_message_get_dscp(message: *mut GIPv6TclassMessage) -> u8;
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_ipv6_tclass_message_get_ecn(message: *mut GIPv6TclassMessage) -> GEcnCodePoint;
 
     //=========================================================================
     // GInetAddress

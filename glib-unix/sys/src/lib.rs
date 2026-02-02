@@ -57,54 +57,35 @@ impl ::std::fmt::Debug for GUnixPipe {
 unsafe extern "C" {
 
     //=========================================================================
-    // GUnixPipe
-    //=========================================================================
-    #[cfg(feature = "v2_80")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
-    pub fn g_unix_pipe_clear(self_: *mut GUnixPipe);
-    #[cfg(feature = "v2_80")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
-    pub fn g_unix_pipe_close(
-        self_: *mut GUnixPipe,
-        end: GUnixPipeEnd,
-        error: *mut *mut glib::GError,
-    ) -> gboolean;
-    #[cfg(feature = "v2_80")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
-    pub fn g_unix_pipe_get(self_: *mut GUnixPipe, end: GUnixPipeEnd) -> c_int;
-    #[cfg(feature = "v2_80")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
-    pub fn g_unix_pipe_open(
-        self_: *mut GUnixPipe,
-        flags: c_int,
-        error: *mut *mut glib::GError,
-    ) -> gboolean;
-    #[cfg(feature = "v2_80")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
-    pub fn g_unix_pipe_steal(self_: *mut GUnixPipe, end: GUnixPipeEnd) -> c_int;
-
-    //=========================================================================
     // Other functions
     //=========================================================================
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
     pub fn g_closefrom(lowfd: c_int) -> c_int;
     pub fn g_unix_error_quark() -> glib::GQuark;
     pub fn g_unix_fd_add(
         fd: c_int,
         condition: glib::GIOCondition,
-        function: glib::GUnixFDSourceFunc,
+        function: GUnixFDSourceFunc,
         user_data: gpointer,
     ) -> c_uint;
     pub fn g_unix_fd_add_full(
         priority: c_int,
         fd: c_int,
         condition: glib::GIOCondition,
-        function: glib::GUnixFDSourceFunc,
+        function: GUnixFDSourceFunc,
         user_data: gpointer,
         notify: glib::GDestroyNotify,
     ) -> c_uint;
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
     pub fn g_unix_fd_query_path(fd: c_int, error: *mut *mut glib::GError) -> *mut c_char;
     pub fn g_unix_fd_source_new(fd: c_int, condition: glib::GIOCondition) -> *mut glib::GSource;
+    #[cfg(feature = "v2_80")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
     pub fn g_fdwalk_set_cloexec(lowfd: c_int) -> c_int;
+    #[cfg(feature = "v2_64")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_unix_get_passwd_entry(
         user_name: *const c_char,
         error: *mut *mut glib::GError,
