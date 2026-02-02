@@ -1209,8 +1209,6 @@ pub type GThreadFunc = Option<unsafe extern "C" fn(gpointer) -> gpointer>;
 pub type GTranslateFunc = Option<unsafe extern "C" fn(*const c_char, gpointer) -> *const c_char>;
 pub type GTraverseFunc = Option<unsafe extern "C" fn(gpointer, gpointer, gpointer) -> gboolean>;
 pub type GTraverseNodeFunc = Option<unsafe extern "C" fn(*mut GTreeNode, gpointer) -> gboolean>;
-pub type GUnixFDSourceFunc =
-    Option<unsafe extern "C" fn(c_int, GIOCondition, gpointer) -> gboolean>;
 pub type GVoidFunc = Option<unsafe extern "C" fn()>;
 
 // Records
@@ -6404,9 +6402,6 @@ unsafe extern "C" {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_clear_slist(slist_ptr: *mut *mut GSList, destroy: GDestroyNotify);
     pub fn g_close(fd: c_int, error: *mut *mut GError) -> gboolean;
-    #[cfg(feature = "v2_80")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
-    pub fn g_closefrom(lowfd: c_int) -> c_int;
     pub fn g_compute_checksum_for_bytes(
         checksum_type: GChecksumType,
         data: *mut GBytes,
@@ -6559,9 +6554,6 @@ unsafe extern "C" {
         overwrite: gboolean,
     ) -> *mut *mut c_char;
     pub fn g_environ_unsetenv(envp: *mut *mut c_char, variable: *const c_char) -> *mut *mut c_char;
-    #[cfg(feature = "v2_80")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
-    pub fn g_fdwalk_set_cloexec(lowfd: c_int) -> c_int;
     pub fn g_file_error_from_errno(err_no: c_int) -> GFileError;
     pub fn g_file_error_quark() -> GQuark;
     pub fn g_file_get_contents(
@@ -7337,6 +7329,9 @@ unsafe extern "C" {
     );
     pub fn g_test_trap_fork(usec_timeout: u64, test_trap_flags: GTestTrapFlags) -> gboolean;
     pub fn g_test_trap_has_passed() -> gboolean;
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_test_trap_has_skipped() -> gboolean;
     pub fn g_test_trap_reached_timeout() -> gboolean;
     pub fn g_test_trap_subprocess(
         test_path: *const c_char,
@@ -7443,52 +7438,6 @@ unsafe extern "C" {
     pub fn g_unichar_xdigit_value(c: u32) -> c_int;
     pub fn g_unicode_canonical_decomposition(ch: u32, result_len: *mut size_t) -> *mut u32;
     pub fn g_unicode_canonical_ordering(string: *mut u32, len: size_t);
-    pub fn g_unix_error_quark() -> GQuark;
-    pub fn g_unix_fd_add(
-        fd: c_int,
-        condition: GIOCondition,
-        function: GUnixFDSourceFunc,
-        user_data: gpointer,
-    ) -> c_uint;
-    pub fn g_unix_fd_add_full(
-        priority: c_int,
-        fd: c_int,
-        condition: GIOCondition,
-        function: GUnixFDSourceFunc,
-        user_data: gpointer,
-        notify: GDestroyNotify,
-    ) -> c_uint;
-    #[cfg(feature = "v2_88")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
-    pub fn g_unix_fd_query_path(fd: c_int, error: *mut *mut GError) -> *mut c_char;
-    pub fn g_unix_fd_source_new(fd: c_int, condition: GIOCondition) -> *mut GSource;
-    #[cfg(feature = "v2_64")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
-    #[cfg(unix)]
-    #[cfg_attr(docsrs, doc(cfg(unix)))]
-    pub fn g_unix_get_passwd_entry(
-        user_name: *const c_char,
-        error: *mut *mut GError,
-    ) -> *mut passwd;
-    pub fn g_unix_open_pipe(
-        fds: *mut [c_int; 2],
-        flags: c_int,
-        error: *mut *mut GError,
-    ) -> gboolean;
-    pub fn g_unix_set_fd_nonblocking(
-        fd: c_int,
-        nonblock: gboolean,
-        error: *mut *mut GError,
-    ) -> gboolean;
-    pub fn g_unix_signal_add(signum: c_int, handler: GSourceFunc, user_data: gpointer) -> c_uint;
-    pub fn g_unix_signal_add_full(
-        priority: c_int,
-        signum: c_int,
-        handler: GSourceFunc,
-        user_data: gpointer,
-        notify: GDestroyNotify,
-    ) -> c_uint;
-    pub fn g_unix_signal_source_new(signum: c_int) -> *mut GSource;
     pub fn g_unlink(filename: *const c_char) -> c_int;
     pub fn g_unsetenv(variable: *const c_char);
     pub fn g_usleep(microseconds: c_ulong);

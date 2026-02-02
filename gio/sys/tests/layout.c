@@ -98,6 +98,7 @@ int main() {
     printf("%s;%zu;%zu\n", "GDtlsClientConnectionInterface", sizeof(GDtlsClientConnectionInterface), alignof(GDtlsClientConnectionInterface));
     printf("%s;%zu;%zu\n", "GDtlsConnectionInterface", sizeof(GDtlsConnectionInterface), alignof(GDtlsConnectionInterface));
     printf("%s;%zu;%zu\n", "GDtlsServerConnectionInterface", sizeof(GDtlsServerConnectionInterface), alignof(GDtlsServerConnectionInterface));
+    printf("%s;%zu;%zu\n", "GEcnCodePoint", sizeof(GEcnCodePoint), alignof(GEcnCodePoint));
     printf("%s;%zu;%zu\n", "GEmblemOrigin", sizeof(GEmblemOrigin), alignof(GEmblemOrigin));
     printf("%s;%zu;%zu\n", "GEmblemedIcon", sizeof(GEmblemedIcon), alignof(GEmblemedIcon));
     printf("%s;%zu;%zu\n", "GEmblemedIconClass", sizeof(GEmblemedIconClass), alignof(GEmblemedIconClass));
@@ -135,6 +136,8 @@ int main() {
     printf("%s;%zu;%zu\n", "GIOStream", sizeof(GIOStream), alignof(GIOStream));
     printf("%s;%zu;%zu\n", "GIOStreamClass", sizeof(GIOStreamClass), alignof(GIOStreamClass));
     printf("%s;%zu;%zu\n", "GIOStreamSpliceFlags", sizeof(GIOStreamSpliceFlags), alignof(GIOStreamSpliceFlags));
+    printf("%s;%zu;%zu\n", "GIPTosMessageClass", sizeof(GIPTosMessageClass), alignof(GIPTosMessageClass));
+    printf("%s;%zu;%zu\n", "GIPv6TclassMessageClass", sizeof(GIPv6TclassMessageClass), alignof(GIPv6TclassMessageClass));
     printf("%s;%zu;%zu\n", "GIconIface", sizeof(GIconIface), alignof(GIconIface));
     printf("%s;%zu;%zu\n", "GInetAddress", sizeof(GInetAddress), alignof(GInetAddress));
     printf("%s;%zu;%zu\n", "GInetAddressClass", sizeof(GInetAddressClass), alignof(GInetAddressClass));

@@ -5,6 +5,8 @@
 use crate::ffi;
 use glib::translate::*;
 
+#[cfg(feature = "v2_80")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
 #[doc(alias = "g_closefrom")]
 pub fn closefrom(lowfd: i32) -> i32 {
     unsafe { ffi::g_closefrom(lowfd) }
@@ -15,6 +17,8 @@ pub fn error_quark() -> glib::Quark {
     unsafe { from_glib(ffi::g_unix_error_quark()) }
 }
 
+//#[cfg(feature = "v2_64")]
+//#[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
 //#[doc(alias = "g_unix_get_passwd_entry")]
 //#[doc(alias = "get_passwd_entry")]
 //pub fn passwd_entry(user_name: &str) -> Result</*Unimplemented*/Option<Basic: Pointer>, glib::Error> {

@@ -839,6 +839,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GEcnCodePoint",
+        Layout {
+            size: size_of::<GEcnCodePoint>(),
+            alignment: align_of::<GEcnCodePoint>(),
+        },
+    ),
+    (
         "GEmblemOrigin",
         Layout {
             size: size_of::<GEmblemOrigin>(),
@@ -1095,6 +1102,20 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         Layout {
             size: size_of::<GIOStreamSpliceFlags>(),
             alignment: align_of::<GIOStreamSpliceFlags>(),
+        },
+    ),
+    (
+        "GIPTosMessageClass",
+        Layout {
+            size: size_of::<GIPTosMessageClass>(),
+            alignment: align_of::<GIPTosMessageClass>(),
+        },
+    ),
+    (
+        "GIPv6TclassMessageClass",
+        Layout {
+            size: size_of::<GIPv6TclassMessageClass>(),
+            alignment: align_of::<GIPv6TclassMessageClass>(),
         },
     ),
     (
@@ -2402,6 +2423,10 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_DRIVE_START_STOP_TYPE_PASSWORD", "4"),
     ("(gint) G_DRIVE_START_STOP_TYPE_SHUTDOWN", "1"),
     ("(gint) G_DRIVE_START_STOP_TYPE_UNKNOWN", "0"),
+    ("(gint) G_ECN_ECT_0", "2"),
+    ("(gint) G_ECN_ECT_1", "1"),
+    ("(gint) G_ECN_ECT_CE", "3"),
+    ("(gint) G_ECN_NO_ECN", "0"),
     ("(gint) G_EMBLEM_ORIGIN_DEVICE", "1"),
     ("(gint) G_EMBLEM_ORIGIN_LIVEMETADATA", "2"),
     ("(gint) G_EMBLEM_ORIGIN_TAG", "3"),
