@@ -184,6 +184,20 @@ pub use self::filter_output_stream::FilterOutputStream;
 mod io_stream;
 pub use self::io_stream::IOStream;
 
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+mod ip_tos_message;
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+pub use self::ip_tos_message::IPTosMessage;
+
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+mod ipv6_tclass_message;
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+pub use self::ipv6_tclass_message::IPv6TclassMessage;
+
 mod icon;
 pub use self::icon::Icon;
 
@@ -495,6 +509,9 @@ pub use self::enums::DBusMessageType;
 pub use self::enums::DataStreamByteOrder;
 pub use self::enums::DataStreamNewlineType;
 pub use self::enums::DriveStartStopType;
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+pub use self::enums::EcnCodePoint;
 pub use self::enums::EmblemOrigin;
 pub use self::enums::FileAttributeStatus;
 pub use self::enums::FileAttributeType;
