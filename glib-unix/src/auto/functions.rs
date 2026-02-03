@@ -8,7 +8,7 @@ use glib::translate::*;
 #[cfg(feature = "v2_80")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
 #[doc(alias = "g_closefrom")]
-pub fn closefrom(lowfd: i32) -> i32 {
+pub unsafe fn closefrom(lowfd: i32) -> i32 {
     unsafe { ffi::g_closefrom(lowfd) }
 }
 
