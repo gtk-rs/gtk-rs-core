@@ -1314,6 +1314,124 @@ impl From<DriveStartStopType> for glib::Value {
     }
 }
 
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "GEcnCodePoint")]
+pub enum EcnCodePoint {
+    #[doc(alias = "G_ECN_NO_ECN")]
+    NoEcn,
+    #[doc(alias = "G_ECN_ECT_1")]
+    Ect1,
+    #[doc(alias = "G_ECN_ECT_0")]
+    Ect0,
+    #[doc(alias = "G_ECN_ECT_CE")]
+    EctCe,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+#[doc(hidden)]
+impl IntoGlib for EcnCodePoint {
+    type GlibType = ffi::GEcnCodePoint;
+
+    #[inline]
+    fn into_glib(self) -> ffi::GEcnCodePoint {
+        match self {
+            Self::NoEcn => ffi::G_ECN_NO_ECN,
+            Self::Ect1 => ffi::G_ECN_ECT_1,
+            Self::Ect0 => ffi::G_ECN_ECT_0,
+            Self::EctCe => ffi::G_ECN_ECT_CE,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+#[doc(hidden)]
+impl FromGlib<ffi::GEcnCodePoint> for EcnCodePoint {
+    #[inline]
+    unsafe fn from_glib(value: ffi::GEcnCodePoint) -> Self {
+        match value {
+            ffi::G_ECN_NO_ECN => Self::NoEcn,
+            ffi::G_ECN_ECT_1 => Self::Ect1,
+            ffi::G_ECN_ECT_0 => Self::Ect0,
+            ffi::G_ECN_ECT_CE => Self::EctCe,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+impl StaticType for EcnCodePoint {
+    #[inline]
+    #[doc(alias = "g_ecn_code_point_get_type")]
+    fn static_type() -> glib::Type {
+        unsafe { from_glib(ffi::g_ecn_code_point_get_type()) }
+    }
+}
+
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+impl glib::HasParamSpec for EcnCodePoint {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder_with_default
+    }
+}
+
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+impl glib::value::ValueType for EcnCodePoint {
+    type Type = Self;
+}
+
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+unsafe impl<'a> glib::value::FromValue<'a> for EcnCodePoint {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
+    }
+}
+
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+impl ToValue for EcnCodePoint {
+    #[inline]
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+impl From<EcnCodePoint> for glib::Value {
+    #[inline]
+    fn from(v: EcnCodePoint) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "GEmblemOrigin")]
