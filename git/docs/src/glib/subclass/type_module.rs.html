@@ -73,7 +73,7 @@
 
 <nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">glib/subclass/</div>type_module.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 <a href=#2 id=2 data-nosnippet>2</a>
-<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>crate::{<a href="../object.rs.html#1388-1391">Object</a>, <a href="../gobject/type_module.rs.html#11-55">TypeModule</a>, ffi, <a href="../../../gobject_sys/index.html">gobject_ffi</a>, prelude::<span class="kw-2">*</span>, subclass::prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
+<a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>crate::{<a href="../object.rs.html#1388-1391">Object</a>, <a href="../gobject/type_module.rs.html#11-55">TypeModule</a>, ffi, gobject_ffi, prelude::<span class="kw-2">*</span>, subclass::prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
 <a href=#4 id=4 data-nosnippet>4</a>
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">pub trait </span><a href="../../../glib/subclass/type_module/trait.TypeModuleImpl.html">TypeModuleImpl</a>: <a href="object.rs.html#21-123">ObjectImpl</a> + <a href="types.rs.html#604-739">ObjectSubclass</a>&lt;Type: <a href="../object.rs.html#71-74">IsA</a>&lt;<a href="../object.rs.html#1388-1391">Object</a>&gt; + <a href="../object.rs.html#71-74">IsA</a>&lt;<a href="../gobject/type_module.rs.html#11-55">TypeModule</a>&gt;&gt; {
 <a href=#6 id=6 data-nosnippet>6</a>    <span class="comment">// rustdoc-stripper-ignore-next
@@ -107,7 +107,7 @@
 <a href=#34 id=34 data-nosnippet>34</a>    <span class="kw">fn </span>parent_load(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
 <a href=#35 id=35 data-nosnippet>35</a>        <span class="kw">unsafe </span>{
 <a href=#36 id=36 data-nosnippet>36</a>            <span class="kw">let </span>data = T::<a href="types.rs.html#583">type_data</a>();
-<a href=#37 id=37 data-nosnippet>37</a>            <span class="kw">let </span>parent_class = <a href="#36">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#481-484">parent_class</a>() <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::<a href="../../../gobject_sys/struct.GTypeModuleClass.html">GTypeModuleClass</a>;
+<a href=#37 id=37 data-nosnippet>37</a>            <span class="kw">let </span>parent_class = <a href="#36">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#481-484">parent_class</a>() <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::GTypeModuleClass;
 <a href=#38 id=38 data-nosnippet>38</a>
 <a href=#39 id=39 data-nosnippet>39</a>            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#37">parent_class</a>)
 <a href=#40 id=40 data-nosnippet>40</a>                .load
@@ -124,7 +124,7 @@
 <a href=#51 id=51 data-nosnippet>51</a>    <span class="kw">fn </span>parent_unload(<span class="kw-2">&amp;</span><span class="self">self</span>) {
 <a href=#52 id=52 data-nosnippet>52</a>        <span class="kw">unsafe </span>{
 <a href=#53 id=53 data-nosnippet>53</a>            <span class="kw">let </span>data = T::<a href="types.rs.html#583">type_data</a>();
-<a href=#54 id=54 data-nosnippet>54</a>            <span class="kw">let </span>parent_class = <a href="#53">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#481-484">parent_class</a>() <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::<a href="../../../gobject_sys/struct.GTypeModuleClass.html">GTypeModuleClass</a>;
+<a href=#54 id=54 data-nosnippet>54</a>            <span class="kw">let </span>parent_class = <a href="#53">data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().<a href="types.rs.html#481-484">parent_class</a>() <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::GTypeModuleClass;
 <a href=#55 id=55 data-nosnippet>55</a>
 <a href=#56 id=56 data-nosnippet>56</a>            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#54">parent_class</a>)
 <a href=#57 id=57 data-nosnippet>57</a>                .unload
@@ -146,7 +146,7 @@
 <a href=#73 id=73 data-nosnippet>73</a>}
 <a href=#74 id=74 data-nosnippet>74</a>
 <a href=#75 id=75 data-nosnippet>75</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>load&lt;T: <a href="#5-26">TypeModuleImpl</a>&gt;(
-<a href=#76 id=76 data-nosnippet>76</a>    type_module: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../../gobject_sys/struct.GTypeModule.html">GTypeModule</a>,
+<a href=#76 id=76 data-nosnippet>76</a>    type_module: <span class="kw-2">*mut </span>gobject_ffi::GTypeModule,
 <a href=#77 id=77 data-nosnippet>77</a>) -&gt; ffi::gboolean {
 <a href=#78 id=78 data-nosnippet>78</a>    <span class="kw">unsafe </span>{
 <a href=#79 id=79 data-nosnippet>79</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#76">type_module</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
@@ -159,15 +159,15 @@
 <a href=#86 id=86 data-nosnippet>86</a>        // to dispose the module when dropped by ensuring the reference count is &gt; 1.
 <a href=#87 id=87 data-nosnippet>87</a>        // Nothing is done if loading types has failed, allowing application to drop
 <a href=#88 id=88 data-nosnippet>88</a>        // and dispose the invalid module.
-<a href=#89 id=89 data-nosnippet>89</a>        </span><span class="kw">if </span><a href="#82">res</a> &amp;&amp; (<span class="kw-2">*</span>(<a href="#76">type_module</a> <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::<a href="../../../gobject_sys/struct.GObject.html">GObject</a>)).ref_count == <span class="number">1 </span>{
-<a href=#90 id=90 data-nosnippet>90</a>            gobject_ffi::<a href="../../../gobject_sys/fn.g_object_ref.html">g_object_ref</a>(<a href="#76">type_module</a> <span class="kw">as _</span>);
+<a href=#89 id=89 data-nosnippet>89</a>        </span><span class="kw">if </span><a href="#82">res</a> &amp;&amp; (<span class="kw-2">*</span>(<a href="#76">type_module</a> <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::GObject)).ref_count == <span class="number">1 </span>{
+<a href=#90 id=90 data-nosnippet>90</a>            gobject_ffi::g_object_ref(<a href="#76">type_module</a> <span class="kw">as _</span>);
 <a href=#91 id=91 data-nosnippet>91</a>        }
 <a href=#92 id=92 data-nosnippet>92</a>
 <a href=#93 id=93 data-nosnippet>93</a>        <a href="#82">res</a>.<a href="../translate.rs.html#334">into_glib</a>()
 <a href=#94 id=94 data-nosnippet>94</a>    }
 <a href=#95 id=95 data-nosnippet>95</a>}
 <a href=#96 id=96 data-nosnippet>96</a>
-<a href=#97 id=97 data-nosnippet>97</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>unload&lt;T: <a href="#5-26">TypeModuleImpl</a>&gt;(type_module: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../../gobject_sys/struct.GTypeModule.html">GTypeModule</a>) {
+<a href=#97 id=97 data-nosnippet>97</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>unload&lt;T: <a href="#5-26">TypeModuleImpl</a>&gt;(type_module: <span class="kw-2">*mut </span>gobject_ffi::GTypeModule) {
 <a href=#98 id=98 data-nosnippet>98</a>    <span class="kw">unsafe </span>{
 <a href=#99 id=99 data-nosnippet>99</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#97">type_module</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
 <a href=#100 id=100 data-nosnippet>100</a>        <span class="kw">let </span>imp = <a href="#99">instance</a>.<a href="types.rs.html#83">imp</a>();

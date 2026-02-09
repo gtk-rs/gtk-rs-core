@@ -76,7 +76,7 @@
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span><span class="kw">crate</span>::enums::{<a href="../enums.rs.html#382">EnumValues</a>, <a href="../enums.rs.html#961">FlagsValues</a>};
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>crate::{
 <a href=#5 id=5 data-nosnippet>5</a>    <a href="../object.rs.html#4183">Interface</a>, <a href="../gobject/interface_info.rs.html#10">InterfaceInfo</a>, <a href="../object.rs.html#1388-1391">Object</a>, <a href="../types.rs.html#22">Type</a>, <a href="../gobject/auto/flags.rs.html#189-216">TypeFlags</a>, <a href="../gobject/type_info.rs.html#17">TypeInfo</a>, <a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>, <a href="../gobject/type_value_table.rs.html#19">TypeValueTable</a>, ffi,
-<a href=#6 id=6 data-nosnippet>6</a>    <a href="../../../gobject_sys/index.html">gobject_ffi</a>, prelude::<span class="kw-2">*</span>, subclass::prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>,
+<a href=#6 id=6 data-nosnippet>6</a>    gobject_ffi, prelude::<span class="kw-2">*</span>, subclass::prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>,
 <a href=#7 id=7 data-nosnippet>7</a>};
 <a href=#8 id=8 data-nosnippet>8</a>
 <a href=#9 id=9 data-nosnippet>9</a><span class="kw">pub trait </span><a href="../../../glib/subclass/type_plugin/trait.TypePluginImpl.html">TypePluginImpl</a>: <a href="object.rs.html#21-123">ObjectImpl</a> + <a href="types.rs.html#604-739">ObjectSubclass</a>&lt;Type: <a href="../object.rs.html#71-74">IsA</a>&lt;<a href="../object.rs.html#1388-1391">Object</a>&gt; + <a href="../object.rs.html#71-74">IsA</a>&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;&gt; {
@@ -113,7 +113,7 @@
 <a href=#40 id=40 data-nosnippet>40</a>        <span class="kw">unsafe </span>{
 <a href=#41 id=41 data-nosnippet>41</a>            <span class="kw">let </span>type_data = <span class="self">Self</span>::<a href="types.rs.html#583">type_data</a>();
 <a href=#42 id=42 data-nosnippet>42</a>            <span class="kw">let </span>parent_iface = <a href="#41">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().parent_interface::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;()
-<a href=#43 id=43 data-nosnippet>43</a>                <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::<a href="../../../gobject_sys/struct.GTypePluginClass.html">GTypePluginClass</a>;
+<a href=#43 id=43 data-nosnippet>43</a>                <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::GTypePluginClass;
 <a href=#44 id=44 data-nosnippet>44</a>
 <a href=#45 id=45 data-nosnippet>45</a>            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#42">parent_iface</a>)
 <a href=#46 id=46 data-nosnippet>46</a>                .use_plugin
@@ -127,7 +127,7 @@
 <a href=#54 id=54 data-nosnippet>54</a>        <span class="kw">unsafe </span>{
 <a href=#55 id=55 data-nosnippet>55</a>            <span class="kw">let </span>type_data = <span class="self">Self</span>::<a href="types.rs.html#583">type_data</a>();
 <a href=#56 id=56 data-nosnippet>56</a>            <span class="kw">let </span>parent_iface = <a href="#55">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().parent_interface::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;()
-<a href=#57 id=57 data-nosnippet>57</a>                <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::<a href="../../../gobject_sys/struct.GTypePluginClass.html">GTypePluginClass</a>;
+<a href=#57 id=57 data-nosnippet>57</a>                <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::GTypePluginClass;
 <a href=#58 id=58 data-nosnippet>58</a>
 <a href=#59 id=59 data-nosnippet>59</a>            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#56">parent_iface</a>)
 <a href=#60 id=60 data-nosnippet>60</a>                .unuse_plugin
@@ -141,7 +141,7 @@
 <a href=#68 id=68 data-nosnippet>68</a>        <span class="kw">unsafe </span>{
 <a href=#69 id=69 data-nosnippet>69</a>            <span class="kw">let </span>type_data = <span class="self">Self</span>::<a href="types.rs.html#583">type_data</a>();
 <a href=#70 id=70 data-nosnippet>70</a>            <span class="kw">let </span>parent_iface = <a href="#69">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().parent_interface::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;()
-<a href=#71 id=71 data-nosnippet>71</a>                <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::<a href="../../../gobject_sys/struct.GTypePluginClass.html">GTypePluginClass</a>;
+<a href=#71 id=71 data-nosnippet>71</a>                <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::GTypePluginClass;
 <a href=#72 id=72 data-nosnippet>72</a>
 <a href=#73 id=73 data-nosnippet>73</a>            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#70">parent_iface</a>)
 <a href=#74 id=74 data-nosnippet>74</a>                .complete_type_info
@@ -169,7 +169,7 @@
 <a href=#96 id=96 data-nosnippet>96</a>        <span class="kw">unsafe </span>{
 <a href=#97 id=97 data-nosnippet>97</a>            <span class="kw">let </span>type_data = <span class="self">Self</span>::<a href="types.rs.html#583">type_data</a>();
 <a href=#98 id=98 data-nosnippet>98</a>            <span class="kw">let </span>parent_iface = <a href="#97">type_data</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ref">as_ref</a>().parent_interface::&lt;<a href="../gobject/type_plugin.rs.html#5-66">TypePlugin</a>&gt;()
-<a href=#99 id=99 data-nosnippet>99</a>                <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::<a href="../../../gobject_sys/struct.GTypePluginClass.html">GTypePluginClass</a>;
+<a href=#99 id=99 data-nosnippet>99</a>                <span class="kw">as </span><span class="kw-2">*const </span>gobject_ffi::GTypePluginClass;
 <a href=#100 id=100 data-nosnippet>100</a>
 <a href=#101 id=101 data-nosnippet>101</a>            <span class="kw">let </span>f = (<span class="kw-2">*</span><a href="#98">parent_iface</a>)
 <a href=#102 id=102 data-nosnippet>102</a>                .complete_interface_info
@@ -197,7 +197,7 @@
 <a href=#124 id=124 data-nosnippet>124</a>    }
 <a href=#125 id=125 data-nosnippet>125</a>}
 <a href=#126 id=126 data-nosnippet>126</a>
-<a href=#127 id=127 data-nosnippet>127</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>use_plugin&lt;T: <a href="#9-25">TypePluginImpl</a>&gt;(type_plugin: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../../gobject_sys/struct.GTypePlugin.html">GTypePlugin</a>) {
+<a href=#127 id=127 data-nosnippet>127</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>use_plugin&lt;T: <a href="#9-25">TypePluginImpl</a>&gt;(type_plugin: <span class="kw-2">*mut </span>gobject_ffi::GTypePlugin) {
 <a href=#128 id=128 data-nosnippet>128</a>    <span class="kw">unsafe </span>{
 <a href=#129 id=129 data-nosnippet>129</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#127">type_plugin</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
 <a href=#130 id=130 data-nosnippet>130</a>        <span class="kw">let </span>imp = <a href="#129">instance</a>.<a href="types.rs.html#83">imp</a>();
@@ -206,7 +206,7 @@
 <a href=#133 id=133 data-nosnippet>133</a>    }
 <a href=#134 id=134 data-nosnippet>134</a>}
 <a href=#135 id=135 data-nosnippet>135</a>
-<a href=#136 id=136 data-nosnippet>136</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>unuse_plugin&lt;T: <a href="#9-25">TypePluginImpl</a>&gt;(type_plugin: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../../gobject_sys/struct.GTypePlugin.html">GTypePlugin</a>) {
+<a href=#136 id=136 data-nosnippet>136</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>unuse_plugin&lt;T: <a href="#9-25">TypePluginImpl</a>&gt;(type_plugin: <span class="kw-2">*mut </span>gobject_ffi::GTypePlugin) {
 <a href=#137 id=137 data-nosnippet>137</a>    <span class="kw">unsafe </span>{
 <a href=#138 id=138 data-nosnippet>138</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#136">type_plugin</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
 <a href=#139 id=139 data-nosnippet>139</a>        <span class="kw">let </span>imp = <a href="#138">instance</a>.<a href="types.rs.html#83">imp</a>();
@@ -216,10 +216,10 @@
 <a href=#143 id=143 data-nosnippet>143</a>}
 <a href=#144 id=144 data-nosnippet>144</a>
 <a href=#145 id=145 data-nosnippet>145</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>complete_type_info&lt;T: <a href="#9-25">TypePluginImpl</a>&gt;(
-<a href=#146 id=146 data-nosnippet>146</a>    type_plugin: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../../gobject_sys/struct.GTypePlugin.html">GTypePlugin</a>,
+<a href=#146 id=146 data-nosnippet>146</a>    type_plugin: <span class="kw-2">*mut </span>gobject_ffi::GTypePlugin,
 <a href=#147 id=147 data-nosnippet>147</a>    gtype: ffi::GType,
-<a href=#148 id=148 data-nosnippet>148</a>    info_ptr: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../../gobject_sys/struct.GTypeInfo.html">GTypeInfo</a>,
-<a href=#149 id=149 data-nosnippet>149</a>    value_table_ptr: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../../gobject_sys/struct.GTypeValueTable.html">GTypeValueTable</a>,
+<a href=#148 id=148 data-nosnippet>148</a>    info_ptr: <span class="kw-2">*mut </span>gobject_ffi::GTypeInfo,
+<a href=#149 id=149 data-nosnippet>149</a>    value_table_ptr: <span class="kw-2">*mut </span>gobject_ffi::GTypeValueTable,
 <a href=#150 id=150 data-nosnippet>150</a>) {
 <a href=#151 id=151 data-nosnippet>151</a>    <span class="kw">unsafe </span>{
 <a href=#152 id=152 data-nosnippet>152</a>        <a href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(!info_ptr.is_null());
@@ -238,10 +238,10 @@
 <a href=#165 id=165 data-nosnippet>165</a>}
 <a href=#166 id=166 data-nosnippet>166</a>
 <a href=#167 id=167 data-nosnippet>167</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>complete_interface_info&lt;T: <a href="#9-25">TypePluginImpl</a>&gt;(
-<a href=#168 id=168 data-nosnippet>168</a>    type_plugin: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../../gobject_sys/struct.GTypePlugin.html">GTypePlugin</a>,
+<a href=#168 id=168 data-nosnippet>168</a>    type_plugin: <span class="kw-2">*mut </span>gobject_ffi::GTypePlugin,
 <a href=#169 id=169 data-nosnippet>169</a>    instance_gtype: ffi::GType,
 <a href=#170 id=170 data-nosnippet>170</a>    interface_gtype: ffi::GType,
-<a href=#171 id=171 data-nosnippet>171</a>    info_ptr: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../../gobject_sys/struct.GInterfaceInfo.html">GInterfaceInfo</a>,
+<a href=#171 id=171 data-nosnippet>171</a>    info_ptr: <span class="kw-2">*mut </span>gobject_ffi::GInterfaceInfo,
 <a href=#172 id=172 data-nosnippet>172</a>) {
 <a href=#173 id=173 data-nosnippet>173</a>    <span class="kw">unsafe </span>{
 <a href=#174 id=174 data-nosnippet>174</a>        <a href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(!info_ptr.is_null());

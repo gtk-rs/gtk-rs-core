@@ -79,12 +79,12 @@
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>libc::{c_uint, <a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>};
 <a href=#8 id=8 data-nosnippet>8</a>
-<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span>crate::{<a href="types.rs.html#22">Type</a>, <a href="value.rs.html#490-533">Value</a>, <a href="../../gobject_sys/index.html">gobject_ffi</a>, prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
+<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span>crate::{<a href="types.rs.html#22">Type</a>, <a href="value.rs.html#490-533">Value</a>, gobject_ffi, prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
 <a href=#10 id=10 data-nosnippet>10</a>
 <a href=#11 id=11 data-nosnippet>11</a><a href="wrapper.rs.html#276-443">wrapper!</a> {
 <a href=#12 id=12 data-nosnippet>12</a>    <span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialEq.html">PartialEq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Eq.html">Eq</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.PartialOrd.html">PartialOrd</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/derive.Ord.html">Ord</a>, <a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>, <a href="https://doc.rust-lang.org/nightly/core/hash/macros/derive.Hash.html">Hash</a>)]
 <a href=#13 id=13 data-nosnippet>13</a>    #[doc(alias = <span class="string">"GClosure"</span>)]
-<a href=#14 id=14 data-nosnippet>14</a>    </span><span class="kw">pub struct </span><a href="#11-24">Closure</a>(Shared&lt;gobject_ffi::<a href="../../gobject_sys/struct.GClosure.html">GClosure</a>&gt;);
+<a href=#14 id=14 data-nosnippet>14</a>    </span><span class="kw">pub struct </span><a href="#11-24">Closure</a>(Shared&lt;gobject_ffi::GClosure&gt;);
 <a href=#15 id=15 data-nosnippet>15</a>
 <a href=#16 id=16 data-nosnippet>16</a>    <span class="kw">match fn </span>{
 <a href=#17 id=17 data-nosnippet>17</a>        <span class="kw-2">ref </span>=&gt; |ptr| {
@@ -286,10 +286,10 @@
 <a href=#213 id=213 data-nosnippet>213</a>    </span><span class="kw">pub unsafe fn </span>new_unsafe&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#490-533">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#490-533">Value</a>&gt;&gt;(callback: F) -&gt; <span class="self">Self </span>{
 <a href=#214 id=214 data-nosnippet>214</a>        <span class="kw">unsafe </span>{
 <a href=#215 id=215 data-nosnippet>215</a>            <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>marshal&lt;F&gt;(
-<a href=#216 id=216 data-nosnippet>216</a>                _closure: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../gobject_sys/struct.GClosure.html">GClosure</a>,
-<a href=#217 id=217 data-nosnippet>217</a>                return_value: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../gobject_sys/struct.GValue.html">GValue</a>,
+<a href=#216 id=216 data-nosnippet>216</a>                _closure: <span class="kw-2">*mut </span>gobject_ffi::GClosure,
+<a href=#217 id=217 data-nosnippet>217</a>                return_value: <span class="kw-2">*mut </span>gobject_ffi::GValue,
 <a href=#218 id=218 data-nosnippet>218</a>                n_param_values: c_uint,
-<a href=#219 id=219 data-nosnippet>219</a>                param_values: <span class="kw-2">*const </span>gobject_ffi::<a href="../../gobject_sys/struct.GValue.html">GValue</a>,
+<a href=#219 id=219 data-nosnippet>219</a>                param_values: <span class="kw-2">*const </span>gobject_ffi::GValue,
 <a href=#220 id=220 data-nosnippet>220</a>                _invocation_hint: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>,
 <a href=#221 id=221 data-nosnippet>221</a>                marshal_data: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>,
 <a href=#222 id=222 data-nosnippet>222</a>            ) <span class="kw">where
@@ -335,7 +335,7 @@
 <a href=#262 id=262 data-nosnippet>262</a>
 <a href=#263 id=263 data-nosnippet>263</a>            <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>finalize&lt;F&gt;(
 <a href=#264 id=264 data-nosnippet>264</a>                notify_data: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>,
-<a href=#265 id=265 data-nosnippet>265</a>                _closure: <span class="kw-2">*mut </span>gobject_ffi::<a href="../../gobject_sys/struct.GClosure.html">GClosure</a>,
+<a href=#265 id=265 data-nosnippet>265</a>                _closure: <span class="kw-2">*mut </span>gobject_ffi::GClosure,
 <a href=#266 id=266 data-nosnippet>266</a>            ) <span class="kw">where
 <a href=#267 id=267 data-nosnippet>267</a>                </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span>[<a href="value.rs.html#490-533">Value</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="value.rs.html#490-533">Value</a>&gt;,
 <a href=#268 id=268 data-nosnippet>268</a>            {
@@ -352,12 +352,12 @@
 <a href=#279 id=279 data-nosnippet>279</a>            // We don't store any custom data ourselves in the GClosure
 <a href=#280 id=280 data-nosnippet>280</a>            </span><span class="kw">let </span>size = <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>::<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html#method.max">max</a>(<span class="number">4</span>, mem::align_of::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>)
 <a href=#281 id=281 data-nosnippet>281</a>                + <span class="number">3 </span>* mem::size_of::&lt;<span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>;
-<a href=#282 id=282 data-nosnippet>282</a>            <span class="kw">let </span>closure = gobject_ffi::<a href="../../gobject_sys/fn.g_closure_new_simple.html">g_closure_new_simple</a>(<a href="#280">size</a>, ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>());
+<a href=#282 id=282 data-nosnippet>282</a>            <span class="kw">let </span>closure = gobject_ffi::g_closure_new_simple(<a href="#280">size</a>, ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>());
 <a href=#283 id=283 data-nosnippet>283</a>            <span class="kw">let </span>callback = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#213">callback</a>);
 <a href=#284 id=284 data-nosnippet>284</a>            <span class="kw">let </span>ptr: <span class="kw-2">*mut </span>F = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#283">callback</a>);
 <a href=#285 id=285 data-nosnippet>285</a>            <span class="kw">let </span>ptr: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a> = <a href="#284">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>;
-<a href=#286 id=286 data-nosnippet>286</a>            gobject_ffi::<a href="../../gobject_sys/fn.g_closure_set_meta_marshal.html">g_closure_set_meta_marshal</a>(<a href="#282">closure</a>, <a href="#285">ptr</a>, <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(marshal::&lt;F&gt;));
-<a href=#287 id=287 data-nosnippet>287</a>            gobject_ffi::<a href="../../gobject_sys/fn.g_closure_add_finalize_notifier.html">g_closure_add_finalize_notifier</a>(<a href="#282">closure</a>, <a href="#285">ptr</a>, <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(finalize::&lt;F&gt;));
+<a href=#286 id=286 data-nosnippet>286</a>            gobject_ffi::g_closure_set_meta_marshal(<a href="#282">closure</a>, <a href="#285">ptr</a>, <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(marshal::&lt;F&gt;));
+<a href=#287 id=287 data-nosnippet>287</a>            gobject_ffi::g_closure_add_finalize_notifier(<a href="#282">closure</a>, <a href="#285">ptr</a>, <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(finalize::&lt;F&gt;));
 <a href=#288 id=288 data-nosnippet>288</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(<a href="#282">closure</a>)
 <a href=#289 id=289 data-nosnippet>289</a>        }
 <a href=#290 id=290 data-nosnippet>290</a>    }
@@ -388,11 +388,11 @@
 <a href=#315 id=315 data-nosnippet>315</a>                <a href="#307">result</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0
 <a href=#316 id=316 data-nosnippet>316</a>            </span>};
 <a href=#317 id=317 data-nosnippet>317</a>
-<a href=#318 id=318 data-nosnippet>318</a>            gobject_ffi::<a href="../../gobject_sys/fn.g_closure_invoke.html">g_closure_invoke</a>(
+<a href=#318 id=318 data-nosnippet>318</a>            gobject_ffi::g_closure_invoke(
 <a href=#319 id=319 data-nosnippet>319</a>                <a class="self" href="#305">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
 <a href=#320 id=320 data-nosnippet>320</a>                <a href="#312">result_ptr</a>,
 <a href=#321 id=321 data-nosnippet>321</a>                <a href="#305">values</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
-<a href=#322 id=322 data-nosnippet>322</a>                <a href="translate.rs.html#202-204">mut_override</a>(<a href="#305">values</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>()) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::<a href="../../gobject_sys/struct.GValue.html">GValue</a>,
+<a href=#322 id=322 data-nosnippet>322</a>                <a href="translate.rs.html#202-204">mut_override</a>(<a href="#305">values</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>()) <span class="kw">as </span><span class="kw-2">*mut </span>gobject_ffi::GValue,
 <a href=#323 id=323 data-nosnippet>323</a>                ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>(),
 <a href=#324 id=324 data-nosnippet>324</a>            );
 <a href=#325 id=325 data-nosnippet>325</a>
@@ -411,7 +411,7 @@
 <a href=#338 id=338 data-nosnippet>338</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_closure_invalidate"</span>)]
 <a href=#339 id=339 data-nosnippet>339</a>    </span><span class="kw">pub fn </span>invalidate(<span class="kw-2">&amp;</span><span class="self">self</span>) {
 <a href=#340 id=340 data-nosnippet>340</a>        <span class="kw">unsafe </span>{
-<a href=#341 id=341 data-nosnippet>341</a>            gobject_ffi::<a href="../../gobject_sys/fn.g_closure_invalidate.html">g_closure_invalidate</a>(<a class="self" href="#339">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+<a href=#341 id=341 data-nosnippet>341</a>            gobject_ffi::g_closure_invalidate(<a class="self" href="#339">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
 <a href=#342 id=342 data-nosnippet>342</a>        }
 <a href=#343 id=343 data-nosnippet>343</a>    }
 <a href=#344 id=344 data-nosnippet>344</a>}
