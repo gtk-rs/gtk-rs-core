@@ -527,12 +527,12 @@ pub trait SettingsExt: IsA<Settings> + 'static {
         unsafe {
             let f: Box_<F> = Box_::new(f);
             let detailed_signal_name = detail.map(|name| format!("changed::{name}\0"));
-            let signal_name: &[u8] = detailed_signal_name
-                .as_ref()
-                .map_or(c"changed".to_bytes(), |n| n.as_bytes());
+            let signal_name = detailed_signal_name.as_ref().map_or(c"changed", |n| {
+                std::ffi::CStr::from_bytes_with_nul_unchecked(n.as_bytes())
+            });
             connect_raw(
                 self.as_ptr() as *mut _,
-                signal_name.as_ptr() as *const _,
+                signal_name.as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     changed_trampoline::<Self, F> as *const (),
                 )),
@@ -563,7 +563,7 @@ pub trait SettingsExt: IsA<Settings> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"writable-change-event".as_ptr() as *const _,
+                c"writable-change-event".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     writable_change_event_trampoline::<Self, F> as *const (),
                 )),
@@ -597,12 +597,14 @@ pub trait SettingsExt: IsA<Settings> + 'static {
         unsafe {
             let f: Box_<F> = Box_::new(f);
             let detailed_signal_name = detail.map(|name| format!("writable-changed::{name}\0"));
-            let signal_name: &[u8] = detailed_signal_name
+            let signal_name = detailed_signal_name
                 .as_ref()
-                .map_or(c"writable-changed".to_bytes(), |n| n.as_bytes());
+                .map_or(c"writable-changed", |n| {
+                    std::ffi::CStr::from_bytes_with_nul_unchecked(n.as_bytes())
+                });
             connect_raw(
                 self.as_ptr() as *mut _,
-                signal_name.as_ptr() as *const _,
+                signal_name.as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     writable_changed_trampoline::<Self, F> as *const (),
                 )),
@@ -630,7 +632,7 @@ pub trait SettingsExt: IsA<Settings> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::delay-apply".as_ptr() as *const _,
+                c"notify::delay-apply".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_delay_apply_trampoline::<Self, F> as *const (),
                 )),
@@ -658,7 +660,7 @@ pub trait SettingsExt: IsA<Settings> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::has-unapplied".as_ptr() as *const _,
+                c"notify::has-unapplied".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_has_unapplied_trampoline::<Self, F> as *const (),
                 )),

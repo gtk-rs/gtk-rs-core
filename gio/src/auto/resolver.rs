@@ -597,7 +597,7 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"reload".as_ptr() as *const _,
+                c"reload".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     reload_trampoline::<Self, F> as *const (),
                 )),
@@ -624,7 +624,7 @@ pub trait ResolverExt: IsA<Resolver> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::timeout".as_ptr() as *const _,
+                c"notify::timeout".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_timeout_trampoline::<Self, F> as *const (),
                 )),

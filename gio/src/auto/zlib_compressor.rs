@@ -82,7 +82,7 @@ impl ZlibCompressor {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::file-info".as_ptr() as *const _,
+                c"notify::file-info".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_file_info_trampoline::<F> as *const (),
                 )),
@@ -109,7 +109,7 @@ impl ZlibCompressor {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::os".as_ptr() as *const _,
+                c"notify::os".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_os_trampoline::<F> as *const (),
                 )),

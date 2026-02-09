@@ -116,7 +116,7 @@ impl DBusServer {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"new-connection".as_ptr() as *const _,
+                c"new-connection".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     new_connection_trampoline::<F> as *const (),
                 )),
@@ -141,7 +141,7 @@ impl DBusServer {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::active".as_ptr() as *const _,
+                c"notify::active".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_active_trampoline::<F> as *const (),
                 )),
@@ -166,7 +166,7 @@ impl DBusServer {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::client-address".as_ptr() as *const _,
+                c"notify::client-address".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_client_address_trampoline::<F> as *const (),
                 )),

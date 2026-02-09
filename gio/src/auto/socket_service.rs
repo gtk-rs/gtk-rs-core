@@ -96,7 +96,7 @@ pub trait SocketServiceExt: IsA<SocketService> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"incoming".as_ptr() as *const _,
+                c"incoming".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     incoming_trampoline::<Self, F> as *const (),
                 )),
@@ -124,7 +124,7 @@ pub trait SocketServiceExt: IsA<SocketService> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::active".as_ptr() as *const _,
+                c"notify::active".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_active_trampoline::<Self, F> as *const (),
                 )),

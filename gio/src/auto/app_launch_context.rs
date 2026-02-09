@@ -127,7 +127,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"launch-failed".as_ptr() as *const _,
+                c"launch-failed".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     launch_failed_trampoline::<Self, F> as *const (),
                 )),
@@ -167,7 +167,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"launch-started".as_ptr() as *const _,
+                c"launch-started".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     launch_started_trampoline::<Self, F> as *const (),
                 )),
@@ -203,7 +203,7 @@ pub trait AppLaunchContextExt: IsA<AppLaunchContext> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"launched".as_ptr() as *const _,
+                c"launched".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     launched_trampoline::<Self, F> as *const (),
                 )),

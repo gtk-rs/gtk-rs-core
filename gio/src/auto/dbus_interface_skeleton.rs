@@ -193,7 +193,7 @@ pub trait DBusInterfaceSkeletonExt: IsA<DBusInterfaceSkeleton> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"g-authorize-method".as_ptr() as *const _,
+                c"g-authorize-method".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     g_authorize_method_trampoline::<Self, F> as *const (),
                 )),
@@ -221,7 +221,7 @@ pub trait DBusInterfaceSkeletonExt: IsA<DBusInterfaceSkeleton> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::g-flags".as_ptr() as *const _,
+                c"notify::g-flags".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_g_flags_trampoline::<Self, F> as *const (),
                 )),

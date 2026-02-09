@@ -95,7 +95,7 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"interface-added".as_ptr() as *const _,
+                c"interface-added".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     interface_added_trampoline::<Self, F> as *const (),
                 )),
@@ -131,7 +131,7 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"interface-removed".as_ptr() as *const _,
+                c"interface-removed".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     interface_removed_trampoline::<Self, F> as *const (),
                 )),
@@ -162,7 +162,7 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"object-added".as_ptr() as *const _,
+                c"object-added".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     object_added_trampoline::<Self, F> as *const (),
                 )),
@@ -193,7 +193,7 @@ pub trait DBusObjectManagerExt: IsA<DBusObjectManager> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"object-removed".as_ptr() as *const _,
+                c"object-removed".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     object_removed_trampoline::<Self, F> as *const (),
                 )),
