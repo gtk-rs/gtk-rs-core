@@ -80,7 +80,7 @@ pub trait DebugControllerDBusExt: IsA<DebugControllerDBus> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"authorize".as_ptr() as *const _,
+                c"authorize".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     authorize_trampoline::<Self, F> as *const (),
                 )),

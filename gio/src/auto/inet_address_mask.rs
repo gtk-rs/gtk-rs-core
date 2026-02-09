@@ -149,7 +149,7 @@ pub trait InetAddressMaskExt: IsA<InetAddressMask> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::address".as_ptr() as *const _,
+                c"notify::address".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_address_trampoline::<Self, F> as *const (),
                 )),
@@ -177,7 +177,7 @@ pub trait InetAddressMaskExt: IsA<InetAddressMask> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::family".as_ptr() as *const _,
+                c"notify::family".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_family_trampoline::<Self, F> as *const (),
                 )),
@@ -205,7 +205,7 @@ pub trait InetAddressMaskExt: IsA<InetAddressMask> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::length".as_ptr() as *const _,
+                c"notify::length".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_length_trampoline::<Self, F> as *const (),
                 )),

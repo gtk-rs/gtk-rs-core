@@ -249,7 +249,7 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"aborted".as_ptr() as *const _,
+                c"aborted".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     aborted_trampoline::<Self, F> as *const (),
                 )),
@@ -289,7 +289,7 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"ask-password".as_ptr() as *const _,
+                c"ask-password".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     ask_password_trampoline::<Self, F> as *const (),
                 )),
@@ -325,7 +325,7 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"reply".as_ptr() as *const _,
+                c"reply".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     reply_trampoline::<Self, F> as *const (),
                 )),
@@ -369,7 +369,7 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"show-unmount-progress".as_ptr() as *const _,
+                c"show-unmount-progress".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     show_unmount_progress_trampoline::<Self, F> as *const (),
                 )),
@@ -397,7 +397,7 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::anonymous".as_ptr() as *const _,
+                c"notify::anonymous".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_anonymous_trampoline::<Self, F> as *const (),
                 )),
@@ -425,7 +425,7 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::choice".as_ptr() as *const _,
+                c"notify::choice".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_choice_trampoline::<Self, F> as *const (),
                 )),
@@ -453,7 +453,7 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::domain".as_ptr() as *const _,
+                c"notify::domain".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_domain_trampoline::<Self, F> as *const (),
                 )),
@@ -486,7 +486,7 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::is-tcrypt-hidden-volume".as_ptr() as *const _,
+                c"notify::is-tcrypt-hidden-volume".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_tcrypt_hidden_volume_trampoline::<Self, F> as *const (),
                 )),
@@ -519,7 +519,7 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::is-tcrypt-system-volume".as_ptr() as *const _,
+                c"notify::is-tcrypt-system-volume".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_is_tcrypt_system_volume_trampoline::<Self, F> as *const (),
                 )),
@@ -547,7 +547,7 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::password".as_ptr() as *const _,
+                c"notify::password".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_password_trampoline::<Self, F> as *const (),
                 )),
@@ -575,7 +575,7 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::password-save".as_ptr() as *const _,
+                c"notify::password-save".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_password_save_trampoline::<Self, F> as *const (),
                 )),
@@ -602,7 +602,7 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::pim".as_ptr() as *const _,
+                c"notify::pim".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_pim_trampoline::<Self, F> as *const (),
                 )),
@@ -630,7 +630,7 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::username".as_ptr() as *const _,
+                c"notify::username".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_username_trampoline::<Self, F> as *const (),
                 )),

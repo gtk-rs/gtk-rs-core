@@ -334,7 +334,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::dns-names".as_ptr() as *const _,
+                c"notify::dns-names".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_dns_names_trampoline::<Self, F> as *const (),
                 )),
@@ -364,7 +364,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::ip-addresses".as_ptr() as *const _,
+                c"notify::ip-addresses".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_ip_addresses_trampoline::<Self, F> as *const (),
                 )),
@@ -394,7 +394,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::issuer-name".as_ptr() as *const _,
+                c"notify::issuer-name".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_issuer_name_trampoline::<Self, F> as *const (),
                 )),
@@ -424,7 +424,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::not-valid-after".as_ptr() as *const _,
+                c"notify::not-valid-after".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_not_valid_after_trampoline::<Self, F> as *const (),
                 )),
@@ -454,7 +454,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::not-valid-before".as_ptr() as *const _,
+                c"notify::not-valid-before".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_not_valid_before_trampoline::<Self, F> as *const (),
                 )),
@@ -484,7 +484,7 @@ pub trait TlsCertificateExt: IsA<TlsCertificate> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::subject-name".as_ptr() as *const _,
+                c"notify::subject-name".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_subject_name_trampoline::<Self, F> as *const (),
                 )),

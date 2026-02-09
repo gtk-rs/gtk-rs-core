@@ -169,7 +169,7 @@ pub trait PixbufLoaderExt: IsA<PixbufLoader> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"area-prepared".as_ptr() as *const _,
+                c"area-prepared".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     area_prepared_trampoline::<Self, F> as *const (),
                 )),
@@ -209,7 +209,7 @@ pub trait PixbufLoaderExt: IsA<PixbufLoader> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"area-updated".as_ptr() as *const _,
+                c"area-updated".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     area_updated_trampoline::<Self, F> as *const (),
                 )),
@@ -233,7 +233,7 @@ pub trait PixbufLoaderExt: IsA<PixbufLoader> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"closed".as_ptr() as *const _,
+                c"closed".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     closed_trampoline::<Self, F> as *const (),
                 )),
@@ -266,7 +266,7 @@ pub trait PixbufLoaderExt: IsA<PixbufLoader> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"size-prepared".as_ptr() as *const _,
+                c"size-prepared".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     size_prepared_trampoline::<Self, F> as *const (),
                 )),

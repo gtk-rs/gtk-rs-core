@@ -719,7 +719,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::g-default-timeout".as_ptr() as *const _,
+                c"notify::g-default-timeout".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_g_default_timeout_trampoline::<Self, F> as *const (),
                 )),
@@ -750,7 +750,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::g-interface-info".as_ptr() as *const _,
+                c"notify::g-interface-info".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_g_interface_info_trampoline::<Self, F> as *const (),
                 )),
@@ -781,7 +781,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::g-name-owner".as_ptr() as *const _,
+                c"notify::g-name-owner".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_g_name_owner_trampoline::<Self, F> as *const (),
                 )),

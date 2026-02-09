@@ -1012,7 +1012,7 @@ impl DBusConnection {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"closed".as_ptr() as *const _,
+                c"closed".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     closed_trampoline::<F> as *const (),
                 )),
@@ -1042,7 +1042,7 @@ impl DBusConnection {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::capabilities".as_ptr() as *const _,
+                c"notify::capabilities".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_capabilities_trampoline::<F> as *const (),
                 )),
@@ -1072,7 +1072,7 @@ impl DBusConnection {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::closed".as_ptr() as *const _,
+                c"notify::closed".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_closed_trampoline::<F> as *const (),
                 )),
@@ -1102,7 +1102,7 @@ impl DBusConnection {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::exit-on-close".as_ptr() as *const _,
+                c"notify::exit-on-close".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_exit_on_close_trampoline::<F> as *const (),
                 )),
@@ -1132,7 +1132,7 @@ impl DBusConnection {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::unique-name".as_ptr() as *const _,
+                c"notify::unique-name".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_unique_name_trampoline::<F> as *const (),
                 )),

@@ -62,7 +62,7 @@ pub trait PowerProfileMonitorExt: IsA<PowerProfileMonitor> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::power-saver-enabled".as_ptr() as *const _,
+                c"notify::power-saver-enabled".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_power_saver_enabled_trampoline::<Self, F> as *const (),
                 )),

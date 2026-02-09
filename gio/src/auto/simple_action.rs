@@ -95,7 +95,7 @@ impl SimpleAction {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"activate".as_ptr() as *const _,
+                c"activate".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     activate_trampoline::<F> as *const (),
                 )),
@@ -130,7 +130,7 @@ impl SimpleAction {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"change-state".as_ptr() as *const _,
+                c"change-state".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     change_state_trampoline::<F> as *const (),
                 )),

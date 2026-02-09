@@ -188,12 +188,12 @@ pub trait ActionGroupExt: IsA<ActionGroup> + 'static {
         unsafe {
             let f: Box_<F> = Box_::new(f);
             let detailed_signal_name = detail.map(|name| format!("action-added::{name}\0"));
-            let signal_name: &[u8] = detailed_signal_name
-                .as_ref()
-                .map_or(c"action-added".to_bytes(), |n| n.as_bytes());
+            let signal_name = detailed_signal_name.as_ref().map_or(c"action-added", |n| {
+                std::ffi::CStr::from_bytes_with_nul_unchecked(n.as_bytes())
+            });
             connect_raw(
                 self.as_ptr() as *mut _,
-                signal_name.as_ptr() as *const _,
+                signal_name.as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     action_added_trampoline::<Self, F> as *const (),
                 )),
@@ -230,12 +230,14 @@ pub trait ActionGroupExt: IsA<ActionGroup> + 'static {
             let f: Box_<F> = Box_::new(f);
             let detailed_signal_name =
                 detail.map(|name| format!("action-enabled-changed::{name}\0"));
-            let signal_name: &[u8] = detailed_signal_name
+            let signal_name = detailed_signal_name
                 .as_ref()
-                .map_or(c"action-enabled-changed".to_bytes(), |n| n.as_bytes());
+                .map_or(c"action-enabled-changed", |n| {
+                    std::ffi::CStr::from_bytes_with_nul_unchecked(n.as_bytes())
+                });
             connect_raw(
                 self.as_ptr() as *mut _,
-                signal_name.as_ptr() as *const _,
+                signal_name.as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     action_enabled_changed_trampoline::<Self, F> as *const (),
                 )),
@@ -269,12 +271,14 @@ pub trait ActionGroupExt: IsA<ActionGroup> + 'static {
         unsafe {
             let f: Box_<F> = Box_::new(f);
             let detailed_signal_name = detail.map(|name| format!("action-removed::{name}\0"));
-            let signal_name: &[u8] = detailed_signal_name
+            let signal_name = detailed_signal_name
                 .as_ref()
-                .map_or(c"action-removed".to_bytes(), |n| n.as_bytes());
+                .map_or(c"action-removed", |n| {
+                    std::ffi::CStr::from_bytes_with_nul_unchecked(n.as_bytes())
+                });
             connect_raw(
                 self.as_ptr() as *mut _,
-                signal_name.as_ptr() as *const _,
+                signal_name.as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     action_removed_trampoline::<Self, F> as *const (),
                 )),
@@ -310,12 +314,14 @@ pub trait ActionGroupExt: IsA<ActionGroup> + 'static {
         unsafe {
             let f: Box_<F> = Box_::new(f);
             let detailed_signal_name = detail.map(|name| format!("action-state-changed::{name}\0"));
-            let signal_name: &[u8] = detailed_signal_name
+            let signal_name = detailed_signal_name
                 .as_ref()
-                .map_or(c"action-state-changed".to_bytes(), |n| n.as_bytes());
+                .map_or(c"action-state-changed", |n| {
+                    std::ffi::CStr::from_bytes_with_nul_unchecked(n.as_bytes())
+                });
             connect_raw(
                 self.as_ptr() as *mut _,
-                signal_name.as_ptr() as *const _,
+                signal_name.as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     action_state_changed_trampoline::<Self, F> as *const (),
                 )),

@@ -73,7 +73,7 @@ pub trait DtlsServerConnectionExt: IsA<DtlsServerConnection> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::authentication-mode".as_ptr() as *const _,
+                c"notify::authentication-mode".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_authentication_mode_trampoline::<Self, F> as *const (),
                 )),

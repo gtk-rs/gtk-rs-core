@@ -323,7 +323,7 @@ pub trait DBusObjectManagerClientExt: IsA<DBusObjectManagerClient> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"interface-proxy-signal".as_ptr() as *const _,
+                c"interface-proxy-signal".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     interface_proxy_signal_trampoline::<Self, F> as *const (),
                 )),
@@ -354,7 +354,7 @@ pub trait DBusObjectManagerClientExt: IsA<DBusObjectManagerClient> + 'static {
             let f: Box_<F> = Box_::new(f);
             connect_raw(
                 self.as_ptr() as *mut _,
-                c"notify::name-owner".as_ptr() as *const _,
+                c"notify::name-owner".as_ptr(),
                 Some(std::mem::transmute::<*const (), unsafe extern "C" fn()>(
                     notify_name_owner_trampoline::<Self, F> as *const (),
                 )),
