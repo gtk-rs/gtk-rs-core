@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `convert_with_fallback` fn in crate `glib`."><title>convert_with_fallback in glib - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (6efa357bf 2026-02-08)" data-channel="nightly" data-search-js="search-fb33671b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../static.files/storage-f9617a14.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-12f88f4f.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc fn"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Converts a string from one character set to another, possibly including fallback sequences for characters not representable in the output. Note that it is not guaranteed that the specification for the fallback sequences in @fallback will be honored. Some systems may do an approximate conversion from @from_codeset to @to_codeset in their iconv() functions, in which case GLib will simply return that approximate conversion."><title>convert_with_fallback in glib - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (6efa357bf 2026-02-08)" data-channel="nightly" data-search-js="search-fb33671b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../static.files/storage-f9617a14.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-12f88f4f.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc fn"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,9 +71,81 @@
 </script>
 
 
-<rustdoc-topbar><h2><a href="#">convert_with_fallback</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.22.0-alpha.3</span></h2></div><div class="sidebar-elems"><div id="rustdoc-modnav"></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">glib</a></div><h1>Function <span class="fn">convert_<wbr>with_<wbr>fallback</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/glib/convert.rs.html#88-120">Source</a> </span></div><pre class="rust item-decl"><code>pub fn convert_with_fallback(
+<rustdoc-topbar><h2><a href="#">convert_with_fallback</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib/index.html">glib</a><span class="version">0.22.0-alpha.3</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">convert_<wbr>with_<wbr>fallback</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#str" title="`str`"><code>str</code></a></li><li><a href="#to_codeset" title="`to_codeset`"><code>to_codeset</code></a></li><li><a href="#from_codeset" title="`from_codeset`"><code>from_codeset</code></a></li><li><a href="#fallback" title="`fallback`"><code>fallback</code></a></li><li><a href="#returns" title="Returns">Returns</a><ul><li><a href="#bytes_read" title="`bytes_read`"><code>bytes_read</code></a></li><li><a href="#str-1" title="`str`"><code>str</code></a></li><li><a href="#to_codeset-1" title="`to_codeset`"><code>to_codeset</code></a></li><li><a href="#from_codeset-1" title="`from_codeset`"><code>from_codeset</code></a></li><li><a href="#fallback-1" title="`fallback`"><code>fallback</code></a></li></ul></li><li><a href="#returns-1" title="Returns">Returns</a><ul><li><a href="#bytes_read-1" title="`bytes_read`"><code>bytes_read</code></a></li></ul></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate glib</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">glib</a></div><h1>Function <span class="fn">convert_<wbr>with_<wbr>fallback</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/glib/convert.rs.html#254-286">Source</a> </span></div><pre class="rust item-decl"><code>pub fn convert_with_fallback(
     str_: &amp;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
     to_codeset: impl <a class="trait" href="trait.IntoGStr.html" title="trait glib::IntoGStr">IntoGStr</a>,
     from_codeset: impl <a class="trait" href="trait.IntoGStr.html" title="trait glib::IntoGStr">IntoGStr</a>,
     fallback: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;impl <a class="trait" href="trait.IntoGStr.html" title="trait glib::IntoGStr">IntoGStr</a>&gt;,
-) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="collections/slice/struct.Slice.html" title="struct glib::collections::slice::Slice">Slice</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a class="enum" href="enum.CvtError.html" title="enum glib::CvtError">CvtError</a>&gt;</code></pre></section></div></main></body></html>
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="collections/slice/struct.Slice.html" title="struct glib::collections::slice::Slice">Slice</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), <a class="enum" href="enum.CvtError.html" title="enum glib::CvtError">CvtError</a>&gt;</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Converts a string from one character set to another, possibly
+including fallback sequences for characters not representable
+in the output. Note that it is not guaranteed that the specification
+for the fallback sequences in @fallback will be honored. Some
+systems may do an approximate conversion from @from_codeset
+to @to_codeset in their iconv() functions,
+in which case GLib will simply return that approximate conversion.</p>
+<p>Note that you should use g_iconv() for streaming conversions.
+Despite the fact that @bytes_read can return information about partial
+characters, the g_convert_… functions are not generally suitable
+for streaming. If the underlying converter maintains internal state,
+then this won’t be preserved across successive calls to g_convert(),
+g_convert_with_iconv() or g_convert_with_fallback(). (An example of
+this is the GNU C converter for CP1255 which does not emit a base
+character until it knows that the next character is not a mark that
+could combine with the base character.)</p>
+<h3 id="str"><a class="doc-anchor" href="#str">§</a><code>str</code></h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>           the string to convert.</code></pre></div><h3 id="to_codeset"><a class="doc-anchor" href="#to_codeset">§</a><code>to_codeset</code></h3>
+<p>name of character set into which to convert @str</p>
+<h3 id="from_codeset"><a class="doc-anchor" href="#from_codeset">§</a><code>from_codeset</code></h3>
+<p>character set of @str.</p>
+<h3 id="fallback"><a class="doc-anchor" href="#fallback">§</a><code>fallback</code></h3>
+<p>UTF-8 string to use in place of characters not
+present in the target encoding. (The string must be
+representable in the target encoding).
+If <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, characters not in the target encoding will
+be represented as Unicode escapes \uxxxx or \Uxxxxyyyy.</p>
+<h2 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>     If the conversion was successful, a newly allocated buffer
+     containing the converted string, which must be freed with g_free().
+     Otherwise [`<span class="prelude-val">None</span>`] and @error will be set.</code></pre></div><h3 id="bytes_read"><a class="doc-anchor" href="#bytes_read">§</a><code>bytes_read</code></h3>
+<p>location to store the number of bytes in
+the input string that were successfully converted, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.
+Even if the conversion was successful, this may be
+less than @len if there were partial characters
+at the end of the input.
+Converts a string from one character set to another, possibly
+including fallback sequences for characters not representable
+in the output. Note that it is not guaranteed that the specification
+for the fallback sequences in @fallback will be honored. Some
+systems may do an approximate conversion from @from_codeset
+to @to_codeset in their iconv() functions,
+in which case GLib will simply return that approximate conversion.</p>
+<p>Note that you should use g_iconv() for streaming conversions.
+Despite the fact that @bytes_read can return information about partial
+characters, the g_convert_… functions are not generally suitable
+for streaming. If the underlying converter maintains internal state,
+then this won’t be preserved across successive calls to g_convert(),
+g_convert_with_iconv() or g_convert_with_fallback(). (An example of
+this is the GNU C converter for CP1255 which does not emit a base
+character until it knows that the next character is not a mark that
+could combine with the base character.)</p>
+<h3 id="str-1"><a class="doc-anchor" href="#str-1">§</a><code>str</code></h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>           the string to convert.</code></pre></div><h3 id="to_codeset-1"><a class="doc-anchor" href="#to_codeset-1">§</a><code>to_codeset</code></h3>
+<p>name of character set into which to convert @str</p>
+<h3 id="from_codeset-1"><a class="doc-anchor" href="#from_codeset-1">§</a><code>from_codeset</code></h3>
+<p>character set of @str.</p>
+<h3 id="fallback-1"><a class="doc-anchor" href="#fallback-1">§</a><code>fallback</code></h3>
+<p>UTF-8 string to use in place of characters not
+present in the target encoding. (The string must be
+representable in the target encoding).
+If <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, characters not in the target encoding will
+be represented as Unicode escapes \uxxxx or \Uxxxxyyyy.</p>
+<h2 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>     If the conversion was successful, a newly allocated buffer
+     containing the converted string, which must be freed with g_free().
+     Otherwise [`<span class="prelude-val">None</span>`] and @error will be set.</code></pre></div><h3 id="bytes_read-1"><a class="doc-anchor" href="#bytes_read-1">§</a><code>bytes_read</code></h3>
+<p>location to store the number of bytes in
+the input string that were successfully converted, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.
+Even if the conversion was successful, this may be
+less than @len if there were partial characters
+at the end of the input.</p>
+</div></details></section></div></main></body></html>
