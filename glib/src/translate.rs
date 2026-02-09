@@ -1747,13 +1747,15 @@ pub(crate) unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
 pub(crate) unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
     debug_assert!(!ptr.is_null());
 
-    // GLib paths on Windows are always UTF-8, as such we can convert to a String
-    // first and then go to a PathBuf from there. Unless there is a bug
-    // in the C library, the conversion from UTF-8 can never fail so we can
-    // safely panic here if that ever happens
-    String::from_utf8(CStr::from_ptr(ptr).to_bytes().into())
-        .expect("Invalid, non-UTF8 path")
-        .into()
+    unsafe {
+        // GLib paths on Windows are always UTF-8, as such we can convert to a String
+        // first and then go to a PathBuf from there. Unless there is a bug
+        // in the C library, the conversion from UTF-8 can never fail so we can
+        // safely panic here if that ever happens
+        String::from_utf8(CStr::from_ptr(ptr).to_bytes().into())
+            .expect("Invalid, non-UTF8 path")
+            .into()
+    }
 }
 
 #[cfg(not(windows))]
@@ -1772,14 +1774,16 @@ pub(crate) unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
 pub(crate) unsafe fn c_to_os_string(ptr: *const c_char) -> OsString {
     debug_assert!(!ptr.is_null());
 
-    // GLib OS string (environment strings) on Windows are always UTF-8,
-    // as such we can convert to a String
-    // first and then go to a OsString from there. Unless there is a bug
-    // in the C library, the conversion from UTF-8 can never fail so we can
-    // safely panic here if that ever happens
-    String::from_utf8(CStr::from_ptr(ptr).to_bytes().into())
-        .expect("Invalid, non-UTF8 path")
-        .into()
+    unsafe {
+        // GLib OS string (environment strings) on Windows are always UTF-8,
+        // as such we can convert to a String
+        // first and then go to a OsString from there. Unless there is a bug
+        // in the C library, the conversion from UTF-8 can never fail so we can
+        // safely panic here if that ever happens
+        String::from_utf8(CStr::from_ptr(ptr).to_bytes().into())
+            .expect("Invalid, non-UTF8 path")
+            .into()
+    }
 }
 
 impl FromGlibPtrNone<*const c_char> for PathBuf {
@@ -1835,11 +1839,13 @@ pub(crate) unsafe fn c_to_path_buf_num(ptr: *const c_char, num: usize) -> PathBu
 
 #[cfg(windows)]
 pub(crate) unsafe fn c_to_path_buf_num(ptr: *const c_char, num: usize) -> PathBuf {
-    debug_assert!(!ptr.is_null());
-    let slice = std::slice::from_raw_parts(ptr as *const u8, num);
-    String::from_utf8(slice.into())
-        .expect("Invalid, non-UTF8 path")
-        .into()
+    unsafe {
+        debug_assert!(!ptr.is_null());
+        let slice = std::slice::from_raw_parts(ptr as *const u8, num);
+        String::from_utf8(slice.into())
+            .expect("Invalid, non-UTF8 path")
+            .into()
+    }
 }
 
 #[doc(hidden)]
