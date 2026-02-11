@@ -22,6 +22,13 @@ impl Socket {
     #[cfg_attr(docsrs, doc(cfg(unix)))]
     #[doc(alias = "g_socket_new_from_fd")]
     pub fn from_fd(fd: OwnedFd) -> Result<Socket, glib::Error> {
+        unsafe { Self::from_raw_fd(fd) }
+    }
+
+    #[cfg(unix)]
+    #[cfg_attr(docsrs, doc(cfg(unix)))]
+    #[doc(alias = "g_socket_new_from_fd")]
+    pub unsafe fn from_raw_fd(fd: impl IntoRawFd) -> Result<Socket, glib::Error> {
         let fd = fd.into_raw_fd();
         let mut error = ptr::null_mut();
         unsafe {
@@ -34,9 +41,16 @@ impl Socket {
             }
         }
     }
+
     #[cfg(windows)]
     #[cfg_attr(docsrs, doc(cfg(windows)))]
     pub fn from_socket(socket: OwnedSocket) -> Result<Socket, glib::Error> {
+        unsafe { Self::from_raw_socket(socket) }
+    }
+
+    #[cfg(windows)]
+    #[cfg_attr(docsrs, doc(cfg(windows)))]
+    pub fn from_raw_socket(socket: impl IntoRawSocket) -> Result<Socket, glib::Error> {
         let socket = socket.into_raw_socket();
         let mut error = ptr::null_mut();
         unsafe {
@@ -792,32 +806,12 @@ pub trait SocketExtManual: IsA<Socket> + Sized {
 impl<O: IsA<Socket>> SocketExtManual for O {}
 
 #[cfg(all(docsrs, not(unix)))]
-pub trait IntoRawFd {
-    fn into_raw_fd(self) -> libc::c_int;
-}
-
-#[cfg(all(docsrs, not(unix)))]
-pub trait FromRawFd {
-    unsafe fn from_raw_fd(fd: libc::c_int) -> Self;
-}
-
-#[cfg(all(docsrs, not(unix)))]
 pub trait AsRawFd {
     fn as_raw_fd(&self) -> RawFd;
 }
 
 #[cfg(all(docsrs, not(unix)))]
 pub type RawFd = libc::c_int;
-
-#[cfg(all(docsrs, not(windows)))]
-pub trait IntoRawSocket {
-    fn into_raw_socket(self) -> u64;
-}
-
-#[cfg(all(docsrs, not(windows)))]
-pub trait FromRawSocket {
-    unsafe fn from_raw_socket(sock: u64) -> Self;
-}
 
 #[cfg(all(docsrs, not(windows)))]
 pub trait AsRawSocket {
