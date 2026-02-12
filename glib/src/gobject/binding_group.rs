@@ -66,7 +66,9 @@ impl<'a> BindingGroupBuilder<'a> {
 
     // rustdoc-stripper-ignore-next
     /// Transform changed property values from the target object to the source object with the given closure.
-    pub fn transform_from<F: Fn(&Binding, &Value) -> Option<Value> + Send + Sync + 'static>(
+    pub fn transform_from_with_values<
+        F: Fn(&Binding, &Value) -> Option<Value> + Send + Sync + 'static,
+    >(
         self,
         func: F,
     ) -> Self {
@@ -78,7 +80,9 @@ impl<'a> BindingGroupBuilder<'a> {
 
     // rustdoc-stripper-ignore-next
     /// Transform changed property values from the source object to the target object with the given closure.
-    pub fn transform_to<F: Fn(&Binding, &Value) -> Option<Value> + Send + Sync + 'static>(
+    pub fn transform_to_with_values<
+        F: Fn(&Binding, &Value) -> Option<Value> + Send + Sync + 'static,
+    >(
         self,
         func: F,
     ) -> Self {
@@ -332,11 +336,11 @@ mod test {
         binding_group
             .bind("name", &target, "name")
             .sync_create()
-            .transform_to(|_binding, value| {
+            .transform_to_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some(format!("{value} World").to_value())
             })
-            .transform_from(|_binding, value| {
+            .transform_from_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some(format!("{value} World").to_value())
             })
@@ -358,11 +362,11 @@ mod test {
             .bind("name", &target, "name")
             .sync_create()
             .bidirectional()
-            .transform_to(|_binding, value| {
+            .transform_to_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some(format!("{value} World").to_value())
             })
-            .transform_from(|_binding, value| {
+            .transform_from_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some(format!("{value} World").to_value())
             })
@@ -383,11 +387,11 @@ mod test {
         binding_group
             .bind("name", &target, "enabled")
             .sync_create()
-            .transform_to(|_binding, value| {
+            .transform_to_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some((value == "Hello").to_value())
             })
-            .transform_from(|_binding, value| {
+            .transform_from_with_values(|_binding, value| {
                 let value = value.get::<bool>().unwrap();
                 Some((if value { "Hello" } else { "World" }).to_value())
             })
@@ -412,11 +416,11 @@ mod test {
             .bind("name", &target, "enabled")
             .sync_create()
             .bidirectional()
-            .transform_to(|_binding, value| {
+            .transform_to_with_values(|_binding, value| {
                 let value = value.get::<&str>().unwrap();
                 Some((value == "Hello").to_value())
             })
-            .transform_from(|_binding, value| {
+            .transform_from_with_values(|_binding, value| {
                 let value = value.get::<bool>().unwrap();
                 Some((if value { "Hello" } else { "World" }).to_value())
             })
