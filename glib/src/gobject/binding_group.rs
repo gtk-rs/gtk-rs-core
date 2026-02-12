@@ -9,32 +9,33 @@ use crate::{
 
 impl BindingGroup {
     #[doc(alias = "bind_with_closures")]
-    pub fn bind<'a, O: ObjectType>(
+    pub fn bind<'a, 'f, 't, O: ObjectType>(
         &'a self,
         source_property: &'a str,
         target: &'a O,
         target_property: &'a str,
-    ) -> BindingGroupBuilder<'a> {
+    ) -> BindingGroupBuilder<'a, 'f, 't> {
         BindingGroupBuilder::new(self, source_property, target, target_property)
     }
 }
 
-type TransformFn = Option<Box<dyn Fn(&Binding, &Value) -> Option<Value> + Send + Sync + 'static>>;
+type TransformFn<'b> =
+    Option<Box<dyn Fn(&'b Binding, &'b Value) -> Option<Value> + Send + Sync + 'static>>;
 
 // rustdoc-stripper-ignore-next
 /// Builder for binding group bindings.
 #[must_use = "The builder must be built to be used"]
-pub struct BindingGroupBuilder<'a> {
+pub struct BindingGroupBuilder<'a, 'f, 't> {
     group: &'a BindingGroup,
     source_property: &'a str,
     target: &'a ObjectRef,
     target_property: &'a str,
     flags: BindingFlags,
-    transform_to: TransformFn,
-    transform_from: TransformFn,
+    transform_to: TransformFn<'t>,
+    transform_from: TransformFn<'f>,
 }
 
-impl fmt::Debug for BindingGroupBuilder<'_> {
+impl fmt::Debug for BindingGroupBuilder<'_, '_, '_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("BindingGroupBuilder")
             .field("group", &self.group)
@@ -46,7 +47,7 @@ impl fmt::Debug for BindingGroupBuilder<'_> {
     }
 }
 
-impl<'a> BindingGroupBuilder<'a> {
+impl<'a, 'f, 't> BindingGroupBuilder<'a, 'f, 't> {
     fn new(
         group: &'a BindingGroup,
         source_property: &'a str,
