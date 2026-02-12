@@ -477,6 +477,35 @@ mod test {
         assert_eq!(source.name(), "World");
     }
 
+    #[test]
+    fn binding_from_transform_concrete_change_type() {
+        let binding_group = crate::BindingGroup::new();
+
+        let source = TestObject::default();
+        let target = TestObject::default();
+
+        binding_group.set_source(Some(&source));
+        binding_group
+            .bind("name", &target, "enabled")
+            .sync_create()
+            .bidirectional()
+            .transform_to::<&str, _, _>(|_binding, value| Some(value == "Hello"))
+            .transform_from(
+                |_binding, value: bool| if value { Some("Hello") } else { Some("World") },
+            )
+            .build();
+
+        target.set_enabled(true);
+        assert_eq!(source.name(), "Hello");
+        target.set_enabled(false);
+        assert_eq!(source.name(), "World");
+
+        source.set_name("Hello");
+        assert!(target.enabled());
+        source.set_name("World");
+        assert!(!target.enabled());
+    }
+
     mod imp {
         use std::{cell::RefCell, sync::OnceLock};
 
