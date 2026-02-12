@@ -4,7 +4,7 @@ use std::{fmt, ptr};
 
 use crate::{
     Binding, BindingFlags, BindingGroup, BoolError, Object, ParamSpec, Value, ffi, gobject_ffi,
-    object::ObjectRef, prelude::*, translate::*,
+    object::ObjectRef, prelude::*, translate::*, value::FromValue,
 };
 
 impl BindingGroup {
@@ -80,6 +80,28 @@ impl<'a, 'f, 't> BindingGroupBuilder<'a, 'f, 't> {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Transform changed property values from the target object to the source object with the given closure.
+    ///
+    /// This function operates on concrete argument and return types.
+    /// See [`Self::transform_from_with_values`] for a version which operates on `glib::Value`s.
+    pub fn transform_from<
+        S: FromValue<'f>,
+        T: Into<Value>,
+        F: Fn(&'f Binding, S) -> Option<T> + Send + Sync + 'static,
+    >(
+        self,
+        func: F,
+    ) -> Self {
+        Self {
+            transform_from: Some(Box::new(move |binding, from_value| {
+                let from_value = from_value.get().expect("Wrong value type");
+                func(binding, from_value).map(|r| r.into())
+            })),
+            ..self
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Transform changed property values from the source object to the target object with the given closure.
     pub fn transform_to_with_values<
         F: Fn(&Binding, &Value) -> Option<Value> + Send + Sync + 'static,
@@ -89,6 +111,28 @@ impl<'a, 'f, 't> BindingGroupBuilder<'a, 'f, 't> {
     ) -> Self {
         Self {
             transform_to: Some(Box::new(func)),
+            ..self
+        }
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Transform changed property values from the source object to the target object with the given closure.
+    ///
+    /// This function operates on concrete argument and return types.
+    /// See [`Self::transform_to_with_values`] for a version which operates on `glib::Value`s.
+    pub fn transform_to<
+        S: FromValue<'t>,
+        T: Into<Value>,
+        F: Fn(&'t Binding, S) -> Option<T> + Send + Sync + 'static,
+    >(
+        self,
+        func: F,
+    ) -> Self {
+        Self {
+            transform_to: Some(Box::new(move |binding, from_value| {
+                let from_value = from_value.get().expect("Wrong value type");
+                func(binding, from_value).map(|r| r.into())
+            })),
             ..self
         }
     }
