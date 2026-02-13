@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/collections/strv.rs`."><title>strv.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (9e79395f9 2026-02-10)" data-channel="nightly" data-search-js="search-fb33671b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-f9617a14.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12f88f4f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/collections/strv.rs`."><title>strv.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (47611e160 2026-02-12)" data-channel="nightly" data-search-js="search-fb33671b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-f9617a14.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12f88f4f.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -143,7 +143,7 @@
 <a href=#70 id=70 data-nosnippet>70</a>        }
 <a href=#71 id=71 data-nosnippet>71</a>
 <a href=#72 id=72 data-nosnippet>72</a>        <span class="kw">for </span>(a, b) <span class="kw">in </span>Iterator::zip(<span class="self">self</span>.iter(), other.iter()) {
-<a href=#73 id=73 data-nosnippet>73</a>            <span class="kw">if </span><span class="macro">a !</span>= b {
+<a href=#73 id=73 data-nosnippet>73</a>            <span class="kw">if </span>a != b {
 <a href=#74 id=74 data-nosnippet>74</a>                <span class="kw">return </span><span class="bool-val">false</span>;
 <a href=#75 id=75 data-nosnippet>75</a>            }
 <a href=#76 id=76 data-nosnippet>76</a>        }
@@ -163,7 +163,7 @@
 <a href=#90 id=90 data-nosnippet>90</a>    <span class="attr">#[inline]
 <a href=#91 id=91 data-nosnippet>91</a>    </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
 <a href=#92 id=92 data-nosnippet>92</a>        <span class="kw">unsafe </span>{
-<a href=#93 id=93 data-nosnippet>93</a>            <span class="kw">if </span><a class="self" href="#91">self</a>.<span class="macro">capacity !</span>= <span class="number">0 </span>{
+<a href=#93 id=93 data-nosnippet>93</a>            <span class="kw">if </span><a class="self" href="#91">self</a>.capacity != <span class="number">0 </span>{
 <a href=#94 id=94 data-nosnippet>94</a>                ffi::g_strfreev(<a class="self" href="#91">self</a>.ptr.<a href="https://doc.rust-lang.org/nightly/core/ptr/non_null/struct.NonNull.html#method.as_ptr">as_ptr</a>());
 <a href=#95 id=95 data-nosnippet>95</a>            }
 <a href=#96 id=96 data-nosnippet>96</a>        }
@@ -1150,7 +1150,7 @@
 <a href=#1077 id=1077 data-nosnippet>1077</a><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="../value.rs.html#271-282"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#17-25">StrV</a> {
 <a href=#1078 id=1078 data-nosnippet>1078</a>    <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::<a href="../value.rs.html#148">GenericValueTypeChecker</a>&lt;<span class="self">Self</span>&gt;;
 <a href=#1079 id=1079 data-nosnippet>1079</a>
-<a href=#1080 id=1080 data-nosnippet>1080</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">crate</span>::value::<a href="../value.rs.html#490-533">Value</a>) -&gt; <span class="self">Self </span>{
+<a href=#1080 id=1080 data-nosnippet>1080</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">crate</span>::value::<a href="../value.rs.html#490-553">Value</a>) -&gt; <span class="self">Self </span>{
 <a href=#1081 id=1081 data-nosnippet>1081</a>        <span class="kw">unsafe </span>{
 <a href=#1082 id=1082 data-nosnippet>1082</a>            <span class="kw">let </span>ptr = gobject_ffi::g_value_dup_boxed(<a href="#1080">value</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>;
 <a href=#1083 id=1083 data-nosnippet>1083</a>            FromGlibPtrContainer::<a href="../translate.rs.html#1984">from_glib_full</a>(<a href="#1082">ptr</a>)
@@ -1161,7 +1161,7 @@
 <a href=#1088 id=1088 data-nosnippet>1088</a><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="../value.rs.html#271-282"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<a href="../gstring.rs.html#763">GStringPtr</a>] {
 <a href=#1089 id=1089 data-nosnippet>1089</a>    <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::<a href="../value.rs.html#148">GenericValueTypeChecker</a>&lt;<span class="self">Self</span>&gt;;
 <a href=#1090 id=1090 data-nosnippet>1090</a>
-<a href=#1091 id=1091 data-nosnippet>1091</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">crate</span>::value::<a href="../value.rs.html#490-533">Value</a>) -&gt; <span class="self">Self </span>{
+<a href=#1091 id=1091 data-nosnippet>1091</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">crate</span>::value::<a href="../value.rs.html#490-553">Value</a>) -&gt; <span class="self">Self </span>{
 <a href=#1092 id=1092 data-nosnippet>1092</a>        <span class="kw">unsafe </span>{
 <a href=#1093 id=1093 data-nosnippet>1093</a>            <span class="kw">let </span>ptr =
 <a href=#1094 id=1094 data-nosnippet>1094</a>                gobject_ffi::g_value_get_boxed(<a href="#1091">value</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*const *const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>;
@@ -1171,9 +1171,9 @@
 <a href=#1098 id=1098 data-nosnippet>1098</a>}
 <a href=#1099 id=1099 data-nosnippet>1099</a>
 <a href=#1100 id=1100 data-nosnippet>1100</a><span class="kw">impl </span><a href="../value.rs.html#372-382"><span class="kw">crate</span>::value::ToValue</a> <span class="kw">for </span><a href="#17-25">StrV</a> {
-<a href=#1101 id=1101 data-nosnippet>1101</a>    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::value::<a href="../value.rs.html#490-533">Value</a> {
+<a href=#1101 id=1101 data-nosnippet>1101</a>    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::value::<a href="../value.rs.html#490-553">Value</a> {
 <a href=#1102 id=1102 data-nosnippet>1102</a>        <span class="kw">unsafe </span>{
-<a href=#1103 id=1103 data-nosnippet>1103</a>            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::value::<a href="../value.rs.html#490-533">Value</a>::for_value_type::&lt;<span class="self">Self</span>&gt;();
+<a href=#1103 id=1103 data-nosnippet>1103</a>            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::value::<a href="../value.rs.html#490-553">Value</a>::for_value_type::&lt;<span class="self">Self</span>&gt;();
 <a href=#1104 id=1104 data-nosnippet>1104</a>            gobject_ffi::g_value_set_boxed(
 <a href=#1105 id=1105 data-nosnippet>1105</a>                <a href="#1103">value</a>.<a href="../translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>,
 <a href=#1106 id=1106 data-nosnippet>1106</a>                <a class="self" href="#1101">self</a>.<a href="#667-675">as_ptr</a>() <span class="kw">as </span>ffi::gpointer,
@@ -1187,11 +1187,11 @@
 <a href=#1114 id=1114 data-nosnippet>1114</a>    }
 <a href=#1115 id=1115 data-nosnippet>1115</a>}
 <a href=#1116 id=1116 data-nosnippet>1116</a>
-<a href=#1117 id=1117 data-nosnippet>1117</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#17-25">StrV</a>&gt; <span class="kw">for </span><span class="kw">crate</span>::<a href="../value.rs.html#490-533">Value</a> {
+<a href=#1117 id=1117 data-nosnippet>1117</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#17-25">StrV</a>&gt; <span class="kw">for </span><span class="kw">crate</span>::<a href="../value.rs.html#490-553">Value</a> {
 <a href=#1118 id=1118 data-nosnippet>1118</a>    <span class="attr">#[inline]
 <a href=#1119 id=1119 data-nosnippet>1119</a>    </span><span class="kw">fn </span>from(s: <a href="#17-25">StrV</a>) -&gt; <span class="self">Self </span>{
 <a href=#1120 id=1120 data-nosnippet>1120</a>        <span class="kw">unsafe </span>{
-<a href=#1121 id=1121 data-nosnippet>1121</a>            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::value::<a href="../value.rs.html#490-533">Value</a>::for_value_type::&lt;<a href="#17-25">StrV</a>&gt;();
+<a href=#1121 id=1121 data-nosnippet>1121</a>            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::value::<a href="../value.rs.html#490-553">Value</a>::for_value_type::&lt;<a href="#17-25">StrV</a>&gt;();
 <a href=#1122 id=1122 data-nosnippet>1122</a>            gobject_ffi::g_value_take_boxed(
 <a href=#1123 id=1123 data-nosnippet>1123</a>                <a href="#1121">value</a>.<a href="../translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>,
 <a href=#1124 id=1124 data-nosnippet>1124</a>                <a href="#1119">s</a>.<a href="#682-695">into_raw</a>() <span class="kw">as </span>ffi::gpointer,
@@ -1573,7 +1573,7 @@
 <a href=#1500 id=1500 data-nosnippet>1500</a>        }
 <a href=#1501 id=1501 data-nosnippet>1501</a>
 <a href=#1502 id=1502 data-nosnippet>1502</a>        <span class="kw">for </span>(a, b) <span class="kw">in </span>Iterator::zip(<span class="self">self</span>.iter(), other.iter()) {
-<a href=#1503 id=1503 data-nosnippet>1503</a>            <span class="kw">if </span><span class="macro">a !</span>= b {
+<a href=#1503 id=1503 data-nosnippet>1503</a>            <span class="kw">if </span>a != b {
 <a href=#1504 id=1504 data-nosnippet>1504</a>                <span class="kw">return </span><span class="bool-val">false</span>;
 <a href=#1505 id=1505 data-nosnippet>1505</a>            }
 <a href=#1506 id=1506 data-nosnippet>1506</a>        }
@@ -1682,7 +1682,7 @@
 <a href=#1609 id=1609 data-nosnippet>1609</a><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="../value.rs.html#271-282"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#1414-1416">StrVRef</a> {
 <a href=#1610 id=1610 data-nosnippet>1610</a>    <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::<a href="../value.rs.html#148">GenericValueTypeChecker</a>&lt;<span class="self">Self</span>&gt;;
 <a href=#1611 id=1611 data-nosnippet>1611</a>
-<a href=#1612 id=1612 data-nosnippet>1612</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">crate</span>::value::<a href="../value.rs.html#490-533">Value</a>) -&gt; <span class="self">Self </span>{
+<a href=#1612 id=1612 data-nosnippet>1612</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">crate</span>::value::<a href="../value.rs.html#490-553">Value</a>) -&gt; <span class="self">Self </span>{
 <a href=#1613 id=1613 data-nosnippet>1613</a>        <span class="kw">unsafe </span>{
 <a href=#1614 id=1614 data-nosnippet>1614</a>            <span class="kw">let </span>ptr =
 <a href=#1615 id=1615 data-nosnippet>1615</a>                gobject_ffi::g_value_get_boxed(<a href="#1612">value</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*const *const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>;
