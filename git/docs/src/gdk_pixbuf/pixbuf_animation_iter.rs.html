@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/pixbuf_animation_iter.rs`."><title>pixbuf_animation_iter.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (47611e160 2026-02-12)" data-channel="nightly" data-search-js="search-fb33671b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-f9617a14.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-12f88f4f.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/pixbuf_animation_iter.rs`."><title>pixbuf_animation_iter.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (a33907a7a 2026-02-14)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -95,23 +95,23 @@
 <a href=#22 id=22 data-nosnippet>22</a>    <span class="doccomment">/// Possibly advances an animation to a new frame.
 <a href=#23 id=23 data-nosnippet>23</a>    ///
 <a href=#24 id=24 data-nosnippet>24</a>    /// Chooses the frame based on the start time passed to
-<a href=#25 id=25 data-nosnippet>25</a>    /// gdk_pixbuf_animation_get_iter().
+<a href=#25 id=25 data-nosnippet>25</a>    /// [`PixbufAnimationExtManual::iter()`][crate::prelude::PixbufAnimationExtManual::iter()].
 <a href=#26 id=26 data-nosnippet>26</a>    ///
-<a href=#27 id=27 data-nosnippet>27</a>    /// @current_time would normally come from g_get_current_time(), and
+<a href=#27 id=27 data-nosnippet>27</a>    /// `current_time` would normally come from `g_get_current_time()`, and
 <a href=#28 id=28 data-nosnippet>28</a>    /// must be greater than or equal to the time passed to
-<a href=#29 id=29 data-nosnippet>29</a>    /// gdk_pixbuf_animation_get_iter(), and must increase or remain
-<a href=#30 id=30 data-nosnippet>30</a>    /// unchanged each time gdk_pixbuf_animation_iter_get_pixbuf() is
+<a href=#29 id=29 data-nosnippet>29</a>    /// [`PixbufAnimationExtManual::iter()`][crate::prelude::PixbufAnimationExtManual::iter()], and must increase or remain
+<a href=#30 id=30 data-nosnippet>30</a>    /// unchanged each time [`PixbufAnimationIterExtManual::pixbuf()`][crate::prelude::PixbufAnimationIterExtManual::pixbuf()] is
 <a href=#31 id=31 data-nosnippet>31</a>    /// called. That is, you can't go backward in time; animations only
 <a href=#32 id=32 data-nosnippet>32</a>    /// play forward.
 <a href=#33 id=33 data-nosnippet>33</a>    ///
-<a href=#34 id=34 data-nosnippet>34</a>    /// As a shortcut, pass `NULL` for the current time and g_get_current_time()
+<a href=#34 id=34 data-nosnippet>34</a>    /// As a shortcut, pass `NULL` for the current time and `g_get_current_time()`
 <a href=#35 id=35 data-nosnippet>35</a>    /// will be invoked on your behalf. So you only need to explicitly pass
-<a href=#36 id=36 data-nosnippet>36</a>    /// @current_time if you're doing something odd like playing the animation
+<a href=#36 id=36 data-nosnippet>36</a>    /// `current_time` if you're doing something odd like playing the animation
 <a href=#37 id=37 data-nosnippet>37</a>    /// at double speed.
 <a href=#38 id=38 data-nosnippet>38</a>    ///
 <a href=#39 id=39 data-nosnippet>39</a>    /// If this function returns `FALSE`, there's no need to update the animation
 <a href=#40 id=40 data-nosnippet>40</a>    /// display, assuming the display had been rendered prior to advancing;
-<a href=#41 id=41 data-nosnippet>41</a>    /// if `TRUE`, you need to call gdk_pixbuf_animation_iter_get_pixbuf()
+<a href=#41 id=41 data-nosnippet>41</a>    /// if `TRUE`, you need to call [`PixbufAnimationIterExtManual::pixbuf()`][crate::prelude::PixbufAnimationIterExtManual::pixbuf()]
 <a href=#42 id=42 data-nosnippet>42</a>    /// and update the display with the new pixbuf.
 <a href=#43 id=43 data-nosnippet>43</a>    ///
 <a href=#44 id=44 data-nosnippet>44</a>    /// # Deprecated since 2.44
@@ -143,15 +143,15 @@
 <a href=#70 id=70 data-nosnippet>70</a>    <span class="doccomment">/// Gets the current pixbuf which should be displayed.
 <a href=#71 id=71 data-nosnippet>71</a>    ///
 <a href=#72 id=72 data-nosnippet>72</a>    /// The pixbuf might not be the same size as the animation itself
-<a href=#73 id=73 data-nosnippet>73</a>    /// (gdk_pixbuf_animation_get_width(), gdk_pixbuf_animation_get_height()).
+<a href=#73 id=73 data-nosnippet>73</a>    /// ([`PixbufAnimationExt::width()`][crate::prelude::PixbufAnimationExt::width()], [`PixbufAnimationExt::height()`][crate::prelude::PixbufAnimationExt::height()]).
 <a href=#74 id=74 data-nosnippet>74</a>    ///
-<a href=#75 id=75 data-nosnippet>75</a>    /// This pixbuf should be displayed for gdk_pixbuf_animation_iter_get_delay_time()
+<a href=#75 id=75 data-nosnippet>75</a>    /// This pixbuf should be displayed for [`PixbufAnimationIterExtManual::delay_time()`][crate::prelude::PixbufAnimationIterExtManual::delay_time()]
 <a href=#76 id=76 data-nosnippet>76</a>    /// milliseconds.
 <a href=#77 id=77 data-nosnippet>77</a>    ///
 <a href=#78 id=78 data-nosnippet>78</a>    /// The caller of this function does not own a reference to the returned
 <a href=#79 id=79 data-nosnippet>79</a>    /// pixbuf; the returned pixbuf will become invalid when the iterator
 <a href=#80 id=80 data-nosnippet>80</a>    /// advances to the next frame, which may happen anytime you call
-<a href=#81 id=81 data-nosnippet>81</a>    /// gdk_pixbuf_animation_iter_advance().
+<a href=#81 id=81 data-nosnippet>81</a>    /// [`PixbufAnimationIterExtManual::advance()`][crate::prelude::PixbufAnimationIterExtManual::advance()].
 <a href=#82 id=82 data-nosnippet>82</a>    ///
 <a href=#83 id=83 data-nosnippet>83</a>    /// Copy the pixbuf to keep it (don't just add a reference), as it may get
 <a href=#84 id=84 data-nosnippet>84</a>    /// recycled as you advance the iterator.
@@ -176,7 +176,7 @@
 <a href=#103 id=103 data-nosnippet>103</a>    <span class="doccomment">/// Gets the number of milliseconds the current pixbuf should be displayed,
 <a href=#104 id=104 data-nosnippet>104</a>    /// or -1 if the current pixbuf should be displayed forever.
 <a href=#105 id=105 data-nosnippet>105</a>    ///
-<a href=#106 id=106 data-nosnippet>106</a>    /// The `g_timeout_add()` function conveniently takes a timeout in milliseconds,
+<a href=#106 id=106 data-nosnippet>106</a>    /// The ``g_timeout_add()`` function conveniently takes a timeout in milliseconds,
 <a href=#107 id=107 data-nosnippet>107</a>    /// so you can use a timeout to schedule the next update.
 <a href=#108 id=108 data-nosnippet>108</a>    ///
 <a href=#109 id=109 data-nosnippet>109</a>    /// Note that some formats, like GIF, might clamp the timeout values in the
@@ -205,7 +205,7 @@
 <a href=#132 id=132 data-nosnippet>132</a>    }
 <a href=#133 id=133 data-nosnippet>133</a>
 <a href=#134 id=134 data-nosnippet>134</a>    <span class="doccomment">/// Used to determine how to respond to the area_updated signal on
-<a href=#135 id=135 data-nosnippet>135</a>    /// #GdkPixbufLoader when loading an animation.
+<a href=#135 id=135 data-nosnippet>135</a>    /// [`PixbufLoader`][crate::PixbufLoader] when loading an animation.
 <a href=#136 id=136 data-nosnippet>136</a>    ///
 <a href=#137 id=137 data-nosnippet>137</a>    /// The `::area_updated` signal is emitted for an area of the frame currently
 <a href=#138 id=138 data-nosnippet>138</a>    /// streaming in to the loader. So if you're on the currently loading frame,
