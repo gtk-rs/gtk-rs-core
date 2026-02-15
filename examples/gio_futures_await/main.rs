@@ -1,30 +1,43 @@
-use std::str;
-
 use futures::prelude::*;
 use gio::prelude::*;
 use glib::clone;
 
 fn main() {
     let c = glib::MainContext::default();
-    let l = glib::MainLoop::new(Some(&c), false);
-
     let file = gio::File::for_path("Cargo.toml");
+    let cancellable = gio::Cancellable::new();
 
     let future = clone!(
         #[strong]
-        l,
+        cancellable,
         async move {
             match read_file(file).await {
                 Ok(()) => (),
                 Err(err) => eprintln!("Got error: {err}"),
             }
-            l.quit();
+            cancellable.cancel();
         }
     );
 
-    c.spawn_local(future);
+    #[cfg(unix)]
+    let cancel_future = clone!(
+        #[strong]
+        cancellable,
+        async move {
+            glib::unix_signal_future(libc::SIGINT).await;
+            eprintln!("Ctrl+C pressed, operation will be stopped!");
+            cancellable.cancel();
+        }
+    );
+    #[cfg(not(unix))]
+    let cancel_future = async move {};
 
-    l.run();
+    let _ = c
+        .block_on(c.spawn_local(gio::CancellableFuture::new(
+            futures_util::future::join(future, cancel_future),
+            cancellable,
+        )))
+        .expect("futures must be executed");
 }
 
 /// Throughout our chained futures, we convert all errors to strings
