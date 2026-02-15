@@ -18,7 +18,7 @@ glib::wrapper! {
     }
 }
 
-#[cfg(not(any(feature = "v1_44")))]
+#[cfg(not(feature = "v1_44"))]
 glib::wrapper! {
     #[derive(Debug, PartialOrd, Ord, Hash)]
     pub struct Attribute(Boxed<ffi::PangoAttribute>);
