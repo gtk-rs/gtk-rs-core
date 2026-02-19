@@ -336,6 +336,20 @@ mod imp {
             ))
         }
 
+        fn find_enclosing_mount_future(
+            &self,
+            _priority: glib::Priority,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<Mount, Error>> + 'static>>
+        {
+            Box::pin(GioFuture::new(
+                &self.ref_counted(),
+                move |self_, cancellable, send| {
+                    let res = self_.find_enclosing_mount(Some(cancellable));
+                    send.resolve(res);
+                },
+            ))
+        }
+
         fn set_display_name(
             &self,
             display_name: &str,
@@ -1739,6 +1753,30 @@ fn file_find_enclosing_mount() {
     // both errors should equal
     assert_eq!(err.message(), expected.message());
     assert_eq!(err.kind::<IOErrorEnum>(), expected.kind::<IOErrorEnum>());
+}
+
+#[test]
+fn file_find_enclosing_mount_future() {
+    // run test in a main context dedicated and configured as the thread default one
+    let _ = glib::MainContext::new().with_thread_default(|| {
+        // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::find_enclosing_mount_async/finish`
+        let my_custom_dir = MyCustomFile::new("/my_directory");
+        let res = glib::MainContext::ref_thread_default()
+            .block_on(my_custom_dir.find_enclosing_mount_future(glib::Priority::DEFAULT));
+        assert!(res.is_err(), "unexpected mount {:?}", res.ok().unwrap());
+        let err = res.unwrap_err();
+
+        // invoke `MyFile` implementation of `crate::ffi::GFileIface::find_enclosing_mount_async/finish`
+        let my_dir = MyFile::new("/my_directory");
+        let res = glib::MainContext::ref_thread_default()
+            .block_on(my_dir.find_enclosing_mount_future(glib::Priority::DEFAULT));
+        assert!(res.is_err(), "unexpected mount {:?}", res.ok().unwrap());
+        let expected = res.unwrap_err();
+
+        // both errors should equal
+        assert_eq!(err.message(), expected.message());
+        assert_eq!(err.kind::<IOErrorEnum>(), expected.kind::<IOErrorEnum>());
+    });
 }
 
 #[test]
