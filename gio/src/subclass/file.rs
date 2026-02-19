@@ -108,6 +108,16 @@ pub trait FileImpl: ObjectImpl + ObjectSubclass<Type: IsA<File>> {
         self.parent_query_info(attributes, flags, cancellable)
     }
 
+    fn query_info_future(
+        &self,
+        attributes: &str,
+        flags: FileQueryInfoFlags,
+        priority: glib::Priority,
+    ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<FileInfo, Error>> + 'static>>
+    {
+        self.parent_query_info_future(attributes, flags, priority)
+    }
+
     fn query_filesystem_info(
         &self,
         attributes: &str,
@@ -802,6 +812,102 @@ pub trait FileImplExt: FileImpl {
                 ))
             }
         }
+    }
+
+    fn parent_query_info_async<R: FnOnce(Result<FileInfo, Error>) + 'static>(
+        &self,
+        attributes: &str,
+        flags: FileQueryInfoFlags,
+        priority: glib::Priority,
+        cancellable: Option<&Cancellable>,
+        callback: R,
+    ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+        unsafe {
+            let type_data = Self::type_data();
+            let parent_iface =
+                type_data.as_ref().parent_interface::<File>() as *const ffi::GFileIface;
+
+            let f = (*parent_iface)
+                .query_info_async
+                .expect("no parent interface implementation for \"query_info_async\"");
+            let finish = (*parent_iface)
+                .query_info_finish
+                .expect("no parent interface \"query_info_finish\" implementation");
+
+            let user_data: Box<(glib::thread_guard::ThreadGuard<R>, _)> =
+                Box::new((glib::thread_guard::ThreadGuard::new(callback), finish));
+
+            unsafe extern "C" fn query_info_async_trampoline<
+                T: FnOnce(Result<FileInfo, Error>) + 'static,
+            >(
+                source_object_ptr: *mut glib::gobject_ffi::GObject,
+                res: *mut ffi::GAsyncResult,
+                user_data: glib::ffi::gpointer,
+            ) {
+                unsafe {
+                    let mut error = std::ptr::null_mut();
+                    let cb: Box<(
+                        glib::thread_guard::ThreadGuard<T>,
+                        unsafe extern "C" fn(
+                            *mut gio_sys::GFile,
+                            *mut gio_sys::GAsyncResult,
+                            *mut *mut glib::ffi::GError,
+                        ) -> *mut ffi::GFileInfo,
+                    )> = Box::from_raw(user_data as *mut _);
+                    let ret = cb.1(source_object_ptr as _, res, &mut error);
+                    let result = if error.is_null() {
+                        Ok(from_glib_full(ret))
+                    } else {
+                        Err(from_glib_full(error))
+                    };
+                    let cb = cb.0.into_inner();
+                    cb(result);
+                };
+            }
+
+            f(
+                self.obj().unsafe_cast_ref::<File>().to_glib_none().0,
+                attributes.to_glib_none().0,
+                flags.into_glib(),
+                priority.into_glib(),
+                cancellable.to_glib_none().0,
+                Some(query_info_async_trampoline::<R>),
+                Box::into_raw(user_data) as *mut _,
+            );
+        }
+    }
+
+    fn parent_query_info_future(
+        &self,
+        attributes: &str,
+        flags: FileQueryInfoFlags,
+        priority: glib::Priority,
+    ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<FileInfo, Error>> + 'static>>
+    {
+        let attributes = String::from(attributes);
+        Box::pin(GioFuture::new(
+            &self.ref_counted(),
+            move |imp, cancellable, send| {
+                imp.parent_query_info_async(
+                    &attributes,
+                    flags,
+                    priority,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn parent_query_filesystem_info(
@@ -2428,6 +2534,8 @@ unsafe impl<T: FileImpl> IsImplementable<T> for File {
         iface.enumerate_children_async = Some(file_enumerate_children_async::<T>);
         iface.enumerate_children_finish = Some(file_enumerate_children_finish);
         iface.query_info = Some(file_query_info::<T>);
+        iface.query_info_async = Some(file_query_info_async::<T>);
+        iface.query_info_finish = Some(file_query_info_finish);
         iface.query_filesystem_info = Some(file_query_filesystem_info::<T>);
         iface.find_enclosing_mount = Some(file_find_enclosing_mount::<T>);
         iface.set_display_name = Some(file_set_display_name::<T>);
@@ -2478,8 +2586,6 @@ unsafe impl<T: FileImpl> IsImplementable<T> for File {
         }
         // `GFile` already implements `xxx_async/xxx_finish` vfuncs and this should be ok.
         // TODO: when needed, override the `GFile` implementation of the following vfuncs:
-        // iface.query_info_async = Some(file_query_info_async::<T>);
-        // iface.query_info_finish = Some(file_query_info_finish);
         // iface.query_filesystem_info_async = Some(file_query_filesystem_info_async::<T>);
         // iface.query_filesystem_info_finish = Some(file_query_filesystem_info_finish::<T>);
         // iface.find_enclosing_mount_async = Some(file_find_enclosing_mount_asyncv);
@@ -2854,6 +2960,73 @@ unsafe extern "C" fn file_query_info<T: FileImpl>(
                     *error = err.to_glib_full()
                 }
                 std::ptr::null_mut()
+            }
+        }
+    }
+}
+
+unsafe extern "C" fn file_query_info_async<T: FileImpl>(
+    file: *mut ffi::GFile,
+    attributes: *const c_char,
+    flags: ffi::GFileQueryInfoFlags,
+    io_priority: i32,
+    cancellable: *mut ffi::GCancellable,
+    callback: ffi::GAsyncReadyCallback,
+    user_data: glib::ffi::gpointer,
+) {
+    unsafe {
+        let instance = &*(file as *mut T::Instance);
+        let imp = instance.imp();
+        let wrap: File = from_glib_none(file);
+        let attributes: glib::GString = from_glib_none(attributes);
+        let cancellable: Option<Cancellable> = from_glib_none(cancellable);
+
+        // Closure that will invoke the C callback when the LocalTask completes
+        let closure = move |task: LocalTask<FileInfo>, source_object: Option<&glib::Object>| {
+            let result: *mut ffi::GAsyncResult = task.upcast_ref::<AsyncResult>().to_glib_none().0;
+            let source_object: *mut glib::gobject_ffi::GObject = source_object.to_glib_none().0;
+            callback.unwrap()(source_object, result, user_data)
+        };
+
+        let t = LocalTask::new(
+            Some(wrap.upcast_ref::<glib::Object>()),
+            cancellable.as_ref(),
+            closure,
+        );
+
+        // Spawn the async work on the main context
+        glib::MainContext::ref_thread_default().spawn_local(async move {
+            // Call the trait method's future version
+            let res = imp
+                .query_info_future(
+                    attributes.as_str(),
+                    from_glib(flags),
+                    from_glib(io_priority),
+                )
+                .await;
+
+            // Store result in the task
+            t.return_result(res);
+        });
+    }
+}
+
+unsafe extern "C" fn file_query_info_finish(
+    _file: *mut ffi::GFile,
+    res_ptr: *mut ffi::GAsyncResult,
+    error_ptr: *mut *mut glib::ffi::GError,
+) -> *mut ffi::GFileInfo {
+    unsafe {
+        let res: AsyncResult = from_glib_none(res_ptr);
+        let t = res.downcast::<LocalTask<FileInfo>>().unwrap();
+        let ret = t.propagate();
+        match ret {
+            Ok(val) => val.to_glib_full(),
+            Err(e) => {
+                if !error_ptr.is_null() {
+                    *error_ptr = e.into_glib_ptr();
+                }
+                Ptr::from::<()>(std::ptr::null_mut())
             }
         }
     }
