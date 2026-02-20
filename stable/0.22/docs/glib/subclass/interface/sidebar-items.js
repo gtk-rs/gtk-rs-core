@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["register_dynamic_interface","register_interface"],"trait":["ObjectInterface","ObjectInterfaceExt","ObjectInterfaceType","PrerequisiteList"]};

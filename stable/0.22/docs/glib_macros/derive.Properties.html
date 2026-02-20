@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="This macro enables you to derive object properties in a quick way."><title>Properties in glib_macros - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../static.files/storage-41dd4d93.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc derive"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.22" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.22") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<rustdoc-topbar><h2><a href="#">Properties</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../glib_macros/index.html">glib_<wbr>macros</a><span class="version">0.22.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Properties</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#supported-property-attributes" title="Supported `#[property]` attributes">Supported <code>#[property]</code> attributes</a><ul><li><a href="#using-rust-keywords-as-property-names" title="Using Rust keywords as property names">Using Rust keywords as property names</a></li></ul></li><li><a href="#generated-methods" title="Generated methods">Generated methods</a></li><li><a href="#documentation" title="Documentation">Documentation</a><ul><li><a href="#extension-trait" title="Extension trait">Extension trait</a></li></ul></li><li><a href="#internal-getters-and-setters" title="Internal getters and setters">Internal getters and setters</a></li><li><a href="#supported-types" title="Supported types">Supported types</a><ul><li><a href="#adding-support-for-custom-types" title="Adding support for custom types">Adding support for custom types</a></li></ul></li><li><a href="#example" title="Example">Example</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate glib_<wbr>macros</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">glib_macros</a></div><h1>Derive Macro <span class="derive">Properties</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/glib_macros/lib.rs.html#1504-1507">Source</a> </span></div><pre class="rust item-decl"><code>#[derive(Properties)]
+{
+    <span class="comment">// Attributes available to this derive:</span>
+    #[properties]
+    #[property]
+}
+</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>This macro enables you to derive object properties in a quick way.</p>
+<h2 id="supported-property-attributes"><a class="doc-anchor" href="#supported-property-attributes">§</a>Supported <code>#[property]</code> attributes</h2><div><table><thead><tr><th>Attribute</th><th>Description</th><th>Default</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>name = "literal"</code></td><td>The name of the property</td><td>field ident where <code>_</code> (leading and trailing <code>_</code> are trimmed) is replaced into <code>-</code></td><td><code>#[property(name = "prop-name")]</code></td></tr>
+<tr><td><code>type = expr</code></td><td>The type of the property</td><td>inferred</td><td><code>#[property(type = i32)]</code></td></tr>
+<tr><td><code>get [= expr]</code></td><td>Specify that the property is readable and use <a href="../glib/property/trait.PropertyGet.html#tymethod.get"><code>PropertyGet::get</code></a> [or optionally set a custom internal getter]</td><td></td><td><code>#[property(get)]</code>, <code>#[property(get = get_prop)]</code>, or <code>[property(get = |_| 2)]</code></td></tr>
+<tr><td><code>set [= expr]</code></td><td>Specify that the property is writable and use <a href="../glib/property/trait.PropertySet.html#tymethod.set"><code>PropertySet::set</code></a> [or optionally set a custom internal setter]</td><td></td><td><code>#[property(set)]</code>, <code>#[property(set = set_prop)]</code>, or <code>[property(set = |_, val| {})]</code></td></tr>
+<tr><td><code>override_class = expr</code></td><td>The type of class of which to override the property from</td><td></td><td><code>#[property(override_class = SomeClass)]</code></td></tr>
+<tr><td><code>override_interface = expr</code></td><td>The type of interface of which to override the property from</td><td></td><td><code>#[property(override_interface = SomeInterface)]</code></td></tr>
+<tr><td><code>nullable</code></td><td>Whether to use <code>Option&lt;T&gt;</code> in the generated setter method</td><td></td><td><code>#[property(nullable)]</code></td></tr>
+<tr><td><code>member = ident</code></td><td>Field of the nested type where property is retrieved and set</td><td></td><td><code>#[property(member = author)]</code></td></tr>
+<tr><td><code>construct</code></td><td>Specify that the property is construct property. Ensures that the property is always set during construction (if not explicitly then the default value is used). The use of a custom internal setter is supported.</td><td></td><td><code>#[property(get, construct)]</code> or <code>#[property(get, set = set_prop, construct)]</code></td></tr>
+<tr><td><code>construct_only</code></td><td>Specify that the property is construct only. This will not generate a public setter and only allow the property to be set during object construction. The use of a custom internal setter is supported.</td><td></td><td><code>#[property(get, construct_only)]</code> or <code>#[property(get, set = set_prop, construct_only)]</code></td></tr>
+<tr><td><code>builder(&lt;required-params&gt;)[.ident]*</code></td><td>Used to input required params or add optional Param Spec builder fields</td><td></td><td><code>#[property(builder(SomeEnum::default()))]</code>, <code>#[builder().default_value(1).minimum(0).maximum(5)]</code>, etc.</td></tr>
+<tr><td><code>default</code></td><td>Sets the param spec builder field to the default value</td><td></td><td><code>#[property(default)]</code></td></tr>
+<tr><td><code>default = expr</code></td><td>Sets the <code>default_value</code> field of the Param Spec builder</td><td></td><td><code>#[property(default = 1)]</code></td></tr>
+<tr><td><code>&lt;optional-pspec-builder-fields&gt; = expr</code></td><td>Used to add optional Param Spec builder fields</td><td></td><td><code>#[property(minimum = 0)</code> , <code>#[property(minimum = 0, maximum = 1)]</code>, etc.</td></tr>
+<tr><td><code>&lt;optional-pspec-builder-fields&gt;</code></td><td>Used to add optional Param Spec builder fields</td><td></td><td><code>#[property(explicit_notify)]</code> , <code>#[property(construct_only)]</code>, etc.</td></tr>
+</tbody></table>
+</div><h3 id="using-rust-keywords-as-property-names"><a class="doc-anchor" href="#using-rust-keywords-as-property-names">§</a>Using Rust keywords as property names</h3>
+<p>You might hit a roadblock when declaring properties with this macro because you want to use a name that happens to be a Rust keyword. This may happen with names like <code>loop</code>, which is a pretty common name when creating things like animation handlers.
+To use those names, you can make use of the raw identifier feature of Rust. Simply prefix the identifier name with <code>r#</code> in the struct declaration. Internally, those <code>r#</code>s are stripped so you can use its expected name in <a href="../glib/object/trait.ObjectExt.html#tymethod.property"><code>ObjectExt::property</code></a> or within GtkBuilder template files.</p>
+<h2 id="generated-methods"><a class="doc-anchor" href="#generated-methods">§</a>Generated methods</h2>
+<p>The following methods are generated on the wrapper type specified on <code>#[properties(wrapper_type = ...)]</code>:</p>
+<ul>
+<li><code>$property()</code>, when the property is readable</li>
+<li><code>set_$property()</code>, when the property is writable and not construct-only</li>
+<li><code>connect_$property_notify()</code></li>
+<li><code>notify_$property()</code></li>
+</ul>
+<h2 id="documentation"><a class="doc-anchor" href="#documentation">§</a>Documentation</h2>
+<p>Doc comments preceding a <code>#[property]</code> attribute will be copied to the generated getter and setter methods. You can specify different comments by the getter and setter by using <code># Getter</code> and <code># Setter</code> headings. The text under the header will be copied to the respective method.</p>
+<h3 id="extension-trait"><a class="doc-anchor" href="#extension-trait">§</a>Extension trait</h3>
+<p>You can choose to move the method definitions to a trait by using <code>#[properties(wrapper_type = super::MyType, ext_trait = MyTypePropertiesExt)]</code>.
+The trait name is optional, and defaults to <code>MyTypePropertiesExt</code>, where <code>MyType</code> is extracted from the wrapper type.
+Note: The trait is defined in the same module where the <code>#[derive(Properties)]</code> call happens, and is implemented on the wrapper type.</p>
+<p>Notice: You can’t reimplement the generated methods on the wrapper type, unless you move them to a trait.
+You can change the behavior of the generated getter/setter methods by using a custom internal getter/setter.</p>
+<h2 id="internal-getters-and-setters"><a class="doc-anchor" href="#internal-getters-and-setters">§</a>Internal getters and setters</h2>
+<p>By default, they are generated for you. However, you can use a custom getter/setter
+by assigning an expression to <code>get</code>/<code>set</code> <code>#[property]</code> attributes: <code>#[property(get = |_| 2, set)]</code> or <code>#[property(get, set = custom_setter_func)]</code>.</p>
+<h2 id="supported-types"><a class="doc-anchor" href="#supported-types">§</a>Supported types</h2>
+<p>Every type implementing the trait <a href="../glib/property/trait.Property.html"><code>Property</code></a> is supported.
+The type <code>Option&lt;T&gt;</code> is supported as a property only if <code>Option&lt;T&gt;</code> implements <a href="../glib/value/trait.ToValueOptional.html"><code>ToValueOptional</code></a>.
+Optional types also require the <code>nullable</code> attribute: without it, the generated setter on the wrapper type
+will take <code>T</code> instead of <code>Option&lt;T&gt;</code>, preventing the user from ever calling the setter with a <code>None</code> value.</p>
+<p>Notice: For enums that derive <a href="derive.Enum.html" title="derive glib_macros::Enum"><code>Enum</code></a> or are C-style enums, you must explicitly specify the
+default value of the enum using the <code>builder</code> parameter in the <code>#[property]</code> attribute.</p>
+<h3 id="adding-support-for-custom-types"><a class="doc-anchor" href="#adding-support-for-custom-types">§</a>Adding support for custom types</h3><h4 id="types-wrapping-an-existing-t-tovalue--hasparamspec"><a class="doc-anchor" href="#types-wrapping-an-existing-t-tovalue--hasparamspec">§</a>Types wrapping an existing <code>T: <a href="../glib/value/trait.ToValue.html">ToValue</a> + <a href="../glib/trait.HasParamSpec.html">HasParamSpec</a></code></h4>
+<p>If you have declared a newtype as</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">struct </span>MyInt(i32);</code></pre></div>
+<p>you can use it as a property by deriving <a href="derive.ValueDelegate.html" title="derive glib_macros::ValueDelegate"><code>ValueDelegate</code></a>.</p>
+<h4 id="types-with-inner-mutability"><a class="doc-anchor" href="#types-with-inner-mutability">§</a>Types with inner mutability</h4>
+<p>The trait <a href="../glib/property/trait.Property.html"><code>Property</code></a> must be implemented.
+The traits <a href="../glib/property/trait.PropertyGet.html"><code>PropertyGet</code></a> and <a href="../glib/property/trait.PropertySet.html"><code>PropertySet</code></a> should be implemented to enable the Properties macro
+to generate a default internal getter/setter.
+If possible, implementing <a href="../glib/property/trait.PropertySetNested.html"><code>PropertySetNested</code></a> is preferred over <code>PropertySet</code>, because it
+enables this macro to access the contained type and provide access to its fields,
+using the <code>member = $structfield</code> syntax.</p>
+<h4 id="types-without-hasparamspec"><a class="doc-anchor" href="#types-without-hasparamspec">§</a>Types without <a href="../glib/trait.HasParamSpec.html"><code>HasParamSpec</code></a></h4>
+<p>If you have encountered a type <code>T: <a href="../glib/value/trait.ToValue.html">ToValue</a></code>, inside the gtk-rs crate, which doesn’t implement <a href="../glib/trait.HasParamSpec.html"><code>HasParamSpec</code></a>,
+then it’s a bug and you should report it.
+If you need to support a <code>ToValue</code> type with a <a href="../glib/struct.ParamSpec.html"><code>ParamSpec</code></a> not provided by gtk-rs, then you need to
+implement <code>HasParamSpec</code> on that type.</p>
+<h2 id="example"><a class="doc-anchor" href="#example">§</a>Example</h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::cell::{Cell, RefCell};
+<span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib::subclass::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib_macros::Properties;
+
+<span class="attr">#[derive(Default, Clone)]
+</span><span class="kw">struct </span>Author {
+    name: String,
+    nick: String,
+}
+
+<span class="attr">#[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum, Default)]
+#[enum_type(name = <span class="string">"MyEnum"</span>)]
+</span><span class="kw">enum </span>MyEnum {
+    <span class="attr">#[default]
+    </span>Val,
+    OtherVal
+}
+
+<span class="kw">pub mod </span>imp {
+    <span class="kw">use </span>std::rc::Rc;
+
+    <span class="kw">use </span>super::<span class="kw-2">*</span>;
+
+    <span class="attr">#[derive(Properties, Default)]
+    #[properties(wrapper_type = <span class="kw">super</span>::Foo)]
+    </span><span class="kw">pub struct </span>Foo {
+        <span class="attr">#[property(get, set = <span class="self">Self</span>::set_fizz)]
+        </span>fizz: RefCell&lt;String&gt;,
+        <span class="doccomment">/// The author's name
+        </span><span class="attr">#[property(name = <span class="string">"author-name"</span>, get, set, <span class="kw">type </span>= String, member = name)]
+        </span><span class="doccomment">/// The author's childhood nickname
+        </span><span class="attr">#[property(name = <span class="string">"author-nick"</span>, get, set, <span class="kw">type </span>= String, member = nick)]
+        </span>author: RefCell&lt;Author&gt;,
+        <span class="attr">#[property(get, set, explicit_notify, lax_validation)]
+        </span>custom_flags: RefCell&lt;String&gt;,
+        <span class="attr">#[property(get, set, minimum = <span class="number">0</span>, maximum = <span class="number">3</span>)]
+        </span>numeric_builder: RefCell&lt;u32&gt;,
+        <span class="attr">#[property(get, set, builder(<span class="string">'c'</span>))]
+        </span>builder_with_required_param: RefCell&lt;char&gt;,
+        <span class="attr">#[property(get, set, nullable)]
+        </span>optional: RefCell&lt;<span class="prelude-ty">Option</span>&lt;String&gt;&gt;,
+        <span class="attr">#[property(get, set)]
+        </span>smart_pointer: Rc&lt;RefCell&lt;String&gt;&gt;,
+        <span class="attr">#[property(get, set, builder(MyEnum::Val))]
+        </span>my_enum: Cell&lt;MyEnum&gt;,
+        <span class="attr">#[property(get, set, default)]
+        </span>my_enum_with_default: Cell&lt;MyEnum&gt;,
+        <span class="doccomment">/// # Getter
+        ///
+        /// Get the value of the property `extra_comments`
+        ///
+        /// # Setter
+        ///
+        /// This is the comment for the setter of the `extra_comments` field.
+        </span><span class="attr">#[property(get, set)]
+        </span>extra_comments: RefCell&lt;bool&gt;,
+    }
+     
+    <span class="attr">#[glib::derived_properties]
+    </span><span class="kw">impl </span>ObjectImpl <span class="kw">for </span>Foo {}
+
+    <span class="attr">#[glib::object_subclass]
+    </span><span class="kw">impl </span>ObjectSubclass <span class="kw">for </span>Foo {
+        <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"MyFoo"</span>;
+        <span class="kw">type </span>Type = <span class="kw">super</span>::Foo;
+    }
+
+    <span class="kw">impl </span>Foo {
+        <span class="kw">fn </span>set_fizz(<span class="kw-2">&amp;</span><span class="self">self</span>, value: String) {
+            <span class="kw-2">*</span><span class="self">self</span>.fizz.borrow_mut() = <span class="macro">format!</span>(<span class="string">"custom set: {}"</span>, value);
+        }
+    }
+}
+
+<span class="macro">glib::wrapper!</span> {
+    <span class="kw">pub struct </span>Foo(ObjectSubclass&lt;imp::Foo&gt;);
+}
+
+<span class="kw">fn </span>main() {
+  <span class="kw">let </span>myfoo: Foo = glib::object::Object::new();
+
+  myfoo.set_fizz(<span class="string">"test value"</span>);
+  <span class="macro">assert_eq!</span>(myfoo.fizz(), <span class="string">"custom set: test value"</span>.to_string());
+}</code></pre></div></div></details></section></div></main></body></html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait containing all `struct@Application` methods."><title>ApplicationExt in gio::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.22" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.22") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<rustdoc-topbar><h2><a href="#">ApplicationExt</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../gio/index.html">gio</a><span class="version">0.22.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Application<wbr>Ext</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#implementors-1" title="Implementors">Implementors</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.activate" title="activate">activate</a></li><li><a href="#method.add_main_option" title="add_main_option">add_main_option</a></li><li><a href="#method.application_id" title="application_id">application_id</a></li><li><a href="#method.bind_busy_property" title="bind_busy_property">bind_busy_property</a></li><li><a href="#method.connect_activate" title="connect_activate">connect_activate</a></li><li><a href="#method.connect_application_id_notify" title="connect_application_id_notify">connect_application_id_notify</a></li><li><a href="#method.connect_flags_notify" title="connect_flags_notify">connect_flags_notify</a></li><li><a href="#method.connect_inactivity_timeout_notify" title="connect_inactivity_timeout_notify">connect_inactivity_timeout_notify</a></li><li><a href="#method.connect_is_busy_notify" title="connect_is_busy_notify">connect_is_busy_notify</a></li><li><a href="#method.connect_is_registered_notify" title="connect_is_registered_notify">connect_is_registered_notify</a></li><li><a href="#method.connect_is_remote_notify" title="connect_is_remote_notify">connect_is_remote_notify</a></li><li><a href="#method.connect_name_lost" title="connect_name_lost">connect_name_lost</a></li><li><a href="#method.connect_resource_base_path_notify" title="connect_resource_base_path_notify">connect_resource_base_path_notify</a></li><li><a href="#method.connect_shutdown" title="connect_shutdown">connect_shutdown</a></li><li><a href="#method.connect_startup" title="connect_startup">connect_startup</a></li><li><a href="#method.connect_version_notify" title="connect_version_notify">connect_version_notify</a></li><li><a href="#method.dbus_connection" title="dbus_connection">dbus_connection</a></li><li><a href="#method.dbus_object_path" title="dbus_object_path">dbus_object_path</a></li><li><a href="#method.flags" title="flags">flags</a></li><li><a href="#method.inactivity_timeout" title="inactivity_timeout">inactivity_timeout</a></li><li><a href="#method.is_busy" title="is_busy">is_busy</a></li><li><a href="#method.is_registered" title="is_registered">is_registered</a></li><li><a href="#method.is_remote" title="is_remote">is_remote</a></li><li><a href="#method.open" title="open">open</a></li><li><a href="#method.quit" title="quit">quit</a></li><li><a href="#method.register" title="register">register</a></li><li><a href="#method.resource_base_path" title="resource_base_path">resource_base_path</a></li><li><a href="#method.send_notification" title="send_notification">send_notification</a></li><li><a href="#method.set_application_id" title="set_application_id">set_application_id</a></li><li><a href="#method.set_default" title="set_default">set_default</a></li><li><a href="#method.set_flags" title="set_flags">set_flags</a></li><li><a href="#method.set_inactivity_timeout" title="set_inactivity_timeout">set_inactivity_timeout</a></li><li><a href="#method.set_option_context_description" title="set_option_context_description">set_option_context_description</a></li><li><a href="#method.set_option_context_parameter_string" title="set_option_context_parameter_string">set_option_context_parameter_string</a></li><li><a href="#method.set_option_context_summary" title="set_option_context_summary">set_option_context_summary</a></li><li><a href="#method.set_resource_base_path" title="set_resource_base_path">set_resource_base_path</a></li><li><a href="#method.set_version" title="set_version">set_version</a></li><li><a href="#method.unbind_busy_property" title="unbind_busy_property">unbind_busy_property</a></li><li><a href="#method.version" title="version">version</a></li><li><a href="#method.withdraw_notification" title="withdraw_notification">withdraw_notification</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In gio::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">gio</a>::<wbr><a href="index.html">prelude</a></div><h1>Trait <span class="trait">Application<wbr>Ext</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/gio/auto/application.rs.html#528-1528">Source</a> </span></div><pre class="rust item-decl"><code>pub trait ApplicationExt: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Application.html" title="struct gio::Application">Application</a>&gt; + 'static {
+<details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 40 methods</span></summary>    // Provided methods
+    fn <a href="#method.activate" class="fn">activate</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.add_main_option" class="fn">add_main_option</a>(
+        &amp;self,
+        long_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        short_name: <a class="struct" href="../../glib/char/struct.Char.html" title="struct glib::char::Char">Char</a>,
+        flags: <a class="struct" href="../../glib/auto/flags/struct.OptionFlags.html" title="struct glib::auto::flags::OptionFlags">OptionFlags</a>,
+        arg: <a class="enum" href="../../glib/auto/enums/enum.OptionArg.html" title="enum glib::auto::enums::OptionArg">OptionArg</a>,
+        description: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        arg_description: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.bind_busy_property" class="fn">bind_busy_property</a>(&amp;self, object: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../../glib/object/struct.Object.html" title="struct glib::object::Object">Object</a>&gt;, property: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.application_id" class="fn">application_id</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.dbus_connection" class="fn">dbus_connection</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../struct.DBusConnection.html" title="struct gio::DBusConnection">DBusConnection</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.dbus_object_path" class="fn">dbus_object_path</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.flags" class="fn">flags</a>(&amp;self) -&gt; <a class="struct" href="../struct.ApplicationFlags.html" title="struct gio::ApplicationFlags">ApplicationFlags</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.inactivity_timeout" class="fn">inactivity_timeout</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_busy" class="fn">is_busy</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_registered" class="fn">is_registered</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_remote" class="fn">is_remote</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.resource_base_path" class="fn">resource_base_path</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.version" class="fn">version</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.open" class="fn">open</a>(&amp;self, files: &amp;[<a class="struct" href="../struct.File.html" title="struct gio::File">File</a>], hint: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.quit" class="fn">quit</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.register" class="fn">register</a>(
+        &amp;self,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.send_notification" class="fn">send_notification</a>(&amp;self, id: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, notification: &amp;<a class="struct" href="../struct.Notification.html" title="struct gio::Notification">Notification</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_application_id" class="fn">set_application_id</a>(&amp;self, application_id: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_default" class="fn">set_default</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_flags" class="fn">set_flags</a>(&amp;self, flags: <a class="struct" href="../struct.ApplicationFlags.html" title="struct gio::ApplicationFlags">ApplicationFlags</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_inactivity_timeout" class="fn">set_inactivity_timeout</a>(&amp;self, inactivity_timeout: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_option_context_description" class="fn">set_option_context_description</a>(&amp;self, description: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_option_context_parameter_string" class="fn">set_option_context_parameter_string</a>(
+        &amp;self,
+        parameter_string: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_option_context_summary" class="fn">set_option_context_summary</a>(&amp;self, summary: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_resource_base_path" class="fn">set_resource_base_path</a>(&amp;self, resource_path: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_version" class="fn">set_version</a>(&amp;self, version: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.unbind_busy_property" class="fn">unbind_busy_property</a>(&amp;self, object: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../../glib/object/struct.Object.html" title="struct glib::object::Object">Object</a>&gt;, property: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.withdraw_notification" class="fn">withdraw_notification</a>(&amp;self, id: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_activate" class="fn">connect_activate</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_name_lost" class="fn">connect_name_lost</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_shutdown" class="fn">connect_shutdown</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_startup" class="fn">connect_startup</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_application_id_notify" class="fn">connect_application_id_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_flags_notify" class="fn">connect_flags_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_inactivity_timeout_notify" class="fn">connect_inactivity_timeout_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_is_busy_notify" class="fn">connect_is_busy_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_is_registered_notify" class="fn">connect_is_registered_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_is_remote_notify" class="fn">connect_is_remote_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_resource_base_path_notify" class="fn">connect_resource_base_path_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_version_notify" class="fn">connect_version_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+        &amp;self,
+        f: F,
+    ) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a> { ... }
+</details>}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait containing all <a href="../struct.Application.html" title="struct gio::Application"><code>Application</code></a> methods.</p>
+<h2 id="implementors-1"><a class="doc-anchor" href="#implementors-1">§</a>Implementors</h2>
+<p><a href="../struct.Application.html" title="struct gio::Application"><code>Application</code></a></p>
+</div></details><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.activate" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#536-540">Source</a><h4 class="code-header">fn <a href="#method.activate" class="fn">activate</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Activates the application.</p>
+<p>In essence, this results in the #GApplication::activate signal being
+emitted in the primary instance.</p>
+<p>The application must be registered before calling this function.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.add_main_option" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#569-589">Source</a><h4 class="code-header">fn <a href="#method.add_main_option" class="fn">add_main_option</a>(
+    &amp;self,
+    long_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    short_name: <a class="struct" href="../../glib/char/struct.Char.html" title="struct glib::char::Char">Char</a>,
+    flags: <a class="struct" href="../../glib/auto/flags/struct.OptionFlags.html" title="struct glib::auto::flags::OptionFlags">OptionFlags</a>,
+    arg: <a class="enum" href="../../glib/auto/enums/enum.OptionArg.html" title="enum glib::auto::enums::OptionArg">OptionArg</a>,
+    description: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    arg_description: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+)</h4></section></summary><div class="docblock"><p>Add an option to be handled by @self.</p>
+<p>Calling this function is the equivalent of calling
+g_application_add_main_option_entries() with a single #GOptionEntry
+that has its arg_data member set to <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.</p>
+<p>The parsed arguments will be packed into a #GVariantDict which
+is passed to #GApplication::handle-local-options. If
+<a href="../struct.ApplicationFlags.html#associatedconstant.HANDLES_COMMAND_LINE" title="associated constant gio::ApplicationFlags::HANDLES_COMMAND_LINE"><code>ApplicationFlags::HANDLES_COMMAND_LINE</code></a> is set, then it will also
+be sent to the primary instance. See
+g_application_add_main_option_entries() for more details.</p>
+<p>See #GOptionEntry for more documentation of the arguments.</p>
+<h6 id="long_name"><a class="doc-anchor" href="#long_name">§</a><code>long_name</code></h6>
+<p>the long name of an option used to specify it in a commandline</p>
+<h6 id="short_name"><a class="doc-anchor" href="#short_name">§</a><code>short_name</code></h6>
+<p>the short name of an option</p>
+<h6 id="flags"><a class="doc-anchor" href="#flags">§</a><code>flags</code></h6>
+<p>flags from #GOptionFlags</p>
+<h6 id="arg"><a class="doc-anchor" href="#arg">§</a><code>arg</code></h6>
+<p>the type of the option, as a #GOptionArg</p>
+<h6 id="description"><a class="doc-anchor" href="#description">§</a><code>description</code></h6>
+<p>the description for the option in <code>--help</code> output</p>
+<h6 id="arg_description"><a class="doc-anchor" href="#arg_description">§</a><code>arg_description</code></h6>
+<p>the placeholder to use for the extra argument
+parsed by the option in <code>--help</code> output</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.bind_busy_property" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#612-620">Source</a><h4 class="code-header">fn <a href="#method.bind_busy_property" class="fn">bind_busy_property</a>(&amp;self, object: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../../glib/object/struct.Object.html" title="struct glib::object::Object">Object</a>&gt;, property: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)</h4></section></summary><div class="docblock"><p>Marks @self as busy (see g_application_mark_busy()) while
+@property on @object is <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a>.</p>
+<p>The binding holds a reference to @self while it is active, but
+not to @object. Instead, the binding is destroyed when @object is
+finalized.</p>
+<h6 id="object"><a class="doc-anchor" href="#object">§</a><code>object</code></h6>
+<p>a #GObject</p>
+<h6 id="property"><a class="doc-anchor" href="#property">§</a><code>property</code></h6>
+<p>the name of a boolean property of @object</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.application_id" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#630-636">Source</a><h4 class="code-header">fn <a href="#method.application_id" class="fn">application_id</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the unique identifier for @self.</p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p>the identifier for @self, owned by @self</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.dbus_connection" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#657-663">Source</a><h4 class="code-header">fn <a href="#method.dbus_connection" class="fn">dbus_connection</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../struct.DBusConnection.html" title="struct gio::DBusConnection">DBusConnection</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the #GDBusConnection being used by the application, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.</p>
+<p>If #GApplication is using its D-Bus backend then this function will
+return the #GDBusConnection being used for uniqueness and
+communication with the desktop environment and other instances of the
+application.</p>
+<p>If #GApplication is not using D-Bus then this function will return
+<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.  This includes the situation where the D-Bus backend would
+normally be in use but we were unable to connect to the bus.</p>
+<p>This function must not be called before the application has been
+registered.  See g_application_get_is_registered().</p>
+<h5 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h5>
+<p>a #GDBusConnection, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.dbus_object_path" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#685-691">Source</a><h4 class="code-header">fn <a href="#method.dbus_object_path" class="fn">dbus_object_path</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the D-Bus object path being used by the application, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.</p>
+<p>If #GApplication is using its D-Bus backend then this function will
+return the D-Bus object path that #GApplication is using.  If the
+application is the primary instance then there is an object published
+at this path.  If the application is not the primary instance then
+the result of this function is undefined.</p>
+<p>If #GApplication is not using D-Bus then this function will return
+<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.  This includes the situation where the D-Bus backend would
+normally be in use but we were unable to connect to the bus.</p>
+<p>This function must not be called before the application has been
+registered.  See g_application_get_is_registered().</p>
+<h5 id="returns-2"><a class="doc-anchor" href="#returns-2">§</a>Returns</h5>
+<p>the object path, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.flags" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#702-704">Source</a><h4 class="code-header">fn <a href="#method.flags" class="fn">flags</a>(&amp;self) -&gt; <a class="struct" href="../struct.ApplicationFlags.html" title="struct gio::ApplicationFlags">ApplicationFlags</a></h4></section></summary><div class="docblock"><p>Gets the flags for @self.</p>
+<p>See #GApplicationFlags.</p>
+<h5 id="returns-3"><a class="doc-anchor" href="#returns-3">§</a>Returns</h5>
+<p>the flags for @self</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.inactivity_timeout" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#717-719">Source</a><h4 class="code-header">fn <a href="#method.inactivity_timeout" class="fn">inactivity_timeout</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></h4></section></summary><div class="docblock"><p>Gets the current inactivity timeout for the application.</p>
+<p>This is the amount of time (in milliseconds) after the last call to
+g_application_release() before the application stops running.</p>
+<h5 id="returns-4"><a class="doc-anchor" href="#returns-4">§</a>Returns</h5>
+<p>the timeout, in milliseconds</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_busy" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#730-736">Source</a><h4 class="code-header">fn <a href="#method.is_busy" class="fn">is_busy</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Gets the application’s current busy state, as set through
+g_application_mark_busy() or g_application_bind_busy_property().</p>
+<h5 id="returns-5"><a class="doc-anchor" href="#returns-5">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if @self is currently marked as busy</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_registered" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#749-755">Source</a><h4 class="code-header">fn <a href="#method.is_registered" class="fn">is_registered</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if @self is registered.</p>
+<p>An application is registered if g_application_register() has been
+successfully called.</p>
+<h5 id="returns-6"><a class="doc-anchor" href="#returns-6">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if @self is registered</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_remote" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#774-780">Source</a><h4 class="code-header">fn <a href="#method.is_remote" class="fn">is_remote</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if @self is remote.</p>
+<p>If @self is remote then it means that another instance of
+application already exists (the ‘primary’ instance).  Calls to
+perform actions on @self will result in the actions being
+performed by the primary instance.</p>
+<p>The value of this property cannot be accessed before
+g_application_register() has been called.  See
+g_application_get_is_registered().</p>
+<h5 id="returns-7"><a class="doc-anchor" href="#returns-7">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if @self is remote</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.resource_base_path" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#792-798">Source</a><h4 class="code-header">fn <a href="#method.resource_base_path" class="fn">resource_base_path</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the resource base path of @self.</p>
+<p>See g_application_set_resource_base_path() for more information.</p>
+<h5 id="returns-8"><a class="doc-anchor" href="#returns-8">§</a>Returns</h5>
+<p>the base resource path, if one is set</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.version" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#809-815">Source</a><h4 class="code-header">fn <a href="#method.version" class="fn">version</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_80</code></strong> only.</div></span></summary><div class="docblock"><p>Gets the version of @self.</p>
+<h5 id="returns-9"><a class="doc-anchor" href="#returns-9">§</a>Returns</h5>
+<p>the version of @self</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.open" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#836-846">Source</a><h4 class="code-header">fn <a href="#method.open" class="fn">open</a>(&amp;self, files: &amp;[<a class="struct" href="../struct.File.html" title="struct gio::File">File</a>], hint: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)</h4></section></summary><div class="docblock"><p>Opens the given files.</p>
+<p>In essence, this results in the #GApplication::open signal being emitted
+in the primary instance.</p>
+<p>@n_files must be greater than zero.</p>
+<p>@hint is simply passed through to the ::open signal.  It is
+intended to be used by applications that have multiple modes for
+opening files (eg: “view” vs “edit”, etc).  Unless you have a need
+for this functionality, you should use “”.</p>
+<p>The application must be registered before calling this function
+and it must have the <a href="../struct.ApplicationFlags.html#associatedconstant.HANDLES_OPEN" title="associated constant gio::ApplicationFlags::HANDLES_OPEN"><code>ApplicationFlags::HANDLES_OPEN</code></a> flag set.</p>
+<h6 id="files"><a class="doc-anchor" href="#files">§</a><code>files</code></h6>
+<p>an array of #GFiles to open</p>
+<h6 id="hint"><a class="doc-anchor" href="#hint">§</a><code>hint</code></h6>
+<p>a hint (or “”), but never <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.quit" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#862-866">Source</a><h4 class="code-header">fn <a href="#method.quit" class="fn">quit</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Immediately quits the application.</p>
+<p>Upon return to the mainloop, g_application_run() will return,
+calling only the ‘shutdown’ function before doing so.</p>
+<p>The hold count is ignored.
+Take care if your code has called g_application_hold() on the application and
+is therefore still expecting it to exist.
+(Note that you may have called g_application_hold() indirectly, for example
+through gtk_application_add_window().)</p>
+<p>The result of calling g_application_run() again after it returns is
+unspecified.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.register" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#905-920">Source</a><h4 class="code-header">fn <a href="#method.register" class="fn">register</a>(
+    &amp;self,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Attempts registration of the application.</p>
+<p>This is the point at which the application discovers if it is the
+primary instance or merely acting as a remote for an already-existing
+primary instance.  This is implemented by attempting to acquire the
+application identifier as a unique bus name on the session bus using
+GDBus.</p>
+<p>If there is no application ID or if <a href="../struct.ApplicationFlags.html#associatedconstant.NON_UNIQUE" title="associated constant gio::ApplicationFlags::NON_UNIQUE"><code>ApplicationFlags::NON_UNIQUE</code></a> was
+given, then this process will always become the primary instance.</p>
+<p>Due to the internal architecture of GDBus, method calls can be
+dispatched at any time (even if a main loop is not running).  For
+this reason, you must ensure that any object paths that you wish to
+register are registered before calling this function.</p>
+<p>If the application has already been registered then <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> is
+returned with no work performed.</p>
+<p>The #GApplication::startup signal is emitted if registration succeeds
+and @self is the primary instance (including the non-unique
+case).</p>
+<p>In the event of an error (such as @cancellable being cancelled, or a
+failure to connect to the session bus), <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> is returned and @error
+is set appropriately.</p>
+<p>Note: the return value of this function is not an indicator that this
+instance is or is not the primary instance of the application.  See
+g_application_get_is_remote() for that.</p>
+<h6 id="cancellable"><a class="doc-anchor" href="#cancellable">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-10"><a class="doc-anchor" href="#returns-10">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if registration succeeded</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.send_notification" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#956-964">Source</a><h4 class="code-header">fn <a href="#method.send_notification" class="fn">send_notification</a>(&amp;self, id: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, notification: &amp;<a class="struct" href="../struct.Notification.html" title="struct gio::Notification">Notification</a>)</h4></section></summary><div class="docblock"><p>Sends a notification on behalf of @self to the desktop shell.
+There is no guarantee that the notification is displayed immediately,
+or even at all.</p>
+<p>Notifications may persist after the application exits. It will be
+D-Bus-activated when the notification or one of its actions is
+activated.</p>
+<p>Modifying @notification after this call has no effect. However, the
+object can be reused for a later call to this function.</p>
+<p>@id may be any string that uniquely identifies the event for the
+application. It does not need to be in any special format. For
+example, “new-message” might be appropriate for a notification about
+new messages.</p>
+<p>If a previous notification was sent with the same @id, it will be
+replaced with @notification and shown again as if it was a new
+notification. This works even for notifications sent from a previous
+execution of the application, as long as @id is the same string.</p>
+<p>@id may be <code>NULL</code>, but it is impossible to replace or withdraw
+notifications without an id.</p>
+<p>If @notification is no longer relevant, it can be withdrawn with
+<a href="trait.ApplicationExt.html#method.withdraw_notification" title="method gio::prelude::ApplicationExt::withdraw_notification"><code>withdraw_notification()</code></a>.</p>
+<p>It is an error to call this function if @self has no
+application ID.</p>
+<h6 id="id"><a class="doc-anchor" href="#id">§</a><code>id</code></h6>
+<p>id of the notification, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h6 id="notification"><a class="doc-anchor" href="#notification">§</a><code>notification</code></h6>
+<p>the #GNotification to send</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_application_id" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#977-984">Source</a><h4 class="code-header">fn <a href="#method.set_application_id" class="fn">set_application_id</a>(&amp;self, application_id: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;)</h4></section></summary><div class="docblock"><p>Sets the unique identifier for @self.</p>
+<p>The application id can only be modified if @self has not yet
+been registered.</p>
+<p>If non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, the application id must be valid.  See
+g_application_id_is_valid().</p>
+<h6 id="application_id"><a class="doc-anchor" href="#application_id">§</a><code>application_id</code></h6>
+<p>the identifier for @self</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_default" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#993-997">Source</a><h4 class="code-header">fn <a href="#method.set_default" class="fn">set_default</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Sets or unsets the default application for the process, as returned
+by g_application_get_default().</p>
+<p>This function does not take its own reference on @self.  If
+@self is destroyed then the default application will revert
+back to <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_flags" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1009-1013">Source</a><h4 class="code-header">fn <a href="#method.set_flags" class="fn">set_flags</a>(&amp;self, flags: <a class="struct" href="../struct.ApplicationFlags.html" title="struct gio::ApplicationFlags">ApplicationFlags</a>)</h4></section></summary><div class="docblock"><p>Sets the flags for @self.</p>
+<p>The flags can only be modified if @self has not yet been
+registered.</p>
+<p>See #GApplicationFlags.</p>
+<h6 id="flags-1"><a class="doc-anchor" href="#flags-1">§</a><code>flags</code></h6>
+<p>the flags for @self</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_inactivity_timeout" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1027-1034">Source</a><h4 class="code-header">fn <a href="#method.set_inactivity_timeout" class="fn">set_inactivity_timeout</a>(&amp;self, inactivity_timeout: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>)</h4></section></summary><div class="docblock"><p>Sets the current inactivity timeout for the application.</p>
+<p>This is the amount of time (in milliseconds) after the last call to
+g_application_release() before the application stops running.</p>
+<p>This call has no side effects of its own.  The value set here is only
+used for next time g_application_release() drops the use count to
+zero.  Any timeouts currently in progress are not impacted.</p>
+<h6 id="inactivity_timeout"><a class="doc-anchor" href="#inactivity_timeout">§</a><code>inactivity_timeout</code></h6>
+<p>the timeout, in milliseconds</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_option_context_description" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1043-1050">Source</a><h4 class="code-header">fn <a href="#method.set_option_context_description" class="fn">set_option_context_description</a>(&amp;self, description: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;)</h4></section></summary><div class="docblock"><p>Adds a description to the @self option context.</p>
+<p>See g_option_context_set_description() for more information.</p>
+<h6 id="description-1"><a class="doc-anchor" href="#description-1">§</a><code>description</code></h6>
+<p>a string to be shown in <code>--help</code> output
+after the list of options, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_option_context_parameter_string" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1062-1069">Source</a><h4 class="code-header">fn <a href="#method.set_option_context_parameter_string" class="fn">set_option_context_parameter_string</a>(&amp;self, parameter_string: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;)</h4></section></summary><div class="docblock"><p>Sets the parameter string to be used by the commandline handling of @self.</p>
+<p>This function registers the argument to be passed to g_option_context_new()
+when the internal #GOptionContext of @self is created.</p>
+<p>See g_option_context_new() for more information about @parameter_string.</p>
+<h6 id="parameter_string"><a class="doc-anchor" href="#parameter_string">§</a><code>parameter_string</code></h6>
+<p>a string which is displayed
+in the first line of <code>--help</code> output, after the usage summary <code>programname [OPTION...]</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_option_context_summary" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1078-1085">Source</a><h4 class="code-header">fn <a href="#method.set_option_context_summary" class="fn">set_option_context_summary</a>(&amp;self, summary: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;)</h4></section></summary><div class="docblock"><p>Adds a summary to the @self option context.</p>
+<p>See g_option_context_set_summary() for more information.</p>
+<h6 id="summary"><a class="doc-anchor" href="#summary">§</a><code>summary</code></h6>
+<p>a string to be shown in <code>--help</code> output
+before the list of options, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_resource_base_path" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1124-1131">Source</a><h4 class="code-header">fn <a href="#method.set_resource_base_path" class="fn">set_resource_base_path</a>(&amp;self, resource_path: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;)</h4></section></summary><div class="docblock"><p>Sets (or unsets) the base resource path of @self.</p>
+<p>The path is used to automatically load various
+[application resources]<a href="../struct.Resource.html" title="struct gio::Resource"><code>Resource</code></a> such as menu layouts and
+action descriptions. The various types of resources will be found at
+fixed names relative to the given base path.</p>
+<p>By default, the resource base path is determined from the application
+ID by prefixing ‘/’ and replacing each ‘.’ with ‘/’.  This is done at
+the time that the #GApplication object is constructed.  Changes to
+the application ID after that point will not have an impact on the
+resource base path.</p>
+<p>As an example, if the application has an ID of “org.example.app” then
+the default resource base path will be “/org/example/app”.  If this
+is a #GtkApplication (and you have not manually changed the path)
+then Gtk will then search for the menus of the application at
+“/org/example/app/gtk/menus.ui”.</p>
+<p>See #GResource for more information about adding resources to your
+application.</p>
+<p>You can disable automatic resource loading functionality by setting
+the path to <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.</p>
+<p>Changing the resource base path once the application is running is
+not recommended.  The point at which the resource path is consulted
+for forming paths for various purposes is unspecified.  When writing
+a sub-class of #GApplication you should either set the
+#GApplication:resource-base-path property at construction time, or call
+this function during the instance initialization. Alternatively, you
+can call this function in the #GApplicationClass.startup virtual function,
+before chaining up to the parent implementation.</p>
+<h6 id="resource_path"><a class="doc-anchor" href="#resource_path">§</a><code>resource_path</code></h6>
+<p>the resource path to use</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_version" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1144-1151">Source</a><h4 class="code-header">fn <a href="#method.set_version" class="fn">set_version</a>(&amp;self, version: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_80</code></strong> only.</div></span></summary><div class="docblock"><p>Sets the version number of @self. This will be used to implement
+a <code>--version</code> command line argument</p>
+<p>The application version can only be modified if @self has not yet
+been registered.</p>
+<h6 id="version"><a class="doc-anchor" href="#version">§</a><code>version</code></h6>
+<p>the version of @self</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.unbind_busy_property" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1161-1169">Source</a><h4 class="code-header">fn <a href="#method.unbind_busy_property" class="fn">unbind_busy_property</a>(&amp;self, object: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../../glib/object/struct.Object.html" title="struct glib::object::Object">Object</a>&gt;, property: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)</h4></section></summary><div class="docblock"><p>Destroys a binding between @property and the busy state of
+@self that was previously created with
+g_application_bind_busy_property().</p>
+<h6 id="object-1"><a class="doc-anchor" href="#object-1">§</a><code>object</code></h6>
+<p>a #GObject</p>
+<h6 id="property-1"><a class="doc-anchor" href="#property-1">§</a><code>property</code></h6>
+<p>the name of a boolean property of @object</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.withdraw_notification" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1187-1194">Source</a><h4 class="code-header">fn <a href="#method.withdraw_notification" class="fn">withdraw_notification</a>(&amp;self, id: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)</h4></section></summary><div class="docblock"><p>Withdraws a notification that was sent with
+g_application_send_notification().</p>
+<p>This call does nothing if a notification with @id doesn’t exist or
+the notification was never sent.</p>
+<p>This function works even for notifications sent in previous
+executions of this application, as long @id is the same as it was for
+the sent notification.</p>
+<p>Note that notifications are dismissed when the user clicks on one
+of the buttons in a notification or triggers its default action, so
+there is no need to explicitly withdraw the notification in that case.</p>
+<h6 id="id-1"><a class="doc-anchor" href="#id-1">§</a><code>id</code></h6>
+<p>id of a previously sent notification</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_activate" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1199-1220">Source</a><h4 class="code-header">fn <a href="#method.connect_activate" class="fn">connect_activate</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section></summary><div class="docblock"><p>The ::activate signal is emitted on the primary instance when an
+activation occurs. See g_application_activate().</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_name_lost" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1234-1258">Source</a><h4 class="code-header">fn <a href="#method.connect_name_lost" class="fn">connect_name_lost</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_60</code></strong> only.</div></span></summary><div class="docblock"><p>The ::name-lost signal is emitted only on the registered primary instance
+when a new instance has taken over. This can only happen if the application
+is using the <a href="../struct.ApplicationFlags.html#associatedconstant.ALLOW_REPLACEMENT" title="associated constant gio::ApplicationFlags::ALLOW_REPLACEMENT"><code>ApplicationFlags::ALLOW_REPLACEMENT</code></a> flag.</p>
+<p>The default handler for this signal calls g_application_quit().</p>
+<h5 id="returns-11"><a class="doc-anchor" href="#returns-11">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if the signal has been handled</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_shutdown" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1263-1284">Source</a><h4 class="code-header">fn <a href="#method.connect_shutdown" class="fn">connect_shutdown</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section></summary><div class="docblock"><p>The ::shutdown signal is emitted only on the registered primary instance
+immediately after the main loop terminates.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_startup" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1289-1310">Source</a><h4 class="code-header">fn <a href="#method.connect_startup" class="fn">connect_startup</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section></summary><div class="docblock"><p>The ::startup signal is emitted on the primary instance immediately
+after registration. See g_application_register().</p>
+</div></details><section id="method.connect_application_id_notify" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1313-1338">Source</a><h4 class="code-header">fn <a href="#method.connect_application_id_notify" class="fn">connect_application_id_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><section id="method.connect_flags_notify" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1341-1363">Source</a><h4 class="code-header">fn <a href="#method.connect_flags_notify" class="fn">connect_flags_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><section id="method.connect_inactivity_timeout_notify" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1366-1391">Source</a><h4 class="code-header">fn <a href="#method.connect_inactivity_timeout_notify" class="fn">connect_inactivity_timeout_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><section id="method.connect_is_busy_notify" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1394-1416">Source</a><h4 class="code-header">fn <a href="#method.connect_is_busy_notify" class="fn">connect_is_busy_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><section id="method.connect_is_registered_notify" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1419-1444">Source</a><h4 class="code-header">fn <a href="#method.connect_is_registered_notify" class="fn">connect_is_registered_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><section id="method.connect_is_remote_notify" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1447-1472">Source</a><h4 class="code-header">fn <a href="#method.connect_is_remote_notify" class="fn">connect_is_remote_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><section id="method.connect_resource_base_path_notify" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1475-1500">Source</a><h4 class="code-header">fn <a href="#method.connect_resource_base_path_notify" class="fn">connect_resource_base_path_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><section id="method.connect_version_notify" class="method"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1505-1527">Source</a><h4 class="code-header">fn <a href="#method.connect_version_notify" class="fn">connect_version_notify</a>&lt;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static&gt;(
+    &amp;self,
+    f: F,
+) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a></h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_80</code></strong> only.</div></span></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><div class="negative-marker"></div><section id="impl-ApplicationExt-for-O" class="impl"><a class="src rightside" href="../../src/gio/auto/application.rs.html#1530">Source</a><a href="#impl-ApplicationExt-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Application.html" title="struct gio::Application">Application</a>&gt;&gt; <a class="trait" href="trait.ApplicationExt.html" title="trait gio::prelude::ApplicationExt">ApplicationExt</a> for O</h3></section></div><script src="../../trait.impl/gio/auto/application/trait.ApplicationExt.js" async></script></section></div></main></body></html>

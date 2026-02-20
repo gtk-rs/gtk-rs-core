@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["is_mount_path_system_internal","is_system_device_path","is_system_fs_type"]};

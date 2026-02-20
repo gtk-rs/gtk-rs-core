@@ -1,0 +1,166 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="`Variant` binding and helper traits."><title>glib::variant - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc mod"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.22" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.22") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<rustdoc-topbar><h2><a href="#">Module variant</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../glib/index.html">glib</a><span class="version">0.22.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module variant</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#examples" title="Examples">Examples</a></li></ul><h3><a href="#structs">Module Items</a></h3><ul class="block"><li><a href="#structs" title="Structs">Structs</a></li><li><a href="#traits" title="Traits">Traits</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="../index.html">In crate glib</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">glib</a></div><h1>Module <span>variant</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/glib/variant.rs.html#4-2518">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p><code>Variant</code> binding and helper traits.</p>
+<p><a href="struct.Variant.html"><code>Variant</code></a> is an immutable dynamically-typed generic
+container. Its type and value are defined at construction and never change.</p>
+<p><code>Variant</code> types are described by <a href="../struct.VariantType.html"><code>VariantType</code></a>
+“type strings”.</p>
+<p><code>GVariant</code> supports arbitrarily complex types built from primitives like integers, floating point
+numbers, strings, arrays, tuples and dictionaries. See <a href="trait.ToVariant.html#foreign-impls" title="trait glib::variant::ToVariant"><code>ToVariant</code></a> for
+a full list of supported types. You may also implement <a href="trait.ToVariant.html" title="trait glib::variant::ToVariant"><code>ToVariant</code></a> and <a href="trait.FromVariant.html" title="trait glib::variant::FromVariant"><code>FromVariant</code></a>
+manually, or derive them using the <a href="../derive.Variant.html" title="derive glib::Variant"><code>Variant</code></a> derive macro.</p>
+<h2 id="examples"><a class="doc-anchor" href="#examples">§</a>Examples</h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>glib::prelude::<span class="kw-2">*</span>; <span class="comment">// or `use gtk::prelude::*;`
+</span><span class="kw">use </span>glib::variant::{Variant, FromVariant};
+<span class="kw">use </span>std::collections::HashMap;
+
+<span class="comment">// Using the `ToVariant` trait.
+</span><span class="kw">let </span>num = <span class="number">10</span>.to_variant();
+
+<span class="comment">// `is` tests the type of the value.
+</span><span class="macro">assert!</span>(num.is::&lt;i32&gt;());
+
+<span class="comment">// `get` tries to extract the value.
+</span><span class="macro">assert_eq!</span>(num.get::&lt;i32&gt;(), <span class="prelude-val">Some</span>(<span class="number">10</span>));
+<span class="macro">assert_eq!</span>(num.get::&lt;u32&gt;(), <span class="prelude-val">None</span>);
+
+<span class="comment">// `get_str` tries to borrow a string slice.
+</span><span class="kw">let </span>hello = <span class="string">"Hello!"</span>.to_variant();
+<span class="macro">assert_eq!</span>(hello.str(), <span class="prelude-val">Some</span>(<span class="string">"Hello!"</span>));
+<span class="macro">assert_eq!</span>(num.str(), <span class="prelude-val">None</span>);
+
+<span class="comment">// `fixed_array` tries to borrow a fixed size array (u8, bool, i16, etc.),
+// rather than creating a deep copy which would be expensive for
+// nontrivially sized arrays of fixed size elements.
+// The test data here is the zstd compression header, which
+// stands in for arbitrary binary data (e.g. not UTF-8).
+</span><span class="kw">let </span>bufdata = <span class="string">b"\xFD\x2F\xB5\x28"</span>;
+<span class="kw">let </span>bufv = glib::Variant::array_from_fixed_array(<span class="kw-2">&amp;</span>bufdata[..]);
+<span class="macro">assert_eq!</span>(bufv.fixed_array::&lt;u8&gt;().unwrap(), bufdata);
+<span class="macro">assert!</span>(num.fixed_array::&lt;u8&gt;().is_err());
+
+<span class="comment">// Variant carrying a Variant
+</span><span class="kw">let </span>variant = Variant::from_variant(<span class="kw-2">&amp;</span>hello);
+<span class="kw">let </span>variant = variant.as_variant().unwrap();
+<span class="macro">assert_eq!</span>(variant.str(), <span class="prelude-val">Some</span>(<span class="string">"Hello!"</span>));
+
+<span class="comment">// Variant carrying an array
+</span><span class="kw">let </span>array = [<span class="string">"Hello"</span>, <span class="string">"there!"</span>];
+<span class="kw">let </span>variant = array.into_iter().collect::&lt;Variant&gt;();
+<span class="macro">assert_eq!</span>(variant.n_children(), <span class="number">2</span>);
+<span class="macro">assert_eq!</span>(variant.child_value(<span class="number">0</span>).str(), <span class="prelude-val">Some</span>(<span class="string">"Hello"</span>));
+<span class="macro">assert_eq!</span>(variant.child_value(<span class="number">1</span>).str(), <span class="prelude-val">Some</span>(<span class="string">"there!"</span>));
+
+<span class="comment">// You can also convert from and to a Vec
+</span><span class="kw">let </span>variant = <span class="macro">vec!</span>[<span class="string">"Hello"</span>, <span class="string">"there!"</span>].to_variant();
+<span class="macro">assert_eq!</span>(variant.n_children(), <span class="number">2</span>);
+<span class="kw">let </span>vec = &lt;Vec&lt;String&gt;&gt;::from_variant(<span class="kw-2">&amp;</span>variant).unwrap();
+<span class="macro">assert_eq!</span>(vec[<span class="number">0</span>], <span class="string">"Hello"</span>);
+
+<span class="comment">// Conversion to and from HashMap and BTreeMap is also possible
+</span><span class="kw">let </span><span class="kw-2">mut </span>map: HashMap&lt;u16, <span class="kw-2">&amp;</span>str&gt; = HashMap::new();
+map.insert(<span class="number">1</span>, <span class="string">"hi"</span>);
+map.insert(<span class="number">2</span>, <span class="string">"there"</span>);
+<span class="kw">let </span>variant = map.to_variant();
+<span class="macro">assert_eq!</span>(variant.n_children(), <span class="number">2</span>);
+<span class="kw">let </span>map: HashMap&lt;u16, String&gt; = HashMap::from_variant(<span class="kw-2">&amp;</span>variant).unwrap();
+<span class="macro">assert_eq!</span>(map[<span class="kw-2">&amp;</span><span class="number">1</span>], <span class="string">"hi"</span>);
+<span class="macro">assert_eq!</span>(map[<span class="kw-2">&amp;</span><span class="number">2</span>], <span class="string">"there"</span>);
+
+<span class="comment">// And conversion to and from tuples.
+</span><span class="kw">let </span>variant = (<span class="string">"hello"</span>, <span class="number">42u16</span>, <span class="macro">vec!</span>[ <span class="string">"there"</span>, <span class="string">"you" </span>],).to_variant();
+<span class="macro">assert_eq!</span>(variant.n_children(), <span class="number">3</span>);
+<span class="macro">assert_eq!</span>(variant.type_().as_str(), <span class="string">"(sqas)"</span>);
+<span class="kw">let </span>tuple = &lt;(String, u16, Vec&lt;String&gt;)&gt;::from_variant(<span class="kw-2">&amp;</span>variant).unwrap();
+<span class="macro">assert_eq!</span>(tuple.<span class="number">0</span>, <span class="string">"hello"</span>);
+<span class="macro">assert_eq!</span>(tuple.<span class="number">1</span>, <span class="number">42</span>);
+<span class="macro">assert_eq!</span>(tuple.<span class="number">2</span>, <span class="kw-2">&amp;</span>[ <span class="string">"there"</span>, <span class="string">"you"</span>]);
+
+<span class="comment">// `Option` is supported as well, through maybe types
+</span><span class="kw">let </span>variant = <span class="prelude-val">Some</span>(<span class="string">"hello"</span>).to_variant();
+<span class="macro">assert_eq!</span>(variant.n_children(), <span class="number">1</span>);
+<span class="kw">let </span><span class="kw-2">mut </span>s = &lt;<span class="prelude-ty">Option</span>&lt;String&gt;&gt;::from_variant(<span class="kw-2">&amp;</span>variant).unwrap();
+<span class="macro">assert_eq!</span>(s.unwrap(), <span class="string">"hello"</span>);
+s = <span class="prelude-val">None</span>;
+<span class="kw">let </span>variant = s.to_variant();
+<span class="macro">assert_eq!</span>(variant.n_children(), <span class="number">0</span>);
+<span class="kw">let </span>s = &lt;<span class="prelude-ty">Option</span>&lt;String&gt;&gt;::from_variant(<span class="kw-2">&amp;</span>variant).unwrap();
+<span class="macro">assert!</span>(s.is_none());
+
+<span class="comment">// Paths may be converted, too. Please note the portability warning above!
+</span><span class="kw">use </span>std::path::{Path, PathBuf};
+<span class="kw">let </span>path = Path::new(<span class="string">"foo/bar"</span>);
+<span class="kw">let </span>path_variant = path.to_variant();
+<span class="macro">assert_eq!</span>(PathBuf::from_variant(<span class="kw-2">&amp;</span>path_variant).as_deref(), <span class="prelude-val">Some</span>(path));</code></pre></div></div></details><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><dl class="item-table"><dt><a class="struct" href="struct.DictEntry.html" title="struct glib::variant::DictEntry">Dict<wbr>Entry</a></dt><dd>A Dictionary entry.</dd><dt><a class="struct" href="struct.FixedSizeVariantArray.html" title="struct glib::variant::FixedSizeVariantArray">Fixed<wbr>Size<wbr>Variant<wbr>Array</a></dt><dd>Wrapper type for fixed size type arrays.</dd><dt><a class="struct" href="struct.Handle.html" title="struct glib::variant::Handle">Handle</a></dt><dd>A wrapper type around <code>Variant</code> handles.</dd><dt><a class="struct" href="struct.ObjectPath.html" title="struct glib::variant::ObjectPath">Object<wbr>Path</a></dt><dd>A wrapper type around <code>Variant</code> object paths.</dd><dt><a class="struct" href="struct.Signature.html" title="struct glib::variant::Signature">Signature</a></dt><dd>A wrapper type around <code>Variant</code> signatures.</dd><dt><a class="struct" href="struct.Variant.html" title="struct glib::variant::Variant">Variant</a></dt><dd>A generic immutable value capable of carrying various types.</dd><dt><a class="struct" href="struct.VariantTypeMismatchError.html" title="struct glib::variant::VariantTypeMismatchError">Variant<wbr>Type<wbr>Mismatch<wbr>Error</a></dt><dd>An error returned from the <a href="struct.Variant.html#method.try_get"><code>try_get</code></a> function
+on a <a href="struct.Variant.html"><code>Variant</code></a> when the expected type does not match the actual type.</dd></dl><h2 id="traits" class="section-header">Traits<a href="#traits" class="anchor">§</a></h2><dl class="item-table"><dt><a class="trait" href="trait.FixedSizeVariantType.html" title="trait glib::variant::FixedSizeVariantType">Fixed<wbr>Size<wbr>Variant<wbr>Type</a></dt><dd>Trait for fixed size variant types.</dd><dt><a class="trait" href="trait.FromVariant.html" title="trait glib::variant::FromVariant">From<wbr>Variant</a></dt><dd>Extracts a value.</dd><dt><a class="trait" href="trait.StaticVariantType.html" title="trait glib::variant::StaticVariantType">Static<wbr>Variant<wbr>Type</a></dt><dd>Returns <code>VariantType</code> of <code>Self</code>.</dd><dt><a class="trait" href="trait.ToVariant.html" title="trait glib::variant::ToVariant">ToVariant</a></dt><dd>Converts to <code>Variant</code>.</dd></dl></section></div></main></body></html>

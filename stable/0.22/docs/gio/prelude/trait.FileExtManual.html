@@ -1,0 +1,431 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `FileExtManual` trait in crate `gio`."><title>FileExtManual in gio::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.22" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.22") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<rustdoc-topbar><h2><a href="#">FileExtManual</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../gio/index.html">gio</a><span class="version">0.22.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">File<wbr>ExtManual</a></h2><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.copy_async" title="copy_async">copy_async</a></li><li><a href="#method.copy_future" title="copy_future">copy_future</a></li><li><a href="#method.enumerate_children_async" title="enumerate_children_async">enumerate_children_async</a></li><li><a href="#method.enumerate_children_future" title="enumerate_children_future">enumerate_children_future</a></li><li><a href="#method.load_contents" title="load_contents">load_contents</a></li><li><a href="#method.load_contents_async" title="load_contents_async">load_contents_async</a></li><li><a href="#method.load_contents_future" title="load_contents_future">load_contents_future</a></li><li><a href="#method.load_partial_contents_async" title="load_partial_contents_async">load_partial_contents_async</a></li><li><a href="#method.make_symbolic_link_async" title="make_symbolic_link_async">make_symbolic_link_async</a></li><li><a href="#method.make_symbolic_link_future" title="make_symbolic_link_future">make_symbolic_link_future</a></li><li><a href="#method.measure_disk_usage_async" title="measure_disk_usage_async">measure_disk_usage_async</a></li><li><a href="#method.measure_disk_usage_future" title="measure_disk_usage_future">measure_disk_usage_future</a></li><li><a href="#method.move_async" title="move_async">move_async</a></li><li><a href="#method.move_future" title="move_future">move_future</a></li><li><a href="#method.replace_contents_async" title="replace_contents_async">replace_contents_async</a></li><li><a href="#method.replace_contents_future" title="replace_contents_future">replace_contents_future</a></li><li><a href="#method.set_attribute" title="set_attribute">set_attribute</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In gio::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">gio</a>::<wbr><a href="index.html">prelude</a></div><h1>Trait <span class="trait">File<wbr>ExtManual</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/gio/file.rs.html#202-1315">Source</a> </span></div><pre class="rust item-decl"><code>pub trait FileExtManual: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.File.html" title="struct gio::File">File</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a> {
+<details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 17 methods</span></summary>    // Provided methods
+    fn <a href="#method.replace_contents_async" class="fn">replace_contents_async</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static, R: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(B, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;), (B, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;) + 'static, C: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;(
+        &amp;self,
+        contents: B,
+        etag: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+        make_backup: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        flags: <a class="struct" href="../struct.FileCreateFlags.html" title="struct gio::FileCreateFlags">FileCreateFlags</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;C</a>&gt;,
+        callback: R,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.replace_contents_future" class="fn">replace_contents_future</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static&gt;(
+        &amp;self,
+        contents: B,
+        etag: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+        make_backup: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        flags: <a class="struct" href="../struct.FileCreateFlags.html" title="struct gio::FileCreateFlags">FileCreateFlags</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(B, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;), (B, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;&gt; + 'static&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.enumerate_children_async" class="fn">enumerate_children_async</a>&lt;P: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;, Q: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.FileEnumerator.html" title="struct gio::FileEnumerator">FileEnumerator</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        attributes: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        flags: <a class="struct" href="../struct.FileQueryInfoFlags.html" title="struct gio::FileQueryInfoFlags">FileQueryInfoFlags</a>,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;P</a>&gt;,
+        callback: Q,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.enumerate_children_future" class="fn">enumerate_children_future</a>(
+        &amp;self,
+        attributes: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        flags: <a class="struct" href="../struct.FileQueryInfoFlags.html" title="struct gio::FileQueryInfoFlags">FileQueryInfoFlags</a>,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.FileEnumerator.html" title="struct gio::FileEnumerator">FileEnumerator</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.copy_async" class="fn">copy_async</a>&lt;Q: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        destination: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.File.html" title="struct gio::File">File</a>&gt;,
+        flags: <a class="struct" href="../struct.FileCopyFlags.html" title="struct gio::FileCopyFlags">FileCopyFlags</a>,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        progress_callback: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html" title="trait core::ops::function::FnMut">FnMut</a>(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>)&gt;&gt;,
+        callback: Q,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.copy_future" class="fn">copy_future</a>(
+        &amp;self,
+        destination: &amp;(impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.File.html" title="struct gio::File">File</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static),
+        flags: <a class="struct" href="../struct.FileCopyFlags.html" title="struct gio::FileCopyFlags">FileCopyFlags</a>,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    ) -&gt; (<a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;, <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn Stream&lt;Item = (<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>)&gt; + 'static&gt;&gt;) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.load_contents" class="fn">load_contents</a>(
+        &amp;self,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="../../glib/collections/slice/struct.Slice.html" title="struct glib::collections::slice::Slice">Slice</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.load_contents_async" class="fn">load_contents_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="../../glib/collections/slice/struct.Slice.html" title="struct glib::collections::slice::Slice">Slice</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.load_contents_future" class="fn">load_contents_future</a>(
+        &amp;self,
+    ) -&gt; impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="../../glib/collections/slice/struct.Slice.html" title="struct glib::collections::slice::Slice">Slice</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html" title="trait core::marker::Unpin">Unpin</a> + 'static { ... }
+<span class="item-spacer"></span>    fn <a href="#method.load_partial_contents_async" class="fn">load_partial_contents_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html" title="trait core::ops::function::FnMut">FnMut</a>(&amp;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + 'static, Q: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="../../glib/collections/slice/struct.Slice.html" title="struct glib::collections::slice::Slice">Slice</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        read_more_callback: P,
+        callback: Q,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.measure_disk_usage_async" class="fn">measure_disk_usage_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        flags: <a class="struct" href="../struct.FileMeasureFlags.html" title="struct gio::FileMeasureFlags">FileMeasureFlags</a>,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        progress_callback: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html" title="trait core::ops::function::FnMut">FnMut</a>(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>) + 'static&gt;&gt;,
+        callback: P,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.measure_disk_usage_future" class="fn">measure_disk_usage_future</a>(
+        &amp;self,
+        flags: <a class="struct" href="../struct.FileMeasureFlags.html" title="struct gio::FileMeasureFlags">FileMeasureFlags</a>,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    ) -&gt; (<a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;, <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn Stream&lt;Item = (<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>)&gt; + 'static&gt;&gt;) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.move_async" class="fn">move_async</a>&lt;Q: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        destination: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.File.html" title="struct gio::File">File</a>&gt;,
+        flags: <a class="struct" href="../struct.FileCopyFlags.html" title="struct gio::FileCopyFlags">FileCopyFlags</a>,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        progress_callback: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html" title="trait core::ops::function::FnMut">FnMut</a>(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>)&gt;&gt;,
+        callback: Q,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.make_symbolic_link_async" class="fn">make_symbolic_link_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+        &amp;self,
+        symlink_value: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html" title="struct std::path::Path">Path</a>&gt;,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.make_symbolic_link_future" class="fn">make_symbolic_link_future</a>(
+        &amp;self,
+        symlink_value: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html" title="struct std::path::Path">Path</a>&gt;,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.move_future" class="fn">move_future</a>(
+        &amp;self,
+        destination: &amp;(impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.File.html" title="struct gio::File">File</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static),
+        flags: <a class="struct" href="../struct.FileCopyFlags.html" title="struct gio::FileCopyFlags">FileCopyFlags</a>,
+        io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    ) -&gt; (<a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;, <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn Stream&lt;Item = (<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>)&gt; + 'static&gt;&gt;) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_attribute" class="fn">set_attribute</a>&lt;'a&gt;(
+        &amp;self,
+        attribute: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        value: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html" title="trait core::convert::Into">Into</a>&lt;<a class="struct" href="../struct.FileAttributeValue.html" title="struct gio::FileAttributeValue">FileAttributeValue</a>&lt;'a&gt;&gt;,
+        flags: <a class="struct" href="../struct.FileQueryInfoFlags.html" title="struct gio::FileQueryInfoFlags">FileQueryInfoFlags</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+</details>}</code></pre><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.replace_contents_async" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#235-313">Source</a><h4 class="code-header">fn <a href="#method.replace_contents_async" class="fn">replace_contents_async</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static, R: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(B, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;), (B, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;) + 'static, C: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;(
+    &amp;self,
+    contents: B,
+    etag: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+    make_backup: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    flags: <a class="struct" href="../struct.FileCreateFlags.html" title="struct gio::FileCreateFlags">FileCreateFlags</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;C</a>&gt;,
+    callback: R,
+)</h4></section></summary><div class="docblock"><p>Starts an asynchronous replacement of @self with the given
+@contents of @length bytes. @etag will replace the document’s
+current entity tag.</p>
+<p>When this operation has completed, @callback will be called with
+@user_user data, and the operation can be finalized with
+g_file_replace_contents_finish().</p>
+<p>If @cancellable is not <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, then the operation can be cancelled by
+triggering the cancellable object from another thread. If the operation
+was cancelled, the error <a href="../enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a> will be returned.</p>
+<p>If @make_backup is <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a>, this function will attempt to
+make a backup of @self.</p>
+<p>Note that no copy of @contents will be made, so it must stay valid
+until @callback is called. See g_file_replace_contents_bytes_async()
+for a #GBytes version that will automatically hold a reference to the
+contents (without copying) for the duration of the call.</p>
+<h6 id="contents"><a class="doc-anchor" href="#contents">§</a><code>contents</code></h6>
+<p>string of contents to replace the file with</p>
+<h6 id="etag"><a class="doc-anchor" href="#etag">§</a><code>etag</code></h6>
+<p>a new <a href="#entity-tags">entity tag</a> for the @self, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h6 id="make_backup"><a class="doc-anchor" href="#make_backup">§</a><code>make_backup</code></h6>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if a backup should be created</p>
+<h6 id="flags"><a class="doc-anchor" href="#flags">§</a><code>flags</code></h6>
+<p>a set of #GFileCreateFlags</p>
+<h6 id="cancellable"><a class="doc-anchor" href="#cancellable">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore</p>
+<h6 id="callback"><a class="doc-anchor" href="#callback">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback to call when the request is satisfied</p>
+</div></details><section id="method.replace_contents_future" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#315-343">Source</a><h4 class="code-header">fn <a href="#method.replace_contents_future" class="fn">replace_contents_future</a>&lt;B: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'static&gt;(
+    &amp;self,
+    contents: B,
+    etag: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+    make_backup: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    flags: <a class="struct" href="../struct.FileCreateFlags.html" title="struct gio::FileCreateFlags">FileCreateFlags</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(B, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;), (B, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>)&gt;&gt; + 'static&gt;&gt;</h4></section><section id="method.enumerate_children_async" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#346-406">Source</a><h4 class="code-header">fn <a href="#method.enumerate_children_async" class="fn">enumerate_children_async</a>&lt;P: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;, Q: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.FileEnumerator.html" title="struct gio::FileEnumerator">FileEnumerator</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    attributes: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    flags: <a class="struct" href="../struct.FileQueryInfoFlags.html" title="struct gio::FileQueryInfoFlags">FileQueryInfoFlags</a>,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;P</a>&gt;,
+    callback: Q,
+)</h4></section><section id="method.enumerate_children_future" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#408-430">Source</a><h4 class="code-header">fn <a href="#method.enumerate_children_future" class="fn">enumerate_children_future</a>(
+    &amp;self,
+    attributes: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    flags: <a class="struct" href="../struct.FileQueryInfoFlags.html" title="struct gio::FileQueryInfoFlags">FileQueryInfoFlags</a>,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../struct.FileEnumerator.html" title="struct gio::FileEnumerator">FileEnumerator</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.copy_async" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#461-550">Source</a><h4 class="code-header">fn <a href="#method.copy_async" class="fn">copy_async</a>&lt;Q: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    destination: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.File.html" title="struct gio::File">File</a>&gt;,
+    flags: <a class="struct" href="../struct.FileCopyFlags.html" title="struct gio::FileCopyFlags">FileCopyFlags</a>,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    progress_callback: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html" title="trait core::ops::function::FnMut">FnMut</a>(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>)&gt;&gt;,
+    callback: Q,
+)</h4></section></summary><div class="docblock"><p>Copies the file @self to the location specified by @destination
+asynchronously. For details of the behaviour, see g_file_copy().</p>
+<p>If @progress_callback is not <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, then that function that will be called
+just like in g_file_copy(). The callback will run in the default main context
+of the thread calling g_file_copy_async() — the same context as @callback is
+run in.</p>
+<p>When the operation is finished, @callback will be called. You can then call
+g_file_copy_finish() to get the result of the operation.</p>
+<h6 id="destination"><a class="doc-anchor" href="#destination">§</a><code>destination</code></h6>
+<p>destination #GFile</p>
+<h6 id="flags-1"><a class="doc-anchor" href="#flags-1">§</a><code>flags</code></h6>
+<p>set of #GFileCopyFlags</p>
+<h6 id="io_priority"><a class="doc-anchor" href="#io_priority">§</a><code>io_priority</code></h6>
+<p>the <a href="iface.AsyncResult.html#io-priority">I/O priority</a> of the request</p>
+<h6 id="cancellable-1"><a class="doc-anchor" href="#cancellable-1">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object,
+<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore</p>
+<h6 id="progress_callback"><a class="doc-anchor" href="#progress_callback">§</a><code>progress_callback</code></h6>
+<p>function to callback with progress information, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> if
+progress information is not needed</p>
+<h6 id="progress_callback_data"><a class="doc-anchor" href="#progress_callback_data">§</a><code>progress_callback_data</code></h6>
+<p>user data to pass to @progress_callback</p>
+<h6 id="callback-1"><a class="doc-anchor" href="#callback-1">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback
+to call when the request is satisfied</p>
+</div></details><section id="method.copy_future" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#552-584">Source</a><h4 class="code-header">fn <a href="#method.copy_future" class="fn">copy_future</a>(
+    &amp;self,
+    destination: &amp;(impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.File.html" title="struct gio::File">File</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static),
+    flags: <a class="struct" href="../struct.FileCopyFlags.html" title="struct gio::FileCopyFlags">FileCopyFlags</a>,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+) -&gt; (<a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;, <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn Stream&lt;Item = (<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>)&gt; + 'static&gt;&gt;)</h4></section><details class="toggle method-toggle" open><summary><section id="method.load_contents" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#609-636">Source</a><h4 class="code-header">fn <a href="#method.load_contents" class="fn">load_contents</a>(
+    &amp;self,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="../../glib/collections/slice/struct.Slice.html" title="struct glib::collections::slice::Slice">Slice</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Loads the content of the file into memory. The data is always
+zero-terminated, but this is not included in the resultant @length.
+The returned @contents should be freed with g_free() when no longer
+needed.</p>
+<p>If @cancellable is not <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, then the operation can be cancelled by
+triggering the cancellable object from another thread. If the operation
+was cancelled, the error <a href="../enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a> will be returned.</p>
+<h6 id="cancellable-2"><a class="doc-anchor" href="#cancellable-2">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore</p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if the @self’s contents were successfully loaded.
+<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> if there were errors.</p>
+<h6 id="contents-1"><a class="doc-anchor" href="#contents-1">§</a><code>contents</code></h6>
+<p>a location to place the contents of the file</p>
+<h6 id="etag_out"><a class="doc-anchor" href="#etag_out">§</a><code>etag_out</code></h6>
+<p>a location to place the current entity tag for the file,
+or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> if the entity tag is not needed</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.load_contents_async" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#656-720">Source</a><h4 class="code-header">fn <a href="#method.load_contents_async" class="fn">load_contents_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="../../glib/collections/slice/struct.Slice.html" title="struct glib::collections::slice::Slice">Slice</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)</h4></section></summary><div class="docblock"><p>Starts an asynchronous load of the @self’s contents.</p>
+<p>For more details, see g_file_load_contents() which is
+the synchronous version of this call.</p>
+<p>When the load operation has completed, @callback will be called
+with @user data. To finish the operation, call
+g_file_load_contents_finish() with the #GAsyncResult returned by
+the @callback.</p>
+<p>If @cancellable is not <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, then the operation can be cancelled by
+triggering the cancellable object from another thread. If the operation
+was cancelled, the error <a href="../enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a> will be returned.</p>
+<h6 id="cancellable-3"><a class="doc-anchor" href="#cancellable-3">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore</p>
+<h6 id="callback-2"><a class="doc-anchor" href="#callback-2">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback to call when the request is satisfied</p>
+</div></details><section id="method.load_contents_future" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#722-733">Source</a><h4 class="code-header">fn <a href="#method.load_contents_future" class="fn">load_contents_future</a>(
+    &amp;self,
+) -&gt; impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="../../glib/collections/slice/struct.Slice.html" title="struct glib::collections::slice::Slice">Slice</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html" title="trait core::marker::Unpin">Unpin</a> + 'static</h4></section><details class="toggle method-toggle" open><summary><section id="method.load_partial_contents_async" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#756-858">Source</a><h4 class="code-header">fn <a href="#method.load_partial_contents_async" class="fn">load_partial_contents_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html" title="trait core::ops::function::FnMut">FnMut</a>(&amp;[<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + 'static, Q: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="../../glib/collections/slice/struct.Slice.html" title="struct glib::collections::slice::Slice">Slice</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;, <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    read_more_callback: P,
+    callback: Q,
+)</h4></section></summary><div class="docblock"><p>Reads the partial contents of a file. A #GFileReadMoreCallback should
+be used to stop reading from the file when appropriate, else this
+function will behave exactly as g_file_load_contents_async(). This
+operation can be finished by g_file_load_partial_contents_finish().</p>
+<p>Users of this function should be aware that @user_data is passed to
+both the @read_more_callback and the @callback.</p>
+<p>If @cancellable is not <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, then the operation can be cancelled by
+triggering the cancellable object from another thread. If the operation
+was cancelled, the error <a href="../enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a> will be returned.</p>
+<h6 id="cancellable-4"><a class="doc-anchor" href="#cancellable-4">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore</p>
+<h6 id="read_more_callback"><a class="doc-anchor" href="#read_more_callback">§</a><code>read_more_callback</code></h6>
+<p>a
+#GFileReadMoreCallback to receive partial data
+and to specify whether further data should be read</p>
+<h6 id="callback-3"><a class="doc-anchor" href="#callback-3">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback to call
+when the request is satisfied</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.measure_disk_usage_async" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#877-1000">Source</a><h4 class="code-header">fn <a href="#method.measure_disk_usage_async" class="fn">measure_disk_usage_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    flags: <a class="struct" href="../struct.FileMeasureFlags.html" title="struct gio::FileMeasureFlags">FileMeasureFlags</a>,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    progress_callback: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html" title="trait core::ops::function::FnMut">FnMut</a>(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>) + 'static&gt;&gt;,
+    callback: P,
+)</h4></section></summary><div class="docblock"><p>Recursively measures the disk usage of @self.</p>
+<p>This is the asynchronous version of g_file_measure_disk_usage().  See
+there for more information.</p>
+<h6 id="flags-2"><a class="doc-anchor" href="#flags-2">§</a><code>flags</code></h6>
+<p>#GFileMeasureFlags</p>
+<h6 id="io_priority-1"><a class="doc-anchor" href="#io_priority-1">§</a><code>io_priority</code></h6>
+<p>the <a href="iface.AsyncResult.html#io-priority">I/O priority</a> of the request</p>
+<h6 id="cancellable-5"><a class="doc-anchor" href="#cancellable-5">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable</p>
+<h6 id="progress_callback-1"><a class="doc-anchor" href="#progress_callback-1">§</a><code>progress_callback</code></h6>
+<p>a #GFileMeasureProgressCallback</p>
+<h6 id="progress_data"><a class="doc-anchor" href="#progress_data">§</a><code>progress_data</code></h6>
+<p>user_data for @progress_callback</p>
+<h6 id="callback-4"><a class="doc-anchor" href="#callback-4">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback to call when complete</p>
+</div></details><section id="method.measure_disk_usage_future" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#1002-1033">Source</a><h4 class="code-header">fn <a href="#method.measure_disk_usage_future" class="fn">measure_disk_usage_future</a>(
+    &amp;self,
+    flags: <a class="struct" href="../struct.FileMeasureFlags.html" title="struct gio::FileMeasureFlags">FileMeasureFlags</a>,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+) -&gt; (<a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>), <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;, <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn Stream&lt;Item = (<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>)&gt; + 'static&gt;&gt;)</h4></section><details class="toggle method-toggle" open><summary><section id="method.move_async" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#1064-1153">Source</a><h4 class="code-header">fn <a href="#method.move_async" class="fn">move_async</a>&lt;Q: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    destination: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.File.html" title="struct gio::File">File</a>&gt;,
+    flags: <a class="struct" href="../struct.FileCopyFlags.html" title="struct gio::FileCopyFlags">FileCopyFlags</a>,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    progress_callback: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html" title="trait core::ops::function::FnMut">FnMut</a>(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>)&gt;&gt;,
+    callback: Q,
+)</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_72</code></strong> only.</div></span></summary><div class="docblock"><p>Asynchronously moves a file @self to the location of @destination. For details of the behaviour, see g_file_move().</p>
+<p>If @progress_callback is not <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, then that function that will be called
+just like in g_file_move(). The callback will run in the default main context
+of the thread calling g_file_move_async() — the same context as @callback is
+run in.</p>
+<p>When the operation is finished, @callback will be called. You can then call
+g_file_move_finish() to get the result of the operation.</p>
+<h6 id="destination-1"><a class="doc-anchor" href="#destination-1">§</a><code>destination</code></h6>
+<p>#GFile pointing to the destination location</p>
+<h6 id="flags-3"><a class="doc-anchor" href="#flags-3">§</a><code>flags</code></h6>
+<p>set of #GFileCopyFlags</p>
+<h6 id="io_priority-2"><a class="doc-anchor" href="#io_priority-2">§</a><code>io_priority</code></h6>
+<p>the <a href="iface.AsyncResult.html#io-priority">I/O priority</a> of the request</p>
+<h6 id="cancellable-6"><a class="doc-anchor" href="#cancellable-6">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object,
+<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore</p>
+<h6 id="progress_callback-2"><a class="doc-anchor" href="#progress_callback-2">§</a><code>progress_callback</code></h6>
+<p>#GFileProgressCallback function for updates</p>
+<h6 id="progress_callback_data-1"><a class="doc-anchor" href="#progress_callback_data-1">§</a><code>progress_callback_data</code></h6>
+<p>gpointer to user data for the callback function</p>
+<h6 id="callback-5"><a class="doc-anchor" href="#callback-5">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback
+to call when the request is satisfied</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.make_symbolic_link_async" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#1171-1226">Source</a><h4 class="code-header">fn <a href="#method.make_symbolic_link_async" class="fn">make_symbolic_link_async</a>&lt;P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static&gt;(
+    &amp;self,
+    symlink_value: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html" title="struct std::path::Path">Path</a>&gt;,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_74</code></strong> only.</div></span></summary><div class="docblock"><p>Asynchronously creates a symbolic link named @self which contains the
+string @symlink_value.</p>
+<h6 id="symlink_value"><a class="doc-anchor" href="#symlink_value">§</a><code>symlink_value</code></h6>
+<p>a string with the path for the target
+of the new symlink</p>
+<h6 id="io_priority-3"><a class="doc-anchor" href="#io_priority-3">§</a><code>io_priority</code></h6>
+<p>the <a href="iface.AsyncResult.html#io-priority">I/O priority</a> of the request</p>
+<h6 id="cancellable-7"><a class="doc-anchor" href="#cancellable-7">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object,
+<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore</p>
+<h6 id="callback-6"><a class="doc-anchor" href="#callback-6">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback to call
+when the request is satisfied</p>
+</div></details><section id="method.make_symbolic_link_future" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#1230-1249">Source</a><h4 class="code-header">fn <a href="#method.make_symbolic_link_future" class="fn">make_symbolic_link_future</a>(
+    &amp;self,
+    symlink_value: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html" title="struct std::path::Path">Path</a>&gt;,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_74</code></strong> only.</div></span><section id="method.move_future" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#1253-1285">Source</a><h4 class="code-header">fn <a href="#method.move_future" class="fn">move_future</a>(
+    &amp;self,
+    destination: &amp;(impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.File.html" title="struct gio::File">File</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static),
+    flags: <a class="struct" href="../struct.FileCopyFlags.html" title="struct gio::FileCopyFlags">FileCopyFlags</a>,
+    io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
+) -&gt; (<a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt; + 'static&gt;&gt;, <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn Stream&lt;Item = (<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>)&gt; + 'static&gt;&gt;)</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_72</code></strong> only.</div></span><section id="method.set_attribute" class="method"><a class="src rightside" href="../../src/gio/file.rs.html#1288-1314">Source</a><h4 class="code-header">fn <a href="#method.set_attribute" class="fn">set_attribute</a>&lt;'a&gt;(
+    &amp;self,
+    attribute: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    value: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html" title="trait core::convert::Into">Into</a>&lt;<a class="struct" href="../struct.FileAttributeValue.html" title="struct gio::FileAttributeValue">FileAttributeValue</a>&lt;'a&gt;&gt;,
+    flags: <a class="struct" href="../struct.FileQueryInfoFlags.html" title="struct gio::FileQueryInfoFlags">FileQueryInfoFlags</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Cancellable.html" title="struct gio::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><div class="negative-marker"></div><section id="impl-FileExtManual-for-O" class="impl"><a class="src rightside" href="../../src/gio/file.rs.html#1317">Source</a><a href="#impl-FileExtManual-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.File.html" title="struct gio::File">File</a>&gt;&gt; <a class="trait" href="trait.FileExtManual.html" title="trait gio::prelude::FileExtManual">FileExtManual</a> for O</h3></section></div><script src="../../trait.impl/gio/file/trait.FileExtManual.js" async></script></section></div></main></body></html>

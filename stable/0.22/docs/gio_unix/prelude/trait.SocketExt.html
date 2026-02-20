@@ -1,0 +1,707 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait containing all `struct@Socket` methods."><title>SocketExt in gio_unix::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio_unix" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.22" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.22") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<rustdoc-topbar><h2><a href="#">SocketExt</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../gio_unix/index.html">gio_<wbr>unix</a><span class="version">0.22.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Socket<wbr>Ext</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#implementors-1" title="Implementors">Implementors</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.accept" title="accept">accept</a></li><li><a href="#method.available_bytes" title="available_bytes">available_bytes</a></li><li><a href="#method.bind" title="bind">bind</a></li><li><a href="#method.check_connect_result" title="check_connect_result">check_connect_result</a></li><li><a href="#method.close" title="close">close</a></li><li><a href="#method.condition_check" title="condition_check">condition_check</a></li><li><a href="#method.condition_timed_wait" title="condition_timed_wait">condition_timed_wait</a></li><li><a href="#method.condition_wait" title="condition_wait">condition_wait</a></li><li><a href="#method.connect" title="connect">connect</a></li><li><a href="#method.connect_blocking_notify" title="connect_blocking_notify">connect_blocking_notify</a></li><li><a href="#method.connect_broadcast_notify" title="connect_broadcast_notify">connect_broadcast_notify</a></li><li><a href="#method.connect_keepalive_notify" title="connect_keepalive_notify">connect_keepalive_notify</a></li><li><a href="#method.connect_listen_backlog_notify" title="connect_listen_backlog_notify">connect_listen_backlog_notify</a></li><li><a href="#method.connect_local_address_notify" title="connect_local_address_notify">connect_local_address_notify</a></li><li><a href="#method.connect_multicast_loopback_notify" title="connect_multicast_loopback_notify">connect_multicast_loopback_notify</a></li><li><a href="#method.connect_multicast_ttl_notify" title="connect_multicast_ttl_notify">connect_multicast_ttl_notify</a></li><li><a href="#method.connect_remote_address_notify" title="connect_remote_address_notify">connect_remote_address_notify</a></li><li><a href="#method.connect_timeout_notify" title="connect_timeout_notify">connect_timeout_notify</a></li><li><a href="#method.connect_ttl_notify" title="connect_ttl_notify">connect_ttl_notify</a></li><li><a href="#method.connection_factory_create_connection" title="connection_factory_create_connection">connection_factory_create_connection</a></li><li><a href="#method.credentials" title="credentials">credentials</a></li><li><a href="#method.family" title="family">family</a></li><li><a href="#method.is_blocking" title="is_blocking">is_blocking</a></li><li><a href="#method.is_broadcast" title="is_broadcast">is_broadcast</a></li><li><a href="#method.is_closed" title="is_closed">is_closed</a></li><li><a href="#method.is_connected" title="is_connected">is_connected</a></li><li><a href="#method.is_keepalive" title="is_keepalive">is_keepalive</a></li><li><a href="#method.is_multicast_loopback" title="is_multicast_loopback">is_multicast_loopback</a></li><li><a href="#method.join_multicast_group" title="join_multicast_group">join_multicast_group</a></li><li><a href="#method.join_multicast_group_ssm" title="join_multicast_group_ssm">join_multicast_group_ssm</a></li><li><a href="#method.leave_multicast_group" title="leave_multicast_group">leave_multicast_group</a></li><li><a href="#method.leave_multicast_group_ssm" title="leave_multicast_group_ssm">leave_multicast_group_ssm</a></li><li><a href="#method.listen" title="listen">listen</a></li><li><a href="#method.listen_backlog" title="listen_backlog">listen_backlog</a></li><li><a href="#method.local_address" title="local_address">local_address</a></li><li><a href="#method.multicast_ttl" title="multicast_ttl">multicast_ttl</a></li><li><a href="#method.option" title="option">option</a></li><li><a href="#method.protocol" title="protocol">protocol</a></li><li><a href="#method.remote_address" title="remote_address">remote_address</a></li><li><a href="#method.set_blocking" title="set_blocking">set_blocking</a></li><li><a href="#method.set_broadcast" title="set_broadcast">set_broadcast</a></li><li><a href="#method.set_keepalive" title="set_keepalive">set_keepalive</a></li><li><a href="#method.set_listen_backlog" title="set_listen_backlog">set_listen_backlog</a></li><li><a href="#method.set_multicast_loopback" title="set_multicast_loopback">set_multicast_loopback</a></li><li><a href="#method.set_multicast_ttl" title="set_multicast_ttl">set_multicast_ttl</a></li><li><a href="#method.set_option" title="set_option">set_option</a></li><li><a href="#method.set_timeout" title="set_timeout">set_timeout</a></li><li><a href="#method.set_ttl" title="set_ttl">set_ttl</a></li><li><a href="#method.shutdown" title="shutdown">shutdown</a></li><li><a href="#method.socket_type" title="socket_type">socket_type</a></li><li><a href="#method.speaks_ipv4" title="speaks_ipv4">speaks_ipv4</a></li><li><a href="#method.timeout" title="timeout">timeout</a></li><li><a href="#method.ttl" title="ttl">ttl</a></li><li><a href="#method.type_" title="type_">type_</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In gio_<wbr>unix::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">gio_unix</a>::<wbr><a href="index.html">prelude</a></div><h1>Trait <span class="trait">Socket<wbr>Ext</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/gio/auto/socket.rs.html#242">Source</a> </span></div><pre class="rust item-decl"><code>pub trait SocketExt: <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/socket/struct.Socket.html" title="struct gio::auto::socket::Socket">Socket</a>&gt; + 'static {
+<details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 54 methods</span></summary>    // Provided methods
+    fn <a href="#method.accept" class="fn">accept</a>(
+        &amp;self,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../gio/auto/socket/struct.Socket.html" title="struct gio::auto::socket::Socket">Socket</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.bind" class="fn">bind</a>(
+        &amp;self,
+        address: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/socket_address/struct.SocketAddress.html" title="struct gio::auto::socket_address::SocketAddress">SocketAddress</a>&gt;,
+        allow_reuse: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.check_connect_result" class="fn">check_connect_result</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.close" class="fn">close</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.condition_check" class="fn">condition_check</a>(&amp;self, condition: <a class="struct" href="../../glib/auto/flags/struct.IOCondition.html" title="struct glib::auto::flags::IOCondition">IOCondition</a>) -&gt; <a class="struct" href="../../glib/auto/flags/struct.IOCondition.html" title="struct glib::auto::flags::IOCondition">IOCondition</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.condition_timed_wait" class="fn">condition_timed_wait</a>(
+        &amp;self,
+        condition: <a class="struct" href="../../glib/auto/flags/struct.IOCondition.html" title="struct glib::auto::flags::IOCondition">IOCondition</a>,
+        timeout_us: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.condition_wait" class="fn">condition_wait</a>(
+        &amp;self,
+        condition: <a class="struct" href="../../glib/auto/flags/struct.IOCondition.html" title="struct glib::auto::flags::IOCondition">IOCondition</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect" class="fn">connect</a>(
+        &amp;self,
+        address: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/socket_address/struct.SocketAddress.html" title="struct gio::auto::socket_address::SocketAddress">SocketAddress</a>&gt;,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connection_factory_create_connection" class="fn">connection_factory_create_connection</a>(&amp;self) -&gt; <a class="struct" href="../../gio/auto/socket_connection/struct.SocketConnection.html" title="struct gio::auto::socket_connection::SocketConnection">SocketConnection</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.available_bytes" class="fn">available_bytes</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_blocking" class="fn">is_blocking</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_broadcast" class="fn">is_broadcast</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.credentials" class="fn">credentials</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../gio/auto/credentials/struct.Credentials.html" title="struct gio::auto::credentials::Credentials">Credentials</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.family" class="fn">family</a>(&amp;self) -&gt; <a class="enum" href="../../gio/auto/enums/enum.SocketFamily.html" title="enum gio::auto::enums::SocketFamily">SocketFamily</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_keepalive" class="fn">is_keepalive</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.listen_backlog" class="fn">listen_backlog</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.local_address" class="fn">local_address</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../gio/auto/socket_address/struct.SocketAddress.html" title="struct gio::auto::socket_address::SocketAddress">SocketAddress</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_multicast_loopback" class="fn">is_multicast_loopback</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.multicast_ttl" class="fn">multicast_ttl</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.option" class="fn">option</a>(&amp;self, level: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, optname: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.protocol" class="fn">protocol</a>(&amp;self) -&gt; <a class="enum" href="../../gio/auto/enums/enum.SocketProtocol.html" title="enum gio::auto::enums::SocketProtocol">SocketProtocol</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.remote_address" class="fn">remote_address</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../gio/auto/socket_address/struct.SocketAddress.html" title="struct gio::auto::socket_address::SocketAddress">SocketAddress</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.socket_type" class="fn">socket_type</a>(&amp;self) -&gt; <a class="enum" href="../../gio/auto/enums/enum.SocketType.html" title="enum gio::auto::enums::SocketType">SocketType</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.timeout" class="fn">timeout</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.ttl" class="fn">ttl</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_closed" class="fn">is_closed</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_connected" class="fn">is_connected</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.join_multicast_group" class="fn">join_multicast_group</a>(
+        &amp;self,
+        group: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;,
+        source_specific: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        iface: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.join_multicast_group_ssm" class="fn">join_multicast_group_ssm</a>(
+        &amp;self,
+        group: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;,
+        source_specific: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;&gt;,
+        iface: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.leave_multicast_group" class="fn">leave_multicast_group</a>(
+        &amp;self,
+        group: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;,
+        source_specific: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        iface: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.leave_multicast_group_ssm" class="fn">leave_multicast_group_ssm</a>(
+        &amp;self,
+        group: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;,
+        source_specific: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;&gt;,
+        iface: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.listen" class="fn">listen</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_blocking" class="fn">set_blocking</a>(&amp;self, blocking: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_broadcast" class="fn">set_broadcast</a>(&amp;self, broadcast: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_keepalive" class="fn">set_keepalive</a>(&amp;self, keepalive: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_listen_backlog" class="fn">set_listen_backlog</a>(&amp;self, backlog: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_multicast_loopback" class="fn">set_multicast_loopback</a>(&amp;self, loopback: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_multicast_ttl" class="fn">set_multicast_ttl</a>(&amp;self, ttl: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_option" class="fn">set_option</a>(
+        &amp;self,
+        level: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        optname: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        value: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_timeout" class="fn">set_timeout</a>(&amp;self, timeout: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_ttl" class="fn">set_ttl</a>(&amp;self, ttl: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.shutdown" class="fn">shutdown</a>(
+        &amp;self,
+        shutdown_read: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        shutdown_write: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.speaks_ipv4" class="fn">speaks_ipv4</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.type_" class="fn">type_</a>(&amp;self) -&gt; <a class="enum" href="../../gio/auto/enums/enum.SocketType.html" title="enum gio::auto::enums::SocketType">SocketType</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_blocking_notify" class="fn">connect_blocking_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_broadcast_notify" class="fn">connect_broadcast_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_keepalive_notify" class="fn">connect_keepalive_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_listen_backlog_notify" class="fn">connect_listen_backlog_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_local_address_notify" class="fn">connect_local_address_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_multicast_loopback_notify" class="fn">connect_multicast_loopback_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_multicast_ttl_notify" class="fn">connect_multicast_ttl_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_remote_address_notify" class="fn">connect_remote_address_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_timeout_notify" class="fn">connect_timeout_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_ttl_notify" class="fn">connect_ttl_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+</details>}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait containing all <a href="../../gio/auto/socket/struct.Socket.html" title="struct gio::auto::socket::Socket"><code>Socket</code></a> methods.</p>
+<h2 id="implementors-1"><a class="doc-anchor" href="#implementors-1">§</a>Implementors</h2>
+<p><a href="../../gio/auto/socket/struct.Socket.html" title="struct gio::auto::socket::Socket"><code>Socket</code></a></p>
+</div></details><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.accept" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#261">Source</a><h4 class="code-header">fn <a href="#method.accept" class="fn">accept</a>(
+    &amp;self,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../gio/auto/socket/struct.Socket.html" title="struct gio::auto::socket::Socket">Socket</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Accept incoming connections on a connection-based socket. This removes
+the first outstanding connection request from the listening socket and
+creates a #GSocket object for it.</p>
+<p>The @self must be bound to a local address with g_socket_bind() and
+must be listening for incoming connections (g_socket_listen()).</p>
+<p>If there are no outstanding connections then the operation will block
+or return <a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.WouldBlock" title="variant gio::auto::enums::IOErrorEnum::WouldBlock"><code>IOErrorEnum::WouldBlock</code></a> if non-blocking I/O is enabled.
+To be notified of an incoming connection, wait for the <a href="../../glib/auto/flags/struct.IOCondition.html#associatedconstant.IN" title="associated constant glib::auto::flags::IOCondition::IN"><code>glib::IOCondition::IN</code></a> condition.</p>
+<h6 id="cancellable"><a class="doc-anchor" href="#cancellable">§</a><code>cancellable</code></h6>
+<p>a <code>GCancellable</code> or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p>a new #GSocket, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error.
+Free the returned object with g_object_unref().</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.bind" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#309-313">Source</a><h4 class="code-header">fn <a href="#method.bind" class="fn">bind</a>(
+    &amp;self,
+    address: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/socket_address/struct.SocketAddress.html" title="struct gio::auto::socket_address::SocketAddress">SocketAddress</a>&gt;,
+    allow_reuse: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>When a socket is created it is attached to an address family, but it
+doesn’t have an address in this family. g_socket_bind() assigns the
+address (sometimes called name) of the socket.</p>
+<p>It is generally required to bind to a local address before you can
+receive connections. (See g_socket_listen() and g_socket_accept() ).
+In certain situations, you may also want to bind a socket that will be
+used to initiate connections, though this is not normally required.</p>
+<p>If @self is a TCP socket, then @allow_reuse controls the setting
+of the <code>SO_REUSEADDR</code> socket option; normally it should be <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> for
+server sockets (sockets that you will eventually call
+g_socket_accept() on), and <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> for client sockets. (Failing to
+set this flag on a server socket may cause g_socket_bind() to return
+<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.AddressInUse" title="variant gio::auto::enums::IOErrorEnum::AddressInUse"><code>IOErrorEnum::AddressInUse</code></a> if the server program is stopped and then
+immediately restarted.)</p>
+<p>If @self is a UDP socket, then @allow_reuse determines whether or
+not other UDP sockets can be bound to the same address at the same
+time. In particular, you can have several UDP sockets bound to the
+same address, and they will all receive all of the multicast and
+broadcast packets sent to that address. (The behavior of unicast
+UDP packets to an address with multiple listeners is not defined.)</p>
+<h6 id="address"><a class="doc-anchor" href="#address">§</a><code>address</code></h6>
+<p>a #GSocketAddress specifying the local address.</p>
+<h6 id="allow_reuse"><a class="doc-anchor" href="#allow_reuse">§</a><code>allow_reuse</code></h6>
+<p>whether to allow reusing this address</p>
+<h5 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.check_connect_result" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#339">Source</a><h4 class="code-header">fn <a href="#method.check_connect_result" class="fn">check_connect_result</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Checks and resets the pending connect error for the socket.
+This is used to check for errors when g_socket_connect() is
+used in non-blocking mode.</p>
+<h5 id="returns-2"><a class="doc-anchor" href="#returns-2">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if no error, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> otherwise, setting @error to the error</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.close" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#387">Source</a><h4 class="code-header">fn <a href="#method.close" class="fn">close</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Closes the socket, shutting down any active connection.</p>
+<p>Closing a socket does not wait for all outstanding I/O operations
+to finish, so the caller should not rely on them to be guaranteed
+to complete even if the close returns with no error.</p>
+<p>Once the socket is closed, all other operations will return
+<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.Closed" title="variant gio::auto::enums::IOErrorEnum::Closed"><code>IOErrorEnum::Closed</code></a>. Closing a socket multiple times will not
+return an error.</p>
+<p>Sockets will be automatically closed when the last reference
+is dropped, but you might want to call this function to make sure
+resources are released as early as possible.</p>
+<p>Beware that due to the way that TCP works, it is possible for
+recently-sent data to be lost if either you close a socket while the
+<a href="../../glib/auto/flags/struct.IOCondition.html#associatedconstant.IN" title="associated constant glib::auto::flags::IOCondition::IN"><code>glib::IOCondition::IN</code></a> condition is set, or else if the remote connection tries to
+send something to you after you close the socket but before it has
+finished reading all of the data you sent. There is no easy generic
+way to avoid this problem; the easiest fix is to design the network
+protocol such that the client will never send data “out of turn”.
+Another solution is for the server to half-close the connection by
+calling g_socket_shutdown() with only the @shutdown_write flag set,
+and then wait for the client to notice this and close its side of the
+connection, after which the server can safely call g_socket_close().
+(This is what #GTcpConnection does if you call
+g_tcp_connection_set_graceful_disconnect(). But of course, this
+only works if the client will close its connection after the server
+does.)</p>
+<h5 id="returns-3"><a class="doc-anchor" href="#returns-3">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> on error</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.condition_check" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#424">Source</a><h4 class="code-header">fn <a href="#method.condition_check" class="fn">condition_check</a>(&amp;self, condition: <a class="struct" href="../../glib/auto/flags/struct.IOCondition.html" title="struct glib::auto::flags::IOCondition">IOCondition</a>) -&gt; <a class="struct" href="../../glib/auto/flags/struct.IOCondition.html" title="struct glib::auto::flags::IOCondition">IOCondition</a></h4></section></summary><div class="docblock"><p>Checks on the readiness of @self to perform operations.
+The operations specified in @condition are checked for and masked
+against the currently-satisfied conditions on @self. The result
+is returned.</p>
+<p>Note that on Windows, it is possible for an operation to return
+<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.WouldBlock" title="variant gio::auto::enums::IOErrorEnum::WouldBlock"><code>IOErrorEnum::WouldBlock</code></a> even immediately after
+g_socket_condition_check() has claimed that the socket is ready for
+writing. Rather than calling g_socket_condition_check() and then
+writing to the socket if it succeeds, it is generally better to
+simply try writing to the socket right away, and try again later if
+the initial attempt returns <a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.WouldBlock" title="variant gio::auto::enums::IOErrorEnum::WouldBlock"><code>IOErrorEnum::WouldBlock</code></a>.</p>
+<p>It is meaningless to specify <a href="../../glib/auto/flags/struct.IOCondition.html#associatedconstant.ERR" title="associated constant glib::auto::flags::IOCondition::ERR"><code>glib::IOCondition::ERR</code></a> or <a href="../../glib/auto/flags/struct.IOCondition.html#associatedconstant.HUP" title="associated constant glib::auto::flags::IOCondition::HUP"><code>glib::IOCondition::HUP</code></a> in condition;
+these conditions will always be set in the output if they are true.</p>
+<p>This call never blocks.</p>
+<h6 id="condition"><a class="doc-anchor" href="#condition">§</a><code>condition</code></h6>
+<p>a #GIOCondition mask to check</p>
+<h5 id="returns-4"><a class="doc-anchor" href="#returns-4">§</a>Returns</h5>
+<p>the @GIOCondition mask of the current state</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.condition_timed_wait" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#460-465">Source</a><h4 class="code-header">fn <a href="#method.condition_timed_wait" class="fn">condition_timed_wait</a>(
+    &amp;self,
+    condition: <a class="struct" href="../../glib/auto/flags/struct.IOCondition.html" title="struct glib::auto::flags::IOCondition">IOCondition</a>,
+    timeout_us: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Waits for up to @timeout_us microseconds for @condition to become true
+on @self. If the condition is met, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> is returned.</p>
+<p>If @cancellable is cancelled before the condition is met, or if
+@timeout_us (or the socket’s #GSocket:timeout) is reached before the
+condition is met, then <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> is returned and @error, if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>,
+is set to the appropriate value (<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::auto::enums::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a> or
+<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.TimedOut" title="variant gio::auto::enums::IOErrorEnum::TimedOut"><code>IOErrorEnum::TimedOut</code></a>).</p>
+<p>If you don’t want a timeout, use g_socket_condition_wait().
+(Alternatively, you can pass -1 for @timeout_us.)</p>
+<p>Note that although @timeout_us is in microseconds for consistency with
+other GLib APIs, this function actually only has millisecond
+resolution, and the behavior is undefined if @timeout_us is not an
+exact number of milliseconds.</p>
+<h6 id="condition-1"><a class="doc-anchor" href="#condition-1">§</a><code>condition</code></h6>
+<p>a #GIOCondition mask to wait for</p>
+<h6 id="timeout_us"><a class="doc-anchor" href="#timeout_us">§</a><code>timeout_us</code></h6>
+<p>the maximum time (in microseconds) to wait, or -1</p>
+<h6 id="cancellable-1"><a class="doc-anchor" href="#cancellable-1">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-5"><a class="doc-anchor" href="#returns-5">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if the condition was met, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> otherwise</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.condition_wait" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#503-507">Source</a><h4 class="code-header">fn <a href="#method.condition_wait" class="fn">condition_wait</a>(
+    &amp;self,
+    condition: <a class="struct" href="../../glib/auto/flags/struct.IOCondition.html" title="struct glib::auto::flags::IOCondition">IOCondition</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Waits for @condition to become true on @self. When the condition
+is met, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> is returned.</p>
+<p>If @cancellable is cancelled before the condition is met, or if the
+socket has a timeout set and it is reached before the condition is
+met, then <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> is returned and @error, if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, is set to
+the appropriate value (<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::auto::enums::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a> or
+<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.TimedOut" title="variant gio::auto::enums::IOErrorEnum::TimedOut"><code>IOErrorEnum::TimedOut</code></a>).</p>
+<p>See also g_socket_condition_timed_wait().</p>
+<h6 id="condition-2"><a class="doc-anchor" href="#condition-2">§</a><code>condition</code></h6>
+<p>a #GIOCondition mask to wait for</p>
+<h6 id="cancellable-2"><a class="doc-anchor" href="#cancellable-2">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-6"><a class="doc-anchor" href="#returns-6">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if the condition was met, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> otherwise</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#550-554">Source</a><h4 class="code-header">fn <a href="#method.connect" class="fn">connect</a>(
+    &amp;self,
+    address: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/socket_address/struct.SocketAddress.html" title="struct gio::auto::socket_address::SocketAddress">SocketAddress</a>&gt;,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Connect the socket to the specified remote address.</p>
+<p>For connection oriented socket this generally means we attempt to make
+a connection to the @address. For a connection-less socket it sets
+the default address for g_socket_send() and discards all incoming datagrams
+from other sources.</p>
+<p>Generally connection oriented sockets can only connect once, but
+connection-less sockets can connect multiple times to change the
+default address.</p>
+<p>If the connect call needs to do network I/O it will block, unless
+non-blocking I/O is enabled. Then <a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.Pending" title="variant gio::auto::enums::IOErrorEnum::Pending"><code>IOErrorEnum::Pending</code></a> is returned
+and the user can be notified of the connection finishing by waiting
+for the G_IO_OUT condition. The result of the connection must then be
+checked with g_socket_check_connect_result().</p>
+<h6 id="address-1"><a class="doc-anchor" href="#address-1">§</a><code>address</code></h6>
+<p>a #GSocketAddress specifying the remote address.</p>
+<h6 id="cancellable-3"><a class="doc-anchor" href="#cancellable-3">§</a><code>cancellable</code></h6>
+<p>a <code>GCancellable</code> or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-7"><a class="doc-anchor" href="#returns-7">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if connected, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connection_factory_create_connection" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#579">Source</a><h4 class="code-header">fn <a href="#method.connection_factory_create_connection" class="fn">connection_factory_create_connection</a>(&amp;self) -&gt; <a class="struct" href="../../gio/auto/socket_connection/struct.SocketConnection.html" title="struct gio::auto::socket_connection::SocketConnection">SocketConnection</a></h4></section></summary><div class="docblock"><p>Creates a #GSocketConnection subclass of the right type for
+@self.</p>
+<h5 id="returns-8"><a class="doc-anchor" href="#returns-8">§</a>Returns</h5>
+<p>a #GSocketConnection</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.available_bytes" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#606">Source</a><h4 class="code-header">fn <a href="#method.available_bytes" class="fn">available_bytes</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.isize.html">isize</a></h4></section></summary><div class="docblock"><p>Get the amount of data pending in the OS input buffer, without blocking.</p>
+<p>If @self is a UDP or SCTP socket, this will return the size of
+just the next packet, even if additional packets are buffered after
+that one.</p>
+<p>Note that on Windows, this function is rather inefficient in the
+UDP case, and so if you know any plausible upper bound on the size
+of the incoming packet, it is better to just do a
+g_socket_receive() with a buffer of that size, rather than calling
+g_socket_get_available_bytes() first and then doing a receive of
+exactly the right size.</p>
+<h5 id="returns-9"><a class="doc-anchor" href="#returns-9">§</a>Returns</h5>
+<p>the number of bytes that can be read from the socket
+without blocking or truncating, or -1 on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_blocking" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#619">Source</a><h4 class="code-header">fn <a href="#method.is_blocking" class="fn">is_blocking</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Gets the blocking mode of the socket. For details on blocking I/O,
+see g_socket_set_blocking().</p>
+<h5 id="returns-10"><a class="doc-anchor" href="#returns-10">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if blocking I/O is used, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> otherwise.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_broadcast" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#633">Source</a><h4 class="code-header">fn <a href="#method.is_broadcast" class="fn">is_broadcast</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Gets the broadcast setting on @self; if <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a>,
+it is possible to send packets to broadcast
+addresses.</p>
+<h5 id="returns-11"><a class="doc-anchor" href="#returns-11">§</a>Returns</h5>
+<p>the broadcast setting on @self</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.credentials" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#664">Source</a><h4 class="code-header">fn <a href="#method.credentials" class="fn">credentials</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../gio/auto/credentials/struct.Credentials.html" title="struct gio::auto::credentials::Credentials">Credentials</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Returns the credentials of the foreign process connected to this
+socket, if any (e.g. it is only supported for <a href="../../gio/auto/enums/enum.SocketFamily.html#variant.Unix" title="variant gio::auto::enums::SocketFamily::Unix"><code>SocketFamily::Unix</code></a>
+sockets).</p>
+<p>If this operation isn’t supported on the OS, the method fails with
+the <a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.NotSupported" title="variant gio::auto::enums::IOErrorEnum::NotSupported"><code>IOErrorEnum::NotSupported</code></a> error. On Linux this is implemented
+by reading the <code>SO_PEERCRED</code> option on the underlying socket.</p>
+<p>This method can be expected to be available on the following platforms:</p>
+<ul>
+<li>Linux since GLib 2.26</li>
+<li>OpenBSD since GLib 2.30</li>
+<li>Solaris, Illumos and OpenSolaris since GLib 2.40</li>
+<li>NetBSD since GLib 2.42</li>
+<li>macOS, tvOS, iOS since GLib 2.66</li>
+</ul>
+<p>Other ways to obtain credentials from a foreign peer includes the
+#GUnixCredentialsMessage type and
+g_unix_connection_send_credentials() /
+g_unix_connection_receive_credentials() functions.</p>
+<h5 id="returns-12"><a class="doc-anchor" href="#returns-12">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> if @error is set, otherwise a #GCredentials object
+that must be freed with g_object_unref().</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.family" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#683">Source</a><h4 class="code-header">fn <a href="#method.family" class="fn">family</a>(&amp;self) -&gt; <a class="enum" href="../../gio/auto/enums/enum.SocketFamily.html" title="enum gio::auto::enums::SocketFamily">SocketFamily</a></h4></section></summary><div class="docblock"><p>Gets the socket family of the socket.</p>
+<h5 id="returns-13"><a class="doc-anchor" href="#returns-13">§</a>Returns</h5>
+<p>a #GSocketFamily</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_keepalive" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#696">Source</a><h4 class="code-header">fn <a href="#method.is_keepalive" class="fn">is_keepalive</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Gets the keepalive mode of the socket. For details on this,
+see g_socket_set_keepalive().</p>
+<h5 id="returns-14"><a class="doc-anchor" href="#returns-14">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if keepalive is active, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> otherwise.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.listen_backlog" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#709">Source</a><h4 class="code-header">fn <a href="#method.listen_backlog" class="fn">listen_backlog</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a></h4></section></summary><div class="docblock"><p>Gets the listen backlog setting of the socket. For details on this,
+see g_socket_set_listen_backlog().</p>
+<h5 id="returns-15"><a class="doc-anchor" href="#returns-15">§</a>Returns</h5>
+<p>the maximum number of pending connections.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.local_address" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#724">Source</a><h4 class="code-header">fn <a href="#method.local_address" class="fn">local_address</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../gio/auto/socket_address/struct.SocketAddress.html" title="struct gio::auto::socket_address::SocketAddress">SocketAddress</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Try to get the local address of a bound socket. This is only
+useful if the socket has been bound to a local address,
+either explicitly or implicitly when connecting.</p>
+<h5 id="returns-16"><a class="doc-anchor" href="#returns-16">§</a>Returns</h5>
+<p>a #GSocketAddress or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error.
+Free the returned object with g_object_unref().</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_multicast_loopback" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#746">Source</a><h4 class="code-header">fn <a href="#method.is_multicast_loopback" class="fn">is_multicast_loopback</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Gets the multicast loopback setting on @self; if <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> (the
+default), outgoing multicast packets will be looped back to
+multicast listeners on the same host.</p>
+<h5 id="returns-17"><a class="doc-anchor" href="#returns-17">§</a>Returns</h5>
+<p>the multicast loopback setting on @self</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.multicast_ttl" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#763">Source</a><h4 class="code-header">fn <a href="#method.multicast_ttl" class="fn">multicast_ttl</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></h4></section></summary><div class="docblock"><p>Gets the multicast time-to-live setting on @self; see
+g_socket_set_multicast_ttl() for more details.</p>
+<h5 id="returns-18"><a class="doc-anchor" href="#returns-18">§</a>Returns</h5>
+<p>the multicast time-to-live setting on @self</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.option" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#795">Source</a><h4 class="code-header">fn <a href="#method.option" class="fn">option</a>(&amp;self, level: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, optname: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the value of an integer-valued option on @self, as with
+getsockopt(). (If you need to fetch a  non-integer-valued option,
+you will need to call getsockopt() directly.)</p>
+<p>The <a href="networking.html"><code>&lt;gio/gnetworking.h&gt;</code></a>
+header pulls in system headers that will define most of the
+standard/portable socket options. For unusual socket protocols or
+platform-dependent options, you may need to include additional
+headers.</p>
+<p>Note that even for socket options that are a single byte in size,
+@value is still a pointer to a #gint variable, not a #guchar;
+g_socket_get_option() will handle the conversion internally.</p>
+<h6 id="level"><a class="doc-anchor" href="#level">§</a><code>level</code></h6>
+<p>the “API level” of the option (eg, <code>SOL_SOCKET</code>)</p>
+<h6 id="optname"><a class="doc-anchor" href="#optname">§</a><code>optname</code></h6>
+<p>the “name” of the option (eg, <code>SO_BROADCAST</code>)</p>
+<h5 id="returns-19"><a class="doc-anchor" href="#returns-19">§</a>Returns</h5>
+<p>success or failure. On failure, @error will be set, and
+the system error value (<code>errno</code> or WSAGetLastError()) will still
+be set to the result of the getsockopt() call.</p>
+<h6 id="value"><a class="doc-anchor" href="#value">§</a><code>value</code></h6>
+<p>return location for the option value</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.protocol" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#823">Source</a><h4 class="code-header">fn <a href="#method.protocol" class="fn">protocol</a>(&amp;self) -&gt; <a class="enum" href="../../gio/auto/enums/enum.SocketProtocol.html" title="enum gio::auto::enums::SocketProtocol">SocketProtocol</a></h4></section></summary><div class="docblock"><p>Gets the socket protocol id the socket was created with.
+In case the protocol is unknown, -1 is returned.</p>
+<h5 id="returns-20"><a class="doc-anchor" href="#returns-20">§</a>Returns</h5>
+<p>a protocol id, or -1 if unknown</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.remote_address" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#837">Source</a><h4 class="code-header">fn <a href="#method.remote_address" class="fn">remote_address</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../gio/auto/socket_address/struct.SocketAddress.html" title="struct gio::auto::socket_address::SocketAddress">SocketAddress</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Try to get the remote address of a connected socket. This is only
+useful for connection oriented sockets that have been connected.</p>
+<h5 id="returns-21"><a class="doc-anchor" href="#returns-21">§</a>Returns</h5>
+<p>a #GSocketAddress or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error.
+Free the returned object with g_object_unref().</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.socket_type" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#856">Source</a><h4 class="code-header">fn <a href="#method.socket_type" class="fn">socket_type</a>(&amp;self) -&gt; <a class="enum" href="../../gio/auto/enums/enum.SocketType.html" title="enum gio::auto::enums::SocketType">SocketType</a></h4></section></summary><div class="docblock"><p>Gets the socket type of the socket.</p>
+<h5 id="returns-22"><a class="doc-anchor" href="#returns-22">§</a>Returns</h5>
+<p>a #GSocketType</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.timeout" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#872">Source</a><h4 class="code-header">fn <a href="#method.timeout" class="fn">timeout</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></h4></section></summary><div class="docblock"><p>Gets the timeout setting of the socket. For details on this, see
+g_socket_set_timeout().</p>
+<h5 id="returns-23"><a class="doc-anchor" href="#returns-23">§</a>Returns</h5>
+<p>the timeout in seconds</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.ttl" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#884">Source</a><h4 class="code-header">fn <a href="#method.ttl" class="fn">ttl</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></h4></section></summary><div class="docblock"><p>Gets the unicast time-to-live setting on @self; see
+g_socket_set_ttl() for more details.</p>
+<h5 id="returns-24"><a class="doc-anchor" href="#returns-24">§</a>Returns</h5>
+<p>the time-to-live setting on @self</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_closed" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#894">Source</a><h4 class="code-header">fn <a href="#method.is_closed" class="fn">is_closed</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks whether a socket is closed.</p>
+<h5 id="returns-25"><a class="doc-anchor" href="#returns-25">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if socket is closed, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> otherwise</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_connected" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#910">Source</a><h4 class="code-header">fn <a href="#method.is_connected" class="fn">is_connected</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Check whether the socket is connected. This is only useful for
+connection-oriented sockets.</p>
+<p>If using g_socket_shutdown(), this function will return <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> until the
+socket has been shut down for reading and writing. If you do a non-blocking
+connect, this function will not return <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> until after you call
+g_socket_check_connect_result().</p>
+<h5 id="returns-26"><a class="doc-anchor" href="#returns-26">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if socket is connected, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> otherwise.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.join_multicast_group" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#939-944">Source</a><h4 class="code-header">fn <a href="#method.join_multicast_group" class="fn">join_multicast_group</a>(
+    &amp;self,
+    group: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;,
+    source_specific: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    iface: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Registers @self to receive multicast messages sent to @group.
+@self must be a <a href="../../gio/auto/enums/enum.SocketType.html#variant.Datagram" title="variant gio::auto::enums::SocketType::Datagram"><code>SocketType::Datagram</code></a> socket, and must have
+been bound to an appropriate interface and port with
+g_socket_bind().</p>
+<p>If @iface is <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, the system will automatically pick an interface
+to bind to based on @group.</p>
+<p>If @source_specific is <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a>, source-specific multicast as defined
+in RFC 4604 is used. Note that on older platforms this may fail
+with a <a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.NotSupported" title="variant gio::auto::enums::IOErrorEnum::NotSupported"><code>IOErrorEnum::NotSupported</code></a> error.</p>
+<p>To bind to a given source-specific multicast address, use
+g_socket_join_multicast_group_ssm() instead.</p>
+<h6 id="group"><a class="doc-anchor" href="#group">§</a><code>group</code></h6>
+<p>a #GInetAddress specifying the group address to join.</p>
+<h6 id="source_specific"><a class="doc-anchor" href="#source_specific">§</a><code>source_specific</code></h6>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if source-specific multicast should be used</p>
+<h6 id="iface"><a class="doc-anchor" href="#iface">§</a><code>iface</code></h6>
+<p>Name of the interface to use, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-27"><a class="doc-anchor" href="#returns-27">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.join_multicast_group_ssm" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#990-995">Source</a><h4 class="code-header">fn <a href="#method.join_multicast_group_ssm" class="fn">join_multicast_group_ssm</a>(
+    &amp;self,
+    group: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;,
+    source_specific: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;&gt;,
+    iface: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Registers @self to receive multicast messages sent to @group.
+@self must be a <a href="../../gio/auto/enums/enum.SocketType.html#variant.Datagram" title="variant gio::auto::enums::SocketType::Datagram"><code>SocketType::Datagram</code></a> socket, and must have
+been bound to an appropriate interface and port with
+g_socket_bind().</p>
+<p>If @iface is <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, the system will automatically pick an interface
+to bind to based on @group.</p>
+<p>If @source_specific is not <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, use source-specific multicast as
+defined in RFC 4604. Note that on older platforms this may fail
+with a <a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.NotSupported" title="variant gio::auto::enums::IOErrorEnum::NotSupported"><code>IOErrorEnum::NotSupported</code></a> error.</p>
+<p>Note that this function can be called multiple times for the same
+@group with different @source_specific in order to receive multicast
+packets from more than one source.</p>
+<h6 id="group-1"><a class="doc-anchor" href="#group-1">§</a><code>group</code></h6>
+<p>a #GInetAddress specifying the group address to join.</p>
+<h6 id="source_specific-1"><a class="doc-anchor" href="#source_specific-1">§</a><code>source_specific</code></h6>
+<p>a #GInetAddress specifying the
+source-specific multicast address or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h6 id="iface-1"><a class="doc-anchor" href="#iface-1">§</a><code>iface</code></h6>
+<p>Name of the interface to use, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-28"><a class="doc-anchor" href="#returns-28">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.leave_multicast_group" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1034-1039">Source</a><h4 class="code-header">fn <a href="#method.leave_multicast_group" class="fn">leave_multicast_group</a>(
+    &amp;self,
+    group: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;,
+    source_specific: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    iface: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Removes @self from the multicast group defined by @group, @iface,
+and @source_specific (which must all have the same values they had
+when you joined the group).</p>
+<p>@self remains bound to its address and port, and can still receive
+unicast messages after calling this.</p>
+<p>To unbind to a given source-specific multicast address, use
+g_socket_leave_multicast_group_ssm() instead.</p>
+<h6 id="group-2"><a class="doc-anchor" href="#group-2">§</a><code>group</code></h6>
+<p>a #GInetAddress specifying the group address to leave.</p>
+<h6 id="source_specific-2"><a class="doc-anchor" href="#source_specific-2">§</a><code>source_specific</code></h6>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if source-specific multicast was used</p>
+<h6 id="iface-2"><a class="doc-anchor" href="#iface-2">§</a><code>iface</code></h6>
+<p>Interface used</p>
+<h5 id="returns-29"><a class="doc-anchor" href="#returns-29">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.leave_multicast_group_ssm" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1076-1081">Source</a><h4 class="code-header">fn <a href="#method.leave_multicast_group_ssm" class="fn">leave_multicast_group_ssm</a>(
+    &amp;self,
+    group: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;,
+    source_specific: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;&gt;,
+    iface: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Removes @self from the multicast group defined by @group, @iface,
+and @source_specific (which must all have the same values they had
+when you joined the group).</p>
+<p>@self remains bound to its address and port, and can still receive
+unicast messages after calling this.</p>
+<h6 id="group-3"><a class="doc-anchor" href="#group-3">§</a><code>group</code></h6>
+<p>a #GInetAddress specifying the group address to leave.</p>
+<h6 id="source_specific-3"><a class="doc-anchor" href="#source_specific-3">§</a><code>source_specific</code></h6>
+<p>a #GInetAddress specifying the
+source-specific multicast address or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h6 id="iface-3"><a class="doc-anchor" href="#iface-3">§</a><code>iface</code></h6>
+<p>Name of the interface to use, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-30"><a class="doc-anchor" href="#returns-30">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.listen" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1113">Source</a><h4 class="code-header">fn <a href="#method.listen" class="fn">listen</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Marks the socket as a server socket, i.e. a socket that is used
+to accept incoming requests using g_socket_accept().</p>
+<p>Before calling this the socket must be bound to a local address using
+g_socket_bind().</p>
+<p>To set the maximum amount of outstanding clients, use
+g_socket_set_listen_backlog().</p>
+<h5 id="returns-31"><a class="doc-anchor" href="#returns-31">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_blocking" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1139">Source</a><h4 class="code-header">fn <a href="#method.set_blocking" class="fn">set_blocking</a>(&amp;self, blocking: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>)</h4></section></summary><div class="docblock"><p>Sets the blocking mode of the socket. In blocking mode
+all operations (which don’t take an explicit blocking parameter) block until
+they succeed or there is an error. In
+non-blocking mode all functions return results immediately or
+with a <a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.WouldBlock" title="variant gio::auto::enums::IOErrorEnum::WouldBlock"><code>IOErrorEnum::WouldBlock</code></a> error.</p>
+<p>All sockets are created in blocking mode. However, note that the
+platform level socket is always non-blocking, and blocking mode
+is a GSocket level feature.</p>
+<h6 id="blocking"><a class="doc-anchor" href="#blocking">§</a><code>blocking</code></h6>
+<p>Whether to use blocking I/O or not.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_broadcast" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1152">Source</a><h4 class="code-header">fn <a href="#method.set_broadcast" class="fn">set_broadcast</a>(&amp;self, broadcast: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>)</h4></section></summary><div class="docblock"><p>Sets whether @self should allow sending to broadcast addresses.
+This is <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> by default.</p>
+<h6 id="broadcast"><a class="doc-anchor" href="#broadcast">§</a><code>broadcast</code></h6>
+<p>whether @self should allow sending to broadcast
+addresses</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_keepalive" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1177">Source</a><h4 class="code-header">fn <a href="#method.set_keepalive" class="fn">set_keepalive</a>(&amp;self, keepalive: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>)</h4></section></summary><div class="docblock"><p>Sets or unsets the <code>SO_KEEPALIVE</code> flag on the underlying socket. When
+this flag is set on a socket, the system will attempt to verify that the
+remote socket endpoint is still present if a sufficiently long period of
+time passes with no data being exchanged. If the system is unable to
+verify the presence of the remote endpoint, it will automatically close
+the connection.</p>
+<p>This option is only functional on certain kinds of sockets. (Notably,
+<a href="../../gio/auto/enums/enum.SocketProtocol.html#variant.Tcp" title="variant gio::auto::enums::SocketProtocol::Tcp"><code>SocketProtocol::Tcp</code></a> sockets.)</p>
+<p>The exact time between pings is system- and protocol-dependent, but will
+normally be at least two hours. Most commonly, you would set this flag
+on a server socket if you want to allow clients to remain idle for long
+periods of time, but also want to ensure that connections are eventually
+garbage-collected if clients crash or become unreachable.</p>
+<h6 id="keepalive"><a class="doc-anchor" href="#keepalive">§</a><code>keepalive</code></h6>
+<p>Value for the keepalive flag</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_listen_backlog" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1194">Source</a><h4 class="code-header">fn <a href="#method.set_listen_backlog" class="fn">set_listen_backlog</a>(&amp;self, backlog: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)</h4></section></summary><div class="docblock"><p>Sets the maximum number of outstanding connections allowed
+when listening on this socket. If more clients than this are
+connecting to the socket and the application is not handling them
+on time then the new connections will be refused.</p>
+<p>Note that this must be called before g_socket_listen() and has no
+effect if called after that.</p>
+<h6 id="backlog"><a class="doc-anchor" href="#backlog">§</a><code>backlog</code></h6>
+<p>the maximum number of pending connections.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_multicast_loopback" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1208">Source</a><h4 class="code-header">fn <a href="#method.set_multicast_loopback" class="fn">set_multicast_loopback</a>(&amp;self, loopback: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>)</h4></section></summary><div class="docblock"><p>Sets whether outgoing multicast packets will be received by sockets
+listening on that multicast address on the same host. This is <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a>
+by default.</p>
+<h6 id="loopback"><a class="doc-anchor" href="#loopback">§</a><code>loopback</code></h6>
+<p>whether @self should receive messages sent to its
+multicast groups from the local host</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_multicast_ttl" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1224">Source</a><h4 class="code-header">fn <a href="#method.set_multicast_ttl" class="fn">set_multicast_ttl</a>(&amp;self, ttl: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>)</h4></section></summary><div class="docblock"><p>Sets the time-to-live for outgoing multicast datagrams on @self.
+By default, this is 1, meaning that multicast packets will not leave
+the local network.</p>
+<h6 id="ttl"><a class="doc-anchor" href="#ttl">§</a><code>ttl</code></h6>
+<p>the time-to-live value for all multicast datagrams on @self</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_option" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1252">Source</a><h4 class="code-header">fn <a href="#method.set_option" class="fn">set_option</a>(&amp;self, level: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, optname: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, value: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Sets the value of an integer-valued option on @self, as with
+setsockopt(). (If you need to set a non-integer-valued option,
+you will need to call setsockopt() directly.)</p>
+<p>The <a href="networking.html"><code>&lt;gio/gnetworking.h&gt;</code></a>
+header pulls in system headers that will define most of the
+standard/portable socket options. For unusual socket protocols or
+platform-dependent options, you may need to include additional
+headers.</p>
+<h6 id="level-1"><a class="doc-anchor" href="#level-1">§</a><code>level</code></h6>
+<p>the “API level” of the option (eg, <code>SOL_SOCKET</code>)</p>
+<h6 id="optname-1"><a class="doc-anchor" href="#optname-1">§</a><code>optname</code></h6>
+<p>the “name” of the option (eg, <code>SO_BROADCAST</code>)</p>
+<h6 id="value-1"><a class="doc-anchor" href="#value-1">§</a><code>value</code></h6>
+<p>the value to set the option to</p>
+<h5 id="returns-32"><a class="doc-anchor" href="#returns-32">§</a>Returns</h5>
+<p>success or failure. On failure, @error will be set, and
+the system error value (<code>errno</code> or WSAGetLastError()) will still
+be set to the result of the setsockopt() call.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_timeout" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1295">Source</a><h4 class="code-header">fn <a href="#method.set_timeout" class="fn">set_timeout</a>(&amp;self, timeout: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>)</h4></section></summary><div class="docblock"><p>Sets the time in seconds after which I/O operations on @self will
+time out if they have not yet completed.</p>
+<p>On a blocking socket, this means that any blocking #GSocket
+operation will time out after @timeout seconds of inactivity,
+returning <a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.TimedOut" title="variant gio::auto::enums::IOErrorEnum::TimedOut"><code>IOErrorEnum::TimedOut</code></a>.</p>
+<p>On a non-blocking socket, calls to g_socket_condition_wait() will
+also fail with <a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.TimedOut" title="variant gio::auto::enums::IOErrorEnum::TimedOut"><code>IOErrorEnum::TimedOut</code></a> after the given time. Sources
+created with g_socket_create_source() will trigger after
+@timeout seconds of inactivity, with the requested condition
+set, at which point calling g_socket_receive(), g_socket_send(),
+g_socket_check_connect_result(), etc, will fail with
+<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.TimedOut" title="variant gio::auto::enums::IOErrorEnum::TimedOut"><code>IOErrorEnum::TimedOut</code></a>.</p>
+<p>If @timeout is 0 (the default), operations will never time out
+on their own.</p>
+<p>Note that if an I/O operation is interrupted by a signal, this may
+cause the timeout to be reset.</p>
+<h6 id="timeout"><a class="doc-anchor" href="#timeout">§</a><code>timeout</code></h6>
+<p>the timeout for @self, in seconds, or 0 for none</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_ttl" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1307">Source</a><h4 class="code-header">fn <a href="#method.set_ttl" class="fn">set_ttl</a>(&amp;self, ttl: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>)</h4></section></summary><div class="docblock"><p>Sets the time-to-live for outgoing unicast packets on @self.
+By default the platform-specific default value is used.</p>
+<h6 id="ttl-1"><a class="doc-anchor" href="#ttl-1">§</a><code>ttl</code></h6>
+<p>the time-to-live value for all unicast packets on @self</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.shutdown" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1336">Source</a><h4 class="code-header">fn <a href="#method.shutdown" class="fn">shutdown</a>(
+    &amp;self,
+    shutdown_read: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    shutdown_write: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Shut down part or all of a full-duplex connection.</p>
+<p>If @shutdown_read is <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> then the receiving side of the connection
+is shut down, and further reading is disallowed.</p>
+<p>If @shutdown_write is <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> then the sending side of the connection
+is shut down, and further writing is disallowed.</p>
+<p>It is allowed for both @shutdown_read and @shutdown_write to be <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a>.</p>
+<p>One example where it is useful to shut down only one side of a connection is
+graceful disconnect for TCP connections where you close the sending side,
+then wait for the other side to close the connection, thus ensuring that the
+other side saw all sent data.</p>
+<h6 id="shutdown_read"><a class="doc-anchor" href="#shutdown_read">§</a><code>shutdown_read</code></h6>
+<p>whether to shut down the read side</p>
+<h6 id="shutdown_write"><a class="doc-anchor" href="#shutdown_write">§</a><code>shutdown_write</code></h6>
+<p>whether to shut down the write side</p>
+<h5 id="returns-33"><a class="doc-anchor" href="#returns-33">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> on success, <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>false</code></a> on error</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.speaks_ipv4" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1368">Source</a><h4 class="code-header">fn <a href="#method.speaks_ipv4" class="fn">speaks_ipv4</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if a socket is capable of speaking IPv4.</p>
+<p>IPv4 sockets are capable of speaking IPv4.  On some operating systems
+and under some combinations of circumstances IPv6 sockets are also
+capable of speaking IPv4.  See RFC 3493 section 3.7 for more
+information.</p>
+<p>No other types of sockets are currently considered as being capable
+of speaking IPv4.</p>
+<h5 id="returns-34"><a class="doc-anchor" href="#returns-34">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if this socket can be used with IPv4.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.type_" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1374">Source</a><h4 class="code-header">fn <a href="#method.type_" class="fn">type_</a>(&amp;self) -&gt; <a class="enum" href="../../gio/auto/enums/enum.SocketType.html" title="enum gio::auto::enums::SocketType">SocketType</a></h4></section></summary><div class="docblock"><p>The socket’s type.</p>
+</div></details><section id="method.connect_blocking_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1379">Source</a><h4 class="code-header">fn <a href="#method.connect_blocking_notify" class="fn">connect_blocking_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section><section id="method.connect_broadcast_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1404">Source</a><h4 class="code-header">fn <a href="#method.connect_broadcast_notify" class="fn">connect_broadcast_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section><section id="method.connect_keepalive_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1429">Source</a><h4 class="code-header">fn <a href="#method.connect_keepalive_notify" class="fn">connect_keepalive_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section><section id="method.connect_listen_backlog_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1454">Source</a><h4 class="code-header">fn <a href="#method.connect_listen_backlog_notify" class="fn">connect_listen_backlog_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section><section id="method.connect_local_address_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1482">Source</a><h4 class="code-header">fn <a href="#method.connect_local_address_notify" class="fn">connect_local_address_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section><section id="method.connect_multicast_loopback_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1510">Source</a><h4 class="code-header">fn <a href="#method.connect_multicast_loopback_notify" class="fn">connect_multicast_loopback_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section><section id="method.connect_multicast_ttl_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1538">Source</a><h4 class="code-header">fn <a href="#method.connect_multicast_ttl_notify" class="fn">connect_multicast_ttl_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section><section id="method.connect_remote_address_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1566">Source</a><h4 class="code-header">fn <a href="#method.connect_remote_address_notify" class="fn">connect_remote_address_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section><section id="method.connect_timeout_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1594">Source</a><h4 class="code-header">fn <a href="#method.connect_timeout_notify" class="fn">connect_timeout_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section><section id="method.connect_ttl_notify" class="method"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1619">Source</a><h4 class="code-header">fn <a href="#method.connect_ttl_notify" class="fn">connect_ttl_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><div class="negative-marker"></div><section id="impl-SocketExt-for-O" class="impl"><a class="src rightside" href="../../src/gio/auto/socket.rs.html#1644">Source</a><a href="#impl-SocketExt-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O&gt; <a class="trait" href="trait.SocketExt.html" title="trait gio_unix::prelude::SocketExt">SocketExt</a> for O<div class="where">where
+    O: <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/socket/struct.Socket.html" title="struct gio::auto::socket::Socket">Socket</a>&gt;,</div></h3></section></div><script src="../../trait.impl/gio/auto/socket/trait.SocketExt.js" async></script></section></div></main></body></html>

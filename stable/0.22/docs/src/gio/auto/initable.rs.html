@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/initable.rs`."><title>initable.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.22" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.22") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">gio/auto/</div>initable.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+<a href=#2 id=2 data-nosnippet>2</a>// from gir-files (https://github.com/gtk-rs/gir-files)
+<a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
+<a href=#4 id=4 data-nosnippet>4</a>
+<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use </span>crate::{<a href="cancellable.rs.html#8-86">Cancellable</a>, <a href="../../../gio_sys/index.html">ffi</a>};
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
+<a href=#7 id=7 data-nosnippet>7</a>
+<a href=#8 id=8 data-nosnippet>8</a><a href="../../../glib/macro.wrapper.html">glib::wrapper!</a> {
+<a href=#9 id=9 data-nosnippet>9</a>    <span class="doccomment">/// `GInitable` is implemented by objects that can fail during
+<a href=#10 id=10 data-nosnippet>10</a>    /// initialization. If an object implements this interface then
+<a href=#11 id=11 data-nosnippet>11</a>    /// it must be initialized as the first thing after construction,
+<a href=#12 id=12 data-nosnippet>12</a>    /// either via [`InitableExt::init()`][crate::prelude::InitableExt::init()] or [`AsyncInitableExt::init_async()`][crate::prelude::AsyncInitableExt::init_async()]
+<a href=#13 id=13 data-nosnippet>13</a>    /// (the latter is only available if it also implements [`AsyncInitable`][crate::AsyncInitable]).
+<a href=#14 id=14 data-nosnippet>14</a>    ///
+<a href=#15 id=15 data-nosnippet>15</a>    /// If the object is not initialized, or initialization returns with an
+<a href=#16 id=16 data-nosnippet>16</a>    /// error, then all operations on the object except `g_object_ref()` and
+<a href=#17 id=17 data-nosnippet>17</a>    /// `g_object_unref()` are considered to be invalid, and have undefined
+<a href=#18 id=18 data-nosnippet>18</a>    /// behaviour. They will often fail with `critical()` or
+<a href=#19 id=19 data-nosnippet>19</a>    /// `warning()`, but this must not be relied on.
+<a href=#20 id=20 data-nosnippet>20</a>    ///
+<a href=#21 id=21 data-nosnippet>21</a>    /// Users of objects implementing this are not intended to use
+<a href=#22 id=22 data-nosnippet>22</a>    /// the interface method directly, instead it will be used automatically
+<a href=#23 id=23 data-nosnippet>23</a>    /// in various ways. For C applications you generally just call
+<a href=#24 id=24 data-nosnippet>24</a>    /// [`new()`][Self::new()] directly, or indirectly via a `foo_thing_new()` wrapper.
+<a href=#25 id=25 data-nosnippet>25</a>    /// This will call [`InitableExt::init()`][crate::prelude::InitableExt::init()] under the cover, returning `NULL`
+<a href=#26 id=26 data-nosnippet>26</a>    /// and setting a `GError` on failure (at which point the instance is
+<a href=#27 id=27 data-nosnippet>27</a>    /// unreferenced).
+<a href=#28 id=28 data-nosnippet>28</a>    ///
+<a href=#29 id=29 data-nosnippet>29</a>    /// For bindings in languages where the native constructor supports
+<a href=#30 id=30 data-nosnippet>30</a>    /// exceptions the binding could check for objects implementing `GInitable`
+<a href=#31 id=31 data-nosnippet>31</a>    /// during normal construction and automatically initialize them, throwing
+<a href=#32 id=32 data-nosnippet>32</a>    /// an exception on failure.
+<a href=#33 id=33 data-nosnippet>33</a>    ///
+<a href=#34 id=34 data-nosnippet>34</a>    /// # Implements
+<a href=#35 id=35 data-nosnippet>35</a>    ///
+<a href=#36 id=36 data-nosnippet>36</a>    /// [`InitableExt`][trait@crate::prelude::InitableExt]
+<a href=#37 id=37 data-nosnippet>37</a>    </span><span class="attr">#[doc(alias = <span class="string">"GInitable"</span>)]
+<a href=#38 id=38 data-nosnippet>38</a>    </span><span class="kw">pub struct </span><a href="#8-43">Initable</a>(Interface&lt;ffi::<a href="../../../gio_sys/struct.GInitable.html">GInitable</a>, ffi::<a href="../../../gio_sys/struct.GInitableIface.html">GInitableIface</a>&gt;);
+<a href=#39 id=39 data-nosnippet>39</a>
+<a href=#40 id=40 data-nosnippet>40</a>    <span class="kw">match fn </span>{
+<a href=#41 id=41 data-nosnippet>41</a>        type_ =&gt; || ffi::g_initable_get_type(),
+<a href=#42 id=42 data-nosnippet>42</a>    }
+<a href=#43 id=43 data-nosnippet>43</a>}
+<a href=#44 id=44 data-nosnippet>44</a>
+<a href=#45 id=45 data-nosnippet>45</a><span class="kw">impl </span><a href="#8-43">Initable</a> {
+<a href=#46 id=46 data-nosnippet>46</a>    <span class="kw">pub const </span>NONE: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span><a href="#8-43">Initable</a>&gt; = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>;
+<a href=#47 id=47 data-nosnippet>47</a>}
+<a href=#48 id=48 data-nosnippet>48</a>
+<a href=#49 id=49 data-nosnippet>49</a><span class="doccomment">/// Trait containing all [`struct@Initable`] methods.
+<a href=#50 id=50 data-nosnippet>50</a>///
+<a href=#51 id=51 data-nosnippet>51</a>/// # Implementors
+<a href=#52 id=52 data-nosnippet>52</a>///
+<a href=#53 id=53 data-nosnippet>53</a>/// [`CharsetConverter`][struct@crate::CharsetConverter], [`DBusConnection`][struct@crate::DBusConnection], [`DBusObjectManagerClient`][struct@crate::DBusObjectManagerClient], [`DBusProxy`][struct@crate::DBusProxy], [`DBusServer`][struct@crate::DBusServer], [`DebugControllerDBus`][struct@crate::DebugControllerDBus], [`DebugController`][struct@crate::DebugController], [`InetAddressMask`][struct@crate::InetAddressMask], [`Initable`][struct@crate::Initable], [`MemoryMonitor`][struct@crate::MemoryMonitor], [`NetworkMonitor`][struct@crate::NetworkMonitor], [`PowerProfileMonitor`][struct@crate::PowerProfileMonitor], [`Socket`][struct@crate::Socket], [`Subprocess`][struct@crate::Subprocess]
+<a href=#54 id=54 data-nosnippet>54</a></span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.InitableExt.html">InitableExt</a>: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#8-43">Initable</a>&gt; + <span class="lifetime">'static </span>{
+<a href=#55 id=55 data-nosnippet>55</a>    <span class="doccomment">/// Initializes the object implementing the interface.
+<a href=#56 id=56 data-nosnippet>56</a>    ///
+<a href=#57 id=57 data-nosnippet>57</a>    /// This method is intended for language bindings. If writing in C,
+<a href=#58 id=58 data-nosnippet>58</a>    /// g_initable_new() should typically be used instead.
+<a href=#59 id=59 data-nosnippet>59</a>    ///
+<a href=#60 id=60 data-nosnippet>60</a>    /// The object must be initialized before any real use after initial
+<a href=#61 id=61 data-nosnippet>61</a>    /// construction, either with this function or g_async_initable_init_async().
+<a href=#62 id=62 data-nosnippet>62</a>    ///
+<a href=#63 id=63 data-nosnippet>63</a>    /// Implementations may also support cancellation. If @cancellable is not [`None`],
+<a href=#64 id=64 data-nosnippet>64</a>    /// then initialization can be cancelled by triggering the cancellable object
+<a href=#65 id=65 data-nosnippet>65</a>    /// from another thread. If the operation was cancelled, the error
+<a href=#66 id=66 data-nosnippet>66</a>    /// [`IOErrorEnum::Cancelled`][crate::IOErrorEnum::Cancelled] will be returned. If @cancellable is not [`None`] and
+<a href=#67 id=67 data-nosnippet>67</a>    /// the object doesn't support cancellable initialization the error
+<a href=#68 id=68 data-nosnippet>68</a>    /// [`IOErrorEnum::NotSupported`][crate::IOErrorEnum::NotSupported] will be returned.
+<a href=#69 id=69 data-nosnippet>69</a>    ///
+<a href=#70 id=70 data-nosnippet>70</a>    /// If the object is not initialized, or initialization returns with an
+<a href=#71 id=71 data-nosnippet>71</a>    /// error, then all operations on the object except g_object_ref() and
+<a href=#72 id=72 data-nosnippet>72</a>    /// g_object_unref() are considered to be invalid, and have undefined
+<a href=#73 id=73 data-nosnippet>73</a>    /// behaviour. See the [description][`Initable`][crate::Initable]#description] for more details.
+<a href=#74 id=74 data-nosnippet>74</a>    ///
+<a href=#75 id=75 data-nosnippet>75</a>    /// Callers should not assume that a class which implements #GInitable can be
+<a href=#76 id=76 data-nosnippet>76</a>    /// initialized multiple times, unless the class explicitly documents itself as
+<a href=#77 id=77 data-nosnippet>77</a>    /// supporting this. Generally, a class’ implementation of init() can assume
+<a href=#78 id=78 data-nosnippet>78</a>    /// (and assert) that it will only be called once. Previously, this documentation
+<a href=#79 id=79 data-nosnippet>79</a>    /// recommended all #GInitable implementations should be idempotent; that
+<a href=#80 id=80 data-nosnippet>80</a>    /// recommendation was relaxed in GLib 2.54.
+<a href=#81 id=81 data-nosnippet>81</a>    ///
+<a href=#82 id=82 data-nosnippet>82</a>    /// If a class explicitly supports being initialized multiple times, it is
+<a href=#83 id=83 data-nosnippet>83</a>    /// recommended that the method is idempotent: multiple calls with the same
+<a href=#84 id=84 data-nosnippet>84</a>    /// arguments should return the same results. Only the first call initializes
+<a href=#85 id=85 data-nosnippet>85</a>    /// the object; further calls return the result of the first call.
+<a href=#86 id=86 data-nosnippet>86</a>    ///
+<a href=#87 id=87 data-nosnippet>87</a>    /// One reason why a class might need to support idempotent initialization is if
+<a href=#88 id=88 data-nosnippet>88</a>    /// it is designed to be used via the singleton pattern, with a
+<a href=#89 id=89 data-nosnippet>89</a>    /// #GObjectClass.constructor that sometimes returns an existing instance.
+<a href=#90 id=90 data-nosnippet>90</a>    /// In this pattern, a caller would expect to be able to call g_initable_init()
+<a href=#91 id=91 data-nosnippet>91</a>    /// on the result of g_object_new(), regardless of whether it is in fact a new
+<a href=#92 id=92 data-nosnippet>92</a>    /// instance.
+<a href=#93 id=93 data-nosnippet>93</a>    /// ## `cancellable`
+<a href=#94 id=94 data-nosnippet>94</a>    /// optional #GCancellable object, [`None`] to ignore.
+<a href=#95 id=95 data-nosnippet>95</a>    ///
+<a href=#96 id=96 data-nosnippet>96</a>    /// # Returns
+<a href=#97 id=97 data-nosnippet>97</a>    ///
+<a href=#98 id=98 data-nosnippet>98</a>    /// [`true`] if successful. If an error has occurred, this function will
+<a href=#99 id=99 data-nosnippet>99</a>    ///     return [`false`] and set @error appropriately if present.
+<a href=#100 id=100 data-nosnippet>100</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_initable_init"</span>)]
+<a href=#101 id=101 data-nosnippet>101</a>    </span><span class="kw">unsafe fn </span>init(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
+<a href=#102 id=102 data-nosnippet>102</a>        <span class="kw">unsafe </span>{
+<a href=#103 id=103 data-nosnippet>103</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
+<a href=#104 id=104 data-nosnippet>104</a>            <span class="kw">let </span>is_ok = ffi::<a href="../../../gio_sys/fn.g_initable_init.html">g_initable_init</a>(
+<a href=#105 id=105 data-nosnippet>105</a>                <a class="self" href="#101">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#106 id=106 data-nosnippet>106</a>                <a href="#101">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#106">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#107 id=107 data-nosnippet>107</a>                <span class="kw-2">&amp;mut </span><a href="#103">error</a>,
+<a href=#108 id=108 data-nosnippet>108</a>            );
+<a href=#109 id=109 data-nosnippet>109</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
+<a href=#110 id=110 data-nosnippet>110</a>            <span class="kw">if </span><a href="#103">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
+<a href=#111 id=111 data-nosnippet>111</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
+<a href=#112 id=112 data-nosnippet>112</a>            } <span class="kw">else </span>{
+<a href=#113 id=113 data-nosnippet>113</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#103">error</a>))
+<a href=#114 id=114 data-nosnippet>114</a>            }
+<a href=#115 id=115 data-nosnippet>115</a>        }
+<a href=#116 id=116 data-nosnippet>116</a>    }
+<a href=#117 id=117 data-nosnippet>117</a>}
+<a href=#118 id=118 data-nosnippet>118</a>
+<a href=#119 id=119 data-nosnippet>119</a><span class="kw">impl</span>&lt;O: <a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#8-43">Initable</a>&gt;&gt; <a href="#54-117">InitableExt</a> <span class="kw">for </span>O {}
+</code></pre></div></section></main></body></html>

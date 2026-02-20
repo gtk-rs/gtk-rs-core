@@ -1,0 +1,269 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait containing all `struct@AppInfo` methods."><title>AppInfoExt in gio_win32::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio_win32" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.22" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.22") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<rustdoc-topbar><h2><a href="#">AppInfoExt</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../gio_win32/index.html">gio_<wbr>win32</a><span class="version">0.22.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">AppInfo<wbr>Ext</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#implementors-1" title="Implementors">Implementors</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.add_supports_type" title="add_supports_type">add_supports_type</a></li><li><a href="#method.can_delete" title="can_delete">can_delete</a></li><li><a href="#method.can_remove_supports_type" title="can_remove_supports_type">can_remove_supports_type</a></li><li><a href="#method.commandline" title="commandline">commandline</a></li><li><a href="#method.delete" title="delete">delete</a></li><li><a href="#method.description" title="description">description</a></li><li><a href="#method.display_name" title="display_name">display_name</a></li><li><a href="#method.dup" title="dup">dup</a></li><li><a href="#method.equal" title="equal">equal</a></li><li><a href="#method.executable" title="executable">executable</a></li><li><a href="#method.icon" title="icon">icon</a></li><li><a href="#method.id" title="id">id</a></li><li><a href="#method.launch" title="launch">launch</a></li><li><a href="#method.launch_uris" title="launch_uris">launch_uris</a></li><li><a href="#method.name" title="name">name</a></li><li><a href="#method.remove_supports_type" title="remove_supports_type">remove_supports_type</a></li><li><a href="#method.set_as_default_for_extension" title="set_as_default_for_extension">set_as_default_for_extension</a></li><li><a href="#method.set_as_default_for_type" title="set_as_default_for_type">set_as_default_for_type</a></li><li><a href="#method.set_as_last_used_for_type" title="set_as_last_used_for_type">set_as_last_used_for_type</a></li><li><a href="#method.should_show" title="should_show">should_show</a></li><li><a href="#method.supported_types" title="supported_types">supported_types</a></li><li><a href="#method.supports_files" title="supports_files">supports_files</a></li><li><a href="#method.supports_uris" title="supports_uris">supports_uris</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In gio_<wbr>win32::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">gio_win32</a>::<wbr><a href="index.html">prelude</a></div><h1>Trait <span class="trait">AppInfo<wbr>Ext</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/gio/auto/app_info.rs.html#571">Source</a> </span></div><pre class="rust item-decl"><code>pub trait AppInfoExt: <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/app_info/struct.AppInfo.html" title="struct gio::auto::app_info::AppInfo">AppInfo</a>&gt; + 'static {
+<details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 23 methods</span></summary>    // Provided methods
+    fn <a href="#method.add_supports_type" class="fn">add_supports_type</a>(&amp;self, content_type: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.can_delete" class="fn">can_delete</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.can_remove_supports_type" class="fn">can_remove_supports_type</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.delete" class="fn">delete</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.dup" class="fn">dup</a>(&amp;self) -&gt; <a class="struct" href="../../gio/auto/app_info/struct.AppInfo.html" title="struct gio::auto::app_info::AppInfo">AppInfo</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.equal" class="fn">equal</a>(&amp;self, appinfo2: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/app_info/struct.AppInfo.html" title="struct gio::auto::app_info::AppInfo">AppInfo</a>&gt;) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.commandline" class="fn">commandline</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html" title="struct std::path::PathBuf">PathBuf</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.description" class="fn">description</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.display_name" class="fn">display_name</a>(&amp;self) -&gt; <a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.executable" class="fn">executable</a>(&amp;self) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html" title="struct std::path::PathBuf">PathBuf</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.icon" class="fn">icon</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../gio/auto/icon/struct.Icon.html" title="struct gio::auto::icon::Icon">Icon</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.id" class="fn">id</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.name" class="fn">name</a>(&amp;self) -&gt; <a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.supported_types" class="fn">supported_types</a>(&amp;self) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.launch" class="fn">launch</a>(
+        &amp;self,
+        files: &amp;[<a class="struct" href="../../gio/auto/file/struct.File.html" title="struct gio::auto::file::File">File</a>],
+        context: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/app_launch_context/struct.AppLaunchContext.html" title="struct gio::auto::app_launch_context::AppLaunchContext">AppLaunchContext</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.launch_uris" class="fn">launch_uris</a>(
+        &amp;self,
+        uris: &amp;[&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>],
+        context: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/app_launch_context/struct.AppLaunchContext.html" title="struct gio::auto::app_launch_context::AppLaunchContext">AppLaunchContext</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.remove_supports_type" class="fn">remove_supports_type</a>(&amp;self, content_type: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_as_default_for_extension" class="fn">set_as_default_for_extension</a>(
+        &amp;self,
+        extension: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html" title="struct std::path::Path">Path</a>&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_as_default_for_type" class="fn">set_as_default_for_type</a>(&amp;self, content_type: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_as_last_used_for_type" class="fn">set_as_last_used_for_type</a>(&amp;self, content_type: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.should_show" class="fn">should_show</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.supports_files" class="fn">supports_files</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.supports_uris" class="fn">supports_uris</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+</details>}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait containing all <a href="../../gio/auto/app_info/struct.AppInfo.html" title="struct gio::auto::app_info::AppInfo"><code>AppInfo</code></a> methods.</p>
+<h2 id="implementors-1"><a class="doc-anchor" href="#implementors-1">§</a>Implementors</h2>
+<p><a href="../../gio/auto/app_info/struct.AppInfo.html" title="struct gio::auto::app_info::AppInfo"><code>AppInfo</code></a></p>
+</div></details><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.add_supports_type" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#581">Source</a><h4 class="code-header">fn <a href="#method.add_supports_type" class="fn">add_supports_type</a>(&amp;self, content_type: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Adds a content type to the application information to indicate the
+application is capable of opening files with the given content type.</p>
+<h6 id="content_type"><a class="doc-anchor" href="#content_type">§</a><code>content_type</code></h6>
+<p>a string.</p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p><code>TRUE</code> on success, <code>FALSE</code> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.can_delete" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#605">Source</a><h4 class="code-header">fn <a href="#method.can_delete" class="fn">can_delete</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Obtains the information whether the <a href="../../gio/auto/app_info/struct.AppInfo.html" title="struct gio::auto::app_info::AppInfo"><code>AppInfo</code></a> can be deleted.
+See <a href="trait.AppInfoExt.html#method.delete" title="method gio_win32::prelude::AppInfoExt::delete"><code>delete()</code></a>.</p>
+<h5 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h5>
+<p><code>TRUE</code> if @self can be deleted</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.can_remove_supports_type" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#616">Source</a><h4 class="code-header">fn <a href="#method.can_remove_supports_type" class="fn">can_remove_supports_type</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if a supported content type can be removed from an application.</p>
+<h5 id="returns-2"><a class="doc-anchor" href="#returns-2">§</a>Returns</h5>
+<p><code>TRUE</code> if it is possible to remove supported content types from a
+given @self, <code>FALSE</code> if not.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.delete" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#634">Source</a><h4 class="code-header">fn <a href="#method.delete" class="fn">delete</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Tries to delete a <a href="../../gio/auto/app_info/struct.AppInfo.html" title="struct gio::auto::app_info::AppInfo"><code>AppInfo</code></a>.</p>
+<p>On some platforms, there may be a difference between user-defined
+<a href="../../gio/auto/app_info/struct.AppInfo.html" title="struct gio::auto::app_info::AppInfo"><code>AppInfo</code></a>s which can be deleted, and system-wide ones which cannot.
+See <a href="trait.AppInfoExt.html#method.can_delete" title="method gio_win32::prelude::AppInfoExt::can_delete"><code>can_delete()</code></a>.</p>
+<h5 id="returns-3"><a class="doc-anchor" href="#returns-3">§</a>Returns</h5>
+<p><code>TRUE</code> if @self has been deleted</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.dup" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#645">Source</a><h4 class="code-header">fn <a href="#method.dup" class="fn">dup</a>(&amp;self) -&gt; <a class="struct" href="../../gio/auto/app_info/struct.AppInfo.html" title="struct gio::auto::app_info::AppInfo">AppInfo</a></h4></section></summary><div class="docblock"><p>Creates a duplicate of a <a href="../../gio/auto/app_info/struct.AppInfo.html" title="struct gio::auto::app_info::AppInfo"><code>AppInfo</code></a>.</p>
+<h5 id="returns-4"><a class="doc-anchor" href="#returns-4">§</a>Returns</h5>
+<p>a duplicate of @self.</p>
+</div></details><section id="method.equal" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#650">Source</a><h4 class="code-header">fn <a href="#method.equal" class="fn">equal</a>(&amp;self, appinfo2: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/app_info/struct.AppInfo.html" title="struct gio::auto::app_info::AppInfo">AppInfo</a>&gt;) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section><details class="toggle method-toggle" open><summary><section id="method.commandline" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#668">Source</a><h4 class="code-header">fn <a href="#method.commandline" class="fn">commandline</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html" title="struct std::path::PathBuf">PathBuf</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the commandline with which the application will be
+started.</p>
+<h5 id="returns-5"><a class="doc-anchor" href="#returns-5">§</a>Returns</h5>
+<p>a string containing the @self’s
+commandline, or <code>NULL</code> if this information is not available</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.description" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#684">Source</a><h4 class="code-header">fn <a href="#method.description" class="fn">description</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;</h4></section></summary><div class="docblock"><p>Gets a human-readable description of an installed application.</p>
+<h5 id="returns-6"><a class="doc-anchor" href="#returns-6">§</a>Returns</h5>
+<p>a string containing a description of the
+application @self, or <code>NULL</code> if none.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.display_name" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#701">Source</a><h4 class="code-header">fn <a href="#method.display_name" class="fn">display_name</a>(&amp;self) -&gt; <a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a></h4></section></summary><div class="docblock"><p>Gets the display name of the application. The display name is often more
+descriptive to the user than the name itself.</p>
+<h5 id="returns-7"><a class="doc-anchor" href="#returns-7">§</a>Returns</h5>
+<p>the display name of the application for @self, or the name if
+no display name is available.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.executable" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#721">Source</a><h4 class="code-header">fn <a href="#method.executable" class="fn">executable</a>(&amp;self) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html" title="struct std::path::PathBuf">PathBuf</a></h4></section></summary><div class="docblock"><p>Gets the executable’s name for the installed application.</p>
+<p>This is intended to be used for debugging or labelling what program is going
+to be run. To launch the executable, use <a href="trait.AppInfoExt.html#method.launch" title="method gio_win32::prelude::AppInfoExt::launch"><code>launch()</code></a> and related
+functions, rather than spawning the return value from this function.</p>
+<h5 id="returns-8"><a class="doc-anchor" href="#returns-8">§</a>Returns</h5>
+<p>a string containing the @self’s application
+binaries name</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.icon" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#737">Source</a><h4 class="code-header">fn <a href="#method.icon" class="fn">icon</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../gio/auto/icon/struct.Icon.html" title="struct gio::auto::icon::Icon">Icon</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the icon for the application.</p>
+<h5 id="returns-9"><a class="doc-anchor" href="#returns-9">§</a>Returns</h5>
+<p>the default <a href="../../gio/auto/icon/struct.Icon.html" title="struct gio::auto::icon::Icon"><code>Icon</code></a> for
+@self or <code>NULL</code> if there is no default icon.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.id" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#753">Source</a><h4 class="code-header">fn <a href="#method.id" class="fn">id</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the ID of an application. An id is a string that identifies the
+application. The exact format of the id is platform dependent. For instance,
+on Unix this is the desktop file id from the xdg menu specification.</p>
+<p>Note that the returned ID may be <code>NULL</code>, depending on how the @self has
+been constructed.</p>
+<h5 id="returns-10"><a class="doc-anchor" href="#returns-10">§</a>Returns</h5>
+<p>a string containing the application’s ID.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.name" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#764">Source</a><h4 class="code-header">fn <a href="#method.name" class="fn">name</a>(&amp;self) -&gt; <a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a></h4></section></summary><div class="docblock"><p>Gets the installed name of the application.</p>
+<h5 id="returns-11"><a class="doc-anchor" href="#returns-11">§</a>Returns</h5>
+<p>the name of the application for @self.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.supported_types" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#782">Source</a><h4 class="code-header">fn <a href="#method.supported_types" class="fn">supported_types</a>(&amp;self) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;</h4></section></summary><div class="docblock"><p>Retrieves the list of content types that @app_info claims to support.
+If this information is not provided by the environment, this function
+will return <code>NULL</code>.</p>
+<p>This function does not take in consideration associations added with
+<a href="trait.AppInfoExt.html#method.add_supports_type" title="method gio_win32::prelude::AppInfoExt::add_supports_type"><code>add_supports_type()</code></a>, but only those exported directly by
+the application.</p>
+<h5 id="returns-12"><a class="doc-anchor" href="#returns-12">§</a>Returns</h5>
+<p>a list of content types.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.launch" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#826-830">Source</a><h4 class="code-header">fn <a href="#method.launch" class="fn">launch</a>(
+    &amp;self,
+    files: &amp;[<a class="struct" href="../../gio/auto/file/struct.File.html" title="struct gio::auto::file::File">File</a>],
+    context: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/app_launch_context/struct.AppLaunchContext.html" title="struct gio::auto::app_launch_context::AppLaunchContext">AppLaunchContext</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Launches the application. Passes @files to the launched application
+as arguments, using the optional @context to get information
+about the details of the launcher (like what screen it is on).
+On error, @error will be set accordingly.</p>
+<p>To launch the application without arguments pass a <code>NULL</code> @files list.</p>
+<p>Note that even if the launch is successful the application launched
+can fail to start if it runs into problems during startup. There is
+no way to detect this.</p>
+<p>Some URIs can be changed when passed through a GFile (for instance
+unsupported URIs with strange formats like mailto:), so if you have
+a textual URI you want to pass in as argument, consider using
+<a href="trait.AppInfoExt.html#method.launch_uris" title="method gio_win32::prelude::AppInfoExt::launch_uris"><code>launch_uris()</code></a> instead.</p>
+<p>The launched application inherits the environment of the launching
+process, but it can be modified with <a href="trait.AppLaunchContextExt.html#method.setenv" title="method gio_win32::prelude::AppLaunchContextExt::setenv"><code>AppLaunchContextExt::setenv()</code></a>
+and <a href="trait.AppLaunchContextExt.html#method.unsetenv" title="method gio_win32::prelude::AppLaunchContextExt::unsetenv"><code>AppLaunchContextExt::unsetenv()</code></a>.</p>
+<p>On UNIX, this function sets the <code>GIO_LAUNCHED_DESKTOP_FILE</code>
+environment variable with the path of the launched desktop file and
+<code>GIO_LAUNCHED_DESKTOP_FILE_PID</code> to the process id of the launched
+process. This can be used to ignore <code>GIO_LAUNCHED_DESKTOP_FILE</code>,
+should it be inherited by further processes. The <code>DISPLAY</code>,
+<code>XDG_ACTIVATION_TOKEN</code> and <code>DESKTOP_STARTUP_ID</code> environment
+variables are also set, based on information provided in @context.</p>
+<h6 id="files"><a class="doc-anchor" href="#files">§</a><code>files</code></h6>
+<p>a list of <a href="../../gio/auto/file/struct.File.html" title="struct gio::auto::file::File"><code>File</code></a> objects</p>
+<h6 id="context"><a class="doc-anchor" href="#context">§</a><code>context</code></h6>
+<p>the launch context</p>
+<h5 id="returns-13"><a class="doc-anchor" href="#returns-13">§</a>Returns</h5>
+<p><code>TRUE</code> on successful launch, <code>FALSE</code> otherwise.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.launch_uris" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#869-873">Source</a><h4 class="code-header">fn <a href="#method.launch_uris" class="fn">launch_uris</a>(
+    &amp;self,
+    uris: &amp;[&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>],
+    context: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/app_launch_context/struct.AppLaunchContext.html" title="struct gio::auto::app_launch_context::AppLaunchContext">AppLaunchContext</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Launches the application. This passes the @uris to the launched application
+as arguments, using the optional @context to get information
+about the details of the launcher (like what screen it is on).
+On error, @error will be set accordingly. If the application only supports
+one URI per invocation as part of their command-line, multiple instances
+of the application will be spawned.</p>
+<p>To launch the application without arguments pass a <code>NULL</code> @uris list.</p>
+<p>Note that even if the launch is successful the application launched
+can fail to start if it runs into problems during startup. There is
+no way to detect this.</p>
+<h6 id="uris"><a class="doc-anchor" href="#uris">§</a><code>uris</code></h6>
+<p>a list of URIs to launch.</p>
+<h6 id="context-1"><a class="doc-anchor" href="#context-1">§</a><code>context</code></h6>
+<p>the launch context</p>
+<h5 id="returns-14"><a class="doc-anchor" href="#returns-14">§</a>Returns</h5>
+<p><code>TRUE</code> on successful launch, <code>FALSE</code> otherwise.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.remove_supports_type" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#899">Source</a><h4 class="code-header">fn <a href="#method.remove_supports_type" class="fn">remove_supports_type</a>(&amp;self, content_type: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Removes a supported type from an application, if possible.</p>
+<h6 id="content_type-1"><a class="doc-anchor" href="#content_type-1">§</a><code>content_type</code></h6>
+<p>a string.</p>
+<h5 id="returns-15"><a class="doc-anchor" href="#returns-15">§</a>Returns</h5>
+<p><code>TRUE</code> on success, <code>FALSE</code> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_as_default_for_extension" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#925-928">Source</a><h4 class="code-header">fn <a href="#method.set_as_default_for_extension" class="fn">set_as_default_for_extension</a>(
+    &amp;self,
+    extension: impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html" title="struct std::path::Path">Path</a>&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Sets the application as the default handler for the given file extension.</p>
+<h6 id="extension"><a class="doc-anchor" href="#extension">§</a><code>extension</code></h6>
+<p>a string containing the file extension (without
+the dot).</p>
+<h5 id="returns-16"><a class="doc-anchor" href="#returns-16">§</a>Returns</h5>
+<p><code>TRUE</code> on success, <code>FALSE</code> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_as_default_for_type" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#953">Source</a><h4 class="code-header">fn <a href="#method.set_as_default_for_type" class="fn">set_as_default_for_type</a>(&amp;self, content_type: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Sets the application as the default handler for a given type.</p>
+<h6 id="content_type-2"><a class="doc-anchor" href="#content_type-2">§</a><code>content_type</code></h6>
+<p>the content type.</p>
+<h5 id="returns-17"><a class="doc-anchor" href="#returns-17">§</a>Returns</h5>
+<p><code>TRUE</code> on success, <code>FALSE</code> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_as_last_used_for_type" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#981">Source</a><h4 class="code-header">fn <a href="#method.set_as_last_used_for_type" class="fn">set_as_last_used_for_type</a>(&amp;self, content_type: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Sets the application as the last used application for a given type. This
+will make the application appear as first in the list returned by
+<a href="../../gio/auto/app_info/struct.AppInfo.html#method.recommended_for_type" title="associated function gio::auto::app_info::AppInfo::recommended_for_type"><code>AppInfo::recommended_for_type()</code></a>, regardless of the default
+application for that content type.</p>
+<h6 id="content_type-3"><a class="doc-anchor" href="#content_type-3">§</a><code>content_type</code></h6>
+<p>the content type.</p>
+<h5 id="returns-18"><a class="doc-anchor" href="#returns-18">§</a>Returns</h5>
+<p><code>TRUE</code> on success, <code>FALSE</code> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.should_show" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#1005">Source</a><h4 class="code-header">fn <a href="#method.should_show" class="fn">should_show</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if the application info should be shown in menus that
+list available applications.</p>
+<h5 id="returns-19"><a class="doc-anchor" href="#returns-19">§</a>Returns</h5>
+<p><code>TRUE</code> if the @self should be shown, <code>FALSE</code> otherwise.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.supports_files" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#1015">Source</a><h4 class="code-header">fn <a href="#method.supports_files" class="fn">supports_files</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if the application accepts files as arguments.</p>
+<h5 id="returns-20"><a class="doc-anchor" href="#returns-20">§</a>Returns</h5>
+<p><code>TRUE</code> if the @self supports files.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.supports_uris" class="method"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#1029">Source</a><h4 class="code-header">fn <a href="#method.supports_uris" class="fn">supports_uris</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if the application supports reading files and directories from URIs.</p>
+<h5 id="returns-21"><a class="doc-anchor" href="#returns-21">§</a>Returns</h5>
+<p><code>TRUE</code> if the @self supports URIs.</p>
+</div></details></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><div class="negative-marker"></div><section id="impl-AppInfoExt-for-O" class="impl"><a class="src rightside" href="../../src/gio/auto/app_info.rs.html#1038">Source</a><a href="#impl-AppInfoExt-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O&gt; <a class="trait" href="trait.AppInfoExt.html" title="trait gio_win32::prelude::AppInfoExt">AppInfoExt</a> for O<div class="where">where
+    O: <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/app_info/struct.AppInfo.html" title="struct gio::auto::app_info::AppInfo">AppInfo</a>&gt;,</div></h3></section></div><script src="../../trait.impl/gio/auto/app_info/trait.AppInfoExt.js" async></script></section></div></main></body></html>

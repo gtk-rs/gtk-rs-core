@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"trait":["Cast","CastNone","DynamicObjectRegisterExt","ErrorDomain","FixedSizeVariantType","FromVariant","HasParamSpec","IsA","ObjectClassExt","ObjectExt","ObjectType","ParamSpecBuilderExt","ParamSpecType","StaticType","StaticTypeExt","StaticVariantType","ToSendValue","ToValue","ToVariant","TypeModuleExt","TypePluginExt","ValueType"]};

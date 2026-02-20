@@ -1,0 +1,376 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait containing all `struct@Mount` methods."><title>MountExt in gio_unix::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio_unix" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.22" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.22") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<rustdoc-topbar><h2><a href="#">MountExt</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../gio_unix/index.html">gio_<wbr>unix</a><span class="version">0.22.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Mount<wbr>Ext</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#implementors-1" title="Implementors">Implementors</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.can_eject" title="can_eject">can_eject</a></li><li><a href="#method.can_unmount" title="can_unmount">can_unmount</a></li><li><a href="#method.connect_changed" title="connect_changed">connect_changed</a></li><li><a href="#method.connect_pre_unmount" title="connect_pre_unmount">connect_pre_unmount</a></li><li><a href="#method.connect_unmounted" title="connect_unmounted">connect_unmounted</a></li><li><a href="#method.default_location" title="default_location">default_location</a></li><li><a href="#method.drive" title="drive">drive</a></li><li><a href="#method.eject_with_operation" title="eject_with_operation">eject_with_operation</a></li><li><a href="#method.eject_with_operation_future" title="eject_with_operation_future">eject_with_operation_future</a></li><li><a href="#method.guess_content_type" title="guess_content_type">guess_content_type</a></li><li><a href="#method.guess_content_type_future" title="guess_content_type_future">guess_content_type_future</a></li><li><a href="#method.guess_content_type_sync" title="guess_content_type_sync">guess_content_type_sync</a></li><li><a href="#method.icon" title="icon">icon</a></li><li><a href="#method.is_shadowed" title="is_shadowed">is_shadowed</a></li><li><a href="#method.name" title="name">name</a></li><li><a href="#method.remount" title="remount">remount</a></li><li><a href="#method.remount_future" title="remount_future">remount_future</a></li><li><a href="#method.root" title="root">root</a></li><li><a href="#method.shadow" title="shadow">shadow</a></li><li><a href="#method.sort_key" title="sort_key">sort_key</a></li><li><a href="#method.symbolic_icon" title="symbolic_icon">symbolic_icon</a></li><li><a href="#method.unmount_with_operation" title="unmount_with_operation">unmount_with_operation</a></li><li><a href="#method.unmount_with_operation_future" title="unmount_with_operation_future">unmount_with_operation_future</a></li><li><a href="#method.unshadow" title="unshadow">unshadow</a></li><li><a href="#method.uuid" title="uuid">uuid</a></li><li><a href="#method.volume" title="volume">volume</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In gio_<wbr>unix::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">gio_unix</a>::<wbr><a href="index.html">prelude</a></div><h1>Trait <span class="trait">Mount<wbr>Ext</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/gio/auto/mount.rs.html#91">Source</a> </span></div><pre class="rust item-decl"><code>pub trait MountExt: <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/mount/struct.Mount.html" title="struct gio::auto::mount::Mount">Mount</a>&gt; + 'static {
+<details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 26 methods</span></summary>    // Provided methods
+    fn <a href="#method.can_eject" class="fn">can_eject</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.can_unmount" class="fn">can_unmount</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.eject_with_operation" class="fn">eject_with_operation</a>&lt;P&gt;(
+        &amp;self,
+        flags: <a class="struct" href="../../gio/auto/flags/struct.MountUnmountFlags.html" title="struct gio::auto::flags::MountUnmountFlags">MountUnmountFlags</a>,
+        mount_operation: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/mount_operation/struct.MountOperation.html" title="struct gio::auto::mount_operation::MountOperation">MountOperation</a>&gt;&gt;,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    )
+       <span class="where">where P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.eject_with_operation_future" class="fn">eject_with_operation_future</a>(
+        &amp;self,
+        flags: <a class="struct" href="../../gio/auto/flags/struct.MountUnmountFlags.html" title="struct gio::auto::flags::MountUnmountFlags">MountUnmountFlags</a>,
+        mount_operation: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;(impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/mount_operation/struct.MountOperation.html" title="struct gio::auto::mount_operation::MountOperation">MountOperation</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static)&gt;,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.default_location" class="fn">default_location</a>(&amp;self) -&gt; <a class="struct" href="../../gio/auto/file/struct.File.html" title="struct gio::auto::file::File">File</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.drive" class="fn">drive</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../gio/auto/drive/struct.Drive.html" title="struct gio::auto::drive::Drive">Drive</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.icon" class="fn">icon</a>(&amp;self) -&gt; <a class="struct" href="../../gio/auto/icon/struct.Icon.html" title="struct gio::auto::icon::Icon">Icon</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.name" class="fn">name</a>(&amp;self) -&gt; <a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.root" class="fn">root</a>(&amp;self) -&gt; <a class="struct" href="../../gio/auto/file/struct.File.html" title="struct gio::auto::file::File">File</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.sort_key" class="fn">sort_key</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.symbolic_icon" class="fn">symbolic_icon</a>(&amp;self) -&gt; <a class="struct" href="../../gio/auto/icon/struct.Icon.html" title="struct gio::auto::icon::Icon">Icon</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.uuid" class="fn">uuid</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.volume" class="fn">volume</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../gio/auto/volume/struct.Volume.html" title="struct gio::auto::volume::Volume">Volume</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.guess_content_type" class="fn">guess_content_type</a>&lt;P&gt;(
+        &amp;self,
+        force_rescan: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    )
+       <span class="where">where P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.guess_content_type_future" class="fn">guess_content_type_future</a>(
+        &amp;self,
+        force_rescan: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.guess_content_type_sync" class="fn">guess_content_type_sync</a>(
+        &amp;self,
+        force_rescan: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.is_shadowed" class="fn">is_shadowed</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.remount" class="fn">remount</a>&lt;P&gt;(
+        &amp;self,
+        flags: <a class="struct" href="../../gio/auto/flags/struct.MountMountFlags.html" title="struct gio::auto::flags::MountMountFlags">MountMountFlags</a>,
+        mount_operation: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/mount_operation/struct.MountOperation.html" title="struct gio::auto::mount_operation::MountOperation">MountOperation</a>&gt;&gt;,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    )
+       <span class="where">where P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.remount_future" class="fn">remount_future</a>(
+        &amp;self,
+        flags: <a class="struct" href="../../gio/auto/flags/struct.MountMountFlags.html" title="struct gio::auto::flags::MountMountFlags">MountMountFlags</a>,
+        mount_operation: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;(impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/mount_operation/struct.MountOperation.html" title="struct gio::auto::mount_operation::MountOperation">MountOperation</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static)&gt;,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.shadow" class="fn">shadow</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.unmount_with_operation" class="fn">unmount_with_operation</a>&lt;P&gt;(
+        &amp;self,
+        flags: <a class="struct" href="../../gio/auto/flags/struct.MountUnmountFlags.html" title="struct gio::auto::flags::MountUnmountFlags">MountUnmountFlags</a>,
+        mount_operation: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/mount_operation/struct.MountOperation.html" title="struct gio::auto::mount_operation::MountOperation">MountOperation</a>&gt;&gt;,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    )
+       <span class="where">where P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.unmount_with_operation_future" class="fn">unmount_with_operation_future</a>(
+        &amp;self,
+        flags: <a class="struct" href="../../gio/auto/flags/struct.MountUnmountFlags.html" title="struct gio::auto::flags::MountUnmountFlags">MountUnmountFlags</a>,
+        mount_operation: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;(impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/mount_operation/struct.MountOperation.html" title="struct gio::auto::mount_operation::MountOperation">MountOperation</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static)&gt;,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.unshadow" class="fn">unshadow</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_changed" class="fn">connect_changed</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_pre_unmount" class="fn">connect_pre_unmount</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_unmounted" class="fn">connect_unmounted</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+</details>}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait containing all <a href="../../gio/auto/mount/struct.Mount.html" title="struct gio::auto::mount::Mount"><code>Mount</code></a> methods.</p>
+<h2 id="implementors-1"><a class="doc-anchor" href="#implementors-1">§</a>Implementors</h2>
+<p><a href="../../gio/auto/mount/struct.Mount.html" title="struct gio::auto::mount::Mount"><code>Mount</code></a></p>
+</div></details><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.can_eject" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#98">Source</a><h4 class="code-header">fn <a href="#method.can_eject" class="fn">can_eject</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if @self can be ejected.</p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if the @self can be ejected.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.can_unmount" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#108">Source</a><h4 class="code-header">fn <a href="#method.can_unmount" class="fn">can_unmount</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if @self can be unmounted.</p>
+<h5 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if the @self can be unmounted.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.eject_with_operation" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#125-131">Source</a><h4 class="code-header">fn <a href="#method.eject_with_operation" class="fn">eject_with_operation</a>&lt;P&gt;(
+    &amp;self,
+    flags: <a class="struct" href="../../gio/auto/flags/struct.MountUnmountFlags.html" title="struct gio::auto::flags::MountUnmountFlags">MountUnmountFlags</a>,
+    mount_operation: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/mount_operation/struct.MountOperation.html" title="struct gio::auto::mount_operation::MountOperation">MountOperation</a>&gt;&gt;,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)<div class="where">where
+    P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static,</div></h4></section></summary><div class="docblock"><p>Ejects a mount. This is an asynchronous operation, and is
+finished by calling g_mount_eject_with_operation_finish() with the @self
+and #GAsyncResult data returned in the @callback.</p>
+<h6 id="flags"><a class="doc-anchor" href="#flags">§</a><code>flags</code></h6>
+<p>flags affecting the unmount if required for eject</p>
+<h6 id="mount_operation"><a class="doc-anchor" href="#mount_operation">§</a><code>mount_operation</code></h6>
+<p>a #GMountOperation or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to avoid
+user interaction.</p>
+<h6 id="cancellable"><a class="doc-anchor" href="#cancellable">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h6 id="callback"><a class="doc-anchor" href="#callback">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.</p>
+</div></details><section id="method.eject_with_operation_future" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#178-182">Source</a><h4 class="code-header">fn <a href="#method.eject_with_operation_future" class="fn">eject_with_operation_future</a>(
+    &amp;self,
+    flags: <a class="struct" href="../../gio/auto/flags/struct.MountUnmountFlags.html" title="struct gio::auto::flags::MountUnmountFlags">MountUnmountFlags</a>,
+    mount_operation: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;(impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/mount_operation/struct.MountOperation.html" title="struct gio::auto::mount_operation::MountOperation">MountOperation</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static)&gt;,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.default_location" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#210">Source</a><h4 class="code-header">fn <a href="#method.default_location" class="fn">default_location</a>(&amp;self) -&gt; <a class="struct" href="../../gio/auto/file/struct.File.html" title="struct gio::auto::file::File">File</a></h4></section></summary><div class="docblock"><p>Gets the default location of @self. The default location of the given
+@self is a path that reflects the main entry point for the user (e.g.
+the home directory, or the root of the volume).</p>
+<h5 id="returns-2"><a class="doc-anchor" href="#returns-2">§</a>Returns</h5>
+<p>a #GFile.
+The returned object should be unreffed with
+g_object_unref() when no longer needed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.drive" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#231">Source</a><h4 class="code-header">fn <a href="#method.drive" class="fn">drive</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../gio/auto/drive/struct.Drive.html" title="struct gio::auto::drive::Drive">Drive</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the drive for the @self.</p>
+<p>This is a convenience method for getting the #GVolume and then
+using that object to get the #GDrive.</p>
+<h5 id="returns-3"><a class="doc-anchor" href="#returns-3">§</a>Returns</h5>
+<p>a #GDrive or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> if @self is not
+associated with a volume or a drive.
+The returned object should be unreffed with
+g_object_unref() when no longer needed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.icon" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#244">Source</a><h4 class="code-header">fn <a href="#method.icon" class="fn">icon</a>(&amp;self) -&gt; <a class="struct" href="../../gio/auto/icon/struct.Icon.html" title="struct gio::auto::icon::Icon">Icon</a></h4></section></summary><div class="docblock"><p>Gets the icon for @self.</p>
+<h5 id="returns-4"><a class="doc-anchor" href="#returns-4">§</a>Returns</h5>
+<p>a #GIcon.
+The returned object should be unreffed with
+g_object_unref() when no longer needed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.name" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#257">Source</a><h4 class="code-header">fn <a href="#method.name" class="fn">name</a>(&amp;self) -&gt; <a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a></h4></section></summary><div class="docblock"><p>Gets the name of @self.</p>
+<h5 id="returns-5"><a class="doc-anchor" href="#returns-5">§</a>Returns</h5>
+<p>the name for the given @self.
+The returned string should be freed with g_free()
+when no longer needed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.root" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#270">Source</a><h4 class="code-header">fn <a href="#method.root" class="fn">root</a>(&amp;self) -&gt; <a class="struct" href="../../gio/auto/file/struct.File.html" title="struct gio::auto::file::File">File</a></h4></section></summary><div class="docblock"><p>Gets the root directory on @self.</p>
+<h5 id="returns-6"><a class="doc-anchor" href="#returns-6">§</a>Returns</h5>
+<p>a #GFile.
+The returned object should be unreffed with
+g_object_unref() when no longer needed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.sort_key" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#281">Source</a><h4 class="code-header">fn <a href="#method.sort_key" class="fn">sort_key</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the sort key for @self, if any.</p>
+<h5 id="returns-7"><a class="doc-anchor" href="#returns-7">§</a>Returns</h5>
+<p>Sorting key for @self or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> if no such key is available.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.symbolic_icon" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#294">Source</a><h4 class="code-header">fn <a href="#method.symbolic_icon" class="fn">symbolic_icon</a>(&amp;self) -&gt; <a class="struct" href="../../gio/auto/icon/struct.Icon.html" title="struct gio::auto::icon::Icon">Icon</a></h4></section></summary><div class="docblock"><p>Gets the symbolic icon for @self.</p>
+<h5 id="returns-8"><a class="doc-anchor" href="#returns-8">§</a>Returns</h5>
+<p>a #GIcon.
+The returned object should be unreffed with
+g_object_unref() when no longer needed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.uuid" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#315">Source</a><h4 class="code-header">fn <a href="#method.uuid" class="fn">uuid</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the UUID for the @self. The reference is typically based on
+the file system UUID for the mount in question and should be
+considered an opaque string. Returns <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> if there is no UUID
+available.</p>
+<h5 id="returns-9"><a class="doc-anchor" href="#returns-9">§</a>Returns</h5>
+<p>the UUID for @self or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> if no UUID
+can be computed.
+The returned string should be freed with g_free()
+when no longer needed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.volume" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#329">Source</a><h4 class="code-header">fn <a href="#method.volume" class="fn">volume</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../gio/auto/volume/struct.Volume.html" title="struct gio::auto::volume::Volume">Volume</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the volume for the @self.</p>
+<h5 id="returns-10"><a class="doc-anchor" href="#returns-10">§</a>Returns</h5>
+<p>a #GVolume or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> if @self is not
+associated with a volume.
+The returned object should be unreffed with
+g_object_unref() when no longer needed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.guess_content_type" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#352-357">Source</a><h4 class="code-header">fn <a href="#method.guess_content_type" class="fn">guess_content_type</a>&lt;P&gt;(
+    &amp;self,
+    force_rescan: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)<div class="where">where
+    P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static,</div></h4></section></summary><div class="docblock"><p>Tries to guess the type of content stored on @self. Returns one or
+more textual identifiers of well-known content types (typically
+prefixed with “x-content/”), e.g. x-content/image-dcf for camera
+memory cards. See the
+<a href="http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec">shared-mime-info</a>
+specification for more on x-content types.</p>
+<p>This is an asynchronous operation (see
+g_mount_guess_content_type_sync() for the synchronous version), and
+is finished by calling g_mount_guess_content_type_finish() with the
+@self and #GAsyncResult data returned in the @callback.</p>
+<h6 id="force_rescan"><a class="doc-anchor" href="#force_rescan">§</a><code>force_rescan</code></h6>
+<p>Whether to force a rescan of the content.
+Otherwise a cached result will be used if available</p>
+<h6 id="cancellable-1"><a class="doc-anchor" href="#cancellable-1">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore</p>
+<h6 id="callback-1"><a class="doc-anchor" href="#callback-1">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback</p>
+</div></details><section id="method.guess_content_type_future" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#407-412">Source</a><h4 class="code-header">fn <a href="#method.guess_content_type_future" class="fn">guess_content_type_future</a>(
+    &amp;self,
+    force_rescan: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.guess_content_type_sync" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#443-447">Source</a><h4 class="code-header">fn <a href="#method.guess_content_type_sync" class="fn">guess_content_type_sync</a>(
+    &amp;self,
+    force_rescan: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Tries to guess the type of content stored on @self. Returns one or
+more textual identifiers of well-known content types (typically
+prefixed with “x-content/”), e.g. x-content/image-dcf for camera
+memory cards. See the
+<a href="http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec">shared-mime-info</a>
+specification for more on x-content types.</p>
+<p>This is a synchronous operation and as such may block doing IO;
+see g_mount_guess_content_type() for the asynchronous version.</p>
+<h6 id="force_rescan-1"><a class="doc-anchor" href="#force_rescan-1">§</a><code>force_rescan</code></h6>
+<p>Whether to force a rescan of the content.
+Otherwise a cached result will be used if available</p>
+<h6 id="cancellable-2"><a class="doc-anchor" href="#cancellable-2">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore</p>
+<h5 id="returns-11"><a class="doc-anchor" href="#returns-11">§</a>Returns</h5>
+<p>a <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>-terminated array of content types or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error.
+Caller should free this array with g_strfreev() when done with it.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_shadowed" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#492">Source</a><h4 class="code-header">fn <a href="#method.is_shadowed" class="fn">is_shadowed</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Determines if @self is shadowed. Applications or libraries should
+avoid displaying @self in the user interface if it is shadowed.</p>
+<p>A mount is said to be shadowed if there exists one or more user
+visible objects (currently #GMount objects) with a root that is
+inside the root of @self.</p>
+<p>One application of shadow mounts is when exposing a single file
+system that is used to address several logical volumes. In this
+situation, a #GVolumeMonitor implementation would create two
+#GVolume objects (for example, one for the camera functionality of
+the device and one for a SD card reader on the device) with
+activation URIs <code>gphoto2://[usb:001,002]/store1/</code>
+and <code>gphoto2://[usb:001,002]/store2/</code>. When the
+underlying mount (with root
+<code>gphoto2://[usb:001,002]/</code>) is mounted, said
+#GVolumeMonitor implementation would create two #GMount objects
+(each with their root matching the corresponding volume activation
+root) that would shadow the original mount.</p>
+<p>The proxy monitor in GVfs 2.26 and later, automatically creates and
+manage shadow mounts (and shadows the underlying mount) if the
+activation root on a #GVolume is set.</p>
+<h5 id="returns-12"><a class="doc-anchor" href="#returns-12">§</a>Returns</h5>
+<p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if @self is shadowed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.remount" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#515-521">Source</a><h4 class="code-header">fn <a href="#method.remount" class="fn">remount</a>&lt;P&gt;(
+    &amp;self,
+    flags: <a class="struct" href="../../gio/auto/flags/struct.MountMountFlags.html" title="struct gio::auto::flags::MountMountFlags">MountMountFlags</a>,
+    mount_operation: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/mount_operation/struct.MountOperation.html" title="struct gio::auto::mount_operation::MountOperation">MountOperation</a>&gt;&gt;,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)<div class="where">where
+    P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static,</div></h4></section></summary><div class="docblock"><p>Remounts a mount. This is an asynchronous operation, and is
+finished by calling g_mount_remount_finish() with the @self
+and #GAsyncResults data returned in the @callback.</p>
+<p>Remounting is useful when some setting affecting the operation
+of the volume has been changed, as these may need a remount to
+take affect. While this is semantically equivalent with unmounting
+and then remounting not all backends might need to actually be
+unmounted.</p>
+<h6 id="flags-1"><a class="doc-anchor" href="#flags-1">§</a><code>flags</code></h6>
+<p>flags affecting the operation</p>
+<h6 id="mount_operation-1"><a class="doc-anchor" href="#mount_operation-1">§</a><code>mount_operation</code></h6>
+<p>a #GMountOperation or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to avoid
+user interaction.</p>
+<h6 id="cancellable-3"><a class="doc-anchor" href="#cancellable-3">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h6 id="callback-2"><a class="doc-anchor" href="#callback-2">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.</p>
+</div></details><section id="method.remount_future" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#566-570">Source</a><h4 class="code-header">fn <a href="#method.remount_future" class="fn">remount_future</a>(
+    &amp;self,
+    flags: <a class="struct" href="../../gio/auto/flags/struct.MountMountFlags.html" title="struct gio::auto::flags::MountMountFlags">MountMountFlags</a>,
+    mount_operation: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;(impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/mount_operation/struct.MountOperation.html" title="struct gio::auto::mount_operation::MountOperation">MountOperation</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static)&gt;,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.shadow" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#592">Source</a><h4 class="code-header">fn <a href="#method.shadow" class="fn">shadow</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Increments the shadow count on @self. Usually used by
+#GVolumeMonitor implementations when creating a shadow mount for
+@self, see g_mount_is_shadowed() for more information. The caller
+will need to emit the #GMount::changed signal on @self manually.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.unmount_with_operation" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#611-617">Source</a><h4 class="code-header">fn <a href="#method.unmount_with_operation" class="fn">unmount_with_operation</a>&lt;P&gt;(
+    &amp;self,
+    flags: <a class="struct" href="../../gio/auto/flags/struct.MountUnmountFlags.html" title="struct gio::auto::flags::MountUnmountFlags">MountUnmountFlags</a>,
+    mount_operation: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/mount_operation/struct.MountOperation.html" title="struct gio::auto::mount_operation::MountOperation">MountOperation</a>&gt;&gt;,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)<div class="where">where
+    P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static,</div></h4></section></summary><div class="docblock"><p>Unmounts a mount. This is an asynchronous operation, and is
+finished by calling g_mount_unmount_with_operation_finish() with the @self
+and #GAsyncResult data returned in the @callback.</p>
+<h6 id="flags-2"><a class="doc-anchor" href="#flags-2">§</a><code>flags</code></h6>
+<p>flags affecting the operation</p>
+<h6 id="mount_operation-2"><a class="doc-anchor" href="#mount_operation-2">§</a><code>mount_operation</code></h6>
+<p>a #GMountOperation or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to avoid
+user interaction.</p>
+<h6 id="cancellable-4"><a class="doc-anchor" href="#cancellable-4">§</a><code>cancellable</code></h6>
+<p>optional #GCancellable object, <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to ignore.</p>
+<h6 id="callback-3"><a class="doc-anchor" href="#callback-3">§</a><code>callback</code></h6>
+<p>a #GAsyncReadyCallback, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>.</p>
+</div></details><section id="method.unmount_with_operation_future" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#668-672">Source</a><h4 class="code-header">fn <a href="#method.unmount_with_operation_future" class="fn">unmount_with_operation_future</a>(
+    &amp;self,
+    flags: <a class="struct" href="../../gio/auto/flags/struct.MountUnmountFlags.html" title="struct gio::auto::flags::MountUnmountFlags">MountUnmountFlags</a>,
+    mount_operation: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;(impl <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/mount_operation/struct.MountOperation.html" title="struct gio::auto::mount_operation::MountOperation">MountOperation</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static)&gt;,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.unshadow" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#694">Source</a><h4 class="code-header">fn <a href="#method.unshadow" class="fn">unshadow</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Decrements the shadow count on @self. Usually used by
+#GVolumeMonitor implementations when destroying a shadow mount for
+@self, see g_mount_is_shadowed() for more information. The caller
+will need to emit the #GMount::changed signal on @self manually.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_changed" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#702">Source</a><h4 class="code-header">fn <a href="#method.connect_changed" class="fn">connect_changed</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section></summary><div class="docblock"><p>Emitted when the mount has been changed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_pre_unmount" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#731">Source</a><h4 class="code-header">fn <a href="#method.connect_pre_unmount" class="fn">connect_pre_unmount</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section></summary><div class="docblock"><p>This signal may be emitted when the #GMount is about to be
+unmounted.</p>
+<p>This signal depends on the backend and is only emitted if
+GIO was used to unmount.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_unmounted" class="method"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#759">Source</a><h4 class="code-header">fn <a href="#method.connect_unmounted" class="fn">connect_unmounted</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section></summary><div class="docblock"><p>This signal is emitted when the #GMount have been
+unmounted. If the recipient is holding references to the
+object they should release them so the object can be
+finalized.</p>
+</div></details></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><div class="negative-marker"></div><section id="impl-MountExt-for-O" class="impl"><a class="src rightside" href="../../src/gio/auto/mount.rs.html#783">Source</a><a href="#impl-MountExt-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O&gt; <a class="trait" href="trait.MountExt.html" title="trait gio_unix::prelude::MountExt">MountExt</a> for O<div class="where">where
+    O: <a class="trait" href="trait.IsA.html" title="trait gio_unix::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/mount/struct.Mount.html" title="struct gio::auto::mount::Mount">Mount</a>&gt;,</div></h3></section></div><script src="../../trait.impl/gio/auto/mount/trait.MountExt.js" async></script></section></div></main></body></html>

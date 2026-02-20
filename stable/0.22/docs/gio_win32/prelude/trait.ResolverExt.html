@@ -1,0 +1,437 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait containing all `struct@Resolver` methods."><title>ResolverExt in gio_win32::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio_win32" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.22" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.22") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<rustdoc-topbar><h2><a href="#">ResolverExt</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../gio_win32/index.html">gio_<wbr>win32</a><span class="version">0.22.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Resolver<wbr>Ext</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#implementors-1" title="Implementors">Implementors</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.connect_reload" title="connect_reload">connect_reload</a></li><li><a href="#method.connect_timeout_notify" title="connect_timeout_notify">connect_timeout_notify</a></li><li><a href="#method.lookup_by_address" title="lookup_by_address">lookup_by_address</a></li><li><a href="#method.lookup_by_address_async" title="lookup_by_address_async">lookup_by_address_async</a></li><li><a href="#method.lookup_by_address_future" title="lookup_by_address_future">lookup_by_address_future</a></li><li><a href="#method.lookup_by_name" title="lookup_by_name">lookup_by_name</a></li><li><a href="#method.lookup_by_name_async" title="lookup_by_name_async">lookup_by_name_async</a></li><li><a href="#method.lookup_by_name_future" title="lookup_by_name_future">lookup_by_name_future</a></li><li><a href="#method.lookup_by_name_with_flags" title="lookup_by_name_with_flags">lookup_by_name_with_flags</a></li><li><a href="#method.lookup_by_name_with_flags_async" title="lookup_by_name_with_flags_async">lookup_by_name_with_flags_async</a></li><li><a href="#method.lookup_by_name_with_flags_future" title="lookup_by_name_with_flags_future">lookup_by_name_with_flags_future</a></li><li><a href="#method.lookup_records" title="lookup_records">lookup_records</a></li><li><a href="#method.lookup_records_async" title="lookup_records_async">lookup_records_async</a></li><li><a href="#method.lookup_records_future" title="lookup_records_future">lookup_records_future</a></li><li><a href="#method.lookup_service" title="lookup_service">lookup_service</a></li><li><a href="#method.lookup_service_async" title="lookup_service_async">lookup_service_async</a></li><li><a href="#method.lookup_service_future" title="lookup_service_future">lookup_service_future</a></li><li><a href="#method.set_default" title="set_default">set_default</a></li><li><a href="#method.set_timeout" title="set_timeout">set_timeout</a></li><li><a href="#method.timeout" title="timeout">timeout</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In gio_<wbr>win32::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">gio_win32</a>::<wbr><a href="index.html">prelude</a></div><h1>Trait <span class="trait">Resolver<wbr>Ext</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/gio/auto/resolver.rs.html#110">Source</a> </span></div><pre class="rust item-decl"><code>pub trait ResolverExt: <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/resolver/struct.Resolver.html" title="struct gio::auto::resolver::Resolver">Resolver</a>&gt; + 'static {
+<details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 20 methods</span></summary>    // Provided methods
+    fn <a href="#method.timeout" class="fn">timeout</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_by_address" class="fn">lookup_by_address</a>(
+        &amp;self,
+        address: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_by_address_async" class="fn">lookup_by_address_async</a>&lt;P&gt;(
+        &amp;self,
+        address: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    )
+       <span class="where">where P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_by_address_future" class="fn">lookup_by_address_future</a>(
+        &amp;self,
+        address: &amp;(impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static),
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_by_name" class="fn">lookup_by_name</a>(
+        &amp;self,
+        hostname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_by_name_async" class="fn">lookup_by_name_async</a>&lt;P&gt;(
+        &amp;self,
+        hostname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    )
+       <span class="where">where P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_by_name_future" class="fn">lookup_by_name_future</a>(
+        &amp;self,
+        hostname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_by_name_with_flags" class="fn">lookup_by_name_with_flags</a>(
+        &amp;self,
+        hostname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        flags: <a class="struct" href="../../gio/auto/flags/struct.ResolverNameLookupFlags.html" title="struct gio::auto::flags::ResolverNameLookupFlags">ResolverNameLookupFlags</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_by_name_with_flags_async" class="fn">lookup_by_name_with_flags_async</a>&lt;P&gt;(
+        &amp;self,
+        hostname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        flags: <a class="struct" href="../../gio/auto/flags/struct.ResolverNameLookupFlags.html" title="struct gio::auto::flags::ResolverNameLookupFlags">ResolverNameLookupFlags</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    )
+       <span class="where">where P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_by_name_with_flags_future" class="fn">lookup_by_name_with_flags_future</a>(
+        &amp;self,
+        hostname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        flags: <a class="struct" href="../../gio/auto/flags/struct.ResolverNameLookupFlags.html" title="struct gio::auto::flags::ResolverNameLookupFlags">ResolverNameLookupFlags</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_records" class="fn">lookup_records</a>(
+        &amp;self,
+        rrname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        record_type: <a class="enum" href="../../gio/auto/enums/enum.ResolverRecordType.html" title="enum gio::auto::enums::ResolverRecordType">ResolverRecordType</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_records_async" class="fn">lookup_records_async</a>&lt;P&gt;(
+        &amp;self,
+        rrname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        record_type: <a class="enum" href="../../gio/auto/enums/enum.ResolverRecordType.html" title="enum gio::auto::enums::ResolverRecordType">ResolverRecordType</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    )
+       <span class="where">where P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_records_future" class="fn">lookup_records_future</a>(
+        &amp;self,
+        rrname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        record_type: <a class="enum" href="../../gio/auto/enums/enum.ResolverRecordType.html" title="enum gio::auto::enums::ResolverRecordType">ResolverRecordType</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_service" class="fn">lookup_service</a>(
+        &amp;self,
+        service: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        protocol: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        domain: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/srv_target/struct.SrvTarget.html" title="struct gio::auto::srv_target::SrvTarget">SrvTarget</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_service_async" class="fn">lookup_service_async</a>&lt;P&gt;(
+        &amp;self,
+        service: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        protocol: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        domain: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+        callback: P,
+    )
+       <span class="where">where P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/srv_target/struct.SrvTarget.html" title="struct gio::auto::srv_target::SrvTarget">SrvTarget</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.lookup_service_future" class="fn">lookup_service_future</a>(
+        &amp;self,
+        service: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        protocol: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        domain: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    ) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/srv_target/struct.SrvTarget.html" title="struct gio::auto::srv_target::SrvTarget">SrvTarget</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_default" class="fn">set_default</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_timeout" class="fn">set_timeout</a>(&amp;self, timeout_ms: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_reload" class="fn">connect_reload</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.connect_timeout_notify" class="fn">connect_timeout_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a>
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static</span> { ... }
+</details>}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait containing all <a href="../../gio/auto/resolver/struct.Resolver.html" title="struct gio::auto::resolver::Resolver"><code>Resolver</code></a> methods.</p>
+<h2 id="implementors-1"><a class="doc-anchor" href="#implementors-1">§</a>Implementors</h2>
+<p><a href="../../gio/auto/resolver/struct.Resolver.html" title="struct gio::auto::resolver::Resolver"><code>Resolver</code></a></p>
+</div></details><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.timeout" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#120">Source</a><h4 class="code-header">fn <a href="#method.timeout" class="fn">timeout</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_78</code></strong> only.</div></span></summary><div class="docblock"><p>Get the timeout applied to all resolver lookups. See #GResolver:timeout.</p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p>the resolver timeout, in milliseconds, or <code>0</code> for no timeout</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.lookup_by_address" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#143-147">Source</a><h4 class="code-header">fn <a href="#method.lookup_by_address" class="fn">lookup_by_address</a>(
+    &amp;self,
+    address: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Synchronously reverse-resolves @address to determine its
+associated hostname.</p>
+<p>If the DNS resolution fails, @error (if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>) will be set to
+a value from #GResolverError.</p>
+<p>If @cancellable is non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, it can be used to cancel the
+operation, in which case @error (if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>) will be set to
+<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::auto::enums::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a>.</p>
+<h6 id="address"><a class="doc-anchor" href="#address">§</a><code>address</code></h6>
+<p>the address to reverse-resolve</p>
+<h6 id="cancellable"><a class="doc-anchor" href="#cancellable">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h5>
+<p>a hostname (either ASCII-only, or in ASCII-encoded
+form), or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.lookup_by_address_async" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#174-179">Source</a><h4 class="code-header">fn <a href="#method.lookup_by_address_async" class="fn">lookup_by_address_async</a>&lt;P&gt;(
+    &amp;self,
+    address: &amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)<div class="where">where
+    P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static,</div></h4></section></summary><div class="docblock"><p>Begins asynchronously reverse-resolving @address to determine its
+associated hostname, and eventually calls @callback, which must
+call g_resolver_lookup_by_address_finish() to get the final result.</p>
+<h6 id="address-1"><a class="doc-anchor" href="#address-1">§</a><code>address</code></h6>
+<p>the address to reverse-resolve</p>
+<h6 id="cancellable-1"><a class="doc-anchor" href="#cancellable-1">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h6 id="callback"><a class="doc-anchor" href="#callback">§</a><code>callback</code></h6>
+<p>callback to call after resolution completes</p>
+</div></details><section id="method.lookup_by_address_future" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#229-232">Source</a><h4 class="code-header">fn <a href="#method.lookup_by_address_future" class="fn">lookup_by_address_future</a>(
+    &amp;self,
+    address: &amp;(impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + 'static),
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="../../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.lookup_by_name" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#280-284">Source</a><h4 class="code-header">fn <a href="#method.lookup_by_name" class="fn">lookup_by_name</a>(
+    &amp;self,
+    hostname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Synchronously resolves @hostname to determine its associated IP
+address(es). @hostname may be an ASCII-only or UTF-8 hostname, or
+the textual form of an IP address (in which case this just becomes
+a wrapper around g_inet_address_new_from_string()).</p>
+<p>On success, g_resolver_lookup_by_name() will return a non-empty #GList of
+#GInetAddress, sorted in order of preference and guaranteed to not
+contain duplicates. That is, if using the result to connect to
+@hostname, you should attempt to connect to the first address
+first, then the second if the first fails, etc. If you are using
+the result to listen on a socket, it is appropriate to add each
+result using e.g. g_socket_listener_add_address().</p>
+<p>If the DNS resolution fails, @error (if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>) will be set to a
+value from #GResolverError and <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> will be returned.</p>
+<p>If @cancellable is non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, it can be used to cancel the
+operation, in which case @error (if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>) will be set to
+<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::auto::enums::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a>.</p>
+<p>If you are planning to connect to a socket on the resolved IP
+address, it may be easier to create a #GNetworkAddress and use its
+#GSocketConnectable interface.</p>
+<h6 id="hostname"><a class="doc-anchor" href="#hostname">§</a><code>hostname</code></h6>
+<p>the hostname to look up</p>
+<h6 id="cancellable-2"><a class="doc-anchor" href="#cancellable-2">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-2"><a class="doc-anchor" href="#returns-2">§</a>Returns</h5>
+<p>a non-empty #GList
+of #GInetAddress, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error. You
+must unref each of the addresses and free the list when you are
+done with it. (You can use g_resolver_free_addresses() to do this.)</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.lookup_by_name_async" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#312-317">Source</a><h4 class="code-header">fn <a href="#method.lookup_by_name_async" class="fn">lookup_by_name_async</a>&lt;P&gt;(
+    &amp;self,
+    hostname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)<div class="where">where
+    P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static,</div></h4></section></summary><div class="docblock"><p>Begins asynchronously resolving @hostname to determine its
+associated IP address(es), and eventually calls @callback, which
+must call g_resolver_lookup_by_name_finish() to get the result.
+See g_resolver_lookup_by_name() for more details.</p>
+<h6 id="hostname-1"><a class="doc-anchor" href="#hostname-1">§</a><code>hostname</code></h6>
+<p>the hostname to look up the address of</p>
+<h6 id="cancellable-3"><a class="doc-anchor" href="#cancellable-3">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h6 id="callback-1"><a class="doc-anchor" href="#callback-1">§</a><code>callback</code></h6>
+<p>callback to call after resolution completes</p>
+</div></details><section id="method.lookup_by_name_future" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#367-370">Source</a><h4 class="code-header">fn <a href="#method.lookup_by_name_future" class="fn">lookup_by_name_future</a>(
+    &amp;self,
+    hostname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.lookup_by_name_with_flags" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#402-407">Source</a><h4 class="code-header">fn <a href="#method.lookup_by_name_with_flags" class="fn">lookup_by_name_with_flags</a>(
+    &amp;self,
+    hostname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    flags: <a class="struct" href="../../gio/auto/flags/struct.ResolverNameLookupFlags.html" title="struct gio::auto::flags::ResolverNameLookupFlags">ResolverNameLookupFlags</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_60</code></strong> only.</div></span></summary><div class="docblock"><p>This differs from g_resolver_lookup_by_name() in that you can modify
+the lookup behavior with @flags. For example this can be used to limit
+results with <a href="../../gio/auto/flags/struct.ResolverNameLookupFlags.html#associatedconstant.IPV4_ONLY" title="associated constant gio::auto::flags::ResolverNameLookupFlags::IPV4_ONLY"><code>ResolverNameLookupFlags::IPV4_ONLY</code></a>.</p>
+<h6 id="hostname-2"><a class="doc-anchor" href="#hostname-2">§</a><code>hostname</code></h6>
+<p>the hostname to look up</p>
+<h6 id="flags"><a class="doc-anchor" href="#flags">§</a><code>flags</code></h6>
+<p>extra #GResolverNameLookupFlags for the lookup</p>
+<h6 id="cancellable-4"><a class="doc-anchor" href="#cancellable-4">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-3"><a class="doc-anchor" href="#returns-3">§</a>Returns</h5>
+<p>a non-empty #GList
+of #GInetAddress, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error. You
+must unref each of the addresses and free the list when you are
+done with it. (You can use g_resolver_free_addresses() to do this.)</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.lookup_by_name_with_flags_async" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#440-448">Source</a><h4 class="code-header">fn <a href="#method.lookup_by_name_with_flags_async" class="fn">lookup_by_name_with_flags_async</a>&lt;P&gt;(
+    &amp;self,
+    hostname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    flags: <a class="struct" href="../../gio/auto/flags/struct.ResolverNameLookupFlags.html" title="struct gio::auto::flags::ResolverNameLookupFlags">ResolverNameLookupFlags</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)<div class="where">where
+    P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static,</div></h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_60</code></strong> only.</div></span></summary><div class="docblock"><p>Begins asynchronously resolving @hostname to determine its
+associated IP address(es), and eventually calls @callback, which
+must call g_resolver_lookup_by_name_with_flags_finish() to get the result.
+See g_resolver_lookup_by_name() for more details.</p>
+<h6 id="hostname-3"><a class="doc-anchor" href="#hostname-3">§</a><code>hostname</code></h6>
+<p>the hostname to look up the address of</p>
+<h6 id="flags-1"><a class="doc-anchor" href="#flags-1">§</a><code>flags</code></h6>
+<p>extra #GResolverNameLookupFlags for the lookup</p>
+<h6 id="cancellable-5"><a class="doc-anchor" href="#cancellable-5">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h6 id="callback-2"><a class="doc-anchor" href="#callback-2">§</a><code>callback</code></h6>
+<p>callback to call after resolution completes</p>
+</div></details><section id="method.lookup_by_name_with_flags_future" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#501-505">Source</a><h4 class="code-header">fn <a href="#method.lookup_by_name_with_flags_future" class="fn">lookup_by_name_with_flags_future</a>(
+    &amp;self,
+    hostname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    flags: <a class="struct" href="../../gio/auto/flags/struct.ResolverNameLookupFlags.html" title="struct gio::auto::flags::ResolverNameLookupFlags">ResolverNameLookupFlags</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/inet_address/struct.InetAddress.html" title="struct gio::auto::inet_address::InetAddress">InetAddress</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt;</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_60</code></strong> only.</div></span><details class="toggle method-toggle" open><summary><section id="method.lookup_records" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#547-552">Source</a><h4 class="code-header">fn <a href="#method.lookup_records" class="fn">lookup_records</a>(
+    &amp;self,
+    rrname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    record_type: <a class="enum" href="../../gio/auto/enums/enum.ResolverRecordType.html" title="enum gio::auto::enums::ResolverRecordType">ResolverRecordType</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Synchronously performs a DNS record lookup for the given @rrname and returns
+a list of records as #GVariant tuples. See #GResolverRecordType for
+information on what the records contain for each @record_type.</p>
+<p>If the DNS resolution fails, @error (if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>) will be set to
+a value from #GResolverError and <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> will be returned.</p>
+<p>If @cancellable is non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, it can be used to cancel the
+operation, in which case @error (if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>) will be set to
+<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::auto::enums::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a>.</p>
+<h6 id="rrname"><a class="doc-anchor" href="#rrname">§</a><code>rrname</code></h6>
+<p>the DNS name to look up the record for</p>
+<h6 id="record_type"><a class="doc-anchor" href="#record_type">§</a><code>record_type</code></h6>
+<p>the type of DNS record to look up</p>
+<h6 id="cancellable-6"><a class="doc-anchor" href="#cancellable-6">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-4"><a class="doc-anchor" href="#returns-4">§</a>Returns</h5>
+<p>a non-empty #GList of
+#GVariant, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error. You must free each of the records and the list
+when you are done with it. (You can use g_list_free_full() with
+g_variant_unref() to do this.)</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.lookup_records_async" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#583-589">Source</a><h4 class="code-header">fn <a href="#method.lookup_records_async" class="fn">lookup_records_async</a>&lt;P&gt;(
+    &amp;self,
+    rrname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    record_type: <a class="enum" href="../../gio/auto/enums/enum.ResolverRecordType.html" title="enum gio::auto::enums::ResolverRecordType">ResolverRecordType</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)<div class="where">where
+    P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static,</div></h4></section></summary><div class="docblock"><p>Begins asynchronously performing a DNS lookup for the given
+@rrname, and eventually calls @callback, which must call
+g_resolver_lookup_records_finish() to get the final result. See
+g_resolver_lookup_records() for more details.</p>
+<h6 id="rrname-1"><a class="doc-anchor" href="#rrname-1">§</a><code>rrname</code></h6>
+<p>the DNS name to look up the record for</p>
+<h6 id="record_type-1"><a class="doc-anchor" href="#record_type-1">§</a><code>record_type</code></h6>
+<p>the type of DNS record to look up</p>
+<h6 id="cancellable-7"><a class="doc-anchor" href="#cancellable-7">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h6 id="callback-3"><a class="doc-anchor" href="#callback-3">§</a><code>callback</code></h6>
+<p>callback to call after resolution completes</p>
+</div></details><section id="method.lookup_records_future" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#640-646">Source</a><h4 class="code-header">fn <a href="#method.lookup_records_future" class="fn">lookup_records_future</a>(
+    &amp;self,
+    rrname: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    record_type: <a class="enum" href="../../gio/auto/enums/enum.ResolverRecordType.html" title="enum gio::auto::enums::ResolverRecordType">ResolverRecordType</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.lookup_service" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#695-701">Source</a><h4 class="code-header">fn <a href="#method.lookup_service" class="fn">lookup_service</a>(
+    &amp;self,
+    service: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    protocol: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    domain: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/srv_target/struct.SrvTarget.html" title="struct gio::auto::srv_target::SrvTarget">SrvTarget</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Synchronously performs a DNS SRV lookup for the given @service and
+@protocol in the given @domain and returns an array of #GSrvTarget.
+@domain may be an ASCII-only or UTF-8 hostname. Note also that the
+@service and @protocol arguments do not include the leading underscore
+that appears in the actual DNS entry.</p>
+<p>On success, g_resolver_lookup_service() will return a non-empty #GList of
+#GSrvTarget, sorted in order of preference. (That is, you should
+attempt to connect to the first target first, then the second if
+the first fails, etc.)</p>
+<p>If the DNS resolution fails, @error (if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>) will be set to
+a value from #GResolverError and <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> will be returned.</p>
+<p>If @cancellable is non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, it can be used to cancel the
+operation, in which case @error (if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>) will be set to
+<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::auto::enums::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a>.</p>
+<p>If you are planning to connect to the service, it is usually easier
+to create a #GNetworkService and use its #GSocketConnectable
+interface.</p>
+<h6 id="service"><a class="doc-anchor" href="#service">§</a><code>service</code></h6>
+<p>the service type to look up (eg, “ldap”)</p>
+<h6 id="protocol"><a class="doc-anchor" href="#protocol">§</a><code>protocol</code></h6>
+<p>the networking protocol to use for @service (eg, “tcp”)</p>
+<h6 id="domain"><a class="doc-anchor" href="#domain">§</a><code>domain</code></h6>
+<p>the DNS domain to look up the service in</p>
+<h6 id="cancellable-8"><a class="doc-anchor" href="#cancellable-8">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h5 id="returns-5"><a class="doc-anchor" href="#returns-5">§</a>Returns</h5>
+<p>a non-empty #GList of
+#GSrvTarget, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error. You must free each of the targets and the
+list when you are done with it. (You can use g_resolver_free_targets() to do
+this.)</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.lookup_service_async" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#736-743">Source</a><h4 class="code-header">fn <a href="#method.lookup_service_async" class="fn">lookup_service_async</a>&lt;P&gt;(
+    &amp;self,
+    service: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    protocol: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    domain: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
+    callback: P,
+)<div class="where">where
+    P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/srv_target/struct.SrvTarget.html" title="struct gio::auto::srv_target::SrvTarget">SrvTarget</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static,</div></h4></section></summary><div class="docblock"><p>Begins asynchronously performing a DNS SRV lookup for the given
+@service and @protocol in the given @domain, and eventually calls
+@callback, which must call g_resolver_lookup_service_finish() to
+get the final result. See g_resolver_lookup_service() for more
+details.</p>
+<h6 id="service-1"><a class="doc-anchor" href="#service-1">§</a><code>service</code></h6>
+<p>the service type to look up (eg, “ldap”)</p>
+<h6 id="protocol-1"><a class="doc-anchor" href="#protocol-1">§</a><code>protocol</code></h6>
+<p>the networking protocol to use for @service (eg, “tcp”)</p>
+<h6 id="domain-1"><a class="doc-anchor" href="#domain-1">§</a><code>domain</code></h6>
+<p>the DNS domain to look up the service in</p>
+<h6 id="cancellable-9"><a class="doc-anchor" href="#cancellable-9">§</a><code>cancellable</code></h6>
+<p>a #GCancellable, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
+<h6 id="callback-4"><a class="doc-anchor" href="#callback-4">§</a><code>callback</code></h6>
+<p>callback to call after resolution completes</p>
+</div></details><section id="method.lookup_service_future" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#795-800">Source</a><h4 class="code-header">fn <a href="#method.lookup_service_future" class="fn">lookup_service_future</a>(
+    &amp;self,
+    service: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    protocol: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    domain: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/srv_target/struct.SrvTarget.html" title="struct gio::auto::srv_target::SrvTarget">SrvTarget</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.set_default" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#831">Source</a><h4 class="code-header">fn <a href="#method.set_default" class="fn">set_default</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Sets @self to be the application’s default resolver (reffing
+@self, and unreffing the previous default resolver, if any).
+Future calls to g_resolver_get_default() will return this resolver.</p>
+<p>This can be used if an application wants to perform any sort of DNS
+caching or “pinning”; it can implement its own #GResolver that
+calls the original default resolver for DNS operations, and
+implements its own cache policies on top of that, and then set
+itself as the default resolver for all later code to use.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_timeout" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#844">Source</a><h4 class="code-header">fn <a href="#method.set_timeout" class="fn">set_timeout</a>(&amp;self, timeout_ms: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>)</h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_78</code></strong> only.</div></span></summary><div class="docblock"><p>Set the timeout applied to all resolver lookups. See #GResolver:timeout.</p>
+<h6 id="timeout_ms"><a class="doc-anchor" href="#timeout_ms">§</a><code>timeout_ms</code></h6>
+<p>timeout in milliseconds, or <code>0</code> for no timeouts</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.connect_reload" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#853">Source</a><h4 class="code-header">fn <a href="#method.connect_reload" class="fn">connect_reload</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section></summary><div class="docblock"><p>Emitted when the resolver notices that the system resolver
+configuration has changed.</p>
+</div></details><section id="method.connect_timeout_notify" class="method"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#879">Source</a><h4 class="code-header">fn <a href="#method.connect_timeout_notify" class="fn">connect_timeout_notify</a>&lt;F&gt;(&amp;self, f: F) -&gt; <a class="struct" href="../../glib/signal/struct.SignalHandlerId.html" title="struct glib::signal::SignalHandlerId">SignalHandlerId</a><div class="where">where
+    F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;Self) + 'static,</div></h4></section><span class="item-info"><div class="stab portability">Available on <strong>crate feature <code>v2_78</code></strong> only.</div></span></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><div class="negative-marker"></div><section id="impl-ResolverExt-for-O" class="impl"><a class="src rightside" href="../../src/gio/auto/resolver.rs.html#904">Source</a><a href="#impl-ResolverExt-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O&gt; <a class="trait" href="trait.ResolverExt.html" title="trait gio_win32::prelude::ResolverExt">ResolverExt</a> for O<div class="where">where
+    O: <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/resolver/struct.Resolver.html" title="struct gio::auto::resolver::Resolver">Resolver</a>&gt;,</div></h3></section></div><script src="../../trait.impl/gio/auto/resolver/trait.ResolverExt.js" async></script></section></div></main></body></html>

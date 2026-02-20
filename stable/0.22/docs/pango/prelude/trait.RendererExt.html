@@ -1,0 +1,342 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Trait containing all `struct@Renderer` methods."><title>RendererExt in pango::prelude - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.22" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.22") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<rustdoc-topbar><h2><a href="#">RendererExt</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../pango/index.html">pango</a><span class="version">0.22.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Renderer<wbr>Ext</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#implementors-1" title="Implementors">Implementors</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.activate" title="activate">activate</a></li><li><a href="#method.alpha" title="alpha">alpha</a></li><li><a href="#method.color" title="color">color</a></li><li><a href="#method.deactivate" title="deactivate">deactivate</a></li><li><a href="#method.draw_error_underline" title="draw_error_underline">draw_error_underline</a></li><li><a href="#method.draw_glyph" title="draw_glyph">draw_glyph</a></li><li><a href="#method.draw_glyph_item" title="draw_glyph_item">draw_glyph_item</a></li><li><a href="#method.draw_glyphs" title="draw_glyphs">draw_glyphs</a></li><li><a href="#method.draw_layout" title="draw_layout">draw_layout</a></li><li><a href="#method.draw_layout_line" title="draw_layout_line">draw_layout_line</a></li><li><a href="#method.draw_rectangle" title="draw_rectangle">draw_rectangle</a></li><li><a href="#method.draw_trapezoid" title="draw_trapezoid">draw_trapezoid</a></li><li><a href="#method.layout" title="layout">layout</a></li><li><a href="#method.layout_line" title="layout_line">layout_line</a></li><li><a href="#method.matrix" title="matrix">matrix</a></li><li><a href="#method.part_changed" title="part_changed">part_changed</a></li><li><a href="#method.set_alpha" title="set_alpha">set_alpha</a></li><li><a href="#method.set_color" title="set_color">set_color</a></li><li><a href="#method.set_matrix" title="set_matrix">set_matrix</a></li></ul><h3><a href="#dyn-compatibility">Dyn Compatibility</a></h3><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In pango::<wbr>prelude</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">pango</a>::<wbr><a href="index.html">prelude</a></div><h1>Trait <span class="trait">Renderer<wbr>Ext</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/pango/auto/renderer.rs.html#40-471">Source</a> </span></div><pre class="rust item-decl"><code>pub trait RendererExt: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Renderer.html" title="struct pango::Renderer">Renderer</a>&gt; + 'static {
+<details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 19 methods</span></summary>    // Provided methods
+    fn <a href="#method.activate" class="fn">activate</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.deactivate" class="fn">deactivate</a>(&amp;self) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.draw_error_underline" class="fn">draw_error_underline</a>(&amp;self, x: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, width: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, height: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.draw_glyph" class="fn">draw_glyph</a>(&amp;self, font: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Font.html" title="struct pango::Font">Font</a>&gt;, glyph: <a class="type" href="../type.Glyph.html" title="type pango::Glyph">Glyph</a>, x: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.draw_glyph_item" class="fn">draw_glyph_item</a>(
+        &amp;self,
+        text: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+        glyph_item: &amp;mut <a class="struct" href="../struct.GlyphItem.html" title="struct pango::GlyphItem">GlyphItem</a>,
+        x: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        y: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.draw_glyphs" class="fn">draw_glyphs</a>(
+        &amp;self,
+        font: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Font.html" title="struct pango::Font">Font</a>&gt;,
+        glyphs: &amp;mut <a class="struct" href="../struct.GlyphString.html" title="struct pango::GlyphString">GlyphString</a>,
+        x: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        y: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.draw_layout" class="fn">draw_layout</a>(&amp;self, layout: &amp;<a class="struct" href="../struct.Layout.html" title="struct pango::Layout">Layout</a>, x: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.draw_layout_line" class="fn">draw_layout_line</a>(&amp;self, line: &amp;<a class="struct" href="../struct.LayoutLine.html" title="struct pango::LayoutLine">LayoutLine</a>, x: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.draw_rectangle" class="fn">draw_rectangle</a>(
+        &amp;self,
+        part: <a class="enum" href="../enum.RenderPart.html" title="enum pango::RenderPart">RenderPart</a>,
+        x: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        y: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        width: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        height: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.draw_trapezoid" class="fn">draw_trapezoid</a>(
+        &amp;self,
+        part: <a class="enum" href="../enum.RenderPart.html" title="enum pango::RenderPart">RenderPart</a>,
+        y1_: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        x11: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        x21: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        y2: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        x12: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        x22: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+    ) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.alpha" class="fn">alpha</a>(&amp;self, part: <a class="enum" href="../enum.RenderPart.html" title="enum pango::RenderPart">RenderPart</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.color" class="fn">color</a>(&amp;self, part: <a class="enum" href="../enum.RenderPart.html" title="enum pango::RenderPart">RenderPart</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../struct.Color.html" title="struct pango::Color">Color</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.layout" class="fn">layout</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../struct.Layout.html" title="struct pango::Layout">Layout</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.layout_line" class="fn">layout_line</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../struct.LayoutLine.html" title="struct pango::LayoutLine">LayoutLine</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.matrix" class="fn">matrix</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../struct.Matrix.html" title="struct pango::Matrix">Matrix</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.part_changed" class="fn">part_changed</a>(&amp;self, part: <a class="enum" href="../enum.RenderPart.html" title="enum pango::RenderPart">RenderPart</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_alpha" class="fn">set_alpha</a>(&amp;self, part: <a class="enum" href="../enum.RenderPart.html" title="enum pango::RenderPart">RenderPart</a>, alpha: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_color" class="fn">set_color</a>(&amp;self, part: <a class="enum" href="../enum.RenderPart.html" title="enum pango::RenderPart">RenderPart</a>, color: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../struct.Color.html" title="struct pango::Color">Color</a>&gt;) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.set_matrix" class="fn">set_matrix</a>(&amp;self, matrix: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../struct.Matrix.html" title="struct pango::Matrix">Matrix</a>&gt;) { ... }
+</details>}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Trait containing all <a href="../struct.Renderer.html" title="struct pango::Renderer"><code>Renderer</code></a> methods.</p>
+<h2 id="implementors-1"><a class="doc-anchor" href="#implementors-1">§</a>Implementors</h2>
+<p><a href="../struct.Renderer.html" title="struct pango::Renderer"><code>Renderer</code></a></p>
+</div></details><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.activate" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#51-55">Source</a><h4 class="code-header">fn <a href="#method.activate" class="fn">activate</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Does initial setup before rendering operations on @self.</p>
+<p><a href="trait.RendererExt.html#method.deactivate" title="method pango::prelude::RendererExt::deactivate"><code>deactivate()</code></a> should be called when done drawing.
+Calls such as <a href="trait.RendererExt.html#method.draw_layout" title="method pango::prelude::RendererExt::draw_layout"><code>draw_layout()</code></a> automatically
+activate the layout before drawing on it.</p>
+<p>Calls to <a href="trait.RendererExt.html#method.activate" title="method pango::prelude::RendererExt::activate"><code>activate()</code></a> and
+<a href="trait.RendererExt.html#method.deactivate" title="method pango::prelude::RendererExt::deactivate"><code>deactivate()</code></a> can be nested and the
+renderer will only be initialized and deinitialized once.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.deactivate" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#61-65">Source</a><h4 class="code-header">fn <a href="#method.deactivate" class="fn">deactivate</a>(&amp;self)</h4></section></summary><div class="docblock"><p>Cleans up after rendering operations on @self.</p>
+<p>See docs for <a href="trait.RendererExt.html#method.activate" title="method pango::prelude::RendererExt::activate"><code>activate()</code></a>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.draw_error_underline" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#85-95">Source</a><h4 class="code-header">fn <a href="#method.draw_error_underline" class="fn">draw_error_underline</a>(&amp;self, x: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, width: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, height: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)</h4></section></summary><div class="docblock"><p>Draw a squiggly line that approximately covers the given rectangle
+in the style of an underline used to indicate a spelling error.</p>
+<p>The width of the underline is rounded to an integer number
+of up/down segments and the resulting rectangle is centered
+in the original rectangle.</p>
+<p>This should be called while @self is already active.
+Use <a href="trait.RendererExt.html#method.activate" title="method pango::prelude::RendererExt::activate"><code>activate()</code></a> to activate a renderer.</p>
+<h6 id="x"><a class="doc-anchor" href="#x">§</a><code>x</code></h6>
+<p>X coordinate of underline, in Pango units in user coordinate system</p>
+<h6 id="y"><a class="doc-anchor" href="#y">§</a><code>y</code></h6>
+<p>Y coordinate of underline, in Pango units in user coordinate system</p>
+<h6 id="width"><a class="doc-anchor" href="#width">§</a><code>width</code></h6>
+<p>width of underline, in Pango units in user coordinate system</p>
+<h6 id="height"><a class="doc-anchor" href="#height">§</a><code>height</code></h6>
+<p>height of underline, in Pango units in user coordinate system</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.draw_glyph" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#107-117">Source</a><h4 class="code-header">fn <a href="#method.draw_glyph" class="fn">draw_glyph</a>(&amp;self, font: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Font.html" title="struct pango::Font">Font</a>&gt;, glyph: <a class="type" href="../type.Glyph.html" title="type pango::Glyph">Glyph</a>, x: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>)</h4></section></summary><div class="docblock"><p>Draws a single glyph with coordinates in device space.</p>
+<h6 id="font"><a class="doc-anchor" href="#font">§</a><code>font</code></h6>
+<p>a <a href="../struct.Font.html" title="struct pango::Font"><code>Font</code></a></p>
+<h6 id="glyph"><a class="doc-anchor" href="#glyph">§</a><code>glyph</code></h6>
+<p>the glyph index of a single glyph</p>
+<h6 id="x-1"><a class="doc-anchor" href="#x-1">§</a><code>x</code></h6>
+<p>X coordinate of left edge of baseline of glyph</p>
+<h6 id="y-1"><a class="doc-anchor" href="#y-1">§</a><code>y</code></h6>
+<p>Y coordinate of left edge of baseline of glyph</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.draw_glyph_item" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#148-158">Source</a><h4 class="code-header">fn <a href="#method.draw_glyph_item" class="fn">draw_glyph_item</a>(
+    &amp;self,
+    text: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+    glyph_item: &amp;mut <a class="struct" href="../struct.GlyphItem.html" title="struct pango::GlyphItem">GlyphItem</a>,
+    x: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    y: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+)</h4></section></summary><div class="docblock"><p>Draws the glyphs in @glyph_item with the specified <a href="../struct.Renderer.html" title="struct pango::Renderer"><code>Renderer</code></a>,
+embedding the text associated with the glyphs in the output if the
+output format supports it.</p>
+<p>This is useful for rendering text in PDF.</p>
+<p>Note that this method does not handle attributes in @glyph_item.
+If you want colors, shapes and lines handled automatically according
+to those attributes, you need to use pango_renderer_draw_layout_line()
+or pango_renderer_draw_layout().</p>
+<p>Note that @text is the start of the text for layout, which is then
+indexed by <code>glyph_item-&gt;item-&gt;offset</code>.</p>
+<p>If @text is <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, this simply calls <a href="trait.RendererExt.html#method.draw_glyphs" title="method pango::prelude::RendererExt::draw_glyphs"><code>draw_glyphs()</code></a>.</p>
+<p>The default implementation of this method simply falls back to
+<a href="trait.RendererExt.html#method.draw_glyphs" title="method pango::prelude::RendererExt::draw_glyphs"><code>draw_glyphs()</code></a>.</p>
+<h6 id="text"><a class="doc-anchor" href="#text">§</a><code>text</code></h6>
+<p>the UTF-8 text that @glyph_item refers to</p>
+<h6 id="glyph_item"><a class="doc-anchor" href="#glyph_item">§</a><code>glyph_item</code></h6>
+<p>a <a href="../struct.GlyphItem.html" title="struct pango::GlyphItem"><code>GlyphItem</code></a></p>
+<h6 id="x-2"><a class="doc-anchor" href="#x-2">§</a><code>x</code></h6>
+<p>X position of left edge of baseline, in user space coordinates
+in Pango units</p>
+<h6 id="y-2"><a class="doc-anchor" href="#y-2">§</a><code>y</code></h6>
+<p>Y position of left edge of baseline, in user space coordinates
+in Pango units</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.draw_glyphs" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#172-182">Source</a><h4 class="code-header">fn <a href="#method.draw_glyphs" class="fn">draw_glyphs</a>(
+    &amp;self,
+    font: &amp;impl <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Font.html" title="struct pango::Font">Font</a>&gt;,
+    glyphs: &amp;mut <a class="struct" href="../struct.GlyphString.html" title="struct pango::GlyphString">GlyphString</a>,
+    x: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    y: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+)</h4></section></summary><div class="docblock"><p>Draws the glyphs in @glyphs with the specified <a href="../struct.Renderer.html" title="struct pango::Renderer"><code>Renderer</code></a>.</p>
+<h6 id="font-1"><a class="doc-anchor" href="#font-1">§</a><code>font</code></h6>
+<p>a <a href="../struct.Font.html" title="struct pango::Font"><code>Font</code></a></p>
+<h6 id="glyphs"><a class="doc-anchor" href="#glyphs">§</a><code>glyphs</code></h6>
+<p>a <a href="../struct.GlyphString.html" title="struct pango::GlyphString"><code>GlyphString</code></a></p>
+<h6 id="x-3"><a class="doc-anchor" href="#x-3">§</a><code>x</code></h6>
+<p>X position of left edge of baseline, in user space coordinates
+in Pango units.</p>
+<h6 id="y-3"><a class="doc-anchor" href="#y-3">§</a><code>y</code></h6>
+<p>Y position of left edge of baseline, in user space coordinates
+in Pango units.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.draw_layout" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#197-206">Source</a><h4 class="code-header">fn <a href="#method.draw_layout" class="fn">draw_layout</a>(&amp;self, layout: &amp;<a class="struct" href="../struct.Layout.html" title="struct pango::Layout">Layout</a>, x: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)</h4></section></summary><div class="docblock"><p>Draws @layout with the specified <a href="../struct.Renderer.html" title="struct pango::Renderer"><code>Renderer</code></a>.</p>
+<p>This is equivalent to drawing the lines of the layout, at their
+respective positions relative to @x, @y.</p>
+<h6 id="layout-1"><a class="doc-anchor" href="#layout-1">§</a><code>layout</code></h6>
+<p>a <a href="../struct.Layout.html" title="struct pango::Layout"><code>Layout</code></a></p>
+<h6 id="x-4"><a class="doc-anchor" href="#x-4">§</a><code>x</code></h6>
+<p>X position of left edge of baseline, in user space coordinates
+in Pango units.</p>
+<h6 id="y-4"><a class="doc-anchor" href="#y-4">§</a><code>y</code></h6>
+<p>Y position of left edge of baseline, in user space coordinates
+in Pango units.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.draw_layout_line" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#222-231">Source</a><h4 class="code-header">fn <a href="#method.draw_layout_line" class="fn">draw_layout_line</a>(&amp;self, line: &amp;<a class="struct" href="../struct.LayoutLine.html" title="struct pango::LayoutLine">LayoutLine</a>, x: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>)</h4></section></summary><div class="docblock"><p>Draws @line with the specified <a href="../struct.Renderer.html" title="struct pango::Renderer"><code>Renderer</code></a>.</p>
+<p>This draws the glyph items that make up the line, as well as
+shapes, backgrounds and lines that are specified by the attributes
+of those items.</p>
+<h6 id="line"><a class="doc-anchor" href="#line">§</a><code>line</code></h6>
+<p>a <a href="../struct.LayoutLine.html" title="struct pango::LayoutLine"><code>LayoutLine</code></a></p>
+<h6 id="x-5"><a class="doc-anchor" href="#x-5">§</a><code>x</code></h6>
+<p>X position of left edge of baseline, in user space coordinates
+in Pango units.</p>
+<h6 id="y-5"><a class="doc-anchor" href="#y-5">§</a><code>y</code></h6>
+<p>Y position of left edge of baseline, in user space coordinates
+in Pango units.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.draw_rectangle" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#251-262">Source</a><h4 class="code-header">fn <a href="#method.draw_rectangle" class="fn">draw_rectangle</a>(
+    &amp;self,
+    part: <a class="enum" href="../enum.RenderPart.html" title="enum pango::RenderPart">RenderPart</a>,
+    x: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    y: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    width: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    height: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+)</h4></section></summary><div class="docblock"><p>Draws an axis-aligned rectangle in user space coordinates with the
+specified <a href="../struct.Renderer.html" title="struct pango::Renderer"><code>Renderer</code></a>.</p>
+<p>This should be called while @self is already active.
+Use <a href="trait.RendererExt.html#method.activate" title="method pango::prelude::RendererExt::activate"><code>activate()</code></a> to activate a renderer.</p>
+<h6 id="part"><a class="doc-anchor" href="#part">§</a><code>part</code></h6>
+<p>type of object this rectangle is part of</p>
+<h6 id="x-6"><a class="doc-anchor" href="#x-6">§</a><code>x</code></h6>
+<p>X position at which to draw rectangle, in user space coordinates
+in Pango units</p>
+<h6 id="y-6"><a class="doc-anchor" href="#y-6">§</a><code>y</code></h6>
+<p>Y position at which to draw rectangle, in user space coordinates
+in Pango units</p>
+<h6 id="width-1"><a class="doc-anchor" href="#width-1">§</a><code>width</code></h6>
+<p>width of rectangle in Pango units</p>
+<h6 id="height-1"><a class="doc-anchor" href="#height-1">§</a><code>height</code></h6>
+<p>height of rectangle in Pango units</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.draw_trapezoid" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#281-303">Source</a><h4 class="code-header">fn <a href="#method.draw_trapezoid" class="fn">draw_trapezoid</a>(
+    &amp;self,
+    part: <a class="enum" href="../enum.RenderPart.html" title="enum pango::RenderPart">RenderPart</a>,
+    y1_: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+    x11: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+    x21: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+    y2: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+    x12: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+    x22: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+)</h4></section></summary><div class="docblock"><p>Draws a trapezoid with the parallel sides aligned with the X axis
+using the given <a href="../struct.Renderer.html" title="struct pango::Renderer"><code>Renderer</code></a>; coordinates are in device space.</p>
+<h6 id="part-1"><a class="doc-anchor" href="#part-1">§</a><code>part</code></h6>
+<p>type of object this trapezoid is part of</p>
+<h6 id="y1_"><a class="doc-anchor" href="#y1_">§</a><code>y1_</code></h6>
+<p>Y coordinate of top of trapezoid</p>
+<h6 id="x11"><a class="doc-anchor" href="#x11">§</a><code>x11</code></h6>
+<p>X coordinate of left end of top of trapezoid</p>
+<h6 id="x21"><a class="doc-anchor" href="#x21">§</a><code>x21</code></h6>
+<p>X coordinate of right end of top of trapezoid</p>
+<h6 id="y2"><a class="doc-anchor" href="#y2">§</a><code>y2</code></h6>
+<p>Y coordinate of bottom of trapezoid</p>
+<h6 id="x12"><a class="doc-anchor" href="#x12">§</a><code>x12</code></h6>
+<p>X coordinate of left end of bottom of trapezoid</p>
+<h6 id="x22"><a class="doc-anchor" href="#x22">§</a><code>x22</code></h6>
+<p>X coordinate of right end of bottom of trapezoid</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.alpha" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#316-318">Source</a><h4 class="code-header">fn <a href="#method.alpha" class="fn">alpha</a>(&amp;self, part: <a class="enum" href="../enum.RenderPart.html" title="enum pango::RenderPart">RenderPart</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a></h4></section></summary><div class="docblock"><p>Gets the current alpha for the specified part.</p>
+<h6 id="part-2"><a class="doc-anchor" href="#part-2">§</a><code>part</code></h6>
+<p>the part to get the alpha for</p>
+<h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
+<p>the alpha for the specified part,
+or 0 if it hasn’t been set and should be
+inherited from the environment.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.color" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#331-338">Source</a><h4 class="code-header">fn <a href="#method.color" class="fn">color</a>(&amp;self, part: <a class="enum" href="../enum.RenderPart.html" title="enum pango::RenderPart">RenderPart</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../struct.Color.html" title="struct pango::Color">Color</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the current rendering color for the specified part.</p>
+<h6 id="part-3"><a class="doc-anchor" href="#part-3">§</a><code>part</code></h6>
+<p>the part to get the color for</p>
+<h5 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h5>
+<p>the color for the
+specified part, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> if it hasn’t been set and should be
+inherited from the environment.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.layout" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#354-360">Source</a><h4 class="code-header">fn <a href="#method.layout" class="fn">layout</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../struct.Layout.html" title="struct pango::Layout">Layout</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the layout currently being rendered using @self.</p>
+<p>Calling this function only makes sense from inside a subclass’s
+methods, like in its draw_shape vfunc, for example.</p>
+<p>The returned layout should not be modified while still being
+rendered.</p>
+<h5 id="returns-2"><a class="doc-anchor" href="#returns-2">§</a>Returns</h5>
+<p>the layout, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> if
+no layout is being rendered using @self at this time.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.layout_line" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#376-382">Source</a><h4 class="code-header">fn <a href="#method.layout_line" class="fn">layout_line</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../struct.LayoutLine.html" title="struct pango::LayoutLine">LayoutLine</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the layout line currently being rendered using @self.</p>
+<p>Calling this function only makes sense from inside a subclass’s
+methods, like in its draw_shape vfunc, for example.</p>
+<p>The returned layout line should not be modified while still being
+rendered.</p>
+<h5 id="returns-3"><a class="doc-anchor" href="#returns-3">§</a>Returns</h5>
+<p>the layout line, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>
+if no layout line is being rendered using @self at this time.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.matrix" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#396-402">Source</a><h4 class="code-header">fn <a href="#method.matrix" class="fn">matrix</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../struct.Matrix.html" title="struct pango::Matrix">Matrix</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the transformation matrix that will be applied when
+rendering.</p>
+<p>See <a href="trait.RendererExt.html#method.set_matrix" title="method pango::prelude::RendererExt::set_matrix"><code>set_matrix()</code></a>.</p>
+<h5 id="returns-4"><a class="doc-anchor" href="#returns-4">§</a>Returns</h5>
+<p>the matrix, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> if no matrix has
+been set (which is the same as the identity matrix). The returned
+matrix is owned by Pango and must not be modified or freed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.part_changed" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#422-426">Source</a><h4 class="code-header">fn <a href="#method.part_changed" class="fn">part_changed</a>(&amp;self, part: <a class="enum" href="../enum.RenderPart.html" title="enum pango::RenderPart">RenderPart</a>)</h4></section></summary><div class="docblock"><p>Informs Pango that the way that the rendering is done
+for @part has changed.</p>
+<p>This should be called if the rendering changes in a way that would
+prevent multiple pieces being joined together into one drawing call.
+For instance, if a subclass of <a href="../struct.Renderer.html" title="struct pango::Renderer"><code>Renderer</code></a> was to add a stipple
+option for drawing underlines, it needs to call</p>
+<div class="example-wrap"><pre class="language-text"><code>pango_renderer_part_changed (render, PANGO_RENDER_PART_UNDERLINE);</code></pre></div>
+<p>When the stipple changes or underlines with different stipples
+might be joined together. Pango automatically calls this for
+changes to colors. (See <a href="trait.RendererExt.html#method.set_color" title="method pango::prelude::RendererExt::set_color"><code>set_color()</code></a>)</p>
+<h6 id="part-4"><a class="doc-anchor" href="#part-4">§</a><code>part</code></h6>
+<p>the part for which rendering has changed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_alpha" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#437-441">Source</a><h4 class="code-header">fn <a href="#method.set_alpha" class="fn">set_alpha</a>(&amp;self, part: <a class="enum" href="../enum.RenderPart.html" title="enum pango::RenderPart">RenderPart</a>, alpha: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>)</h4></section></summary><div class="docblock"><p>Sets the alpha for part of the rendering.</p>
+<p>Note that the alpha may only be used if a color is
+specified for @part as well.</p>
+<h6 id="part-5"><a class="doc-anchor" href="#part-5">§</a><code>part</code></h6>
+<p>the part to set the alpha for</p>
+<h6 id="alpha"><a class="doc-anchor" href="#alpha">§</a><code>alpha</code></h6>
+<p>an alpha value between 1 and 65536, or 0 to unset the alpha</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_color" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#451-459">Source</a><h4 class="code-header">fn <a href="#method.set_color" class="fn">set_color</a>(&amp;self, part: <a class="enum" href="../enum.RenderPart.html" title="enum pango::RenderPart">RenderPart</a>, color: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../struct.Color.html" title="struct pango::Color">Color</a>&gt;)</h4></section></summary><div class="docblock"><p>Sets the color for part of the rendering.</p>
+<p>Also see <a href="trait.RendererExt.html#method.set_alpha" title="method pango::prelude::RendererExt::set_alpha"><code>set_alpha()</code></a>.</p>
+<h6 id="part-6"><a class="doc-anchor" href="#part-6">§</a><code>part</code></h6>
+<p>the part to change the color of</p>
+<h6 id="color"><a class="doc-anchor" href="#color">§</a><code>color</code></h6>
+<p>the new color or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to unset the current color</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_matrix" class="method"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#466-470">Source</a><h4 class="code-header">fn <a href="#method.set_matrix" class="fn">set_matrix</a>(&amp;self, matrix: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../struct.Matrix.html" title="struct pango::Matrix">Matrix</a>&gt;)</h4></section></summary><div class="docblock"><p>Sets the transformation matrix that will be applied when rendering.</p>
+<h6 id="matrix"><a class="doc-anchor" href="#matrix">§</a><code>matrix</code></h6>
+<p>a <a href="../struct.Matrix.html" title="struct pango::Matrix"><code>Matrix</code></a>, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to unset any existing matrix
+(No matrix set is the same as setting the identity matrix.)</p>
+</div></details></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety", so this trait is not object safe.</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><div class="negative-marker"></div><section id="impl-RendererExt-for-O" class="impl"><a class="src rightside" href="../../src/pango/auto/renderer.rs.html#473">Source</a><a href="#impl-RendererExt-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O: <a class="trait" href="../../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="../struct.Renderer.html" title="struct pango::Renderer">Renderer</a>&gt;&gt; <a class="trait" href="trait.RendererExt.html" title="trait pango::prelude::RendererExt">RendererExt</a> for O</h3></section></div><script src="../../trait.impl/pango/auto/renderer/trait.RendererExt.js" async></script></section></div></main></body></html>

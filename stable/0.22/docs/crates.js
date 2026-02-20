@@ -1,0 +1,2 @@
+window.ALL_CRATES = ["cairo","cairo_sys","gdk_pixbuf","gdk_pixbuf_sys","gio","gio_sys","gio_unix","gio_unix_sys","gio_win32","gio_win32_sys","glib","glib_build_tools","glib_macros","glib_sys","glib_unix","glib_unix_sys","glib_win32","glib_win32_sys","gobject_sys","graphene","graphene_sys","pango","pango_cairo_sys","pango_sys","pangocairo"];
+//{"start":21,"fragment_lengths":[7,12,13,17,6,10,11,15,12,16,7,19,14,11,12,16,13,17,14,11,15,8,18,12,13]}

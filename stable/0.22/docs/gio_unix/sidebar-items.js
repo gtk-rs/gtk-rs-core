@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["functions","prelude"],"struct":["DesktopAppInfo","FDMessage","FileDescriptorBased","InputStream","MountEntry","MountMonitor","MountPoint","OutputStream"]};

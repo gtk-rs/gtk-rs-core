@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Requests ownership of @name on the bus specified by @bus_type."><title>bus_own_name in gio - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.95.0-nightly (7f99507f5 2026-02-19)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../static.files/storage-41dd4d93.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc fn"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
+
+    function checkDocsLatestStable() {
+        function popup(msg, url) { return `
+            <style scoped="scoped">
+                .popup {
+                    max-width: 16em;
+                    background-color: #fff;
+                    position: fixed;
+                    z-index: 1;
+                    margin-left: auto;
+                    bottom: 1em;
+                    right: 1em;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 4px #777;
+                }
+
+                .popup a.version {
+                    color: #e57300;
+                    padding: 0.6em 1em;
+                    display: block;
+                }
+                .popup a.version:hover {
+                    color: #b25900;
+                }
+
+                .popup a.close {
+                    color: white;
+                    background: grey;
+                    border-radius: 99px;
+                    display: inline-block;
+                    width: 19px;
+                    line-height: 19px;
+                    font-weight: bold;
+                    text-align: center;
+                    margin: 0.6em;
+                    float: right;
+                }
+                .popup a.close:hover {
+                    background: black;
+                }
+            </style>
+            <section class="popup" id="gir_docs_popup">
+                <a class="close" href="#" onclick="document.getElementById('gir_docs_popup').remove(); return false">×</a>
+                <a class="version" href="https://gtk-rs.org/gtk-rs-core/stable/latest/docs">
+                    ⚠ ${msg}
+                </a>
+            </section>
+        ` };
+
+        if ("0.22" == "main") {
+            document.body.insertAdjacentHTML(
+                'beforeend',
+                popup("This is the development version. Go to latest stable version.", "stable/latest")
+            );
+        } else {
+            fetch('https://gtk-rs.org/gtk-rs-core/LATEST_RELEASE_BRANCH')
+                .then(response => response.text())
+                .then(latest_branch => {
+                    if (latest_branch.trim() != "0.22") {
+                        document.body.insertAdjacentHTML(
+                            'beforeend',
+                            popup("This version is outdated. Go to latest version.", "stable/latest")
+                        );
+                    }
+                });
+        }
+    }
+</script>
+
+
+<rustdoc-topbar><h2><a href="#">bus_own_name</a></h2></rustdoc-topbar><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../gio/index.html">gio</a><span class="version">0.22.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">bus_<wbr>own_<wbr>name</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#bus_type" title="`bus_type`"><code>bus_type</code></a></li><li><a href="#name" title="`name`"><code>name</code></a></li><li><a href="#flags" title="`flags`"><code>flags</code></a></li><li><a href="#bus_acquired_handler" title="`bus_acquired_handler`"><code>bus_acquired_handler</code></a></li><li><a href="#name_acquired_handler" title="`name_acquired_handler`"><code>name_acquired_handler</code></a></li><li><a href="#name_lost_handler" title="`name_lost_handler`"><code>name_lost_handler</code></a></li><li><a href="#returns" title="Returns">Returns</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="index.html">In crate gio</a></h2></div></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><div class="width-limiter"><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="index.html">gio</a></div><h1>Function <span class="fn">bus_<wbr>own_<wbr>name</span>&nbsp;<button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../src/gio/dbus.rs.html#165-196">Source</a> </span></div><pre class="rust item-decl"><code>pub fn bus_own_name&lt;BusAcquired, NameAcquired, NameLost&gt;(
+    bus_type: <a class="enum" href="enum.BusType.html" title="enum gio::BusType">BusType</a>,
+    name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+    flags: <a class="struct" href="struct.BusNameOwnerFlags.html" title="struct gio::BusNameOwnerFlags">BusNameOwnerFlags</a>,
+    bus_acquired: BusAcquired,
+    name_acquired: NameAcquired,
+    name_lost: NameLost,
+) -&gt; <a class="struct" href="struct.OwnerId.html" title="struct gio::OwnerId">OwnerId</a><div class="where">where
+    BusAcquired: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(<a class="struct" href="struct.DBusConnection.html" title="struct gio::DBusConnection">DBusConnection</a>, &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + 'static,
+    NameAcquired: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(<a class="struct" href="struct.DBusConnection.html" title="struct gio::DBusConnection">DBusConnection</a>, &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + 'static,
+    NameLost: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="struct.DBusConnection.html" title="struct gio::DBusConnection">DBusConnection</a>&gt;, &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) + 'static,</div></code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Requests ownership of @name on the bus specified by @bus_type.</p>
+<p>It asynchronously calls @name_acquired_handler and @name_lost_handler when
+the name is acquired and lost, respectively.</p>
+<p>Callbacks will be invoked in the thread-default
+main context (see [<code>glib::MainContext::push_thread_default()</code>][crate::glib::MainContext::push_thread_default()])
+of the thread you are calling this function from.</p>
+<p>You are guaranteed that one of the @name_acquired_handler and @name_lost_handler
+callbacks will be invoked after calling this function — there are three
+possible cases:</p>
+<ul>
+<li>@name_lost_handler with a <code>NULL</code> connection (if a connection to the bus
+can’t be made).</li>
+<li>@bus_acquired_handler then @name_lost_handler (if the name can’t be
+obtained).</li>
+<li>@bus_acquired_handler then @name_acquired_handler (if the name was
+obtained).</li>
+</ul>
+<p>When you are done owning the name, call <code>bus_unown_name()</code> with the
+owner ID this function returns.</p>
+<p>If the name is acquired or lost (for example another application
+could acquire the name if you allow replacement or the application
+currently owning the name exits), the handlers are also invoked.
+If the <a href="struct.DBusConnection.html" title="struct gio::DBusConnection"><code>DBusConnection</code></a> that is used for attempting to own the name
+closes, then @name_lost_handler is invoked since it is no longer
+possible for other processes to access the process.</p>
+<p>You cannot use <code>bus_own_name()</code> several times for the same name (unless
+interleaved with calls to <code>bus_unown_name()</code>) — only the first call
+will work.</p>
+<p>Another guarantee is that invocations of @name_acquired_handler
+and @name_lost_handler are guaranteed to alternate; that
+is, if @name_acquired_handler is invoked then you are
+guaranteed that the next time one of the handlers is invoked, it
+will be @name_lost_handler. The reverse is also true.</p>
+<p>If you plan on exporting objects (using, for example,
+<a href="struct.DBusConnection.html#method.register_object" title="method gio::DBusConnection::register_object"><code>DBusConnection::register_object()</code></a>), note that it is generally too late
+to export the objects in @name_acquired_handler. Instead, you can do this
+in @bus_acquired_handler since you are guaranteed that this will run
+before @name is requested from the bus.</p>
+<p>This behavior makes it very simple to write applications that want
+to <a href="dbus-name-owning.html#d-bus-name-owning">own names</a> and export objects.
+Simply register objects to be exported in @bus_acquired_handler and
+unregister the objects (if any) in @name_lost_handler.</p>
+<h3 id="bus_type"><a class="doc-anchor" href="#bus_type">§</a><code>bus_type</code></h3>
+<p>the type of bus to own a name on</p>
+<h3 id="name"><a class="doc-anchor" href="#name">§</a><code>name</code></h3>
+<p>the well-known name to own</p>
+<h3 id="flags"><a class="doc-anchor" href="#flags">§</a><code>flags</code></h3>
+<p>a set of flags with ownership options</p>
+<h3 id="bus_acquired_handler"><a class="doc-anchor" href="#bus_acquired_handler">§</a><code>bus_acquired_handler</code></h3>
+<p>handler to invoke when
+connected to the bus of type @bus_type, or <code>NULL</code> to ignore</p>
+<h3 id="name_acquired_handler"><a class="doc-anchor" href="#name_acquired_handler">§</a><code>name_acquired_handler</code></h3>
+<p>handler to invoke when
+@name is acquired, or <code>NULL</code> to ignore</p>
+<h3 id="name_lost_handler"><a class="doc-anchor" href="#name_lost_handler">§</a><code>name_lost_handler</code></h3>
+<p>handler to invoke when @name
+is lost, or <code>NULL</code> to ignore</p>
+<h2 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h2>
+<p>an identifier (never 0) that can be used with
+<code>bus_unown_name()</code> to stop owning the name</p>
+</div></details></section></div></main></body></html>
