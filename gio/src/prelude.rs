@@ -26,3 +26,8 @@ pub use crate::{
     socket_control_message::SocketControlMessageExtManual,
     socket_listener::SocketListenerExtManual, tls_connection::TlsConnectionExtManual,
 };
+#[cfg(unix)]
+pub use crate::{
+    unix_fd_list::UnixFDListExtManual,
+    unix_socket_address::{UnixSocketAddressExtManual, UnixSocketAddressPath},
+};
