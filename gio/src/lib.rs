@@ -89,6 +89,10 @@ mod socket_listener;
 mod subprocess;
 mod subprocess_launcher;
 mod threaded_socket_service;
+#[cfg(unix)]
+mod unix_fd_list;
+#[cfg(unix)]
+mod unix_socket_address;
 
 #[cfg(test)]
 mod test_util;
