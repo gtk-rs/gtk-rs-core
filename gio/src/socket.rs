@@ -50,7 +50,7 @@ impl Socket {
 
     #[cfg(windows)]
     #[cfg_attr(docsrs, doc(cfg(windows)))]
-    pub fn from_raw_socket(socket: impl IntoRawSocket) -> Result<Socket, glib::Error> {
+    pub unsafe fn from_raw_socket(socket: impl IntoRawSocket) -> Result<Socket, glib::Error> {
         let socket = socket.into_raw_socket();
         let mut error = ptr::null_mut();
         unsafe {
