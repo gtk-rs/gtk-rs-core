@@ -231,6 +231,7 @@ impl ToTokens for Closure {
                         #(#inner_before)*
                         #(#arg_values)*
                         #crate_ident::closure::IntoClosureReturnValue::into_closure_return_value({
+                            #[allow(clippy::redundant_closure)]
                             let ____res = (#closure)(#(#arg_names),*);
                             #assert_return_type
                             ____res
