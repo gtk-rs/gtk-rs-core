@@ -437,6 +437,14 @@ impl From<&'_ [&'_ GStr]> for StrV {
     }
 }
 
+impl From<crate::PtrSlice<GStringPtr>> for StrV {
+    #[inline]
+    fn from(value: crate::PtrSlice<GStringPtr>) -> Self {
+        let len = value.len();
+        unsafe { Self::from_glib_full_num(value.into_glib_ptr(), len, true) }
+    }
+}
+
 impl Clone for StrV {
     #[inline]
     fn clone(&self) -> Self {
@@ -1897,5 +1905,20 @@ mod test {
         assert_ne!(strv_ref, &[][..]);
         assert_ne!(strv_ref, &["a", "b"][..]);
         assert_ne!(strv_ref, &["b"][..]);
+    }
+
+    #[test]
+    fn test_from_ptr_slice() {
+        let items = [
+            GStringPtr::from("a"),
+            GStringPtr::from("b"),
+            GStringPtr::from("c"),
+        ];
+        let ptr_slice: crate::PtrSlice<GStringPtr> = crate::PtrSlice::from(&items[..]);
+        let strv: StrV = ptr_slice.into();
+
+        for (i, item) in items.into_iter().enumerate() {
+            assert_eq!(strv[i], item);
+        }
     }
 }
