@@ -1078,7 +1078,7 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
             let priv_ = mem::MaybeUninit::<PrivateStruct<T>>::uninit();
             let ptr = priv_.as_ptr();
             let imp_ptr = ptr::addr_of!((*ptr).imp);
-            (imp_ptr as isize) - (ptr as isize)
+            (imp_ptr.addr() as isize) - (ptr.addr() as isize)
         };
 
         let iface_types = T::Interfaces::iface_infos();
@@ -1166,7 +1166,7 @@ pub fn register_dynamic_type<P: DynamicObjectRegisterExt, T: ObjectSubclass>(
             let priv_ = mem::MaybeUninit::<PrivateStruct<T>>::uninit();
             let ptr = priv_.as_ptr();
             let imp_ptr = ptr::addr_of!((*ptr).imp);
-            (imp_ptr as isize) - (ptr as isize)
+            (imp_ptr.addr() as isize) - (ptr.addr() as isize)
         };
 
         let plugin_ptr = type_plugin.as_ref().to_glib_none().0;

@@ -167,7 +167,7 @@ impl IConv {
                 ffi::g_iconv_open(to_codeset.to_glib_none().0, from_codeset.to_glib_none().0)
             })
         });
-        (iconv as isize != -1).then(|| Self(iconv))
+        (iconv.addr() as isize != -1).then(|| Self(iconv))
     }
     #[doc(alias = "g_convert_with_iconv")]
     pub fn convert(&mut self, str_: &[u8]) -> Result<(Slice<u8>, usize), CvtError> {
