@@ -1068,16 +1068,7 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
             mem::size_of::<PrivateStruct<T>>(),
         );
         data.as_mut().private_offset = private_offset as isize;
-
-        // Get the offset from PrivateStruct<T> to the imp field in it. This has to go through
-        // some hoops because Rust doesn't have an offsetof operator yet.
-        data.as_mut().private_imp_offset = {
-            // Must not be a dangling pointer so let's create some uninitialized memory
-            let priv_ = mem::MaybeUninit::<PrivateStruct<T>>::uninit();
-            let ptr = priv_.as_ptr();
-            let imp_ptr = ptr::addr_of!((*ptr).imp);
-            (imp_ptr.addr() as isize) - (ptr.addr() as isize)
-        };
+        data.as_mut().private_imp_offset = mem::offset_of!(PrivateStruct<T>, imp) as isize;
 
         let iface_types = T::Interfaces::iface_infos();
         for (iface_type, iface_info) in iface_types {
@@ -1156,16 +1147,7 @@ pub fn register_dynamic_type<P: DynamicObjectRegisterExt, T: ObjectSubclass>(
 
         let private_offset = mem::size_of::<PrivateStruct<T>>();
         data.as_mut().private_offset = private_offset as isize;
-
-        // gets the offset from PrivateStruct<T> to the imp field in it. This has to go through
-        // some hoops because Rust doesn't have an offsetof operator yet.
-        data.as_mut().private_imp_offset = {
-            // Must not be a dangling pointer so let's create some uninitialized memory
-            let priv_ = mem::MaybeUninit::<PrivateStruct<T>>::uninit();
-            let ptr = priv_.as_ptr();
-            let imp_ptr = ptr::addr_of!((*ptr).imp);
-            (imp_ptr.addr() as isize) - (ptr.addr() as isize)
-        };
+        data.as_mut().private_imp_offset = mem::offset_of!(PrivateStruct<T>, imp) as isize;
 
         let plugin_ptr = type_plugin.as_ref().to_glib_none().0;
         let iface_types = T::Interfaces::iface_infos();
