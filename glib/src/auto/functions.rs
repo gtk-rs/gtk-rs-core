@@ -407,6 +407,14 @@ pub fn monotonic_time() -> i64 {
     unsafe { ffi::g_get_monotonic_time() }
 }
 
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+#[doc(alias = "g_get_monotonic_time_ns")]
+#[doc(alias = "get_monotonic_time_ns")]
+pub fn monotonic_time_ns() -> u64 {
+    unsafe { ffi::g_get_monotonic_time_ns() }
+}
+
 #[doc(alias = "g_get_num_processors")]
 #[doc(alias = "get_num_processors")]
 pub fn num_processors() -> u32 {
