@@ -405,7 +405,7 @@ impl<'a> LogField<'a> {
         Self(
             ffi::GLogField {
                 key: key.as_ptr(),
-                value: data as *const _,
+                value: std::ptr::without_provenance(data),
                 length: 0,
             },
             Default::default(),
