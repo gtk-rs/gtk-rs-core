@@ -99,14 +99,13 @@ pub unsafe trait InstanceStructExt: InstanceStruct {
 /// overflow or if the resulting pointer is not correctly aligned.
 #[inline]
 fn offset_ptr_by_bytes<T, U>(ptr: *const T, offset: isize) -> *const U {
-    // FIXME: Use `ptr::expose_addr()` once stable
-    let ptr = ptr as usize;
+    let ptr = ptr.expose_provenance();
     let ptr = if offset < 0 {
         ptr - (-offset) as usize
     } else {
         ptr + offset as usize
     };
-    let ptr = ptr as *const U;
+    let ptr: *const U = std::ptr::with_exposed_provenance(ptr);
     debug_assert!(ptr.is_aligned());
     ptr
 }
@@ -122,14 +121,13 @@ fn offset_ptr_by_bytes<T, U>(ptr: *const T, offset: isize) -> *const U {
 /// overflow or if the resulting pointer is not correctly aligned.
 #[inline]
 fn offset_ptr_by_bytes_mut<T, U>(ptr: *mut T, offset: isize) -> *mut U {
-    // FIXME: Use `ptr::expose_addr()` once stable
-    let ptr = ptr as usize;
+    let ptr = ptr.expose_provenance();
     let ptr = if offset < 0 {
         ptr - (-offset) as usize
     } else {
         ptr + offset as usize
     };
-    let ptr = ptr as *mut U;
+    let ptr: *mut U = std::ptr::with_exposed_provenance_mut(ptr);
     debug_assert!(ptr.is_aligned());
     ptr
 }
