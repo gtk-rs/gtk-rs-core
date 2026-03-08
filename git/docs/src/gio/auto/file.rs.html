@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/file.rs`."><title>file.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.96.0-nightly (80381278a 2026-03-01)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/file.rs`."><title>file.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.96.0-nightly (e370b60cf 2026-03-07)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1166,29 +1166,29 @@
 <a href=#1093 id=1093 data-nosnippet>1093</a>    }
 <a href=#1094 id=1094 data-nosnippet>1094</a>
 <a href=#1095 id=1095 data-nosnippet>1095</a>    <span class="doccomment">/// Gets the requested information about the files in a directory.
-<a href=#1096 id=1096 data-nosnippet>1096</a>    /// The result is a #GFileEnumerator object that will give out
-<a href=#1097 id=1097 data-nosnippet>1097</a>    /// #GFileInfo objects for all the files in the directory.
+<a href=#1096 id=1096 data-nosnippet>1096</a>    /// The result is a [`FileEnumerator`][crate::FileEnumerator] object that will give out
+<a href=#1097 id=1097 data-nosnippet>1097</a>    /// [`FileInfo`][crate::FileInfo] objects for all the files in the directory.
 <a href=#1098 id=1098 data-nosnippet>1098</a>    ///
 <a href=#1099 id=1099 data-nosnippet>1099</a>    /// The @attributes value is a string that specifies the file
 <a href=#1100 id=1100 data-nosnippet>1100</a>    /// attributes that should be gathered. It is not an error if
 <a href=#1101 id=1101 data-nosnippet>1101</a>    /// it's not possible to read a particular requested attribute
 <a href=#1102 id=1102 data-nosnippet>1102</a>    /// from a file - it just won't be set. @attributes should
 <a href=#1103 id=1103 data-nosnippet>1103</a>    /// be a comma-separated list of attributes or attribute wildcards.
-<a href=#1104 id=1104 data-nosnippet>1104</a>    /// The wildcard "*" means all attributes, and a wildcard like
-<a href=#1105 id=1105 data-nosnippet>1105</a>    /// "standard::*" means all attributes in the standard namespace.
-<a href=#1106 id=1106 data-nosnippet>1106</a>    /// An example attribute query be "standard::*,owner::user".
+<a href=#1104 id=1104 data-nosnippet>1104</a>    /// The wildcard `*` means all attributes, and a wildcard like
+<a href=#1105 id=1105 data-nosnippet>1105</a>    /// `"standard::*"` means all attributes in the standard namespace.
+<a href=#1106 id=1106 data-nosnippet>1106</a>    /// An example attribute query be `"standard::*,owner::user"`.
 <a href=#1107 id=1107 data-nosnippet>1107</a>    /// The standard attributes are available as defines, like
-<a href=#1108 id=1108 data-nosnippet>1108</a>    /// [`FILE_ATTRIBUTE_STANDARD_NAME`][crate::FILE_ATTRIBUTE_STANDARD_NAME]. [`FILE_ATTRIBUTE_STANDARD_NAME`][crate::FILE_ATTRIBUTE_STANDARD_NAME] should
-<a href=#1109 id=1109 data-nosnippet>1109</a>    /// always be specified if you plan to call g_file_enumerator_get_child() or
-<a href=#1110 id=1110 data-nosnippet>1110</a>    /// g_file_enumerator_iterate() on the returned enumerator.
+<a href=#1108 id=1108 data-nosnippet>1108</a>    /// `FILE_ATTRIBUTE_STANDARD_NAME`. `FILE_ATTRIBUTE_STANDARD_NAME` should
+<a href=#1109 id=1109 data-nosnippet>1109</a>    /// always be specified if you plan to call [`FileEnumeratorExt::child()`][crate::prelude::FileEnumeratorExt::child()] or
+<a href=#1110 id=1110 data-nosnippet>1110</a>    /// `FileEnumerator::iterate()` on the returned enumerator.
 <a href=#1111 id=1111 data-nosnippet>1111</a>    ///
-<a href=#1112 id=1112 data-nosnippet>1112</a>    /// If @cancellable is not [`None`], then the operation can be cancelled
+<a href=#1112 id=1112 data-nosnippet>1112</a>    /// If @cancellable is not `NULL`, then the operation can be cancelled
 <a href=#1113 id=1113 data-nosnippet>1113</a>    /// by triggering the cancellable object from another thread. If the
-<a href=#1114 id=1114 data-nosnippet>1114</a>    /// operation was cancelled, the error [`IOErrorEnum::Cancelled`][crate::IOErrorEnum::Cancelled] will be
+<a href=#1114 id=1114 data-nosnippet>1114</a>    /// operation was cancelled, the error [error@Gio.IOErrorEnum.CANCELLED] will be
 <a href=#1115 id=1115 data-nosnippet>1115</a>    /// returned.
 <a href=#1116 id=1116 data-nosnippet>1116</a>    ///
-<a href=#1117 id=1117 data-nosnippet>1117</a>    /// If the file does not exist, the [`IOErrorEnum::NotFound`][crate::IOErrorEnum::NotFound] error will
-<a href=#1118 id=1118 data-nosnippet>1118</a>    /// be returned. If the file is not a directory, the [`IOErrorEnum::NotDirectory`][crate::IOErrorEnum::NotDirectory]
+<a href=#1117 id=1117 data-nosnippet>1117</a>    /// If the file does not exist, the [error@Gio.IOErrorEnum.NOT_FOUND] error will
+<a href=#1118 id=1118 data-nosnippet>1118</a>    /// be returned. If the file is not a directory, the [error@Gio.IOErrorEnum.NOT_DIRECTORY]
 <a href=#1119 id=1119 data-nosnippet>1119</a>    /// error will be returned. Other errors are possible too.
 <a href=#1120 id=1120 data-nosnippet>1120</a>    /// ## `attributes`
 <a href=#1121 id=1121 data-nosnippet>1121</a>    /// an attribute query string
@@ -1201,7 +1201,7 @@
 <a href=#1128 id=1128 data-nosnippet>1128</a>    /// # Returns
 <a href=#1129 id=1129 data-nosnippet>1129</a>    ///
 <a href=#1130 id=1130 data-nosnippet>1130</a>    /// A #GFileEnumerator if successful,
-<a href=#1131 id=1131 data-nosnippet>1131</a>    ///   [`None`] on error. Free the returned object with g_object_unref().
+<a href=#1131 id=1131 data-nosnippet>1131</a>    ///   [`None`] on error. Free the returned object with `GObject::Object::unref()`.
 <a href=#1132 id=1132 data-nosnippet>1132</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_enumerate_children"</span>)]
 <a href=#1133 id=1133 data-nosnippet>1133</a>    </span><span class="kw">fn </span>enumerate_children(
 <a href=#1134 id=1134 data-nosnippet>1134</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -2861,7 +2861,7 @@
 <a href=#2788 id=2788 data-nosnippet>2788</a>    /// that should be gathered. It is not an error if it's not possible
 <a href=#2789 id=2789 data-nosnippet>2789</a>    /// to read a particular requested attribute from a file - it just
 <a href=#2790 id=2790 data-nosnippet>2790</a>    /// won't be set. @attributes should be a comma-separated list of
-<a href=#2791 id=2791 data-nosnippet>2791</a>    /// attributes or attribute wildcards. The wildcard "*" means all
+<a href=#2791 id=2791 data-nosnippet>2791</a>    /// attributes or attribute wildcards. The wildcard "\*" means all
 <a href=#2792 id=2792 data-nosnippet>2792</a>    /// attributes, and a wildcard like "filesystem::*" means all attributes
 <a href=#2793 id=2793 data-nosnippet>2793</a>    /// in the filesystem namespace. The standard namespace for filesystem
 <a href=#2794 id=2794 data-nosnippet>2794</a>    /// attributes is "filesystem". Common attributes of interest are
@@ -3031,7 +3031,7 @@
 <a href=#2958 id=2958 data-nosnippet>2958</a>    ///  - `Gio::FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME`
 <a href=#2959 id=2959 data-nosnippet>2959</a>    ///
 <a href=#2960 id=2960 data-nosnippet>2960</a>    /// @attributes should be a comma-separated list of attributes or attribute
-<a href=#2961 id=2961 data-nosnippet>2961</a>    /// wildcards. The wildcard `"*"` means all attributes, and a wildcard like
+<a href=#2961 id=2961 data-nosnippet>2961</a>    /// wildcards. The wildcard `"\*"` means all attributes, and a wildcard like
 <a href=#2962 id=2962 data-nosnippet>2962</a>    /// `"standard::*"` means all attributes in the standard namespace.
 <a href=#2963 id=2963 data-nosnippet>2963</a>    /// An example attribute query might be `"standard::*,owner::user"`.
 <a href=#2964 id=2964 data-nosnippet>2964</a>    /// The standard attributes are available as defines, like

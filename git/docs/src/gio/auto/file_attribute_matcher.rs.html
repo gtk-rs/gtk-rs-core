@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/file_attribute_matcher.rs`."><title>file_attribute_matcher.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.96.0-nightly (80381278a 2026-03-01)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/file_attribute_matcher.rs`."><title>file_attribute_matcher.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b7b9f40b.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.96.0-nightly (e370b60cf 2026-03-07)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-b897f86f.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -92,16 +92,16 @@
 <a href=#19 id=19 data-nosnippet>19</a>
 <a href=#20 id=20 data-nosnippet>20</a><span class="kw">impl </span><a href="#8-18">FileAttributeMatcher</a> {
 <a href=#21 id=21 data-nosnippet>21</a>    <span class="doccomment">/// Creates a new file attribute matcher, which matches attributes
-<a href=#22 id=22 data-nosnippet>22</a>    /// against a given string. #GFileAttributeMatchers are reference
+<a href=#22 id=22 data-nosnippet>22</a>    /// against a given string. [GFileAttributeMatchers][`FileAttributeMatcher`][crate::FileAttributeMatcher] are reference
 <a href=#23 id=23 data-nosnippet>23</a>    /// counted structures, and are created with a reference count of 1. If
-<a href=#24 id=24 data-nosnippet>24</a>    /// the number of references falls to 0, the #GFileAttributeMatcher is
+<a href=#24 id=24 data-nosnippet>24</a>    /// the number of references falls to 0, the [`FileAttributeMatcher`][crate::FileAttributeMatcher] is
 <a href=#25 id=25 data-nosnippet>25</a>    /// automatically destroyed.
 <a href=#26 id=26 data-nosnippet>26</a>    ///
 <a href=#27 id=27 data-nosnippet>27</a>    /// The @attributes string should be formatted with specific keys separated
-<a href=#28 id=28 data-nosnippet>28</a>    /// from namespaces with a double colon. Several "namespace::key" strings may be
-<a href=#29 id=29 data-nosnippet>29</a>    /// concatenated with a single comma (e.g. "standard::type,standard::is-hidden").
-<a href=#30 id=30 data-nosnippet>30</a>    /// The wildcard "*" may be used to match all keys and namespaces, or
-<a href=#31 id=31 data-nosnippet>31</a>    /// "namespace::*" will match all keys in a given namespace.
+<a href=#28 id=28 data-nosnippet>28</a>    /// from namespaces with a double colon. Several `"namespace::key"` strings may be
+<a href=#29 id=29 data-nosnippet>29</a>    /// concatenated with a single comma (e.g. `"standard::type,standard::is-hidden"`).
+<a href=#30 id=30 data-nosnippet>30</a>    /// The wildcard `"*"` may be used to match all keys and namespaces, or
+<a href=#31 id=31 data-nosnippet>31</a>    /// `"namespace::*"` will match all keys in a given namespace.
 <a href=#32 id=32 data-nosnippet>32</a>    ///
 <a href=#33 id=33 data-nosnippet>33</a>    /// ## Examples of file attribute matcher strings and results
 <a href=#34 id=34 data-nosnippet>34</a>    ///
@@ -127,7 +127,7 @@
 <a href=#54 id=54 data-nosnippet>54</a>
 <a href=#55 id=55 data-nosnippet>55</a>    <span class="doccomment">/// Checks if the matcher will match all of the keys in a given namespace.
 <a href=#56 id=56 data-nosnippet>56</a>    /// This will always return [`true`] if a wildcard character is in use (e.g. if
-<a href=#57 id=57 data-nosnippet>57</a>    /// matcher was created with "standard::*" and @ns is "standard", or if matcher was created
+<a href=#57 id=57 data-nosnippet>57</a>    /// matcher was created with "standard::\*" and @ns is "standard", or if matcher was created
 <a href=#58 id=58 data-nosnippet>58</a>    /// using "*" and namespace is anything.)
 <a href=#59 id=59 data-nosnippet>59</a>    ///
 <a href=#60 id=60 data-nosnippet>60</a>    /// TODO: this is awkwardly worded.
