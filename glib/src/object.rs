@@ -3551,6 +3551,35 @@ impl<T: ObjectType> WeakRef<T> {
             }
         }
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Try to upgrade this weak reference to a strong reference.
+    ///
+    /// If the stored object was already destroyed or no object was set, the
+    /// reference is updated to `value`, which is then returned
+    #[inline]
+    pub fn upgrade_or_insert(&self, value: T) -> T {
+        self.upgrade_or_insert_with(|| value)
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Try to upgrade this weak reference to a strong reference.
+    ///
+    /// If the stored object was already destroyed or no object was set, the
+    /// reference is updated to the result of `f`, which is then returned
+    #[inline]
+    pub fn upgrade_or_insert_with<F>(&self, f: F) -> T
+    where
+        F: FnOnce() -> T,
+    {
+        if let Some(object) = self.upgrade() {
+            object
+        } else {
+            let object = f();
+            self.set(Some(&object));
+            object
+        }
+    }
 }
 
 impl<T: ObjectType> Drop for WeakRef<T> {
