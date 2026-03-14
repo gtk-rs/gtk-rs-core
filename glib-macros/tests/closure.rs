@@ -119,7 +119,7 @@ const TESTS: &[(&str, &str)] = &[
         r#"error: `upgrade_or_else` closure needs to be a non-async closure
  --> test_15.rs:1:89
   |
-1 | fn main() { use glib::closure; let v = std::rc::Rc::new(1); closure!(#[upgrade_or_else] async || lol, #[strong] v, move || {println!("foo...
+1 | fn main() { use glib::closure; let v = std::rc::Rc::new(1); closure!(#[upgrade_or_else] async || lol, #[strong] v, move || {println!("foo");}); }
   |                                                                                         ^^^^^^^^^^^^"#,
     ),
     (
