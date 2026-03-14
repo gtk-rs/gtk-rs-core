@@ -1248,6 +1248,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) G_NORMALIZE_NFD", "0"),
     ("(gint) G_NORMALIZE_NFKC", "3"),
     ("(gint) G_NORMALIZE_NFKD", "2"),
+    ("G_NSEC_PER_SEC", "1000000000"),
     ("(gint) G_NUMBER_PARSER_ERROR_INVALID", "0"),
     ("(gint) G_NUMBER_PARSER_ERROR_OUT_OF_BOUNDS", "1"),
     ("(gint) G_ONCE_STATUS_NOTCALLED", "0"),

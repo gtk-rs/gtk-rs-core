@@ -767,6 +767,7 @@ pub const G_LN2: c_double = 0.693147;
 pub const G_LOG_2_BASE_10: c_double = 0.301030;
 pub const G_LOG_FATAL_MASK: c_int = 5;
 pub const G_LOG_LEVEL_USER_SHIFT: c_int = 8;
+pub const G_NSEC_PER_SEC: u64 = 1000000000;
 pub const G_OPTION_REMAINING: &[u8] = b"\0";
 pub const G_PDP_ENDIAN: c_int = 3412;
 pub const G_PI: c_double = 3.141593;
@@ -6639,6 +6640,9 @@ unsafe extern "C" {
     -> *const *const c_char;
     pub fn g_get_locale_variants(locale: *const c_char) -> *mut *mut c_char;
     pub fn g_get_monotonic_time() -> i64;
+    #[cfg(feature = "v2_88")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
+    pub fn g_get_monotonic_time_ns() -> u64;
     pub fn g_get_num_processors() -> c_uint;
     #[cfg(feature = "v2_64")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
