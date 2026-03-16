@@ -158,6 +158,7 @@ mod convert;
 pub use self::convert::*;
 pub mod enums;
 mod functions;
+pub mod futures;
 pub use self::functions::*;
 mod key_file;
 pub mod prelude;
