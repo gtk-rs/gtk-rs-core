@@ -644,41 +644,47 @@ impl MainContext {
     ///
     /// The given `Future` does not have to be `Send` or `'static`.
     ///
-    /// This must only be called if no `MainLoop` or anything else is running on this specific main
-    /// context.
+    /// # Panics
+    ///
+    /// This panics if the main context can't be acquired on this thread and can't be made the
+    /// thread default, which means that some other thread currently owns it.
     #[allow(clippy::transmute_ptr_to_ptr)]
     pub fn block_on<F: Future>(&self, f: F) -> F::Output {
-        let mut res = None;
-        let l = MainLoop::new(Some(self), false);
+        self.with_thread_default(|| {
+            let mut res = None;
+            let l = MainLoop::new(Some(self), false);
 
-        let f = async {
-            res = Some(panic::AssertUnwindSafe(f).catch_unwind().await);
-            l.quit();
-        };
+            let f = async {
+                res = Some(panic::AssertUnwindSafe(f).catch_unwind().await);
+                l.quit();
+            };
 
-        let f = unsafe {
-            // Super-unsafe: We transmute here to get rid of the 'static lifetime
-            let f = LocalFutureObj::new(Box::new(async move {
-                f.await;
-                Box::new(()) as Box<dyn Any + 'static>
-            }));
-            let f: LocalFutureObj<'static, Box<dyn Any + 'static>> = mem::transmute(f);
-            f
-        };
+            let f = unsafe {
+                // Super-unsafe: We transmute here to get rid of the 'static lifetime
+                // See also https://github.com/rust-lang/unsafe-code-guidelines/issues/282
+                let f = LocalFutureObj::new(Box::new(async move {
+                    f.await;
+                    Box::new(()) as Box<dyn Any + 'static>
+                }));
+                let f: LocalFutureObj<'static, Box<dyn Any + 'static>> = mem::transmute(f);
+                f
+            };
 
-        let source = TaskSource::new(
-            crate::Priority::default(),
-            FutureWrapper::NonSend(ThreadGuard::new(f)),
-            None,
-        );
-        source.attach(Some(self));
+            let source = TaskSource::new(
+                crate::Priority::default(),
+                FutureWrapper::NonSend(ThreadGuard::new(f)),
+                None,
+            );
+            source.attach(Some(self));
 
-        l.run();
+            l.run();
 
-        match res.unwrap() {
-            Ok(v) => v,
-            Err(e) => panic::resume_unwind(e),
-        }
+            match res.unwrap() {
+                Ok(v) => v,
+                Err(e) => panic::resume_unwind(e),
+            }
+        })
+        .expect("Can't make the main context the thread default")
     }
 }
 
