@@ -25,9 +25,14 @@ mod imp {
     use gio::subclass::prelude::*;
     use gio::{DBusConnection, DBusError};
 
+    const INTERFACE_NAME: &str = "com.github.gtk_rs.examples.HelloWorld";
+    const OBJECT_PATH: &str = "/com/github/gtk_rs/examples/HelloWorld";
+    const LAST_GREETED_NAME_PROPERTY: &str = "LastGreetedName";
+
     const EXAMPLE_XML: &str = r#"
 <node>
   <interface name='com.github.gtk_rs.examples.HelloWorld'>
+    <property name='LastGreetedName' type='s' access='read' />
     <method name='Hello'>
       <arg type='s' name='name' direction='in'/>
       <arg type='s' name='greet' direction='out'/>
@@ -82,6 +87,7 @@ mod imp {
     #[derive(Default)]
     pub struct SampleApplication {
         registration_id: RefCell<Option<gio::RegistrationId>>,
+        last_greeted_name: RefCell<Option<String>>,
     }
 
     impl SampleApplication {
@@ -91,16 +97,40 @@ mod imp {
         ) -> Result<gio::RegistrationId, glib::Error> {
             let example = gio::DBusNodeInfo::for_xml(EXAMPLE_XML)
                 .ok()
-                .and_then(|e| e.lookup_interface("com.github.gtk_rs.examples.HelloWorld"))
+                .and_then(|e| e.lookup_interface(INTERFACE_NAME))
                 .expect("Example interface");
 
             connection
-                .register_object("/com/github/gtk_rs/examples/HelloWorld", &example)
+                .register_object(OBJECT_PATH, &example)
+                .property(glib::clone!(
+                    #[weak(rename_to = app)]
+                    self.obj(),
+                    #[upgrade_or_else]
+                    || Err(glib::Error::new(gio::DBusError::Failed, "exiting")),
+                    move |_, _, _, _, property_name| {
+                        match property_name {
+                            LAST_GREETED_NAME_PROPERTY => {
+                                if let Some(name) = &*app.imp().last_greeted_name.borrow() {
+                                    Ok(name.to_variant())
+                                } else {
+                                    Err(glib::Error::new(
+                                        gio::DBusError::Failed,
+                                        "nobody has been greeted yet",
+                                    ))
+                                }
+                            }
+                            _ => Err(glib::Error::new(
+                                gio::DBusError::UnknownProperty,
+                                "unknown property",
+                            )),
+                        }
+                    },
+                ))
                 .typed_method_call::<HelloMethod>()
                 .invoke_and_return_future_local(glib::clone!(
                     #[weak_allow_none(rename_to = app)]
                     self.obj(),
-                    move |_, sender, call| {
+                    move |connection, sender, call| {
                         println!("Method call from {sender:?}");
                         let app = app.clone();
                         async move {
@@ -108,12 +138,18 @@ mod imp {
                                 HelloMethod::Hello(Hello { name }) => {
                                     let greet = format!("Hello {name}!");
                                     println!("{greet}");
+                                    if let Some(app) = app {
+                                        app.imp().set_last_greeted_name(name, &connection);
+                                    }
                                     Ok(Some(greet.to_variant()))
                                 }
                                 HelloMethod::SlowHello(SlowHello { name, delay }) => {
                                     glib::timeout_future(Duration::from_secs(delay as u64)).await;
                                     let greet = format!("Hello {name} after {delay} seconds!");
                                     println!("{greet}");
+                                    if let Some(app) = app {
+                                        app.imp().set_last_greeted_name(name, &connection);
+                                    }
                                     Ok(Some(greet.to_variant()))
                                 }
                                 HelloMethod::GoodBye => {
@@ -127,6 +163,22 @@ mod imp {
                     }
                 ))
                 .build()
+        }
+
+        fn set_last_greeted_name(&self, name: String, connection: &DBusConnection) {
+            *self.last_greeted_name.borrow_mut() = Some(name.clone());
+
+            let changed_properties = glib::VariantDict::default();
+            changed_properties.insert(LAST_GREETED_NAME_PROPERTY, name);
+            let invalidated_properties: &[&str] = &[];
+            let parameters = (INTERFACE_NAME, changed_properties, invalidated_properties);
+            _ = connection.emit_signal(
+                None,
+                OBJECT_PATH,
+                "org.freedesktop.DBus.Properties",
+                "PropertiesChanged",
+                Some(&parameters.to_variant()),
+            );
         }
     }
 
