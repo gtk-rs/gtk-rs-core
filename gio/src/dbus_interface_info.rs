@@ -92,7 +92,7 @@ mod tests {
     fn iterate_empty_properties() {
         const XML: &str = r#"
         <node>
-            <interface name='com.github.gtk_rs.Test />
+            <interface name='com.github.gtk_rs.Test' />
         </node>
         "#;
         let node_info = DBusNodeInfo::for_xml(XML).unwrap();
