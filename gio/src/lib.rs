@@ -31,6 +31,7 @@ mod datagram_based;
 mod dbus;
 pub use self::dbus::*;
 mod dbus_connection;
+mod dbus_property_info;
 pub use self::dbus_connection::{
     ActionGroupExportId, DBusSignalRef, FilterId, MenuModelExportId, RegistrationBuilder,
     RegistrationId, SignalSubscription, SignalSubscriptionId, SubscribedSignalStream, WatcherId,
