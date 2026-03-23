@@ -446,6 +446,26 @@ mod imp {
             }
         }
 
+        fn set_attributes_future(
+            &self,
+            info: &FileInfo,
+            flags: FileQueryInfoFlags,
+            _priority: glib::Priority,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<FileInfo, Error>> + 'static>>
+        {
+            let info = info.clone();
+            Box::pin(GioFuture::new(
+                &self.ref_counted(),
+                move |self_, cancellable, send| {
+                    // Call set_attributes_from_info and return the info
+                    let res = self_
+                        .set_attributes_from_info(&info, flags, Some(cancellable))
+                        .map(|_| info);
+                    send.resolve(res);
+                },
+            ))
+        }
+
         fn set_attributes_from_info(
             &self,
             info: &FileInfo,
@@ -1928,6 +1948,43 @@ fn file_set_attribute() {
         file_info.attribute_as_string("xattr::key1"),
         expected.attribute_as_string("xattr::key1")
     );
+}
+
+#[test]
+fn file_set_attributes_future() {
+    // run test in a main context dedicated and configured as the thread default one
+    let _ = glib::MainContext::new().with_thread_default(|| {
+        // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::set_attributes_async/finish`
+        let my_custom_file = MyCustomFile::new("/my_file");
+        let info = FileInfo::new();
+        info.set_attribute_string("xattr::key1", "value1");
+        let res =
+            glib::MainContext::ref_thread_default().block_on(my_custom_file.set_attributes_future(
+                &info,
+                FileQueryInfoFlags::NONE,
+                glib::Priority::DEFAULT,
+            ));
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let file_info = res.unwrap();
+
+        // invoke `MyFile` implementation of `crate::ffi::GFileIface::set_attributes_async/finish`
+        let my_file = MyFile::new("/my_file");
+        let info = FileInfo::new();
+        info.set_attribute_string("xattr::key1", "value1");
+        let res = glib::MainContext::ref_thread_default().block_on(my_file.set_attributes_future(
+            &info,
+            FileQueryInfoFlags::NONE,
+            glib::Priority::DEFAULT,
+        ));
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let expected = res.unwrap();
+
+        // both file attributes should equal
+        assert_eq!(
+            file_info.attribute_as_string("xattr::key1"),
+            expected.attribute_as_string("xattr::key1")
+        );
+    });
 }
 
 #[test]

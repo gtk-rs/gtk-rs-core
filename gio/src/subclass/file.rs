@@ -186,6 +186,16 @@ pub trait FileImpl: ObjectImpl + ObjectSubclass<Type: IsA<File>> {
         self.parent_set_attribute(attribute, value, flags, cancellable)
     }
 
+    fn set_attributes_future(
+        &self,
+        info: &FileInfo,
+        flags: FileQueryInfoFlags,
+        priority: glib::Priority,
+    ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<FileInfo, Error>> + 'static>>
+    {
+        self.parent_set_attributes_future(info, flags, priority)
+    }
+
     fn set_attributes_from_info(
         &self,
         info: &FileInfo,
@@ -1380,6 +1390,104 @@ pub trait FileImplExt: FileImpl {
                 ))
             }
         }
+    }
+
+    fn parent_set_attributes_async<R: FnOnce(Result<FileInfo, Error>) + 'static>(
+        &self,
+        info: &FileInfo,
+        flags: FileQueryInfoFlags,
+        priority: glib::Priority,
+        cancellable: Option<&Cancellable>,
+        callback: R,
+    ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+        unsafe {
+            let type_data = Self::type_data();
+            let parent_iface =
+                type_data.as_ref().parent_interface::<File>() as *const ffi::GFileIface;
+
+            let f = (*parent_iface)
+                .set_attributes_async
+                .expect("no parent interface implementation for \"set_attributes_async\"");
+            let finish = (*parent_iface)
+                .set_attributes_finish
+                .expect("no parent interface \"set_attributes_finish\" implementation");
+
+            let user_data: Box<(glib::thread_guard::ThreadGuard<R>, _)> =
+                Box::new((glib::thread_guard::ThreadGuard::new(callback), finish));
+
+            unsafe extern "C" fn set_attributes_async_trampoline<
+                T: FnOnce(Result<FileInfo, Error>) + 'static,
+            >(
+                source_object_ptr: *mut glib::gobject_ffi::GObject,
+                res: *mut ffi::GAsyncResult,
+                user_data: glib::ffi::gpointer,
+            ) {
+                unsafe {
+                    let mut error = std::ptr::null_mut();
+                    let mut out: *mut ffi::GFileInfo = std::ptr::null_mut();
+                    let cb: Box<(
+                        glib::thread_guard::ThreadGuard<T>,
+                        unsafe extern "C" fn(
+                            *mut ffi::GFile,
+                            *mut ffi::GAsyncResult,
+                            *mut *mut ffi::GFileInfo,
+                            *mut *mut glib::ffi::GError,
+                        ) -> glib::ffi::gboolean,
+                    )> = Box::from_raw(user_data as *mut _);
+                    cb.1(source_object_ptr as _, res, &mut out, &mut error);
+                    let result = if error.is_null() {
+                        Ok(from_glib_full(out))
+                    } else {
+                        Err(from_glib_full(error))
+                    };
+                    let cb = cb.0.into_inner();
+                    cb(result);
+                }
+            }
+
+            f(
+                self.obj().unsafe_cast_ref::<File>().to_glib_none().0,
+                info.to_glib_none().0,
+                flags.into_glib(),
+                priority.into_glib(),
+                cancellable.to_glib_none().0,
+                Some(set_attributes_async_trampoline::<R>),
+                Box::into_raw(user_data) as *mut _,
+            );
+        }
+    }
+
+    fn parent_set_attributes_future(
+        &self,
+        info: &FileInfo,
+        flags: FileQueryInfoFlags,
+        priority: glib::Priority,
+    ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<FileInfo, Error>> + 'static>>
+    {
+        let info = info.clone();
+        Box::pin(GioFuture::new(
+            &self.ref_counted(),
+            move |imp, cancellable, send| {
+                imp.parent_set_attributes_async(
+                    &info,
+                    flags,
+                    priority,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
     }
 
     fn parent_set_attributes_from_info(
@@ -2837,6 +2945,8 @@ unsafe impl<T: FileImpl> IsImplementable<T> for File {
         iface.query_settable_attributes = Some(file_query_settable_attributes::<T>);
         iface.query_writable_namespaces = Some(file_query_writable_namespaces::<T>);
         iface.set_attribute = Some(file_set_attribute::<T>);
+        iface.set_attributes_async = Some(file_set_attributes_async::<T>);
+        iface.set_attributes_finish = Some(file_set_attributes_finish);
         iface.set_attributes_from_info = Some(file_set_attributes_from_info::<T>);
         iface.read_fn = Some(file_read_fn::<T>);
         iface.append_to = Some(file_append_to::<T>);
@@ -2885,8 +2995,6 @@ unsafe impl<T: FileImpl> IsImplementable<T> for File {
         // iface._query_settable_attributes_finish = Some(_file_query_settable_attributes_finish::<T>);
         // iface._query_writable_namespaces_async = Some(_file_query_writable_namespaces_async::<T>);
         // iface._query_writable_namespaces_finish = Some(_file_query_writable_namespaces_finish::<T>);
-        // iface.set_attributes_async = Some(file_set_attributes_async::<T>);
-        // iface.set_attributes_finish = Some(file_set_attributes_finishv);
         // iface.read_async = Some(file_read_async::<T>);
         // iface.read_finish = Some(file_read_finish::<T>);
         // iface.append_to_async = Some(file_append_to_async::<T>);
@@ -3654,6 +3762,75 @@ unsafe extern "C" fn file_set_attribute<T: FileImpl>(
                     *error = err.to_glib_full()
                 }
                 false.into_glib()
+            }
+        }
+    }
+}
+
+unsafe extern "C" fn file_set_attributes_async<T: FileImpl>(
+    file: *mut ffi::GFile,
+    info: *mut ffi::GFileInfo,
+    flags: ffi::GFileQueryInfoFlags,
+    io_priority: i32,
+    cancellable: *mut ffi::GCancellable,
+    callback: ffi::GAsyncReadyCallback,
+    user_data: glib::ffi::gpointer,
+) {
+    unsafe {
+        let instance = &*(file as *mut T::Instance);
+        let imp = instance.imp();
+        let wrap: File = from_glib_none(file);
+        let info: FileInfo = from_glib_none(info);
+        let cancellable: Option<Cancellable> = from_glib_none(cancellable);
+
+        // Closure that will invoke the C callback when the LocalTask completes
+        let closure = move |task: LocalTask<FileInfo>, source_object: Option<&glib::Object>| {
+            let result: *mut ffi::GAsyncResult = task.upcast_ref::<AsyncResult>().to_glib_none().0;
+            let source_object: *mut glib::gobject_ffi::GObject = source_object.to_glib_none().0;
+            callback.unwrap()(source_object, result, user_data)
+        };
+
+        let t = LocalTask::new(
+            Some(wrap.upcast_ref::<glib::Object>()),
+            cancellable.as_ref(),
+            closure,
+        );
+
+        // Spawn the async work on the main context
+        glib::MainContext::ref_thread_default().spawn_local(async move {
+            // Call the trait method's future version
+            let res = imp
+                .set_attributes_future(&info, from_glib(flags), from_glib(io_priority))
+                .await;
+
+            // Store result in the task
+            t.return_result(res);
+        });
+    }
+}
+
+unsafe extern "C" fn file_set_attributes_finish(
+    _file: *mut ffi::GFile,
+    res_ptr: *mut ffi::GAsyncResult,
+    info_ptr: *mut *mut ffi::GFileInfo,
+    error_ptr: *mut *mut glib::ffi::GError,
+) -> glib::ffi::gboolean {
+    unsafe {
+        let res: AsyncResult = from_glib_none(res_ptr);
+        let t = res.downcast::<LocalTask<FileInfo>>().unwrap();
+        let ret = t.propagate();
+        match ret {
+            Ok(val) => {
+                if !info_ptr.is_null() {
+                    *info_ptr = val.to_glib_full();
+                }
+                glib::ffi::GTRUE
+            }
+            Err(e) => {
+                if !error_ptr.is_null() {
+                    *error_ptr = e.into_glib_ptr();
+                }
+                glib::ffi::GFALSE
             }
         }
     }
