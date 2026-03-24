@@ -7,7 +7,7 @@ use std::{any::Any, collections::BTreeMap, marker, mem, ptr};
 
 use super::{SignalId, interface::ObjectInterface};
 use crate::{
-    Closure, InterfaceInfo, Object, Type, TypeFlags, TypeInfo, Value, ffi, gobject_ffi,
+    Closure, InterfaceInfo, Object, Type, TypeInfo, Value, ffi, gobject_ffi,
     object::{IsClass, IsInterface, ObjectSubclassIs, ParentClassIs},
     prelude::*,
     translate::*,
@@ -618,6 +618,25 @@ pub trait ObjectSubclass: ObjectSubclassType + Sized + 'static {
     const ABSTRACT: bool = false;
 
     // rustdoc-stripper-ignore-next
+    /// If this subclass is a final class or not.
+    ///
+    /// By default, all subclasses are derivables types but setting this to `true` will create a
+    /// final class instead.
+    ///
+    /// Final classes can't be derived.
+    ///
+    /// Optional.
+    const FINAL: bool = false;
+
+    // rustdoc-stripper-ignore-next
+    /// If this subclass is a deprecated class or not.
+    ///
+    /// Marking the subclass as deprecated will emit a warning if instantiated while running with `G_ENABLE_DIAGNOSTIC=1`.
+    ///
+    /// Optional.
+    const DEPRECATED: bool = false;
+
+    // rustdoc-stripper-ignore-next
     /// Allow name conflicts for this class.
     ///
     /// By default, trying to register a type with a name that was registered before will panic. If
@@ -1044,6 +1063,16 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
 
             type_name
         };
+        let mut flags = glib::TypeFlags::empty();
+        if T::ABSTRACT {
+            flags |= glib::TypeFlags::ABSTRACT;
+        }
+        if T::FINAL {
+            flags |= glib::TypeFlags::FINAL;
+        }
+        if T::DEPRECATED {
+            flags |= glib::TypeFlags::DEPRECATED;
+        }
 
         let type_ = Type::from_glib(gobject_ffi::g_type_register_static_simple(
             <T::ParentType as StaticType>::static_type().into_glib(),
@@ -1052,11 +1081,7 @@ pub fn register_type<T: ObjectSubclass>() -> Type {
             Some(class_init::<T>),
             mem::size_of::<T::Instance>() as u32,
             Some(instance_init::<T>),
-            if T::ABSTRACT {
-                gobject_ffi::G_TYPE_FLAG_ABSTRACT
-            } else {
-                0
-            },
+            flags.into_glib(),
         ));
         assert!(type_.is_valid());
 
@@ -1129,16 +1154,23 @@ pub fn register_dynamic_type<P: DynamicObjectRegisterExt, T: ObjectSubclass>(
             ..TypeInfo::default().0
         });
 
+        let mut flags = glib::TypeFlags::empty();
+        if T::ABSTRACT {
+            flags |= glib::TypeFlags::ABSTRACT;
+        }
+        if T::FINAL {
+            flags |= glib::TypeFlags::FINAL;
+        }
+        if T::DEPRECATED {
+            flags |= glib::TypeFlags::DEPRECATED;
+        }
+
         // registers the type within the `type_plugin`
         let type_ = type_plugin.register_dynamic_type(
             <T::ParentType as StaticType>::static_type(),
             type_name.to_str().unwrap(),
             &type_info,
-            if T::ABSTRACT {
-                TypeFlags::ABSTRACT
-            } else {
-                TypeFlags::NONE
-            },
+            flags,
         );
         assert!(type_.is_valid());
 
