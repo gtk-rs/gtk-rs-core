@@ -4,7 +4,7 @@ use glib::*;
 
 #[derive(Default)]
 struct Counters {
-    criticals: usize,
+    n_critical: usize,
     warnings: usize,
     messages: usize,
     infos: usize,
@@ -13,14 +13,14 @@ struct Counters {
 
 fn assert_counts(
     count: &Arc<Mutex<Counters>>,
-    criticals: usize,
+    n_critical: usize,
     warnings: usize,
     messages: usize,
     infos: usize,
     debugs: usize,
 ) {
     let count = count.lock().expect("failed to lock 1");
-    assert_eq!(count.criticals, criticals);
+    assert_eq!(count.n_critical, n_critical);
     assert_eq!(count.warnings, warnings);
     assert_eq!(count.messages, messages);
     assert_eq!(count.infos, infos);
@@ -42,7 +42,7 @@ fn check_log_handlers() {
         move |_, level, _| {
             match level {
                 LogLevel::Critical => {
-                    count.lock().expect("failed to lock 3").criticals += 1;
+                    count.lock().expect("failed to lock 3").n_critical += 1;
                 }
                 LogLevel::Warning => {
                     count.lock().expect("failed to lock 4").warnings += 1;
