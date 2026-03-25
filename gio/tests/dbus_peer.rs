@@ -81,7 +81,7 @@ fn test_gdbus_peer_connection() {
                         _property_name
                     );
                     assert_eq!(_property_name, "Number");
-                    123.to_variant()
+                    Ok(123.to_variant())
                 }
             })
             .set_property({
@@ -96,7 +96,7 @@ fn test_gdbus_peer_connection() {
                     );
                     assert_eq!(_property_name, "Number");
                     assert_eq!(_value, 456.to_variant());
-                    true
+                    Ok(())
                 }
             })
             .build()

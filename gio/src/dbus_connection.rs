@@ -4,7 +4,7 @@ use std::{boxed::Box as Box_, future::Future, marker::PhantomData, num::NonZeroU
 
 use crate::{
     ActionGroup, DBusConnection, DBusInterfaceInfo, DBusMessage, DBusMethodInvocation,
-    DBusSignalFlags, MenuModel, ffi,
+    DBusPropertyInfoFlags, DBusSignalFlags, MenuModel, ffi,
 };
 use futures_channel::mpsc;
 use futures_core::{FusedStream, Stream};
@@ -307,11 +307,30 @@ pub struct RegistrationBuilder<'a> {
         >,
     >,
     #[allow(clippy::type_complexity)]
-    get_property:
-        Option<Box_<dyn Fn(DBusConnection, Option<&str>, &str, &str, &str) -> glib::Variant>>,
+    get_property: Option<
+        Box_<
+            dyn Fn(
+                DBusConnection,
+                Option<&str>,
+                &str,
+                &str,
+                &str,
+            ) -> Result<glib::Variant, glib::Error>,
+        >,
+    >,
     #[allow(clippy::type_complexity)]
-    set_property:
-        Option<Box_<dyn Fn(DBusConnection, Option<&str>, &str, &str, &str, glib::Variant) -> bool>>,
+    set_property: Option<
+        Box_<
+            dyn Fn(
+                DBusConnection,
+                Option<&str>,
+                &str,
+                &str,
+                &str,
+                glib::Variant,
+            ) -> Result<(), glib::Error>,
+        >,
+    >,
 }
 
 impl<'a> RegistrationBuilder<'a> {
@@ -348,7 +367,8 @@ impl<'a> RegistrationBuilder<'a> {
 
     #[doc(alias = "get_property")]
     pub fn property<
-        F: Fn(DBusConnection, Option<&str>, &str, &str, &str) -> glib::Variant + 'static,
+        F: Fn(DBusConnection, Option<&str>, &str, &str, &str) -> Result<glib::Variant, glib::Error>
+            + 'static,
     >(
         mut self,
         f: F,
@@ -358,7 +378,15 @@ impl<'a> RegistrationBuilder<'a> {
     }
 
     pub fn set_property<
-        F: Fn(DBusConnection, Option<&str>, &str, &str, &str, glib::Variant) -> bool + 'static,
+        F: Fn(
+                DBusConnection,
+                Option<&str>,
+                &str,
+                &str,
+                &str,
+                glib::Variant,
+            ) -> Result<(), glib::Error>
+            + 'static,
     >(
         mut self,
         f: F,
@@ -368,14 +396,17 @@ impl<'a> RegistrationBuilder<'a> {
     }
 
     pub fn build(self) -> Result<RegistrationId, glib::Error> {
+        const PROPERTIES_INTERFACE: &str = "org.freedesktop.DBus.Properties";
         unsafe {
             let mut error = std::ptr::null_mut();
+            let interface_info = self.interface_info.clone();
+            // We handle get_/set_property ourselves because the closure versions can't return errors.
             let id = ffi::g_dbus_connection_register_object_with_closures(
                 self.connection.to_glib_none().0,
                 self.object_path.to_glib_none().0,
                 self.interface_info.to_glib_none().0,
                 self.method_call
-                    .map(|f| {
+                    .map(move |f| {
                         glib::Closure::new_local(move |args| {
                             let conn = args[0].get::<DBusConnection>().unwrap();
                             let sender = args[1].get::<Option<&str>>().unwrap();
@@ -396,57 +427,61 @@ impl<'a> RegistrationBuilder<'a> {
                             )
                                 as *mut ffi::GDBusMethodInvocation);
 
-                            f(
-                                conn,
-                                sender,
-                                object_path,
-                                interface_name,
-                                method_name,
-                                parameters,
-                                invocation,
-                            );
+                            if interface_name == Some(PROPERTIES_INTERFACE)
+                                && method_name == "Get"
+                                && let Some(get_property) = self.get_property.as_deref()
+                            {
+                                handle_get_property(
+                                    conn,
+                                    sender,
+                                    object_path,
+                                    parameters,
+                                    invocation,
+                                    get_property,
+                                );
+                            } else if interface_name == Some(PROPERTIES_INTERFACE)
+                                && method_name == "Set"
+                                && let Some(set_property) = self.set_property.as_deref()
+                            {
+                                handle_set_property(
+                                    conn,
+                                    sender,
+                                    object_path,
+                                    parameters,
+                                    invocation,
+                                    set_property,
+                                );
+                            } else if interface_name == Some(PROPERTIES_INTERFACE)
+                                && method_name == "GetAll"
+                                && let Some(get_property) = self.get_property.as_deref()
+                            {
+                                handle_get_all_properties(
+                                    conn,
+                                    sender,
+                                    object_path,
+                                    &interface_info,
+                                    invocation,
+                                    get_property,
+                                );
+                            } else {
+                                f(
+                                    conn,
+                                    sender,
+                                    object_path,
+                                    interface_name,
+                                    method_name,
+                                    parameters,
+                                    invocation,
+                                );
+                            }
+
                             None
                         })
                     })
                     .to_glib_none()
                     .0,
-                self.get_property
-                    .map(|f| {
-                        glib::Closure::new_local(move |args| {
-                            let conn = args[0].get::<DBusConnection>().unwrap();
-                            let sender = args[1].get::<Option<&str>>().unwrap();
-                            let object_path = args[2].get::<&str>().unwrap();
-                            let interface_name = args[3].get::<&str>().unwrap();
-                            let property_name = args[4].get::<&str>().unwrap();
-                            let result =
-                                f(conn, sender, object_path, interface_name, property_name);
-                            Some(result.to_value())
-                        })
-                    })
-                    .to_glib_none()
-                    .0,
-                self.set_property
-                    .map(|f| {
-                        glib::Closure::new_local(move |args| {
-                            let conn = args[0].get::<DBusConnection>().unwrap();
-                            let sender = args[1].get::<Option<&str>>().unwrap();
-                            let object_path = args[2].get::<&str>().unwrap();
-                            let interface_name = args[3].get::<&str>().unwrap();
-                            let property_name = args[4].get::<&str>().unwrap();
-                            let value = args[5].get::<glib::Variant>().unwrap();
-                            let result = f(
-                                conn,
-                                sender,
-                                object_path,
-                                interface_name,
-                                property_name,
-                                value,
-                            );
-                            Some(result.to_value())
-                        })
-                    })
-                    .to_glib_none()
-                    .0,
+                std::ptr::null_mut(),
+                std::ptr::null_mut(),
                 &mut error,
             );
 
@@ -457,6 +492,102 @@ impl<'a> RegistrationBuilder<'a> {
             }
         }
     }
+}
+
+fn handle_get_property(
+    connection: DBusConnection,
+    sender: Option<&str>,
+    object_path: &str,
+    parameters: glib::Variant,
+    invocation: DBusMethodInvocation,
+    get_property_func: &dyn Fn(
+        DBusConnection,
+        Option<&str>,
+        &str,
+        &str,
+        &str,
+    ) -> Result<glib::Variant, glib::Error>,
+) {
+    let (interface_name, property_name): (String, String) = parameters
+        .get()
+        .expect("parameters are guaranteed to have correct types by gdbus");
+    let result = get_property_func(
+        connection,
+        sender,
+        object_path,
+        &interface_name,
+        &property_name,
+    );
+    invocation.return_result(result.map(|variant| Some(variant.to_variant())));
+}
+
+fn handle_set_property(
+    connection: DBusConnection,
+    sender: Option<&str>,
+    object_path: &str,
+    parameters: glib::Variant,
+    invocation: DBusMethodInvocation,
+    set_property_func: &dyn Fn(
+        DBusConnection,
+        Option<&str>,
+        &str,
+        &str,
+        &str,
+        glib::Variant,
+    ) -> Result<(), glib::Error>,
+) {
+    let (interface_name, property_name, value): (String, String, _) = parameters
+        .get()
+        .expect("parameters are guaranteed to have correct types by gdbus");
+    let result = set_property_func(
+        connection,
+        sender,
+        object_path,
+        &interface_name,
+        &property_name,
+        value,
+    )
+    .map(|_| None);
+    invocation.return_result(result);
+}
+
+// Re-implementation of `invoke_get_all_properties_in_idle_cb` in gdbusconnection.c
+fn handle_get_all_properties(
+    connection: DBusConnection,
+    sender: Option<&str>,
+    object_path: &str,
+    interface_info: &DBusInterfaceInfo,
+    invocation: DBusMethodInvocation,
+    get_property_func: &dyn Fn(
+        DBusConnection,
+        Option<&str>,
+        &str,
+        &str,
+        &str,
+    ) -> Result<glib::Variant, glib::Error>,
+) {
+    // Interface name is already validated by gdbus
+
+    let interface_name = interface_info.name();
+    let readable_properties = interface_info
+        .properties()
+        .filter(|p| p.flags().contains(DBusPropertyInfoFlags::READABLE));
+
+    let property_values = glib::VariantDict::default();
+    for property in readable_properties {
+        let property_name = property.name();
+        if let Ok(value) = get_property_func(
+            connection.clone(),
+            sender,
+            object_path,
+            interface_name,
+            property_name,
+        ) {
+            property_values.insert(property_name, value);
+        }
+    }
+
+    invocation.return_value(Some(&(property_values,).to_variant()));
 }
 
 impl DBusConnection {
