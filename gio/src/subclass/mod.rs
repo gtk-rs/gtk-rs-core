@@ -5,6 +5,7 @@ mod action_map;
 mod application;
 mod async_initable;
 mod dbus_interface;
+mod dbus_interface_skeleton;
 mod dbus_proxy;
 mod file;
 mod file_enumerator;
@@ -19,6 +20,7 @@ mod socket_control_message;
 mod vfs;
 
 pub use self::application::ArgumentList;
+pub use dbus_interface_skeleton::impl_helpers as dbus_interface_skeleton_impl;
 
 pub mod prelude {
     #[doc(hidden)]
@@ -30,6 +32,10 @@ pub mod prelude {
         application::{ApplicationImpl, ApplicationImplExt},
         async_initable::{AsyncInitableImpl, AsyncInitableImplExt},
         dbus_interface::{DBusInterfaceImpl, DBusInterfaceImplExt},
+        dbus_interface_skeleton::{
+            DBusInterfaceSkeletonImpl, DBusInterfaceSkeletonImplExt,
+            DBusInterfaceSkeletonVtableImpl,
+        },
         dbus_proxy::{DBusProxyImpl, DBusProxyImplExt},
         file::{FileImpl, FileImplExt},
         file_enumerator::{FileEnumeratorImpl, FileEnumeratorImplExt},
