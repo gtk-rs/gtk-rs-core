@@ -141,6 +141,9 @@ enum PropAttr {
 
     // ident
     Default,
+
+    // tokens not interpreted by this macro
+    Ignored,
 }
 
 impl Parse for PropAttr {
@@ -174,6 +177,12 @@ impl Parse for PropAttr {
                     let required = content.parse_terminated(syn::Expr::parse, Token![,])?;
                     let rest: TokenStream2 = input.parse()?;
                     PropAttr::Builder(required, rest)
+                }
+                "dbus" => {
+                    let content;
+                    parenthesized!(content in input);
+                    let _rest: TokenStream2 = content.parse()?;
+                    PropAttr::Ignored
                 }
                 _ => {
                     return Err(syn::Error::new(
@@ -252,6 +261,7 @@ impl ReceivedAttrs {
             PropAttr::Default => {
                 self.use_default = true;
             }
+            PropAttr::Ignored => {}
         }
     }
 }
