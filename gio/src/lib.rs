@@ -7,6 +7,7 @@
 #![allow(clippy::manual_c_str_literals)]
 #![doc = include_str!("../README.md")]
 
+pub use gio_macros::*;
 pub use gio_sys as ffi;
 pub use glib;
 
@@ -37,6 +38,7 @@ pub use self::dbus_connection::{
     WeakSignalSubscription,
 };
 mod dbus_interface_info;
+pub use dbus_interface_info::DBusInterfaceInfoBuilder;
 mod dbus_message;
 mod dbus_method_invocation;
 mod dbus_node_info;
@@ -83,7 +85,17 @@ pub use crate::settings::BindingBuilder;
 mod simple_proxy_resolver;
 mod socket;
 pub use socket::{InputMessage, InputVector, OutputMessage, OutputVector, SocketControlMessages};
+mod dbus_annotation_info;
+pub use dbus_annotation_info::DBusAnnotationInfoBuilder;
+mod dbus_arg_info;
+pub use dbus_arg_info::DBusArgInfoBuilder;
+mod dbus_method_info;
+pub use dbus_method_info::DBusMethodInfoBuilder;
 mod dbus_object_manager_client;
+mod dbus_property_info;
+pub use dbus_property_info::DBusPropertyInfoBuilder;
+mod dbus_signal_info;
+pub use dbus_signal_info::DBusSignalInfoBuilder;
 mod socket_control_message;
 mod socket_listener;
 mod subprocess;
@@ -107,6 +119,10 @@ pub mod functions {
     pub use super::auto::functions::*;
     pub use super::content_type::content_type_guess;
 }
+
+#[path = "macro_helpers/mod.rs"]
+#[doc(hidden)]
+pub mod __macro_helpers;
 
 pub use crate::auto::*;
 pub use crate::functions::*;
