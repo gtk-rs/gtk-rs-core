@@ -77,7 +77,7 @@ fn try_dbus_methods(
 ) -> syn::Result<TokenStream> {
     let dbus_items = parse::parse_impl_items(items);
 
-    let items = emit_items(&attrs, &self_ty, &dbus_items)?;
+    let items = emit_items(&attrs, &self_ty, &dbus_items, gio)?;
     let exportable_interface_impl = emit_methods_impl(&self_ty, &dbus_items, gio)?;
     Ok(quote! {
         #items

@@ -1,10 +1,12 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use crate::{DBusConnection, DBusMethodInfo, DBusMethodInvocation, ffi};
+use crate::{DBusConnection, DBusMethodInfo, DBusMethodInvocation, DBusSignalInfo, ffi};
 
 #[diagnostic::on_unimplemented(message = "No #[gio::dbus_methods] impl block found for {Self}")]
 pub trait DBusMethods {
     fn method_infos() -> impl IntoIterator<Item = DBusMethodInfo>;
+
+    fn signal_infos() -> impl IntoIterator<Item = DBusSignalInfo>;
 
     fn method_call(
         &self,

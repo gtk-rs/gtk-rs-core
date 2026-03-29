@@ -1,19 +1,25 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use crate::dbus_interface::attributes::DBusInterfaceAttribute;
-use crate::dbus_interface::emit_info::{emit_interface_info, emit_method_info};
-use crate::dbus_interface::parse::{DBusItems, DBusMethod, DBusMethodArgumentProvider};
+use crate::dbus_interface::emit_info::{emit_interface_info, emit_method_info, emit_signal_info};
+use crate::dbus_interface::parse::{DBusItems, DBusMethod, DBusMethodArgumentProvider, DBusSignal};
+use crate::utils::ident_name;
 use proc_macro2::{Span, TokenStream};
-use quote::{quote, quote_spanned};
+use quote::{ToTokens as _, quote, quote_spanned};
 use syn::spanned::Spanned as _;
-use syn::{Attribute, Ident, Type};
+use syn::{Attribute, Ident, ReturnType, Token, Type, parse_quote};
 
 pub(crate) fn emit_items(
     impl_attrs: &[Attribute],
     self_ty: &Type,
     items: &DBusItems,
+    gio: &TokenStream,
 ) -> syn::Result<TokenStream> {
     let emit_methods = items.methods.values().map(|method| &method.item);
+    let emit_signals = items
+        .signals
+        .values()
+        .map(|signal| emit_signal_fn(signal, gio));
     let emit_errors = items.errors.iter().map(|(item, error)| {
         let compile_error = error.to_compile_error();
         quote! { #item #compile_error }
@@ -23,6 +29,7 @@ pub(crate) fn emit_items(
         #(#impl_attrs)*
         impl #self_ty {
             #(#emit_methods)*
+            #(#emit_signals)*
             #(#emit_errors)*
         }
     })
@@ -109,11 +116,20 @@ pub(crate) fn emit_methods_impl(
         .values()
         .map(|method| emit_method_info(method, gio))
         .collect::<Result<Vec<_>, _>>()?;
+    let signal_infos = items
+        .signals
+        .values()
+        .map(|signal| emit_signal_info(signal, gio))
+        .collect::<Result<Vec<_>, _>>()?;
 
     Ok(quote! {
         impl #gio::__macro_helpers::dbus_interface_skeleton::DBusMethods for #self_ty {
             fn method_infos() -> impl IntoIterator<Item = #gio::DBusMethodInfo> {
                 [#(#method_infos,)*]
+            }
+
+            fn signal_infos() -> impl IntoIterator<Item = #gio::DBusSignalInfo> {
+                [#(#signal_infos,)*]
             }
 
             fn method_call(
@@ -190,4 +206,36 @@ fn emit_method_call_handler(method: &DBusMethod) -> TokenStream {
             });
         }
     }
+}
+
+fn emit_signal_fn(signal: &DBusSignal, gio: &TokenStream) -> TokenStream {
+    let ident = &signal.item.sig.ident;
+    let ident = Ident::new(&format!("emit_{}", ident_name(ident)), ident.span());
+    let arg_idents = signal.args.iter().map(|arg| &arg.ident);
+    let signal_name = &signal.dbus_name;
+    let return_type: Type = parse_quote!(Result<(), #gio::glib::Error>);
+    let block = parse_quote! {{
+        let obj = &*#gio::glib::subclass::types::ObjectSubclassExt::obj(self);
+        let connections = #gio::prelude::DBusInterfaceSkeletonExt::connections(obj);
+        let object_path = #gio::prelude::DBusInterfaceSkeletonExt::object_path(obj);
+        let object_path = object_path.as_deref();
+        let info = gio::prelude::DBusInterfaceSkeletonExt::info(obj);
+        let interface_name = info.name();
+        let variant = (#(#arg_idents,)*).to_variant();
+        for connection in connections {
+            connection.emit_signal(
+                None,
+                object_path.expect("object path should be set when there is at least one connection"),
+                interface_name,
+                #signal_name,
+                Some(&variant),
+            )?;
+        }
+        Ok(())
+    }};
+    let mut item = signal.item.clone();
+    item.block = block;
+    item.sig.ident = ident;
+    item.sig.output = ReturnType::Type(Token![->](Span::call_site()), Box::new(return_type));
+    item.into_token_stream()
 }

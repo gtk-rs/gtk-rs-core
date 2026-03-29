@@ -13,7 +13,9 @@ use std::collections::BTreeMap;
 use std::collections::btree_map::Entry;
 use syn::punctuated::Punctuated;
 use syn::spanned::Spanned;
-use syn::{Attribute, FnArg, Ident, ImplItem, ImplItemFn, LitStr, Pat, PatType, Token, Type};
+use syn::{
+    Attribute, FnArg, Ident, ImplItem, ImplItemFn, LitStr, Pat, PatIdent, PatType, Token, Type,
+};
 
 #[derive(Default)]
 pub(crate) struct DBusItems {
@@ -52,7 +54,14 @@ pub(crate) enum DBusMethodArgumentProvider {
 pub(crate) struct DBusSignal {
     pub(crate) item: ImplItemFn,
     pub(crate) dbus_name: LitStr,
+    pub(crate) args: Vec<DBusSignalArgument>,
     pub(crate) deprecated: bool,
+}
+
+pub(crate) struct DBusSignalArgument {
+    pub(crate) arg: PatType,
+    pub(crate) ident: Ident,
+    pub(crate) dbus_name: LitStr,
 }
 
 pub(crate) fn parse_impl_items(items: Vec<ImplItem>) -> DBusItems {
@@ -71,13 +80,17 @@ pub(crate) fn parse_impl_items(items: Vec<ImplItem>) -> DBusItems {
                     output.errors.push((ImplItem::Fn(method.item), error));
                 }
             }
-            DBusItem::Signal(dbus_signal) => {
-                let mut impl_item = ImplItem::Fn(dbus_signal.item);
-                remove_dbus_attribute_from_impl_item(&mut impl_item);
-                let span = impl_item.span();
-                output
-                    .errors
-                    .push((impl_item, syn::Error::new(span, "[TODO]")));
+            DBusItem::Signal(mut signal) => {
+                remove_dbus_attribute_from_item_fn(&mut signal.item);
+                if let Entry::Vacant(entry) = output.signals.entry(signal.dbus_name.value()) {
+                    entry.insert(signal);
+                } else {
+                    let error = syn::Error::new(
+                        signal.item.span(),
+                        "a signal with this name is already defined",
+                    );
+                    output.errors.push((ImplItem::Fn(signal.item), error));
+                }
             }
             DBusItem::Error(mut impl_item, error) => {
                 remove_dbus_attribute_from_impl_item(&mut impl_item);
@@ -149,6 +162,12 @@ fn parse_impl_item_fn_for_signal(
         .name
         .unwrap_or_else(|| default_method_name(&item.sig.ident));
     let deprecated = is_deprecated(&item.attrs);
+    let args = item
+        .sig
+        .inputs
+        .iter()
+        .filter_map(|input| parse_signal_arg(input.clone()).transpose())
+        .collect::<Result<_, _>>()?;
 
     if !item.block.stmts.is_empty() {
         return Err(syn::Error::new(
@@ -157,9 +176,17 @@ fn parse_impl_item_fn_for_signal(
         ));
     }
 
+    if matches!(item.sig.output, syn::ReturnType::Type(..)) {
+        return Err(syn::Error::new(
+            item.sig.output.span(),
+            "signal must not specify a return type",
+        ));
+    }
+
     Ok(DBusSignal {
         item,
         dbus_name,
+        args,
         deprecated,
     })
 }
@@ -184,6 +211,23 @@ fn parse_method_arg(
             *parameter_index += 1;
             DBusMethodArgumentProvider::Parameters { index }
         }),
+    }))
+}
+
+fn parse_signal_arg(arg: FnArg) -> syn::Result<Option<DBusSignalArgument>> {
+    let FnArg::Typed(typed) = arg else {
+        return Ok(None);
+    };
+    let Pat::Ident(PatIdent { ident, .. }) = typed.pat.as_ref() else {
+        return Err(syn::Error::new(
+            typed.pat.span(),
+            "signal parameter must have a name",
+        ));
+    };
+    Ok(Some(DBusSignalArgument {
+        dbus_name: default_method_name(ident),
+        ident: ident.clone(),
+        arg: typed,
     }))
 }
 

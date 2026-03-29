@@ -53,6 +53,7 @@ mod imp {
         fn hello(&self, name: String) -> String {
             let greet = format!("Hello {name}!");
             println!("{greet}");
+            _ = self.emit_greeted(&name);
             greet
         }
 
@@ -75,6 +76,7 @@ mod imp {
             glib::timeout_future(Duration::from_secs(delay as u64)).await;
             let greet = format!("Hello {name} after {delay} seconds!");
             println!("{greet}");
+            _ = self.emit_greeted(&name);
             Ok((greet, instant.elapsed().as_secs_f64()))
         }
 
@@ -107,5 +109,8 @@ mod imp {
         }
 
         fn r#raw_ident(&self) {}
+
+        #[dbus(signal)]
+        fn greeted(&self, name: &str) {}
     }
 }

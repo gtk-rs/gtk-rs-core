@@ -1,7 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
 use crate::dbus_interface::attributes::DBusInterfaceAttribute;
-use crate::dbus_interface::parse::{DBusMethod, DBusMethodArgument, DBusMethodArgumentProvider};
+use crate::dbus_interface::parse::{
+    DBusMethod, DBusMethodArgument, DBusMethodArgumentProvider, DBusSignal, DBusSignalArgument,
+};
 use proc_macro2::TokenStream;
 use quote::quote;
 use std::borrow::Cow;
@@ -19,6 +21,7 @@ pub(crate) fn emit_interface_info(
         #gio::DBusInterfaceInfo::builder()
             .name(#name)
             .methods(<#ident as #helpers::DBusMethods>::method_infos())
+            .signals(<#ident as #helpers::DBusMethods>::signal_infos())
             .build()
     })
 }
@@ -33,15 +36,35 @@ pub(crate) fn emit_method_info(method: &DBusMethod, gio: &TokenStream) -> syn::R
     let out_args = emit_out_arg_infos(&return_type, method.out_arg_names.as_ref(), gio)?;
     let annotations = method
         .deprecated
-        .then_some(("org.freedesktop.DBus.Deprecated", "true"))
+        .then_some((DEPRECATED_ANNOTATION, "true"))
         .into_iter();
     let annotations = annotations.map(|(key, value)| emit_annotation(key, value, gio));
     Ok(quote! {
         #gio::DBusMethodInfo::builder()
+            .name(#name)
             .in_args([#(#in_args,)*])
             .out_args(#out_args)
             .annotations([#(#annotations,)*])
+            .build()
+    })
+}
+
+pub(crate) fn emit_signal_info(signal: &DBusSignal, gio: &TokenStream) -> syn::Result<TokenStream> {
+    let name = &signal.dbus_name;
+    let args = signal
+        .args
+        .iter()
+        .filter_map(|arg| emit_signal_arg_info(arg, gio));
+    let annotations = signal
+        .deprecated
+        .then_some((DEPRECATED_ANNOTATION, "true"))
+        .into_iter();
+    let annotations = annotations.map(|(key, value)| emit_annotation(key, value, gio));
+    Ok(quote! {
+        #gio::DBusSignalInfo::builder()
             .name(#name)
+            .args([#(#args,)*])
+            .annotations([#(#annotations,)*])
             .build()
     })
 }
@@ -67,6 +90,17 @@ fn emit_in_arg_info(argument: &DBusMethodArgument, gio: &TokenStream) -> Option<
         return None;
     }
 
+    let name = &argument.dbus_name;
+    let signature = emit_signature_str(&argument.arg.ty, gio);
+    Some(quote! {
+        #gio::DBusArgInfo::builder()
+            .name(#name)
+            .signature(#signature)
+            .build()
+    })
+}
+
+fn emit_signal_arg_info(argument: &DBusSignalArgument, gio: &TokenStream) -> Option<TokenStream> {
     let name = &argument.dbus_name;
     let signature = emit_signature_str(&argument.arg.ty, gio);
     Some(quote! {
@@ -160,3 +194,5 @@ fn emit_annotation(key: &str, value: &str, gio: &TokenStream) -> TokenStream {
             .build()
     }
 }
+
+const DEPRECATED_ANNOTATION: &str = "org.freedesktop.DBus.Deprecated";
