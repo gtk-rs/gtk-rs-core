@@ -120,6 +120,10 @@ pub mod functions {
     pub use super::content_type::content_type_guess;
 }
 
+#[path = "macro_helpers/mod.rs"]
+#[doc(hidden)]
+pub mod __macro_helpers;
+
 pub use crate::auto::*;
 pub use crate::functions::*;
 pub mod prelude;

@@ -2,7 +2,24 @@
 
 use proc_macro2::{Span, TokenStream};
 use quote::quote;
-use syn::Ident;
+use syn::{Ident, LitStr};
+
+const RAW_IDENT_PREFIX: &str = "r#";
+
+pub(crate) fn ident_name(ident: &Ident) -> String {
+    ident
+        .to_string()
+        .trim_start_matches(RAW_IDENT_PREFIX)
+        .to_owned()
+}
+
+pub(crate) fn ident_name_as_lit_str(ident: &Ident) -> LitStr {
+    let ident_string = ident.to_string();
+    LitStr::new(
+        ident_string.trim_start_matches(RAW_IDENT_PREFIX),
+        ident.span(),
+    )
+}
 
 #[cfg(feature = "proc_macro_crate")]
 pub(crate) fn crate_ident_new() -> TokenStream {
