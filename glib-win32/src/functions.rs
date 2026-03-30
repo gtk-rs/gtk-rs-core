@@ -9,7 +9,7 @@ use crate::ffi;
 
 #[doc(alias = "g_win32_get_package_installation_directory_of_module")]
 #[doc(alias = "get_package_installation_directory_of_module")]
-#[cfg(all(docsrs, windows))]
+#[cfg(any(windows, docsrs))]
 pub fn package_installation_directory_of_module(
     hmodule: std::os::windows::raw::HANDLE,
 ) -> Result<PathBuf, std::io::Error> {
