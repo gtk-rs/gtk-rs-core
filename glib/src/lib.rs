@@ -42,6 +42,7 @@ pub use gobject_sys as gobject_ffi;
 
 pub use self::{
     FileError,
+    bookmark_file::BookmarkFile,
     byte_array::ByteArray,
     bytes::Bytes,
     closure::{Closure, RustClosure},
@@ -146,6 +147,7 @@ pub use self::gobject::{BindingGroup, BindingGroupBuilder};
 
 mod gobject;
 
+mod bookmark_file;
 mod byte_array;
 mod bytes;
 mod control_flow;
