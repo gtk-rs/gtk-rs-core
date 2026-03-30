@@ -2,6 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+mod bookmark_file;
+pub use self::bookmark_file::BookmarkFile;
+
 mod checksum;
 pub use self::checksum::Checksum;
 
