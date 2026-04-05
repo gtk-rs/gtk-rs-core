@@ -59,7 +59,7 @@ pub trait FontMapExt: IsA<FontMap> + 'static {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_46")))]
     #[doc(alias = "pango_font_map_get_family")]
     #[doc(alias = "get_family")]
-    fn family(&self, name: &str) -> FontFamily {
+    fn family(&self, name: &str) -> Option<FontFamily> {
         unsafe {
             from_glib_none(ffi::pango_font_map_get_family(
                 self.as_ref().to_glib_none().0,
