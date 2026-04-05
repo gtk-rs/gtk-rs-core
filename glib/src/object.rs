@@ -1176,9 +1176,11 @@ macro_rules! glib_object_wrapper {
     (@munch_impls $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, ) => { };
 
     (@munch_impls $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $super_name:path) => {
+        #[allow(deprecated)]
         unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::prelude::IsA<$super_name> for $name $(<$($generic),+>)? { }
 
         #[doc(hidden)]
+        #[allow(deprecated)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? From<$name $(<$($generic),+>)?> for $super_name {
             #[inline]
             fn from(v: $name $(<$($generic),+>)?) -> Self {
@@ -1187,6 +1189,7 @@ macro_rules! glib_object_wrapper {
         }
 
         #[doc(hidden)]
+        #[allow(deprecated)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? AsRef<$super_name> for $name $(<$($generic),+>)? {
             #[inline]
             fn as_ref(&self) -> &$super_name {
@@ -1195,6 +1198,7 @@ macro_rules! glib_object_wrapper {
         }
 
         #[doc(hidden)]
+        #[allow(deprecated)]
         impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? std::borrow::Borrow<$super_name> for $name $(<$($generic),+>)? {
             #[inline]
             fn borrow(&self) -> &$super_name {
@@ -1211,6 +1215,7 @@ macro_rules! glib_object_wrapper {
     // If there is no parent class, i.e. only glib::Object
     (@munch_first_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, ) => {
         $crate::glib_object_wrapper!(@munch_impls $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, );
+        #[allow(deprecated)]
         unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::ParentClassIs for $name $(<$($generic),+>)? {
             type Parent = $crate::object::Object;
         }
@@ -1219,6 +1224,7 @@ macro_rules! glib_object_wrapper {
     // If there is only one parent class
     (@munch_first_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $super_name:path) => {
         $crate::glib_object_wrapper!(@munch_impls $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $super_name);
+        #[allow(deprecated)]
         unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::ParentClassIs for $name $(<$($generic),+>)? {
             type Parent = $super_name;
         }
@@ -1227,6 +1233,7 @@ macro_rules! glib_object_wrapper {
     // If there is more than one parent class
     (@munch_first_impl $name:ident $(<$($generic:ident $(: $bound:tt $(+ $bound2:tt)*)?),+>)?, $super_name:path, $($implements:tt)*) => {
         $crate::glib_object_wrapper!(@munch_impls $name $(<$($generic $(: $bound $(+ $bound2)*)?),+>)?, $super_name);
+        #[allow(deprecated)]
         unsafe impl $(<$($generic $(: $bound $(+ $bound2)*)?),+>)? $crate::object::ParentClassIs for $name $(<$($generic),+>)? {
             type Parent = $super_name;
         }
