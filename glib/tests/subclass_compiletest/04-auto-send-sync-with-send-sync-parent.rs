@@ -3,6 +3,7 @@ mod imp_parent {
 
     #[derive(Default)]
     pub struct TestParent {
+        #[allow(unused)]
         s: String,
     }
 
@@ -40,6 +41,7 @@ mod imp_object {
 
     #[derive(Default)]
     pub struct TestObject {
+        #[allow(unused)]
         s: String,
     }
 
