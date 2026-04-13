@@ -166,194 +166,39 @@ fn clone() {
     );
 }
 
-const TESTS: &[(&str, &str)] = &[
-    ("clone!()", "expected a closure or async block"),
-    (
-        "clone!(#[weak] a, #[weak] b, |x| {})",
-        r#"error: closures need to capture variables by move. Please add the `move` keyword
- --> test_1.rs:1:88
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[weak] a, #[weak] b, |x| {}); }
-  |                                                                                        ^^^^^^"#,
-    ),
-    (
-        "clone!(#[strong] self, move |x| {})",
-        r#"error: capture attribute for `self` requires usage of the `rename_to` attribute property
- --> test_2.rs:1:66
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[strong] self, move |x| {}); }
-  |                                                                  ^^^^^^^^^"#,
-    ),
-    (
-        "clone!(#[strong] self.v, move |x| {})",
-        r#"error: capture attribute for an expression requires usage of the `rename_to` attribute property
- --> test_3.rs:1:66
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[strong] self.v, move |x| {}); }
-  |                                                                  ^^^^^^^^^"#,
-    ),
-    (
-        "clone!(#[strong(rename_to = x, rename_to = y)] self.v, move || {})",
-        r#"error: multiple `rename_to` properties are not allowed
- --> test_4.rs:1:90
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[strong(rename_to = x, rename_to = y)] self.v, move || {}); }
-  |                                                                                          ^^^^^^^^^^^^^"#,
-    ),
-    (
-        "clone!(#[strong(stronk)] self.v, move || {})",
-        r#"error: unsupported capture attribute property `stronk`: only `rename_to` is supported
- --> test_5.rs:1:75
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[strong(stronk)] self.v, move || {}); }
-  |                                                                           ^^^^^^"#,
-    ),
-    (
-        "clone!(#[strong(rename_to = \"a\")] self.v, move || {})",
-        r#"error: expected identifier
- --> test_6.rs:1:87
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[strong(rename_to = "a")] self.v, move || {}); }
-  |                                                                                       ^^^"#,
-    ),
-    (
-        "clone!(#[weak] v, #[upgrade_or_else] false, move || {})",
-        r#"error: expected `|`
- --> test_7.rs:1:96
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[weak] v, #[upgrade_or_else] false, move || {}); }
-  |                                                                                                ^^^^^"#,
-    ),
-    (
-        "clone!(#[weak] v, #[upgrade_or(abort)] move || {})",
-        r#"error: unexpected token in attribute
- --> test_8.rs:1:89
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[weak] v, #[upgrade_or(abort)] move || {}); }
-  |                                                                                         ^"#,
-    ),
-    (
-        "clone!(#[yolo] v, move || {})",
-        r#"error: unsupported attribute `yolo`: only `strong`, `weak`, `weak_allow_none`, `to_owned`, `upgrade_or`, `upgrade_or_else`, `upgrade_or_default` and `upgrade_or_panic` are supported
- --> test_9.rs:1:66
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[yolo] v, move || {}); }
-  |                                                                  ^^^^^^^"#,
-    ),
-    (
-        "clone!(#[watch] v, move || {})",
-        r#"error: watch variable captures are not supported
- --> test_10.rs:1:66
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[watch] v, move || {}); }
-  |                                                                  ^^^^^^^^"#,
-    ),
-    (
-        "clone!(#[strong]#[strong] v, move || {})",
-        r#"error: variable capture attributes must be followed by an identifier
- --> test_11.rs:1:75
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[strong]#[strong] v, move || {}); }
-  |                                                                           ^^^^^^^^^"#,
-    ),
-    (
-        "clone!(v, move || {})",
-        r#"error: only closures and async blocks are supported
- --> test_12.rs:1:66
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(v, move || {}); }
-  |                                                                  ^"#,
-    ),
-    (
-        "clone!(#[upgrade_or_else] || lol, #[strong] v, move || {println!(\"foo\");})",
-        r#"error: upgrade failure attribute must not be followed by any other attributes. Found 1 more attribute
- --> test_13.rs:1:93
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[upgrade_or_else] || lol, #[strong] v, move || {println!("foo");}); }
-  |                                                                                             ^^^^^^^^^"#,
-    ),
-    (
-        "clone!(#[upgrade_or_else] |x| lol, #[strong] v, move || {println!(\"foo\");})",
-        r#"error: `upgrade_or_else` closure must not have any parameters
- --> test_14.rs:1:85
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[upgrade_or_else] |x| lol, #[strong] v, move || {println!("foo");}); }
-  |                                                                                     ^^^^^^^"#,
-    ),
-    (
-        "clone!(#[upgrade_or_else] async || lol, #[strong] v, move || {println!(\"foo\");})",
-        r#"error: `upgrade_or_else` closure needs to be a non-async closure
- --> test_15.rs:1:85
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[upgrade_or_else] async || lol, #[strong] v, move || {println!("foo");}...
-  |                                                                                     ^^^^^^^^^^^^"#,
-    ),
-    (
-        "clone!(#[upgrade_or_panic] #[strong] v, move || {println!(\"foo\");})",
-        r#"error: upgrade failure attribute must not be followed by any other attributes. Found 1 more attribute
- --> test_16.rs:1:86
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[upgrade_or_panic] #[strong] v, move || {println!("foo");}); }
-  |                                                                                      ^^^^^^^^^"#,
-    ),
-    (
-        "clone!(#[strong] v, #[upgrade_or_panic] move || {println!(\"foo\");})",
-        r#"error: upgrade failure attribute can only be used together with weak variable captures
- --> test_17.rs:1:79
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[strong] v, #[upgrade_or_panic] move || {println!("foo");}); }
-  |                                                                               ^"#,
-    ),
-    // The async part!
-    (
-        "clone!(#[strong] v, async {println!(\"foo\");})",
-        r#"error: async blocks need to capture variables by move. Please add the `move` keyword
- --> test_18.rs:1:79
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[strong] v, async {println!("foo");}); }
-  |                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^"#,
-    ),
-    (
-        "clone!(#[strong] v, {println!(\"foo\");})",
-        r#"error: only closures and async blocks are supported
- --> test_19.rs:1:79
-  |
-1 | fn main() { use glib::clone; let v = std::rc::Rc::new(1); clone!(#[strong] v, {println!("foo");}); }
-  |                                                                               ^^^^^^^^^^^^^^^^^^"#,
-    ),
-];
-
 #[test]
 fn clone_failures() {
-    let t = trybuild2::TestCases::new();
+    let t = trybuild::TestCases::new();
 
-    for (index, (expr, err)) in TESTS.iter().enumerate() {
-        let prefix = "fn main() { use glib::clone; let v = std::rc::Rc::new(1); ";
-        let suffix = "; }";
-        let output = format!("{prefix}{expr}{suffix}");
-
-        t.compile_fail_inline_check_sub(&format!("test_{index}"), &output, err);
-    }
+    t.compile_fail("tests/clone_compiletest/01-clone-empty.rs");
+    t.compile_fail("tests/clone_compiletest/02-clone-no-move.rs");
+    t.compile_fail("tests/clone_compiletest/03-clone-self-no-rename.rs");
+    t.compile_fail("tests/clone_compiletest/04-clone-self-field-no-rename.rs");
+    t.compile_fail("tests/clone_compiletest/05-clone-multiple-rename.rs");
+    t.compile_fail("tests/clone_compiletest/06-clone-unsupported-property.rs");
+    t.compile_fail("tests/clone_compiletest/07-clone-string-rename.rs");
+    t.compile_fail("tests/clone_compiletest/08-clone-upgrade-or-else-bool.rs");
+    t.compile_fail("tests/clone_compiletest/09-clone-upgrade-or-invalid.rs");
+    t.compile_fail("tests/clone_compiletest/10-clone-unsupported-attribute.rs");
+    t.compile_fail("tests/clone_compiletest/11-clone-watch.rs");
+    t.compile_fail("tests/clone_compiletest/12-clone-duplicate-attribute.rs");
+    t.compile_fail("tests/clone_compiletest/13-clone-no-attribute.rs");
+    t.compile_fail("tests/clone_compiletest/14-clone-upgrade-or-else-first.rs");
+    t.compile_fail("tests/clone_compiletest/15-clone-upgrade-or-else-with-param.rs");
+    t.compile_fail("tests/clone_compiletest/16-clone-upgrade-or-else-async.rs");
+    t.compile_fail("tests/clone_compiletest/17-clone-upgrade-or-panic-first.rs");
+    t.compile_fail("tests/clone_compiletest/18-clone-async-no-move.rs");
+    t.compile_fail("tests/clone_compiletest/19-clone-block-no-parens.rs");
 }
-
-const NO_WARNING: &[&str] = &[
-    "let _ = clone!(#[weak] v, #[upgrade_or] (), move || println!(\"{}\", v))",
-    "let _ = clone!(#[weak] v, #[upgrade_or_else] || (), move || println!(\"{}\", v))",
-    "let _ = clone!(#[weak] v, #[upgrade_or_else] || (()), move || println!(\"{}\", v))",
-    "let _ = clone!(#[weak] v, #[upgrade_or_else] || ( () ), move || println!(\"{}\", v))",
-    "let _ = clone!(#[weak] v, #[upgrade_or_else] || (  ), move || println!(\"{}\", v))",
-];
 
 // Ensures that no warning are emitted if the return value is a unit tuple.
 #[test]
 fn clone_unit_tuple_return() {
-    let t = trybuild2::TestCases::new();
+    let t = trybuild::TestCases::new();
 
-    for (index, expr) in NO_WARNING.iter().enumerate() {
-        let prefix = "fn main() { use glib::clone; let v = std::rc::Rc::new(1); ";
-        let suffix = "; }";
-        let output = format!("{prefix}{expr}{suffix}");
-
-        t.pass_inline(&format!("test_{index}"), &output);
-    }
+    t.pass("tests/clone_compiletest/20-clone-unit-tuple-1.rs");
+    t.pass("tests/clone_compiletest/21-clone-unit-tuple-2.rs");
+    t.pass("tests/clone_compiletest/22-clone-unit-tuple-3.rs");
+    t.pass("tests/clone_compiletest/23-clone-unit-tuple-4.rs");
+    t.pass("tests/clone_compiletest/24-clone-unit-tuple-5.rs");
 }
