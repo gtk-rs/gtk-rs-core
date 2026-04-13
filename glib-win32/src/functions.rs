@@ -1,17 +1,22 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
-#[cfg(windows)]
+#[cfg(any(windows, docsrs))]
 use glib::translate::*;
-#[cfg(windows)]
+#[cfg(any(windows, docsrs))]
 use std::path::PathBuf;
 
-#[cfg(windows)]
+#[cfg(any(windows, docsrs))]
 use crate::ffi;
+
+#[cfg(windows)]
+use std::os::windows::raw::HANDLE;
+#[cfg(all(unix, docsrs))]
+pub type HANDLE = *mut std::os::raw::c_void;
 
 #[doc(alias = "g_win32_get_package_installation_directory_of_module")]
 #[doc(alias = "get_package_installation_directory_of_module")]
 #[cfg(any(windows, docsrs))]
 pub fn package_installation_directory_of_module(
-    hmodule: std::os::windows::raw::HANDLE,
+    hmodule: HANDLE,
 ) -> Result<PathBuf, std::io::Error> {
     // # Safety
     // The underlying `GetModuleFilenameW` function has three possible
