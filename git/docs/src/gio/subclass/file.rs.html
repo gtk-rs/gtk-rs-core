@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/file.rs`."><title>file.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.96.0-nightly (fb27476aa 2026-03-28)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/file.rs`."><title>file.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.97.0-nightly (14196dbfa 2026-04-12)" data-channel="nightly" data-search-js="search-b5634cc7.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -84,7 +84,7 @@
 <a href=#11 id=11 data-nosnippet>11</a>    <a href="../auto/enums.rs.html#2308-2471">IOErrorEnum</a>, <a href="../auto/mount.rs.html#17-80">Mount</a>, <a href="../auto/flags.rs.html#2599-2608">MountMountFlags</a>, <a href="../auto/mount_operation.rs.html#14-189">MountOperation</a>, <a href="../auto/flags.rs.html#2682-2695">MountUnmountFlags</a>, <a href="../task.rs.html#35-619">Task</a>, <a href="../../../gio_sys/index.html">ffi</a>,
 <a href=#12 id=12 data-nosnippet>12</a>};
 <a href=#13 id=13 data-nosnippet>13</a>
-<a href=#14 id=14 data-nosnippet>14</a><span class="kw">use </span>libc::{c_char, c_uint};
+<a href=#14 id=14 data-nosnippet>14</a><span class="kw">use </span>libc::{<a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_uint.html">c_uint</a>};
 <a href=#15 id=15 data-nosnippet>15</a>
 <a href=#16 id=16 data-nosnippet>16</a><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a>, <a href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html">path::PathBuf</a>};
 <a href=#17 id=17 data-nosnippet>17</a>
@@ -2498,7 +2498,7 @@
 <a href=#2425 id=2425 data-nosnippet>2425</a>    }
 <a href=#2426 id=2426 data-nosnippet>2426</a>}
 <a href=#2427 id=2427 data-nosnippet>2427</a>
-<a href=#2428 id=2428 data-nosnippet>2428</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_hash&lt;T: <a href="#19-395">FileImpl</a>&gt;(file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>) -&gt; c_uint {
+<a href=#2428 id=2428 data-nosnippet>2428</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_hash&lt;T: <a href="#19-395">FileImpl</a>&gt;(file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_uint.html">c_uint</a> {
 <a href=#2429 id=2429 data-nosnippet>2429</a>    <span class="kw">unsafe </span>{
 <a href=#2430 id=2430 data-nosnippet>2430</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#2428">file</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
 <a href=#2431 id=2431 data-nosnippet>2431</a>        <span class="kw">let </span>imp = <a href="#2430">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
@@ -2530,7 +2530,7 @@
 <a href=#2457 id=2457 data-nosnippet>2457</a>
 <a href=#2458 id=2458 data-nosnippet>2458</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_has_uri_scheme&lt;T: <a href="#19-395">FileImpl</a>&gt;(
 <a href=#2459 id=2459 data-nosnippet>2459</a>    file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
-<a href=#2460 id=2460 data-nosnippet>2460</a>    uri_scheme: <span class="kw-2">*const </span>c_char,
+<a href=#2460 id=2460 data-nosnippet>2460</a>    uri_scheme: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#2461 id=2461 data-nosnippet>2461</a>) -&gt; glib::ffi::<a href="../../../glib_sys/type.gboolean.html">gboolean</a> {
 <a href=#2462 id=2462 data-nosnippet>2462</a>    <span class="kw">unsafe </span>{
 <a href=#2463 id=2463 data-nosnippet>2463</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#2459">file</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
@@ -2541,7 +2541,7 @@
 <a href=#2468 id=2468 data-nosnippet>2468</a>    }
 <a href=#2469 id=2469 data-nosnippet>2469</a>}
 <a href=#2470 id=2470 data-nosnippet>2470</a>
-<a href=#2471 id=2471 data-nosnippet>2471</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_get_uri_scheme&lt;T: <a href="#19-395">FileImpl</a>&gt;(file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>) -&gt; <span class="kw-2">*mut </span>c_char {
+<a href=#2471 id=2471 data-nosnippet>2471</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_get_uri_scheme&lt;T: <a href="#19-395">FileImpl</a>&gt;(file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>) -&gt; <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a> {
 <a href=#2472 id=2472 data-nosnippet>2472</a>    <span class="kw">unsafe </span>{
 <a href=#2473 id=2473 data-nosnippet>2473</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#2471">file</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
 <a href=#2474 id=2474 data-nosnippet>2474</a>        <span class="kw">let </span>imp = <a href="#2473">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
@@ -2555,7 +2555,7 @@
 <a href=#2482 id=2482 data-nosnippet>2482</a>    }
 <a href=#2483 id=2483 data-nosnippet>2483</a>}
 <a href=#2484 id=2484 data-nosnippet>2484</a>
-<a href=#2485 id=2485 data-nosnippet>2485</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_get_basename&lt;T: <a href="#19-395">FileImpl</a>&gt;(file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>) -&gt; <span class="kw-2">*mut </span>c_char {
+<a href=#2485 id=2485 data-nosnippet>2485</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_get_basename&lt;T: <a href="#19-395">FileImpl</a>&gt;(file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>) -&gt; <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a> {
 <a href=#2486 id=2486 data-nosnippet>2486</a>    <span class="kw">unsafe </span>{
 <a href=#2487 id=2487 data-nosnippet>2487</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#2485">file</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
 <a href=#2488 id=2488 data-nosnippet>2488</a>        <span class="kw">let </span>imp = <a href="#2487">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
@@ -2569,7 +2569,7 @@
 <a href=#2496 id=2496 data-nosnippet>2496</a>    }
 <a href=#2497 id=2497 data-nosnippet>2497</a>}
 <a href=#2498 id=2498 data-nosnippet>2498</a>
-<a href=#2499 id=2499 data-nosnippet>2499</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_get_path&lt;T: <a href="#19-395">FileImpl</a>&gt;(file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>) -&gt; <span class="kw-2">*mut </span>c_char {
+<a href=#2499 id=2499 data-nosnippet>2499</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_get_path&lt;T: <a href="#19-395">FileImpl</a>&gt;(file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>) -&gt; <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a> {
 <a href=#2500 id=2500 data-nosnippet>2500</a>    <span class="kw">unsafe </span>{
 <a href=#2501 id=2501 data-nosnippet>2501</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#2499">file</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
 <a href=#2502 id=2502 data-nosnippet>2502</a>        <span class="kw">let </span>imp = <a href="#2501">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
@@ -2583,7 +2583,7 @@
 <a href=#2510 id=2510 data-nosnippet>2510</a>    }
 <a href=#2511 id=2511 data-nosnippet>2511</a>}
 <a href=#2512 id=2512 data-nosnippet>2512</a>
-<a href=#2513 id=2513 data-nosnippet>2513</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_get_uri&lt;T: <a href="#19-395">FileImpl</a>&gt;(file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>) -&gt; <span class="kw-2">*mut </span>c_char {
+<a href=#2513 id=2513 data-nosnippet>2513</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_get_uri&lt;T: <a href="#19-395">FileImpl</a>&gt;(file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>) -&gt; <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a> {
 <a href=#2514 id=2514 data-nosnippet>2514</a>    <span class="kw">unsafe </span>{
 <a href=#2515 id=2515 data-nosnippet>2515</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#2513">file</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
 <a href=#2516 id=2516 data-nosnippet>2516</a>        <span class="kw">let </span>imp = <a href="#2515">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
@@ -2593,7 +2593,7 @@
 <a href=#2520 id=2520 data-nosnippet>2520</a>    }
 <a href=#2521 id=2521 data-nosnippet>2521</a>}
 <a href=#2522 id=2522 data-nosnippet>2522</a>
-<a href=#2523 id=2523 data-nosnippet>2523</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_get_parse_name&lt;T: <a href="#19-395">FileImpl</a>&gt;(file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>) -&gt; <span class="kw-2">*mut </span>c_char {
+<a href=#2523 id=2523 data-nosnippet>2523</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_get_parse_name&lt;T: <a href="#19-395">FileImpl</a>&gt;(file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>) -&gt; <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a> {
 <a href=#2524 id=2524 data-nosnippet>2524</a>    <span class="kw">unsafe </span>{
 <a href=#2525 id=2525 data-nosnippet>2525</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#2523">file</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
 <a href=#2526 id=2526 data-nosnippet>2526</a>        <span class="kw">let </span>imp = <a href="#2525">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
@@ -2632,7 +2632,7 @@
 <a href=#2559 id=2559 data-nosnippet>2559</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_get_relative_path&lt;T: <a href="#19-395">FileImpl</a>&gt;(
 <a href=#2560 id=2560 data-nosnippet>2560</a>    parent: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
 <a href=#2561 id=2561 data-nosnippet>2561</a>    descendant: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
-<a href=#2562 id=2562 data-nosnippet>2562</a>) -&gt; <span class="kw-2">*mut </span>c_char {
+<a href=#2562 id=2562 data-nosnippet>2562</a>) -&gt; <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a> {
 <a href=#2563 id=2563 data-nosnippet>2563</a>    <span class="kw">unsafe </span>{
 <a href=#2564 id=2564 data-nosnippet>2564</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#2560">parent</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
 <a href=#2565 id=2565 data-nosnippet>2565</a>        <span class="kw">let </span>imp = <a href="#2564">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
@@ -2648,7 +2648,7 @@
 <a href=#2575 id=2575 data-nosnippet>2575</a>
 <a href=#2576 id=2576 data-nosnippet>2576</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_resolve_relative_path&lt;T: <a href="#19-395">FileImpl</a>&gt;(
 <a href=#2577 id=2577 data-nosnippet>2577</a>    file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
-<a href=#2578 id=2578 data-nosnippet>2578</a>    relative_path: <span class="kw-2">*const </span>c_char,
+<a href=#2578 id=2578 data-nosnippet>2578</a>    relative_path: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#2579 id=2579 data-nosnippet>2579</a>) -&gt; <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a> {
 <a href=#2580 id=2580 data-nosnippet>2580</a>    <span class="kw">unsafe </span>{
 <a href=#2581 id=2581 data-nosnippet>2581</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#2577">file</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
@@ -2662,7 +2662,7 @@
 <a href=#2589 id=2589 data-nosnippet>2589</a>
 <a href=#2590 id=2590 data-nosnippet>2590</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_get_child_for_display_name&lt;T: <a href="#19-395">FileImpl</a>&gt;(
 <a href=#2591 id=2591 data-nosnippet>2591</a>    file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
-<a href=#2592 id=2592 data-nosnippet>2592</a>    display_name: <span class="kw-2">*const </span>c_char,
+<a href=#2592 id=2592 data-nosnippet>2592</a>    display_name: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#2593 id=2593 data-nosnippet>2593</a>    error: <span class="kw-2">*mut *mut </span>glib::ffi::<a href="../../../glib_sys/struct.GError.html">GError</a>,
 <a href=#2594 id=2594 data-nosnippet>2594</a>) -&gt; <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a> {
 <a href=#2595 id=2595 data-nosnippet>2595</a>    <span class="kw">unsafe </span>{
@@ -2701,7 +2701,7 @@
 <a href=#2628 id=2628 data-nosnippet>2628</a>
 <a href=#2629 id=2629 data-nosnippet>2629</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_enumerate_children&lt;T: <a href="#19-395">FileImpl</a>&gt;(
 <a href=#2630 id=2630 data-nosnippet>2630</a>    file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
-<a href=#2631 id=2631 data-nosnippet>2631</a>    attributes: <span class="kw-2">*const </span>c_char,
+<a href=#2631 id=2631 data-nosnippet>2631</a>    attributes: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#2632 id=2632 data-nosnippet>2632</a>    flags: ffi::<a href="../../../gio_sys/type.GFileQueryInfoFlags.html">GFileQueryInfoFlags</a>,
 <a href=#2633 id=2633 data-nosnippet>2633</a>    cancellable: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GCancellable.html">GCancellable</a>,
 <a href=#2634 id=2634 data-nosnippet>2634</a>    error: <span class="kw-2">*mut *mut </span>glib::ffi::<a href="../../../glib_sys/struct.GError.html">GError</a>,
@@ -2730,7 +2730,7 @@
 <a href=#2657 id=2657 data-nosnippet>2657</a>
 <a href=#2658 id=2658 data-nosnippet>2658</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_query_info&lt;T: <a href="#19-395">FileImpl</a>&gt;(
 <a href=#2659 id=2659 data-nosnippet>2659</a>    file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
-<a href=#2660 id=2660 data-nosnippet>2660</a>    attributes: <span class="kw-2">*const </span>c_char,
+<a href=#2660 id=2660 data-nosnippet>2660</a>    attributes: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#2661 id=2661 data-nosnippet>2661</a>    flags: ffi::<a href="../../../gio_sys/type.GFileQueryInfoFlags.html">GFileQueryInfoFlags</a>,
 <a href=#2662 id=2662 data-nosnippet>2662</a>    cancellable: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GCancellable.html">GCancellable</a>,
 <a href=#2663 id=2663 data-nosnippet>2663</a>    error: <span class="kw-2">*mut *mut </span>glib::ffi::<a href="../../../glib_sys/struct.GError.html">GError</a>,
@@ -2759,7 +2759,7 @@
 <a href=#2686 id=2686 data-nosnippet>2686</a>
 <a href=#2687 id=2687 data-nosnippet>2687</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_query_filesystem_info&lt;T: <a href="#19-395">FileImpl</a>&gt;(
 <a href=#2688 id=2688 data-nosnippet>2688</a>    file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
-<a href=#2689 id=2689 data-nosnippet>2689</a>    attributes: <span class="kw-2">*const </span>c_char,
+<a href=#2689 id=2689 data-nosnippet>2689</a>    attributes: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#2690 id=2690 data-nosnippet>2690</a>    cancellable: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GCancellable.html">GCancellable</a>,
 <a href=#2691 id=2691 data-nosnippet>2691</a>    error: <span class="kw-2">*mut *mut </span>glib::ffi::<a href="../../../glib_sys/struct.GError.html">GError</a>,
 <a href=#2692 id=2692 data-nosnippet>2692</a>) -&gt; <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFileInfo.html">GFileInfo</a> {
@@ -2807,7 +2807,7 @@
 <a href=#2734 id=2734 data-nosnippet>2734</a>
 <a href=#2735 id=2735 data-nosnippet>2735</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_set_display_name&lt;T: <a href="#19-395">FileImpl</a>&gt;(
 <a href=#2736 id=2736 data-nosnippet>2736</a>    file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
-<a href=#2737 id=2737 data-nosnippet>2737</a>    display_name: <span class="kw-2">*const </span>c_char,
+<a href=#2737 id=2737 data-nosnippet>2737</a>    display_name: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#2738 id=2738 data-nosnippet>2738</a>    cancellable: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GCancellable.html">GCancellable</a>,
 <a href=#2739 id=2739 data-nosnippet>2739</a>    error: <span class="kw-2">*mut *mut </span>glib::ffi::<a href="../../../glib_sys/struct.GError.html">GError</a>,
 <a href=#2740 id=2740 data-nosnippet>2740</a>) -&gt; <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a> {
@@ -2880,7 +2880,7 @@
 <a href=#2807 id=2807 data-nosnippet>2807</a>
 <a href=#2808 id=2808 data-nosnippet>2808</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_set_attribute&lt;T: <a href="#19-395">FileImpl</a>&gt;(
 <a href=#2809 id=2809 data-nosnippet>2809</a>    file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
-<a href=#2810 id=2810 data-nosnippet>2810</a>    attribute: <span class="kw-2">*const </span>c_char,
+<a href=#2810 id=2810 data-nosnippet>2810</a>    attribute: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#2811 id=2811 data-nosnippet>2811</a>    type_: ffi::<a href="../../../gio_sys/type.GFileAttributeType.html">GFileAttributeType</a>,
 <a href=#2812 id=2812 data-nosnippet>2812</a>    value_p: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
 <a href=#2813 id=2813 data-nosnippet>2813</a>    flags: ffi::<a href="../../../gio_sys/type.GFileQueryInfoFlags.html">GFileQueryInfoFlags</a>,
@@ -3013,7 +3013,7 @@
 <a href=#2940 id=2940 data-nosnippet>2940</a>
 <a href=#2941 id=2941 data-nosnippet>2941</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_replace&lt;T: <a href="#19-395">FileImpl</a>&gt;(
 <a href=#2942 id=2942 data-nosnippet>2942</a>    file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
-<a href=#2943 id=2943 data-nosnippet>2943</a>    etag: <span class="kw-2">*const </span>c_char,
+<a href=#2943 id=2943 data-nosnippet>2943</a>    etag: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#2944 id=2944 data-nosnippet>2944</a>    make_backup: glib::ffi::<a href="../../../glib_sys/type.gboolean.html">gboolean</a>,
 <a href=#2945 id=2945 data-nosnippet>2945</a>    flags: ffi::<a href="../../../gio_sys/type.GFileCreateFlags.html">GFileCreateFlags</a>,
 <a href=#2946 id=2946 data-nosnippet>2946</a>    cancellable: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GCancellable.html">GCancellable</a>,
@@ -3114,7 +3114,7 @@
 <a href=#3041 id=3041 data-nosnippet>3041</a>
 <a href=#3042 id=3042 data-nosnippet>3042</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_make_symbolic_link&lt;T: <a href="#19-395">FileImpl</a>&gt;(
 <a href=#3043 id=3043 data-nosnippet>3043</a>    file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
-<a href=#3044 id=3044 data-nosnippet>3044</a>    symlink_value: <span class="kw-2">*const </span>c_char,
+<a href=#3044 id=3044 data-nosnippet>3044</a>    symlink_value: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#3045 id=3045 data-nosnippet>3045</a>    cancellable: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GCancellable.html">GCancellable</a>,
 <a href=#3046 id=3046 data-nosnippet>3046</a>    error: <span class="kw-2">*mut *mut </span>glib::ffi::<a href="../../../glib_sys/struct.GError.html">GError</a>,
 <a href=#3047 id=3047 data-nosnippet>3047</a>) -&gt; glib::ffi::<a href="../../../glib_sys/type.gboolean.html">gboolean</a> {
@@ -3520,7 +3520,7 @@
 <a href=#3447 id=3447 data-nosnippet>3447</a>
 <a href=#3448 id=3448 data-nosnippet>3448</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>file_replace_readwrite&lt;T: <a href="#19-395">FileImpl</a>&gt;(
 <a href=#3449 id=3449 data-nosnippet>3449</a>    file: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
-<a href=#3450 id=3450 data-nosnippet>3450</a>    etag: <span class="kw-2">*const </span>c_char,
+<a href=#3450 id=3450 data-nosnippet>3450</a>    etag: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#3451 id=3451 data-nosnippet>3451</a>    make_backup: glib::ffi::<a href="../../../glib_sys/type.gboolean.html">gboolean</a>,
 <a href=#3452 id=3452 data-nosnippet>3452</a>    flags: ffi::<a href="../../../gio_sys/type.GFileCreateFlags.html">GFileCreateFlags</a>,
 <a href=#3453 id=3453 data-nosnippet>3453</a>    cancellable: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GCancellable.html">GCancellable</a>,

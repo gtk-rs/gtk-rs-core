@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/application.rs`."><title>application.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.96.0-nightly (fb27476aa 2026-03-28)" data-channel="nightly" data-search-js="search-63369b7b.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/application.rs`."><title>application.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.97.0-nightly (14196dbfa 2026-04-12)" data-channel="nightly" data-search-js="search-b5634cc7.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -83,17 +83,17 @@
 <a href=#10 id=10 data-nosnippet>10</a><span class="kw">use </span>glib::{
 <a href=#11 id=11 data-nosnippet>11</a>    <a href="../../../glib/error/struct.Error.html">Error</a>, <a href="../../../glib/exit_code/struct.ExitCode.html">ExitCode</a>, <a href="../../../glib/signal/enum.Propagation.html">Propagation</a>, <a href="../../../glib/variant_dict/struct.VariantDict.html">VariantDict</a>, prelude::<span class="kw-2">*</span>, subclass::prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>,
 <a href=#12 id=12 data-nosnippet>12</a>};
-<a href=#13 id=13 data-nosnippet>13</a><span class="kw">use </span>libc::{c_char, c_int, <a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>};
+<a href=#13 id=13 data-nosnippet>13</a><span class="kw">use </span>libc::{<a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_int.html">c_int</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/enum.c_void.html">c_void</a>};
 <a href=#14 id=14 data-nosnippet>14</a>
 <a href=#15 id=15 data-nosnippet>15</a><span class="kw">use </span>crate::{<a href="../auto/action_group.rs.html#14-101">ActionGroup</a>, <a href="../auto/action_map.rs.html#8-30">ActionMap</a>, <a href="../auto/application.rs.html#16-333">Application</a>, <a href="../auto/dbus_connection.rs.html#22-200">DBusConnection</a>, <a href="../../../gio_sys/index.html">ffi</a>};
 <a href=#16 id=16 data-nosnippet>16</a>
 <a href=#17 id=17 data-nosnippet>17</a><span class="kw">pub struct </span><a href="../../../gio/subclass/struct.ArgumentList.html">ArgumentList</a> {
-<a href=#18 id=18 data-nosnippet>18</a>    <span class="kw">pub</span>(<span class="kw">crate</span>) ptr: <span class="kw-2">*mut *mut *mut </span>c_char,
+<a href=#18 id=18 data-nosnippet>18</a>    <span class="kw">pub</span>(<span class="kw">crate</span>) ptr: <span class="kw-2">*mut *mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#19 id=19 data-nosnippet>19</a>    items: <a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsString.html">OsString</a>&gt;,
 <a href=#20 id=20 data-nosnippet>20</a>}
 <a href=#21 id=21 data-nosnippet>21</a>
 <a href=#22 id=22 data-nosnippet>22</a><span class="kw">impl </span><a href="#17-20">ArgumentList</a> {
-<a href=#23 id=23 data-nosnippet>23</a>    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(arguments: <span class="kw-2">*mut *mut *mut </span>c_char) -&gt; <span class="self">Self </span>{
+<a href=#23 id=23 data-nosnippet>23</a>    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(arguments: <span class="kw-2">*mut *mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>) -&gt; <span class="self">Self </span>{
 <a href=#24 id=24 data-nosnippet>24</a>        <span class="self">Self </span>{
 <a href=#25 id=25 data-nosnippet>25</a>            ptr: <a href="#23">arguments</a>,
 <a href=#26 id=26 data-nosnippet>26</a>            items: <span class="kw">unsafe </span>{ FromGlibPtrContainer::<a href="../../../glib/translate/trait.FromGlibPtrContainer.html#tymethod.from_glib_none">from_glib_none</a>(ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.read.html">read</a>(<a href="#23">arguments</a>)) },
@@ -563,7 +563,7 @@
 <a href=#490 id=490 data-nosnippet>490</a>}
 <a href=#491 id=491 data-nosnippet>491</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_local_command_line&lt;T: <a href="#74-206">ApplicationImpl</a>&gt;(
 <a href=#492 id=492 data-nosnippet>492</a>    ptr: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GApplication.html">GApplication</a>,
-<a href=#493 id=493 data-nosnippet>493</a>    arguments: <span class="kw-2">*mut *mut *mut </span>c_char,
+<a href=#493 id=493 data-nosnippet>493</a>    arguments: <span class="kw-2">*mut *mut *mut </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#494 id=494 data-nosnippet>494</a>    exit_status: <span class="kw-2">*mut </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#495 id=495 data-nosnippet>495</a>) -&gt; glib::ffi::<a href="../../../glib_sys/type.gboolean.html">gboolean</a> {
 <a href=#496 id=496 data-nosnippet>496</a>    <span class="kw">unsafe </span>{
@@ -587,7 +587,7 @@
 <a href=#514 id=514 data-nosnippet>514</a>    ptr: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GApplication.html">GApplication</a>,
 <a href=#515 id=515 data-nosnippet>515</a>    files: <span class="kw-2">*mut *mut </span>ffi::<a href="../../../gio_sys/struct.GFile.html">GFile</a>,
 <a href=#516 id=516 data-nosnippet>516</a>    num_files: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-<a href=#517 id=517 data-nosnippet>517</a>    hint: <span class="kw-2">*const </span>c_char,
+<a href=#517 id=517 data-nosnippet>517</a>    hint: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#518 id=518 data-nosnippet>518</a>) {
 <a href=#519 id=519 data-nosnippet>519</a>    <span class="kw">unsafe </span>{
 <a href=#520 id=520 data-nosnippet>520</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#514">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
@@ -634,7 +634,7 @@
 <a href=#561 id=561 data-nosnippet>561</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_handle_local_options&lt;T: <a href="#74-206">ApplicationImpl</a>&gt;(
 <a href=#562 id=562 data-nosnippet>562</a>    ptr: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GApplication.html">GApplication</a>,
 <a href=#563 id=563 data-nosnippet>563</a>    options: <span class="kw-2">*mut </span>glib::ffi::<a href="../../../glib_sys/struct.GVariantDict.html">GVariantDict</a>,
-<a href=#564 id=564 data-nosnippet>564</a>) -&gt; c_int {
+<a href=#564 id=564 data-nosnippet>564</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_int.html">c_int</a> {
 <a href=#565 id=565 data-nosnippet>565</a>    <span class="kw">unsafe </span>{
 <a href=#566 id=566 data-nosnippet>566</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#562">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
 <a href=#567 id=567 data-nosnippet>567</a>        <span class="kw">let </span>imp = <a href="#566">instance</a>.<a href="../../../glib/subclass/types/trait.InstanceStructExt.html#tymethod.imp">imp</a>();
@@ -649,7 +649,7 @@
 <a href=#576 id=576 data-nosnippet>576</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_dbus_register&lt;T: <a href="#74-206">ApplicationImpl</a>&gt;(
 <a href=#577 id=577 data-nosnippet>577</a>    ptr: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GApplication.html">GApplication</a>,
 <a href=#578 id=578 data-nosnippet>578</a>    connection: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GDBusConnection.html">GDBusConnection</a>,
-<a href=#579 id=579 data-nosnippet>579</a>    object_path: <span class="kw-2">*const </span>c_char,
+<a href=#579 id=579 data-nosnippet>579</a>    object_path: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#580 id=580 data-nosnippet>580</a>    error: <span class="kw-2">*mut *mut </span>glib::ffi::<a href="../../../glib_sys/struct.GError.html">GError</a>,
 <a href=#581 id=581 data-nosnippet>581</a>) -&gt; glib::ffi::<a href="../../../glib_sys/type.gboolean.html">gboolean</a> {
 <a href=#582 id=582 data-nosnippet>582</a>    <span class="kw">unsafe </span>{
@@ -674,7 +674,7 @@
 <a href=#601 id=601 data-nosnippet>601</a><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>application_dbus_unregister&lt;T: <a href="#74-206">ApplicationImpl</a>&gt;(
 <a href=#602 id=602 data-nosnippet>602</a>    ptr: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GApplication.html">GApplication</a>,
 <a href=#603 id=603 data-nosnippet>603</a>    connection: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GDBusConnection.html">GDBusConnection</a>,
-<a href=#604 id=604 data-nosnippet>604</a>    object_path: <span class="kw-2">*const </span>c_char,
+<a href=#604 id=604 data-nosnippet>604</a>    object_path: <span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/core/ffi/primitives/type.c_char.html">c_char</a>,
 <a href=#605 id=605 data-nosnippet>605</a>) {
 <a href=#606 id=606 data-nosnippet>606</a>    <span class="kw">unsafe </span>{
 <a href=#607 id=607 data-nosnippet>607</a>        <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(<a href="#602">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
