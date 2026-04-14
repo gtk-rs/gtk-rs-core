@@ -10,7 +10,7 @@ pub use gio_unix_sys as ffi;
 mod auto;
 pub use auto::*;
 
-#[cfg(feature = "v2_58")]
+#[cfg(all(feature = "v2_58", not(target_os = "macos")))]
 mod desktop_app_info;
 mod fd_message;
 mod file_descriptor_based;
@@ -29,7 +29,7 @@ pub mod prelude {
 
     pub use super::auto::traits::*;
 
-    #[cfg(feature = "v2_58")]
+    #[cfg(all(feature = "v2_58", not(target_os = "macos")))]
     pub use crate::desktop_app_info::DesktopAppInfoExtManual;
 
     pub use crate::fd_message::FDMessageExtManual;
