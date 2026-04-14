@@ -2,7 +2,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+#[cfg(not(target_os = "macos"))]
+#[cfg_attr(docsrs, doc(cfg(not(target_os = "macos"))))]
 mod desktop_app_info;
+#[cfg(not(target_os = "macos"))]
+#[cfg_attr(docsrs, doc(cfg(not(target_os = "macos"))))]
 pub use self::desktop_app_info::DesktopAppInfo;
 
 mod fd_message;
