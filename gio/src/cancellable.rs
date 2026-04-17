@@ -218,15 +218,11 @@ mod tests {
     fn cancellable_future_delayed() {
         let ctx = glib::MainContext::new();
         let c = Cancellable::new();
-        let (tx, rx) = oneshot::channel();
-        {
+        let future = {
             let c = c.clone();
-            ctx.spawn_local(async move {
-                c.future().await;
-                tx.send(()).unwrap();
-            });
-        }
+            ctx.spawn_local(c.future())
+        };
         std::thread::spawn(move || c.cancel()).join().unwrap();
-        ctx.block_on(rx).unwrap();
+        ctx.block_on(future).unwrap();
     }
 }
