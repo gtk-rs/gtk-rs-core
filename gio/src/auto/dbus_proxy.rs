@@ -553,6 +553,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
 
     #[doc(alias = "g_dbus_proxy_get_connection")]
     #[doc(alias = "get_connection")]
+    #[doc(alias = "g-connection")]
     fn connection(&self) -> DBusConnection {
         unsafe {
             from_glib_none(ffi::g_dbus_proxy_get_connection(
@@ -563,18 +564,21 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
 
     #[doc(alias = "g_dbus_proxy_get_default_timeout")]
     #[doc(alias = "get_default_timeout")]
+    #[doc(alias = "g-default-timeout")]
     fn default_timeout(&self) -> i32 {
         unsafe { ffi::g_dbus_proxy_get_default_timeout(self.as_ref().to_glib_none().0) }
     }
 
     #[doc(alias = "g_dbus_proxy_get_flags")]
     #[doc(alias = "get_flags")]
+    #[doc(alias = "g-flags")]
     fn flags(&self) -> DBusProxyFlags {
         unsafe { from_glib(ffi::g_dbus_proxy_get_flags(self.as_ref().to_glib_none().0)) }
     }
 
     #[doc(alias = "g_dbus_proxy_get_interface_info")]
     #[doc(alias = "get_interface_info")]
+    #[doc(alias = "g-interface-info")]
     fn interface_info(&self) -> Option<DBusInterfaceInfo> {
         unsafe {
             from_glib_none(ffi::g_dbus_proxy_get_interface_info(
@@ -585,6 +589,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
 
     #[doc(alias = "g_dbus_proxy_get_interface_name")]
     #[doc(alias = "get_interface_name")]
+    #[doc(alias = "g-interface-name")]
     fn interface_name(&self) -> glib::GString {
         unsafe {
             from_glib_none(ffi::g_dbus_proxy_get_interface_name(
@@ -595,12 +600,14 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
 
     #[doc(alias = "g_dbus_proxy_get_name")]
     #[doc(alias = "get_name")]
+    #[doc(alias = "g-name")]
     fn name(&self) -> Option<glib::GString> {
         unsafe { from_glib_none(ffi::g_dbus_proxy_get_name(self.as_ref().to_glib_none().0)) }
     }
 
     #[doc(alias = "g_dbus_proxy_get_name_owner")]
     #[doc(alias = "get_name_owner")]
+    #[doc(alias = "g-name-owner")]
     fn name_owner(&self) -> Option<glib::GString> {
         unsafe {
             from_glib_full(ffi::g_dbus_proxy_get_name_owner(
@@ -611,6 +618,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
 
     #[doc(alias = "g_dbus_proxy_get_object_path")]
     #[doc(alias = "get_object_path")]
+    #[doc(alias = "g-object-path")]
     fn object_path(&self) -> glib::GString {
         unsafe {
             from_glib_none(ffi::g_dbus_proxy_get_object_path(
@@ -631,6 +639,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
     }
 
     #[doc(alias = "g_dbus_proxy_set_default_timeout")]
+    #[doc(alias = "g-default-timeout")]
     fn set_default_timeout(&self, timeout_msec: i32) {
         unsafe {
             ffi::g_dbus_proxy_set_default_timeout(self.as_ref().to_glib_none().0, timeout_msec);
@@ -638,6 +647,7 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
     }
 
     #[doc(alias = "g_dbus_proxy_set_interface_info")]
+    #[doc(alias = "g-interface-info")]
     fn set_interface_info(&self, info: Option<&DBusInterfaceInfo>) {
         unsafe {
             ffi::g_dbus_proxy_set_interface_info(
@@ -645,56 +655,6 @@ pub trait DBusProxyExt: IsA<DBusProxy> + 'static {
                 info.to_glib_none().0,
             );
         }
-    }
-
-    #[doc(alias = "g-connection")]
-    fn g_connection(&self) -> Option<DBusConnection> {
-        ObjectExt::property(self.as_ref(), "g-connection")
-    }
-
-    #[doc(alias = "g-default-timeout")]
-    fn g_default_timeout(&self) -> i32 {
-        ObjectExt::property(self.as_ref(), "g-default-timeout")
-    }
-
-    #[doc(alias = "g-default-timeout")]
-    fn set_g_default_timeout(&self, g_default_timeout: i32) {
-        ObjectExt::set_property(self.as_ref(), "g-default-timeout", g_default_timeout)
-    }
-
-    #[doc(alias = "g-flags")]
-    fn g_flags(&self) -> DBusProxyFlags {
-        ObjectExt::property(self.as_ref(), "g-flags")
-    }
-
-    #[doc(alias = "g-interface-info")]
-    fn g_interface_info(&self) -> Option<DBusInterfaceInfo> {
-        ObjectExt::property(self.as_ref(), "g-interface-info")
-    }
-
-    #[doc(alias = "g-interface-info")]
-    fn set_g_interface_info(&self, g_interface_info: Option<&DBusInterfaceInfo>) {
-        ObjectExt::set_property(self.as_ref(), "g-interface-info", g_interface_info)
-    }
-
-    #[doc(alias = "g-interface-name")]
-    fn g_interface_name(&self) -> Option<glib::GString> {
-        ObjectExt::property(self.as_ref(), "g-interface-name")
-    }
-
-    #[doc(alias = "g-name")]
-    fn g_name(&self) -> Option<glib::GString> {
-        ObjectExt::property(self.as_ref(), "g-name")
-    }
-
-    #[doc(alias = "g-name-owner")]
-    fn g_name_owner(&self) -> Option<glib::GString> {
-        ObjectExt::property(self.as_ref(), "g-name-owner")
-    }
-
-    #[doc(alias = "g-object-path")]
-    fn g_object_path(&self) -> Option<glib::GString> {
-        ObjectExt::property(self.as_ref(), "g-object-path")
     }
 
     #[doc(alias = "g-default-timeout")]
