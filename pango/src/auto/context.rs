@@ -166,7 +166,7 @@ impl Context {
     }
 
     #[doc(alias = "pango_context_set_font_description")]
-    pub fn set_font_description(&self, desc: Option<&FontDescription>) {
+    pub fn set_font_description(&self, desc: &FontDescription) {
         unsafe {
             ffi::pango_context_set_font_description(self.to_glib_none().0, desc.to_glib_none().0);
         }

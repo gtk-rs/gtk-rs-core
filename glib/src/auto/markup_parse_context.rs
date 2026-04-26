@@ -35,6 +35,39 @@ impl MarkupParseContext {
         }
     }
 
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    #[doc(alias = "g_markup_parse_context_get_attribute_position")]
+    #[doc(alias = "get_attribute_position")]
+    pub fn attribute_position(&self, attr: u32) -> (usize, usize, usize, usize, usize, usize) {
+        unsafe {
+            let mut start_lines = std::mem::MaybeUninit::uninit();
+            let mut start_chars = std::mem::MaybeUninit::uninit();
+            let mut start_offset = std::mem::MaybeUninit::uninit();
+            let mut end_lines = std::mem::MaybeUninit::uninit();
+            let mut end_chars = std::mem::MaybeUninit::uninit();
+            let mut end_offset = std::mem::MaybeUninit::uninit();
+            ffi::g_markup_parse_context_get_attribute_position(
+                self.to_glib_none().0,
+                attr,
+                start_lines.as_mut_ptr(),
+                start_chars.as_mut_ptr(),
+                start_offset.as_mut_ptr(),
+                end_lines.as_mut_ptr(),
+                end_chars.as_mut_ptr(),
+                end_offset.as_mut_ptr(),
+            );
+            (
+                start_lines.assume_init(),
+                start_chars.assume_init(),
+                start_offset.assume_init(),
+                end_lines.assume_init(),
+                end_chars.assume_init(),
+                end_offset.assume_init(),
+            )
+        }
+    }
+
     #[doc(alias = "g_markup_parse_context_get_element")]
     #[doc(alias = "get_element")]
     pub fn element(&self) -> crate::GString {

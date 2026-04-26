@@ -31,6 +31,7 @@ impl DBusObjectProxy {
 pub trait DBusObjectProxyExt: IsA<DBusObjectProxy> + 'static {
     #[doc(alias = "g_dbus_object_proxy_get_connection")]
     #[doc(alias = "get_connection")]
+    #[doc(alias = "g-connection")]
     fn connection(&self) -> DBusConnection {
         unsafe {
             from_glib_none(ffi::g_dbus_object_proxy_get_connection(
