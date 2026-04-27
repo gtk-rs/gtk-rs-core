@@ -33,12 +33,6 @@ pub fn command_line() -> Vec<glib::GString> {
     unsafe { FromGlibPtrContainer::from_glib_full(ffi::g_win32_get_command_line()) }
 }
 
-//#[doc(alias = "g_win32_get_package_installation_directory_of_module")]
-//#[doc(alias = "get_package_installation_directory_of_module")]
-//pub fn package_installation_directory_of_module(hmodule: /*Unimplemented*/Option<Basic: Pointer>) -> glib::GString {
-//    unsafe { TODO: call ffi:g_win32_get_package_installation_directory_of_module() }
-//}
-
 #[doc(alias = "g_win32_getlocale")]
 pub fn getlocale() -> glib::GString {
     unsafe { from_glib_full(ffi::g_win32_getlocale()) }
