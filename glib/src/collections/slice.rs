@@ -998,7 +998,7 @@ mod test {
         slice.push(e);
         assert_eq!(slice.len(), 4);
 
-        for (a, b) in Iterator::zip(items.iter(), slice.into_iter()) {
+        for (a, b) in Iterator::zip(items.iter(), slice) {
             assert_eq!(a, &b);
         }
     }
