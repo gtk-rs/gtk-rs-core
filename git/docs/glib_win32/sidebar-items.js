@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["OSType"],"fn":["check_windows_version","command_line","error_message","ftruncate","getlocale","locale_filename_from_utf8","package_installation_directory","package_installation_directory_of_module","package_installation_subdirectory","windows_version"],"mod":["prelude"],"type":["HANDLE"]};
+window.SIDEBAR_ITEMS = {"enum":["OSType"],"fn":["check_windows_version","command_line","error_message","ftruncate","getlocale","locale_filename_from_utf8","package_installation_directory_of_module"],"mod":["prelude"],"type":["HANDLE"]};
