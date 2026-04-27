@@ -50,3 +50,34 @@ pub fn package_installation_directory_of_module(
         None => Err(std::io::Error::last_os_error()),
     }
 }
+
+#[doc(alias = "g_win32_get_package_installation_directory")]
+#[doc(alias = "get_package_installation_directory")]
+#[deprecated = "Use `package_installation_directory_of_module()`"]
+#[cfg(any(windows, docsrs))]
+pub fn package_installation_directory(package: &str, dll_name: &str) -> glib::GString {
+    unsafe {
+        from_glib_full(ffi::g_win32_get_package_installation_directory(
+            package.to_glib_none().0,
+            dll_name.to_glib_none().0,
+        ))
+    }
+}
+
+#[doc(alias = "g_win32_get_package_installation_subdirectory")]
+#[doc(alias = "get_package_installation_subdirectory")]
+#[deprecated = "Use `package_installation_directory_of_module()`"]
+#[cfg(any(windows, docsrs))]
+pub fn package_installation_subdirectory(
+    package: &str,
+    dll_name: &str,
+    subdir: &str,
+) -> glib::GString {
+    unsafe {
+        from_glib_full(ffi::g_win32_get_package_installation_subdirectory(
+            package.to_glib_none().0,
+            dll_name.to_glib_none().0,
+            subdir.to_glib_none().0,
+        ))
+    }
+}
