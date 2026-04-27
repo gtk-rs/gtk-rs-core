@@ -76,7 +76,7 @@
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 <a href=#4 id=4 data-nosnippet>4</a>
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>crate::{
-<a href=#6 id=6 data-nosnippet>6</a>    <a href="auto/binding.rs.html#7-14">Binding</a>, <a href="auto/flags.rs.html#7-20">BindingFlags</a>, <a href="auto/binding_group.rs.html#13-20">BindingGroup</a>, <a href="../error.rs.html#241-249">BoolError</a>, <a href="../object.rs.html#1395-1398">Object</a>, <a href="../param_spec.rs.html#18-27">ParamSpec</a>, <a href="../value.rs.html#490-513">Value</a>, ffi, gobject_ffi,
+<a href=#6 id=6 data-nosnippet>6</a>    <a href="auto/binding.rs.html#7-14">Binding</a>, <a href="auto/flags.rs.html#7-20">BindingFlags</a>, <a href="auto/binding_group.rs.html#13-20">BindingGroup</a>, <a href="../error.rs.html#276-284">BoolError</a>, <a href="../object.rs.html#1395-1398">Object</a>, <a href="../param_spec.rs.html#18-27">ParamSpec</a>, <a href="../value.rs.html#490-513">Value</a>, ffi, gobject_ffi,
 <a href=#7 id=7 data-nosnippet>7</a>    <a href="../object.rs.html#384-386">object::ObjectRef</a>, prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>, <a href="../value.rs.html#271-282">value::FromValue</a>,
 <a href=#8 id=8 data-nosnippet>8</a>};
 <a href=#9 id=9 data-nosnippet>9</a>
@@ -241,7 +241,7 @@
 <a href=#168 id=168 data-nosnippet>168</a>    </span><span class="doccomment">/// Establish the property binding.
 <a href=#169 id=169 data-nosnippet>169</a>    ///
 <a href=#170 id=170 data-nosnippet>170</a>    /// This fails if the provided properties do not exist.
-<a href=#171 id=171 data-nosnippet>171</a>    </span><span class="kw">pub fn </span>try_build(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="../error.rs.html#241-249">BoolError</a>&gt; {
+<a href=#171 id=171 data-nosnippet>171</a>    </span><span class="kw">pub fn </span>try_build(<span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="../error.rs.html#276-284">BoolError</a>&gt; {
 <a href=#172 id=172 data-nosnippet>172</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>transform_to_trampoline(
 <a href=#173 id=173 data-nosnippet>173</a>            binding: <span class="kw-2">*mut </span>gobject_ffi::GBinding,
 <a href=#174 id=174 data-nosnippet>174</a>            from_value: <span class="kw-2">*const </span>gobject_ffi::GValue,
@@ -321,7 +321,7 @@
 <a href=#248 id=248 data-nosnippet>248</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(source) =&gt; {
 <a href=#249 id=249 data-nosnippet>249</a>                <span class="kw">let </span>source_property =
 <a href=#250 id=250 data-nosnippet>250</a>                    <a href="#248">source</a>.<a href="../object.rs.html#1796">find_property</a>(<a class="self" href="#171">self</a>.source_property).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| {
-<a href=#251 id=251 data-nosnippet>251</a>                        <a href="../error.rs.html#187-209">bool_error!</a>(
+<a href=#251 id=251 data-nosnippet>251</a>                        <a href="../error.rs.html#222-244">bool_error!</a>(
 <a href=#252 id=252 data-nosnippet>252</a>                            <span class="string">"Source property {} on type {} not found"</span>,
 <a href=#253 id=253 data-nosnippet>253</a>                            <span class="self">self</span>.source_property,
 <a href=#254 id=254 data-nosnippet>254</a>                            source.type_()
@@ -345,7 +345,7 @@
 <a href=#272 id=272 data-nosnippet>272</a>            <span class="kw">let </span>target: <a href="../object.rs.html#1395-1398">Object</a> = <a href="../translate.rs.html#1627-1629">from_glib_none</a>(<a class="self" href="#171">self</a>.target.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>().<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
 <a href=#273 id=273 data-nosnippet>273</a>
 <a href=#274 id=274 data-nosnippet>274</a>            <span class="kw">let </span>target_property = <a href="#272">target</a>.<a href="../object.rs.html#1796">find_property</a>(<a class="self" href="#171">self</a>.target_property).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.ok_or_else">ok_or_else</a>(|| {
-<a href=#275 id=275 data-nosnippet>275</a>                <a href="../error.rs.html#187-209">bool_error!</a>(
+<a href=#275 id=275 data-nosnippet>275</a>                <a href="../error.rs.html#222-244">bool_error!</a>(
 <a href=#276 id=276 data-nosnippet>276</a>                    <span class="string">"Target property {} on type {} not found"</span>,
 <a href=#277 id=277 data-nosnippet>277</a>                    <span class="self">self</span>.target_property,
 <a href=#278 id=278 data-nosnippet>278</a>                    target.type_()
