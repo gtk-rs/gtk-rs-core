@@ -52,3 +52,6 @@ impl DBusInterfaceInfo {
         }
     }
 }
+
+unsafe impl Send for DBusInterfaceInfo {}
+unsafe impl Sync for DBusInterfaceInfo {}

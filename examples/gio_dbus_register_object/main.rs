@@ -1,5 +1,7 @@
 use gio::prelude::*;
 
+mod hello_world;
+
 glib::wrapper! {
     pub struct SampleApplication(ObjectSubclass<imp::SampleApplication>)
         @extends gio::Application,

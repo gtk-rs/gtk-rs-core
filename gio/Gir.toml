@@ -581,6 +581,15 @@ status = "generate"
 generate_builder = true
 
 [[object]]
+name = "Gio.DBusAnnotationInfo"
+status = "generate"
+
+    [[object.function]]
+    name = "lookup"
+    # unsupported parameter type
+    ignore = true
+
+[[object]]
 name = "Gio.DBusConnection"
 concurrency = "send+sync"
 status = "generate"
@@ -649,6 +658,8 @@ status = "generate"
 [[object]]
 name = "Gio.DBusInterfaceInfo"
 status = "generate"
+# Uses atomic ref count and is used in statics in generated C code.
+concurrency = "send+sync"
     [[object.function]]
     pattern = "cache_.+"
     # should have a Drop wrapper

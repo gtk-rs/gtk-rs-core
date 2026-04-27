@@ -459,6 +459,9 @@ pub use self::zlib_compressor::ZlibCompressor;
 mod zlib_decompressor;
 pub use self::zlib_decompressor::ZlibDecompressor;
 
+mod dbus_annotation_info;
+pub use self::dbus_annotation_info::DBusAnnotationInfo;
+
 mod dbus_arg_info;
 pub use self::dbus_arg_info::DBusArgInfo;
 
