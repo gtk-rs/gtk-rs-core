@@ -30,18 +30,7 @@ pub fn ftruncate(f: i32, size: u32) -> i32 {
 #[doc(alias = "g_win32_get_command_line")]
 #[doc(alias = "get_command_line")]
 pub fn command_line() -> Vec<glib::GString> {
-    unsafe { FromGlibPtrContainer::from_glib_none(ffi::g_win32_get_command_line()) }
-}
-
-#[doc(alias = "g_win32_get_package_installation_directory")]
-#[doc(alias = "get_package_installation_directory")]
-pub fn package_installation_directory(package: &str, dll_name: &str) -> glib::GString {
-    unsafe {
-        from_glib_full(ffi::g_win32_get_package_installation_directory(
-            package.to_glib_none().0,
-            dll_name.to_glib_none().0,
-        ))
-    }
+    unsafe { FromGlibPtrContainer::from_glib_full(ffi::g_win32_get_command_line()) }
 }
 
 //#[doc(alias = "g_win32_get_package_installation_directory_of_module")]
@@ -49,28 +38,6 @@ pub fn package_installation_directory(package: &str, dll_name: &str) -> glib::GS
 //pub fn package_installation_directory_of_module(hmodule: /*Unimplemented*/Option<Basic: Pointer>) -> glib::GString {
 //    unsafe { TODO: call ffi:g_win32_get_package_installation_directory_of_module() }
 //}
-
-#[doc(alias = "g_win32_get_package_installation_subdirectory")]
-#[doc(alias = "get_package_installation_subdirectory")]
-pub fn package_installation_subdirectory(
-    package: &str,
-    dll_name: &str,
-    subdir: &str,
-) -> glib::GString {
-    unsafe {
-        from_glib_full(ffi::g_win32_get_package_installation_subdirectory(
-            package.to_glib_none().0,
-            dll_name.to_glib_none().0,
-            subdir.to_glib_none().0,
-        ))
-    }
-}
-
-#[doc(alias = "g_win32_get_windows_version")]
-#[doc(alias = "get_windows_version")]
-pub fn windows_version() -> u32 {
-    unsafe { ffi::g_win32_get_windows_version() }
-}
 
 #[doc(alias = "g_win32_getlocale")]
 pub fn getlocale() -> glib::GString {

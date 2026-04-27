@@ -72,6 +72,7 @@ pub trait DBusObjectSkeletonExt: IsA<DBusObjectSkeleton> + 'static {
     }
 
     #[doc(alias = "g_dbus_object_skeleton_set_object_path")]
+    #[doc(alias = "g-object-path")]
     fn set_object_path(&self, object_path: &str) {
         unsafe {
             ffi::g_dbus_object_skeleton_set_object_path(
