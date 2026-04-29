@@ -356,19 +356,19 @@ impl<T: TransparentPtrType> SList<T> {
     /// Only keeps the item in the list for which `f` returns `true`.
     #[inline]
     pub fn retain(&mut self, mut f: impl FnMut(&T) -> bool) {
-        if let Some(head) = self.ptr {
-            unsafe {
-                let mut ptr = head.as_ptr();
-                while !ptr.is_null() {
-                    let item = &*(&(*ptr).data as *const ffi::gpointer as *const T);
-                    let next = (*ptr).next;
-                    if !f(item) {
-                        let mut item_ptr = (*ptr).data;
-                        self.ptr = ptr::NonNull::new(ffi::g_slist_delete_link(head.as_ptr(), ptr));
-                        ptr::drop_in_place(&mut item_ptr as *mut ffi::gpointer as *mut T);
-                    }
-                    ptr = next;
+        let mut head = self.ptr.map(|p| p.as_ptr()).unwrap_or(ptr::null_mut());
+        unsafe {
+            let mut ptr = head;
+            while !ptr.is_null() {
+                let item = &*(&(*ptr).data as *const ffi::gpointer as *const T);
+                let next = (*ptr).next;
+                if !f(item) {
+                    let mut item_ptr = (*ptr).data;
+                    head = ffi::g_slist_delete_link(head, ptr);
+                    self.ptr = ptr::NonNull::new(head);
+                    ptr::drop_in_place(&mut item_ptr as *mut ffi::gpointer as *mut T);
                 }
+                ptr = next;
             }
         }
     }
@@ -976,5 +976,25 @@ mod test {
             list.iter().map(|dt| dt.to_unix()).collect::<Vec<_>>(),
             vec![21, 22]
         );
+    }
+
+    #[test]
+    fn retain_deletes_head() {
+        let mut list = SList::<crate::DateTime>::new();
+        let items = [
+            crate::DateTime::from_unix_utc(1).unwrap(),
+            crate::DateTime::from_unix_utc(2).unwrap(),
+            crate::DateTime::from_unix_utc(3).unwrap(),
+        ];
+        for item in &items {
+            list.push_back(item.clone());
+        }
+        assert_eq!(list.len(), 3);
+
+        // Delete first and second nodes, keep third
+        list.retain(|item| item.to_unix() >= 3);
+
+        assert_eq!(list.len(), 1);
+        assert_eq!(list.pop_front().unwrap().to_unix(), 3);
     }
 }
