@@ -83,13 +83,15 @@ impl<T: TransparentPtrType> Drop for PtrSlice<T> {
     #[inline]
     fn drop(&mut self) {
         unsafe {
+            let len = mem::replace(&mut self.len, 0);
             if mem::needs_drop::<T>() {
-                for i in 0..self.len {
+                for i in 0..len {
                     ptr::drop_in_place::<T>(self.ptr.as_ptr().add(i) as *mut T);
                 }
             }
 
-            if self.capacity != 0 {
+            let capacity = mem::replace(&mut self.capacity, 0);
+            if capacity != 0 {
                 ffi::g_free(self.ptr.as_ptr() as ffi::gpointer);
             }
         }
@@ -263,13 +265,15 @@ impl<T: TransparentPtrType> Drop for IntoIter<T> {
     #[inline]
     fn drop(&mut self) {
         unsafe {
+            let len = mem::replace(&mut self.len, 0);
             if mem::needs_drop::<T>() {
-                for i in 0..self.len {
+                for i in 0..len {
                     ptr::drop_in_place::<T>(self.idx.as_ptr().add(i) as *mut T);
                 }
             }
 
-            if !self.empty {
+            let empty = mem::replace(&mut self.empty, true);
+            if !empty {
                 ffi::g_free(self.ptr.as_ptr() as ffi::gpointer);
             }
         }
@@ -789,13 +793,12 @@ impl<T: TransparentPtrType> PtrSlice<T> {
     #[inline]
     pub fn clear(&mut self) {
         unsafe {
+            let len = mem::replace(&mut self.len, 0);
             if mem::needs_drop::<T>() {
-                for i in 0..self.len {
+                for i in 0..len {
                     ptr::drop_in_place::<T>(self.ptr.as_ptr().add(i) as *mut T);
                 }
             }
-
-            self.len = 0;
         }
     }
 
@@ -929,14 +932,18 @@ impl<T: TransparentPtrType> PtrSlice<T> {
         }
 
         unsafe {
-            while self.len > len {
-                self.len -= 1;
-                let p = self.ptr.as_ptr().add(self.len);
-                ptr::drop_in_place::<T>(p as *mut T);
-                ptr::write(
-                    p,
-                    Ptr::from(ptr::null_mut::<<T as GlibPtrDefault>::GlibType>()),
-                );
+            if mem::needs_drop::<T>() {
+                while self.len > len {
+                    self.len -= 1;
+                    let p = self.ptr.as_ptr().add(self.len);
+                    ptr::drop_in_place::<T>(p as *mut T);
+                    ptr::write(
+                        p,
+                        Ptr::from(ptr::null_mut::<<T as GlibPtrDefault>::GlibType>()),
+                    );
+                }
+            } else {
+                self.len = len;
             }
         }
     }

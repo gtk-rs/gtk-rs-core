@@ -363,8 +363,9 @@ impl<T: TransparentPtrType> SList<T> {
                     let item = &*(&(*ptr).data as *const ffi::gpointer as *const T);
                     let next = (*ptr).next;
                     if !f(item) {
-                        ptr::drop_in_place(&mut (*ptr).data as *mut ffi::gpointer as *mut T);
+                        let mut item_ptr = (*ptr).data;
                         self.ptr = ptr::NonNull::new(ffi::g_slist_delete_link(head.as_ptr(), ptr));
+                        ptr::drop_in_place(&mut item_ptr as *mut ffi::gpointer as *mut T);
                     }
                     ptr = next;
                 }
@@ -412,7 +413,7 @@ impl<T: TransparentPtrType> Clone for SList<T> {
 impl<T: TransparentPtrType> Drop for SList<T> {
     #[inline]
     fn drop(&mut self) {
-        if let Some(ptr) = self.ptr {
+        if let Some(ptr) = self.ptr.take() {
             unsafe {
                 if mem::needs_drop::<T>() {
                     unsafe extern "C" fn drop_item<T: TransparentPtrType>(mut ptr: ffi::gpointer) {
