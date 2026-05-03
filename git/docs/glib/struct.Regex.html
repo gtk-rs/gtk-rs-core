@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="A `GRegex` is a compiled form of a regular expression."><title>Regex in glib - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.97.0-nightly (ca9a134e0 2026-04-26)" data-channel="nightly" data-search-js="search-b5634cc7.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../static.files/storage-41dd4d93.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-aa4d37ac.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc struct"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="A `GRegex` is a compiled form of a regular expression."><title>Regex in glib - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.97.0-nightly (20de910db 2026-05-02)" data-channel="nightly" data-search-js="search-b5634cc7.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../static.files/storage-41dd4d93.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-aa4d37ac.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-044be391.svg"></head><body class="rustdoc struct"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -313,11 +313,11 @@ representation of a character. To include a literal <code>\</code> in the
 replacement, write <code>\\\\</code>.</p>
 <p>There are also escapes that changes the case of the following text:</p>
 <ul>
-<li>\l: Convert to lower case the next character</li>
-<li>\u: Convert to upper case the next character</li>
-<li>\L: Convert to lower case till \E</li>
-<li>\U: Convert to upper case till \E</li>
-<li>\E: End case modification</li>
+<li><code>\l</code>: Convert to lower case the next character</li>
+<li><code>\u</code>: Convert to upper case the next character</li>
+<li><code>\L</code>: Convert to lower case until the next <code>\E</code></li>
+<li><code>\U</code>: Convert to upper case until the next <code>\E</code></li>
+<li><code>\E</code>: End case modification</li>
 </ul>
 <p>If you do not need to use backreferences use g_regex_replace_literal().</p>
 <p>The @replacement string must be UTF-8 encoded even if <a href="struct.RegexCompileFlags.html#associatedconstant.RAW" title="associated constant glib::RegexCompileFlags::RAW"><code>RegexCompileFlags::RAW</code></a> was
@@ -325,7 +325,7 @@ passed to g_regex_new(). If you want to use not UTF-8 encoded strings
 you can use g_regex_replace_literal().</p>
 <p>Setting @start_position differs from just passing over a shortened
 string and setting <a href="struct.RegexMatchFlags.html#associatedconstant.NOTBOL" title="associated constant glib::RegexMatchFlags::NOTBOL"><code>RegexMatchFlags::NOTBOL</code></a> in the case of a pattern that
-begins with any kind of lookbehind assertion, such as “\b”.</p>
+begins with any kind of lookbehind assertion, such as <code>"\b"</code>.</p>
 <h6 id="string-3"><a class="doc-anchor" href="#string-3">§</a><code>string</code></h6>
 <p>the string to perform matches against</p>
 <h6 id="start_position"><a class="doc-anchor" href="#start_position">§</a><code>start_position</code></h6>
