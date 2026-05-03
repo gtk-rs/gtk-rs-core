@@ -2307,6 +2307,15 @@ impl HasParamSpec for char {
         Self::ParamSpec::builder
     }
 }
+impl HasParamSpec for crate::Type {
+    type ParamSpec = ParamSpecGType;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, crate::Type) -> ParamSpecGTypeBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
 // Simple types which have `type SetValue = Self`
 // and a builder function that doesn't require any parameter except the name
 macro_rules! has_simple_spec {
