@@ -10746,6 +10746,12 @@ unsafe extern "C" {
         interface_: *const c_char,
         method: *const c_char,
     ) -> *mut GDBusMessage;
+    pub fn g_dbus_message_new_method_error(
+        method_call_message: *mut GDBusMessage,
+        error_name: *const c_char,
+        error_message_format: *const c_char,
+        ...
+    ) -> *mut GDBusMessage;
     pub fn g_dbus_message_new_signal(
         path: *const c_char,
         interface_: *const c_char,
@@ -10786,12 +10792,6 @@ unsafe extern "C" {
     pub fn g_dbus_message_get_signature(message: *mut GDBusMessage) -> *const c_char;
     pub fn g_dbus_message_get_unix_fd_list(message: *mut GDBusMessage) -> *mut GUnixFDList;
     pub fn g_dbus_message_lock(message: *mut GDBusMessage);
-    pub fn g_dbus_message_new_method_error(
-        method_call_message: *mut GDBusMessage,
-        error_name: *const c_char,
-        error_message_format: *const c_char,
-        ...
-    ) -> *mut GDBusMessage;
     pub fn g_dbus_message_new_method_error_literal(
         method_call_message: *mut GDBusMessage,
         error_name: *const c_char,
