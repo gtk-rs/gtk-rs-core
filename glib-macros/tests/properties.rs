@@ -158,6 +158,8 @@ mod foo {
             construct_only_cell: OnceCell<u32>,
             #[property(get, set = Self::set_construct_only_custom, construct_only)]
             construct_only_custom_setter: OnceCell<Option<String>>,
+            #[property(get, set)]
+            my_type: Cell<glib::Type>,
         }
 
         #[glib::object_subclass]
@@ -224,6 +226,7 @@ fn props() {
     assert_eq!(my_property_value, foo::MyPropertyValue(0));
     let var: Option<glib::Variant> = myfoo.property("variant");
     assert!(var.is_none());
+    assert_eq!(myfoo.my_type(), glib::Type::INVALID);
 
     // Set values
     myfoo.set_property("bar", "epic".to_value());
@@ -239,6 +242,8 @@ fn props() {
     myfoo.set_property("variant", &myv);
     let var: Option<glib::Variant> = myfoo.property("variant");
     assert_eq!(var, myv);
+    myfoo.set_my_type(base::Base::static_type());
+    assert_eq!(myfoo.my_type(), base::Base::static_type());
 
     // Custom getter
     let buzz: String = myfoo.property("buzz");

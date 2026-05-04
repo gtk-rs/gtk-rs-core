@@ -2226,6 +2226,15 @@ impl<T: HasParamSpec + ?Sized> HasParamSpec for &T {
         T::param_spec_builder()
     }
 }
+impl HasParamSpec for crate::Type {
+    type ParamSpec = ParamSpecGType;
+    type SetValue = crate::Type;
+    type BuilderFn = fn(&str) -> ParamSpecGTypeBuilder;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder
+    }
+}
 impl HasParamSpec for crate::GString {
     type ParamSpec = ParamSpecString;
     type SetValue = str;
