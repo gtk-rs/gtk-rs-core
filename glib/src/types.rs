@@ -273,6 +273,12 @@ impl Type {
     }
 }
 
+impl Default for Type {
+    fn default() -> Self {
+        Self::INVALID
+    }
+}
+
 impl fmt::Debug for Type {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.write_str(self.name())
