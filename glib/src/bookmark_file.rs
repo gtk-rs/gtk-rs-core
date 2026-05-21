@@ -5,29 +5,13 @@
 use crate::DateTime;
 use crate::{ffi, translate::*};
 
-#[allow(clippy::missing_safety_doc)]
-unsafe fn g_bookmark_file_copy(bookmark: *mut ffi::GBookmarkFile) -> *mut ffi::GBookmarkFile {
-    #[cfg(not(feature = "v2_76"))]
-    unsafe {
-        crate::gobject_ffi::g_boxed_copy(
-            ffi::g_bookmark_file_get_type(),
-            bookmark as ffi::gconstpointer,
-        ) as *mut ffi::GBookmarkFile
-    }
-
-    #[cfg(feature = "v2_76")]
-    unsafe {
-        ffi::g_bookmark_file_copy(mut_override(bookmark))
-    }
-}
-
 crate::wrapper! {
     #[doc(alias = "GBookmarkFile")]
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct BookmarkFile(Boxed<ffi::GBookmarkFile>);
 
     match fn {
-        copy => |ptr| g_bookmark_file_copy(mut_override(ptr)),
+        copy => |ptr| ffi::g_bookmark_file_copy(mut_override(ptr)),
         free => |ptr| ffi::g_bookmark_file_free(ptr),
         type_ => || ffi::g_bookmark_file_get_type(),
     }
