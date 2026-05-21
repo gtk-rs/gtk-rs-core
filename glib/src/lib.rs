@@ -42,7 +42,6 @@ pub use gobject_sys as gobject_ffi;
 
 pub use self::{
     FileError,
-    bookmark_file::BookmarkFile,
     byte_array::ByteArray,
     bytes::Bytes,
     closure::{Closure, RustClosure},
@@ -147,6 +146,12 @@ pub use self::gobject::{BindingGroup, BindingGroupBuilder};
 
 mod gobject;
 
+#[cfg(feature = "v2_76")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
+pub use self::bookmark_file::BookmarkFile;
+
+#[cfg(feature = "v2_76")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
 mod bookmark_file;
 mod byte_array;
 mod bytes;
