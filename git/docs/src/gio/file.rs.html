@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/file.rs`."><title>file.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.97.0-nightly (82bee9650 2026-05-09)" data-channel="nightly" data-search-js="search-b5634cc7.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-aa4d37ac.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/file.rs`."><title>file.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.97.0-nightly (b954122bb 2026-05-20)" data-channel="nightly" data-search-js="search-fd9372ac.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-fcd733ba.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -75,11 +75,11 @@
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/cell/struct.RefCell.html">cell::RefCell</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="attr">#[cfg(feature = <span class="string">"v2_74"</span>)]
 <a href=#8 id=8 data-nosnippet>8</a></span><span class="kw">use </span><a href="auto/file_io_stream.rs.html#9-39"><span class="kw">crate</span>::FileIOStream</a>;
-<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span>crate::{
+<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use crate</span>::{
 <a href=#10 id=10 data-nosnippet>10</a>    <a href="auto/cancellable.rs.html#8-86">Cancellable</a>, <a href="auto/file.rs.html#14-116">File</a>, <a href="file_attribute_value.rs.html#13">FileAttributeValue</a>, <a href="auto/flags.rs.html#2026-2051">FileCreateFlags</a>, <a href="auto/file_enumerator.rs.html#9-54">FileEnumerator</a>, <a href="auto/flags.rs.html#2330-2342">FileQueryInfoFlags</a>, <a href="../../gio_sys/index.html">ffi</a>,
 <a href=#11 id=11 data-nosnippet>11</a>};
 <a href=#12 id=12 data-nosnippet>12</a>
@@ -142,7 +142,7 @@
 <a href=#69 id=69 data-nosnippet>69</a>                <a href="#68">callback</a>(<a href="#61">result</a>);
 <a href=#70 id=70 data-nosnippet>70</a>            }
 <a href=#71 id=71 data-nosnippet>71</a>        }
-<a href=#72 id=72 data-nosnippet>72</a>        <span class="kw">let </span>callback = new_tmp_async_trampoline::&lt;P&gt;;
+<a href=#72 id=72 data-nosnippet>72</a>        <span class="kw">let </span>callback = <a href="#50-71">new_tmp_async_trampoline</a>::&lt;P&gt;;
 <a href=#73 id=73 data-nosnippet>73</a>        <span class="kw">unsafe </span>{
 <a href=#74 id=74 data-nosnippet>74</a>            ffi::<a href="../../gio_sys/fn.g_file_new_tmp_async.html">g_file_new_tmp_async</a>(
 <a href=#75 id=75 data-nosnippet>75</a>                <a href="#33">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#75">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -236,7 +236,7 @@
 <a href=#163 id=163 data-nosnippet>163</a>                <a href="#162">callback</a>(<a href="#155">result</a>);
 <a href=#164 id=164 data-nosnippet>164</a>            }
 <a href=#165 id=165 data-nosnippet>165</a>        }
-<a href=#166 id=166 data-nosnippet>166</a>        <span class="kw">let </span>callback = new_tmp_dir_async_trampoline::&lt;P&gt;;
+<a href=#166 id=166 data-nosnippet>166</a>        <span class="kw">let </span>callback = <a href="#145-165">new_tmp_dir_async_trampoline</a>::&lt;P&gt;;
 <a href=#167 id=167 data-nosnippet>167</a>        <span class="kw">unsafe </span>{
 <a href=#168 id=168 data-nosnippet>168</a>            ffi::<a href="../../gio_sys/fn.g_file_new_tmp_dir_async.html">g_file_new_tmp_dir_async</a>(
 <a href=#169 id=169 data-nosnippet>169</a>                <a href="#128">tmpl</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#169">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -369,7 +369,7 @@
 <a href=#296 id=296 data-nosnippet>296</a>                <a href="#281">callback</a>(<a href="#291">result</a>);
 <a href=#297 id=297 data-nosnippet>297</a>            }
 <a href=#298 id=298 data-nosnippet>298</a>        }
-<a href=#299 id=299 data-nosnippet>299</a>        <span class="kw">let </span>callback = replace_contents_async_trampoline::&lt;B, R&gt;;
+<a href=#299 id=299 data-nosnippet>299</a>        <span class="kw">let </span>callback = <a href="#269-298">replace_contents_async_trampoline</a>::&lt;B, R&gt;;
 <a href=#300 id=300 data-nosnippet>300</a>        <span class="kw">unsafe </span>{
 <a href=#301 id=301 data-nosnippet>301</a>            ffi::<a href="../../gio_sys/fn.g_file_replace_contents_async.html">g_file_replace_contents_async</a>(
 <a href=#302 id=302 data-nosnippet>302</a>                <a class="self" href="#240">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -464,7 +464,7 @@
 <a href=#391 id=391 data-nosnippet>391</a>                <a href="#390">callback</a>(<a href="#383">result</a>);
 <a href=#392 id=392 data-nosnippet>392</a>            }
 <a href=#393 id=393 data-nosnippet>393</a>        }
-<a href=#394 id=394 data-nosnippet>394</a>        <span class="kw">let </span>callback = create_async_trampoline::&lt;Q&gt;;
+<a href=#394 id=394 data-nosnippet>394</a>        <span class="kw">let </span>callback = <a href="#369-393">create_async_trampoline</a>::&lt;Q&gt;;
 <a href=#395 id=395 data-nosnippet>395</a>        <span class="kw">unsafe </span>{
 <a href=#396 id=396 data-nosnippet>396</a>            ffi::<a href="../../gio_sys/fn.g_file_enumerate_children_async.html">g_file_enumerate_children_async</a>(
 <a href=#397 id=397 data-nosnippet>397</a>                <a class="self" href="#350">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -551,7 +551,7 @@
 <a href=#478 id=478 data-nosnippet>478</a>        </span>);
 <a href=#479 id=479 data-nosnippet>479</a>
 <a href=#480 id=480 data-nosnippet>480</a>        <span class="kw">let </span>progress_trampoline = <span class="kw">if </span><a href="#467">progress_callback</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>() {
-<a href=#481 id=481 data-nosnippet>481</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(copy_async_progress_trampoline::&lt;Q&gt; <span class="kw">as _</span>)
+<a href=#481 id=481 data-nosnippet>481</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#514-533">copy_async_progress_trampoline</a>::&lt;Q&gt; <span class="kw">as _</span>)
 <a href=#482 id=482 data-nosnippet>482</a>        } <span class="kw">else </span>{
 <a href=#483 id=483 data-nosnippet>483</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
 <a href=#484 id=484 data-nosnippet>484</a>        };
@@ -616,7 +616,7 @@
 <a href=#543 id=543 data-nosnippet>543</a>                <a href="#466">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#543">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#544 id=544 data-nosnippet>544</a>                <a href="#480">progress_trampoline</a>,
 <a href=#545 id=545 data-nosnippet>545</a>                <a href="#535">user_data</a>,
-<a href=#546 id=546 data-nosnippet>546</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(copy_async_trampoline::&lt;Q&gt;),
+<a href=#546 id=546 data-nosnippet>546</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#493-513">copy_async_trampoline</a>::&lt;Q&gt;),
 <a href=#547 id=547 data-nosnippet>547</a>                <a href="#535">user_data</a>,
 <a href=#548 id=548 data-nosnippet>548</a>            );
 <a href=#549 id=549 data-nosnippet>549</a>        }
@@ -781,7 +781,7 @@
 <a href=#708 id=708 data-nosnippet>708</a>                <a href="#707">callback</a>(<a href="#697">result</a>);
 <a href=#709 id=709 data-nosnippet>709</a>            }
 <a href=#710 id=710 data-nosnippet>710</a>        }
-<a href=#711 id=711 data-nosnippet>711</a>        <span class="kw">let </span>callback = load_contents_async_trampoline::&lt;P&gt;;
+<a href=#711 id=711 data-nosnippet>711</a>        <span class="kw">let </span>callback = <a href="#676-710">load_contents_async_trampoline</a>::&lt;P&gt;;
 <a href=#712 id=712 data-nosnippet>712</a>        <span class="kw">unsafe </span>{
 <a href=#713 id=713 data-nosnippet>713</a>            ffi::<a href="../../gio_sys/fn.g_file_load_contents_async.html">g_file_load_contents_async</a>(
 <a href=#714 id=714 data-nosnippet>714</a>                <a class="self" href="#660">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -923,8 +923,8 @@
 <a href=#850 id=850 data-nosnippet>850</a>            ffi::<a href="../../gio_sys/fn.g_file_load_partial_contents_async.html">g_file_load_partial_contents_async</a>(
 <a href=#851 id=851 data-nosnippet>851</a>                <a class="self" href="#761">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#852 id=852 data-nosnippet>852</a>                <a href="#762">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#852">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#853 id=853 data-nosnippet>853</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(load_partial_contents_async_read_more_trampoline::&lt;P, Q&gt;),
-<a href=#854 id=854 data-nosnippet>854</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(load_partial_contents_async_trampoline::&lt;P, Q&gt;),
+<a href=#853 id=853 data-nosnippet>853</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#821-845">load_partial_contents_async_read_more_trampoline</a>::&lt;P, Q&gt;),
+<a href=#854 id=854 data-nosnippet>854</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#783-820">load_partial_contents_async_trampoline</a>::&lt;P, Q&gt;),
 <a href=#855 id=855 data-nosnippet>855</a>                <a href="#847">user_data</a>,
 <a href=#856 id=856 data-nosnippet>856</a>            );
 <a href=#857 id=857 data-nosnippet>857</a>        }
@@ -966,7 +966,7 @@
 <a href=#893 id=893 data-nosnippet>893</a>        </span>);
 <a href=#894 id=894 data-nosnippet>894</a>
 <a href=#895 id=895 data-nosnippet>895</a>        <span class="kw">let </span>progress_callback_trampoline = <span class="kw">if </span><a href="#882">progress_callback</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>() {
-<a href=#896 id=896 data-nosnippet>896</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(measure_disk_usage_async_progress_trampoline::&lt;P&gt; <span class="kw">as _</span>)
+<a href=#896 id=896 data-nosnippet>896</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#955-984">measure_disk_usage_async_progress_trampoline</a>::&lt;P&gt; <span class="kw">as _</span>)
 <a href=#897 id=897 data-nosnippet>897</a>        } <span class="kw">else </span>{
 <a href=#898 id=898 data-nosnippet>898</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
 <a href=#899 id=899 data-nosnippet>899</a>        };
@@ -1066,7 +1066,7 @@
 <a href=#993 id=993 data-nosnippet>993</a>                <a href="#881">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#993">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#994 id=994 data-nosnippet>994</a>                <a href="#895">progress_callback_trampoline</a>,
 <a href=#995 id=995 data-nosnippet>995</a>                <a href="#986">user_data</a>,
-<a href=#996 id=996 data-nosnippet>996</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(measure_disk_usage_async_trampoline::&lt;P&gt;),
+<a href=#996 id=996 data-nosnippet>996</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#912-954">measure_disk_usage_async_trampoline</a>::&lt;P&gt;),
 <a href=#997 id=997 data-nosnippet>997</a>                <a href="#986">user_data</a>,
 <a href=#998 id=998 data-nosnippet>998</a>            );
 <a href=#999 id=999 data-nosnippet>999</a>        }
@@ -1154,7 +1154,7 @@
 <a href=#1081 id=1081 data-nosnippet>1081</a>        </span>);
 <a href=#1082 id=1082 data-nosnippet>1082</a>
 <a href=#1083 id=1083 data-nosnippet>1083</a>        <span class="kw">let </span>progress_trampoline = <span class="kw">if </span><a href="#1070">progress_callback</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>() {
-<a href=#1084 id=1084 data-nosnippet>1084</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(move_async_progress_trampoline::&lt;Q&gt; <span class="kw">as _</span>)
+<a href=#1084 id=1084 data-nosnippet>1084</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#1117-1136">move_async_progress_trampoline</a>::&lt;Q&gt; <span class="kw">as _</span>)
 <a href=#1085 id=1085 data-nosnippet>1085</a>        } <span class="kw">else </span>{
 <a href=#1086 id=1086 data-nosnippet>1086</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>
 <a href=#1087 id=1087 data-nosnippet>1087</a>        };
@@ -1219,7 +1219,7 @@
 <a href=#1146 id=1146 data-nosnippet>1146</a>                <a href="#1069">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#1146">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
 <a href=#1147 id=1147 data-nosnippet>1147</a>                <a href="#1083">progress_trampoline</a>,
 <a href=#1148 id=1148 data-nosnippet>1148</a>                <a href="#1138">user_data</a>,
-<a href=#1149 id=1149 data-nosnippet>1149</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(move_async_trampoline::&lt;Q&gt;),
+<a href=#1149 id=1149 data-nosnippet>1149</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#1096-1116">move_async_trampoline</a>::&lt;Q&gt;),
 <a href=#1150 id=1150 data-nosnippet>1150</a>                <a href="#1138">user_data</a>,
 <a href=#1151 id=1151 data-nosnippet>1151</a>            );
 <a href=#1152 id=1152 data-nosnippet>1152</a>        }
@@ -1285,7 +1285,7 @@
 <a href=#1212 id=1212 data-nosnippet>1212</a>                <a href="#1211">callback</a>(<a href="#1204">result</a>);
 <a href=#1213 id=1213 data-nosnippet>1213</a>            }
 <a href=#1214 id=1214 data-nosnippet>1214</a>        }
-<a href=#1215 id=1215 data-nosnippet>1215</a>        <span class="kw">let </span>callback = make_symbolic_link_async_trampoline::&lt;P&gt;;
+<a href=#1215 id=1215 data-nosnippet>1215</a>        <span class="kw">let </span>callback = <a href="#1190-1214">make_symbolic_link_async_trampoline</a>::&lt;P&gt;;
 <a href=#1216 id=1216 data-nosnippet>1216</a>        <span class="kw">unsafe </span>{
 <a href=#1217 id=1217 data-nosnippet>1217</a>            ffi::<a href="../../gio_sys/fn.g_file_make_symbolic_link_async.html">g_file_make_symbolic_link_async</a>(
 <a href=#1218 id=1218 data-nosnippet>1218</a>                <a class="self" href="#1172">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,

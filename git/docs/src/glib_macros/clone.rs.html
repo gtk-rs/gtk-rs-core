@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/clone.rs`."><title>clone.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.97.0-nightly (82bee9650 2026-05-09)" data-channel="nightly" data-search-js="search-b5634cc7.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-aa4d37ac.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/clone.rs`."><title>clone.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.97.0-nightly (b954122bb 2026-05-20)" data-channel="nightly" data-search-js="search-fd9372ac.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-fcd733ba.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -133,7 +133,7 @@
 <a href=#60 id=60 data-nosnippet>60</a>    ) -&gt; syn::<a href="https://docs.rs/syn/2.0.117/syn/error/type.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="self">Self</span>&gt;&gt; {
 <a href=#61 id=61 data-nosnippet>61</a>        <span class="comment">// Caller checked for empty
 <a href=#62 id=62 data-nosnippet>62</a>        </span><span class="kw">let </span>attr = <span class="kw-2">&amp;</span><a href="#58">attrs</a>[<span class="number">0</span>];
-<a href=#63 id=63 data-nosnippet>63</a>        <a href="#62">attr</a>.meta.<a href="https://docs.rs/syn/2.0.117/syn/attr/enum.Meta.html#method.require_path_only">require_path_only</a>()<span class="question-mark">?</span>;
+<a href=#63 id=63 data-nosnippet>63</a>        attr.meta.require_path_only()<span class="question-mark">?</span>;
 <a href=#64 id=64 data-nosnippet>64</a>
 <a href=#65 id=65 data-nosnippet>65</a>        <span class="kw">let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(attr_name) = <a href="#62">attr</a>.<a href="https://docs.rs/syn/2.0.117/syn/attr/struct.Attribute.html#method.path">path</a>().<a href="https://docs.rs/syn/2.0.117/syn/path/struct.Path.html#method.get_ident">get_ident</a>() <span class="kw">else </span>{
 <a href=#66 id=66 data-nosnippet>66</a>            <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>);
@@ -141,12 +141,12 @@
 <a href=#68 id=68 data-nosnippet>68</a>
 <a href=#69 id=69 data-nosnippet>69</a>        <span class="kw">let </span>upgrade_behaviour = <span class="kw">match </span><a href="#65">attr_name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html#tymethod.to_string">to_string</a>().<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html#method.as_str">as_str</a>() {
 <a href=#70 id=70 data-nosnippet>70</a>            <span class="string">"upgrade_or" </span>=&gt; {
-<a href=#71 id=71 data-nosnippet>71</a>                <span class="kw">let </span>expr = <a href="#59">input</a>.parse::&lt;<a href="https://docs.rs/syn/2.0.117/syn/expr/enum.Expr.html">Expr</a>&gt;()<span class="question-mark">?</span>;
-<a href=#72 id=72 data-nosnippet>72</a>                <a href="#59">input</a>.parse::&lt;<a href="https://docs.rs/syn/2.0.117/syn/macro.Token.html">Token!</a>[,]&gt;()<span class="question-mark">?</span>;
+<a href=#71 id=71 data-nosnippet>71</a>                <span class="kw">let </span>expr = input.parse::&lt;Expr&gt;()<span class="question-mark">?</span>;
+<a href=#72 id=72 data-nosnippet>72</a>                input.parse::&lt;<span class="macro">Token!</span>[,]&gt;()<span class="question-mark">?</span>;
 <a href=#73 id=73 data-nosnippet>73</a>                UpgradeBehaviour::<a href="#52">Expression</a>(<a href="#71">expr</a>)
 <a href=#74 id=74 data-nosnippet>74</a>            }
 <a href=#75 id=75 data-nosnippet>75</a>            <span class="string">"upgrade_or_else" </span>=&gt; {
-<a href=#76 id=76 data-nosnippet>76</a>                <span class="kw">let </span>closure = <a href="#59">input</a>.parse::&lt;<a href="https://docs.rs/syn/2.0.117/syn/expr/struct.ExprClosure.html">ExprClosure</a>&gt;()<span class="question-mark">?</span>;
+<a href=#76 id=76 data-nosnippet>76</a>                <span class="kw">let </span>closure = input.parse::&lt;ExprClosure&gt;()<span class="question-mark">?</span>;
 <a href=#77 id=77 data-nosnippet>77</a>                <span class="kw">if </span><a href="#76">closure</a>.asyncness.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>() {
 <a href=#78 id=78 data-nosnippet>78</a>                    <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(syn::<a href="https://docs.rs/syn/2.0.117/syn/error/struct.Error.html">Error</a>::<a href="https://docs.rs/syn/2.0.117/syn/error/struct.Error.html#method.new_spanned">new_spanned</a>(
 <a href=#79 id=79 data-nosnippet>79</a>                        <span class="kw-2">&amp;</span><a href="#76">closure</a>,
@@ -160,7 +160,7 @@
 <a href=#87 id=87 data-nosnippet>87</a>                    ));
 <a href=#88 id=88 data-nosnippet>88</a>                }
 <a href=#89 id=89 data-nosnippet>89</a>
-<a href=#90 id=90 data-nosnippet>90</a>                <a href="#59">input</a>.parse::&lt;<a href="https://docs.rs/syn/2.0.117/syn/macro.Token.html">Token!</a>[,]&gt;()<span class="question-mark">?</span>;
+<a href=#90 id=90 data-nosnippet>90</a>                input.parse::&lt;<span class="macro">Token!</span>[,]&gt;()<span class="question-mark">?</span>;
 <a href=#91 id=91 data-nosnippet>91</a>                UpgradeBehaviour::<a href="#53">Closure</a>(<a href="#76">closure</a>)
 <a href=#92 id=92 data-nosnippet>92</a>            }
 <a href=#93 id=93 data-nosnippet>93</a>            <span class="string">"upgrade_or_default" </span>=&gt; UpgradeBehaviour::<a href="#51">Default</a>,
@@ -181,7 +181,7 @@
 <a href=#108 id=108 data-nosnippet>108</a>            ));
 <a href=#109 id=109 data-nosnippet>109</a>        }
 <a href=#110 id=110 data-nosnippet>110</a>
-<a href=#111 id=111 data-nosnippet>111</a>        <span class="kw">let </span>next_attrs = <span class="kw-2">&amp;</span><a href="#59">input</a>.<a href="https://docs.rs/syn/2.0.117/syn/parse/struct.ParseBuffer.html#method.call">call</a>(<a href="https://docs.rs/syn/2.0.117/syn/attr/struct.Attribute.html">Attribute</a>::<a href="https://docs.rs/syn/2.0.117/syn/attr/struct.Attribute.html#method.parse_outer">parse_outer</a>)<span class="question-mark">?</span>;
+<a href=#111 id=111 data-nosnippet>111</a>        <span class="kw">let </span>next_attrs = <span class="kw-2">&amp;</span>input.call(Attribute::parse_outer)<span class="question-mark">?</span>;
 <a href=#112 id=112 data-nosnippet>112</a>        <span class="kw">if </span>!<a href="#111">next_attrs</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.is_empty">is_empty</a>() {
 <a href=#113 id=113 data-nosnippet>113</a>            <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(syn::<a href="https://docs.rs/syn/2.0.117/syn/error/struct.Error.html">Error</a>::<a href="https://docs.rs/syn/2.0.117/syn/error/struct.Error.html#method.new_spanned">new_spanned</a>(
 <a href=#114 id=114 data-nosnippet>114</a>                <span class="kw-2">&amp;</span><a href="#111">next_attrs</a>[<span class="number">0</span>],
@@ -227,30 +227,30 @@
 <a href=#154 id=154 data-nosnippet>154</a>
 <a href=#155 id=155 data-nosnippet>155</a>        <span class="kw">let </span><span class="kw-2">mut </span>alias = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>;
 <a href=#156 id=156 data-nosnippet>156</a>        <span class="kw">if let </span>syn::Meta::<a href="https://docs.rs/syn/2.0.117/syn/attr/enum.Meta.html#variant.List">List</a>(<span class="kw-2">ref </span>list) = <a href="#139">attr</a>.meta {
-<a href=#157 id=157 data-nosnippet>157</a>            <a href="#156">list</a>.<a href="https://docs.rs/syn/2.0.117/syn/attr/struct.MetaList.html#method.parse_nested_meta">parse_nested_meta</a>(|meta| {
-<a href=#158 id=158 data-nosnippet>158</a>                <span class="kw">if </span><a href="#157">meta</a>.path.<a href="https://docs.rs/syn/2.0.117/syn/path/struct.Path.html#method.is_ident">is_ident</a>(<span class="string">"rename_to"</span>) {
-<a href=#159 id=159 data-nosnippet>159</a>                    <span class="kw">let </span>value = <a href="#157">meta</a>.<a href="https://docs.rs/syn/2.0.117/syn/meta/struct.ParseNestedMeta.html#method.value">value</a>()<span class="question-mark">?</span>;
-<a href=#160 id=160 data-nosnippet>160</a>                    <span class="kw">let </span>id = <a href="#159">value</a>.parse::&lt;<a href="https://docs.rs/proc-macro2/1.0.106/proc_macro2/struct.Ident.html">Ident</a>&gt;()<span class="question-mark">?</span>;
-<a href=#161 id=161 data-nosnippet>161</a>                    <span class="kw">if </span><a href="#155">alias</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>() {
-<a href=#162 id=162 data-nosnippet>162</a>                        <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="#157">meta</a>.<a href="https://docs.rs/syn/2.0.117/syn/meta/struct.ParseNestedMeta.html#method.error">error</a>(<span class="string">"multiple `rename_to` properties are not allowed"</span>));
+<a href=#157 id=157 data-nosnippet>157</a>            list.parse_nested_meta(|meta| {
+<a href=#158 id=158 data-nosnippet>158</a>                <span class="kw">if </span>meta.path.is_ident(<span class="string">"rename_to"</span>) {
+<a href=#159 id=159 data-nosnippet>159</a>                    <span class="kw">let </span>value = meta.value()<span class="question-mark">?</span>;
+<a href=#160 id=160 data-nosnippet>160</a>                    <span class="kw">let </span>id = value.parse::&lt;Ident&gt;()<span class="question-mark">?</span>;
+<a href=#161 id=161 data-nosnippet>161</a>                    <span class="kw">if </span>alias.is_some() {
+<a href=#162 id=162 data-nosnippet>162</a>                        <span class="kw">return </span><span class="prelude-val">Err</span>(meta.error(<span class="string">"multiple `rename_to` properties are not allowed"</span>));
 <a href=#163 id=163 data-nosnippet>163</a>                    }
-<a href=#164 id=164 data-nosnippet>164</a>                    <a href="#155">alias</a> = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#160">id</a>);
-<a href=#165 id=165 data-nosnippet>165</a>                } <span class="kw">else if let </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(ident) = <a href="#157">meta</a>.path.<a href="https://docs.rs/syn/2.0.117/syn/path/struct.Path.html#method.get_ident">get_ident</a>() {
-<a href=#166 id=166 data-nosnippet>166</a>                    <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(
-<a href=#167 id=167 data-nosnippet>167</a>                        <a href="#157">meta</a>.<a href="https://docs.rs/syn/2.0.117/syn/meta/struct.ParseNestedMeta.html#method.error">error</a>(
-<a href=#168 id=168 data-nosnippet>168</a>                            <a href="https://doc.rust-lang.org/nightly/alloc/macro.format.html">format!</a>(
+<a href=#164 id=164 data-nosnippet>164</a>                    alias = <span class="prelude-val">Some</span>(id);
+<a href=#165 id=165 data-nosnippet>165</a>                } <span class="kw">else if let </span><span class="prelude-val">Some</span>(ident) = meta.path.get_ident() {
+<a href=#166 id=166 data-nosnippet>166</a>                    <span class="kw">return </span><span class="prelude-val">Err</span>(
+<a href=#167 id=167 data-nosnippet>167</a>                        meta.error(
+<a href=#168 id=168 data-nosnippet>168</a>                            <span class="macro">format!</span>(
 <a href=#169 id=169 data-nosnippet>169</a>                                <span class="string">"unsupported capture attribute property `{ident}`: only `rename_to` is supported"
 <a href=#170 id=170 data-nosnippet>170</a>                            </span>),
 <a href=#171 id=171 data-nosnippet>171</a>                        ),
 <a href=#172 id=172 data-nosnippet>172</a>                    );
 <a href=#173 id=173 data-nosnippet>173</a>                } <span class="kw">else </span>{
-<a href=#174 id=174 data-nosnippet>174</a>                    <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="#157">meta</a>.<a href="https://docs.rs/syn/2.0.117/syn/meta/struct.ParseNestedMeta.html#method.error">error</a>(<span class="string">"unsupported capture attribute property"</span>));
+<a href=#174 id=174 data-nosnippet>174</a>                    <span class="kw">return </span><span class="prelude-val">Err</span>(meta.error(<span class="string">"unsupported capture attribute property"</span>));
 <a href=#175 id=175 data-nosnippet>175</a>                }
-<a href=#176 id=176 data-nosnippet>176</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
+<a href=#176 id=176 data-nosnippet>176</a>                <span class="prelude-val">Ok</span>(())
 <a href=#177 id=177 data-nosnippet>177</a>            })<span class="question-mark">?</span>;
 <a href=#178 id=178 data-nosnippet>178</a>        }
 <a href=#179 id=179 data-nosnippet>179</a>
-<a href=#180 id=180 data-nosnippet>180</a>        <span class="kw">let </span>name = <a href="#136">input</a>.parse::&lt;<a href="https://docs.rs/syn/2.0.117/syn/expr/enum.Expr.html">Expr</a>&gt;()<span class="question-mark">?</span>;
+<a href=#180 id=180 data-nosnippet>180</a>        <span class="kw">let </span>name = input.parse::&lt;Expr&gt;()<span class="question-mark">?</span>;
 <a href=#181 id=181 data-nosnippet>181</a>        <span class="kw">match </span><a href="#180">name</a> {
 <a href=#182 id=182 data-nosnippet>182</a>            Expr::<a href="https://docs.rs/syn/2.0.117/syn/expr/enum.Expr.html#variant.Path">Path</a>(<span class="kw-2">ref </span>p) <span class="kw">if </span><a href="#182">p</a>.path.<a href="https://docs.rs/syn/2.0.117/syn/path/struct.Path.html#method.get_ident">get_ident</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>() =&gt; {
 <a href=#183 id=183 data-nosnippet>183</a>                <span class="kw">if </span><a href="#182">p</a>.path.<a href="https://docs.rs/syn/2.0.117/syn/path/struct.Path.html#method.get_ident">get_ident</a>().<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap">unwrap</a>() == <span class="string">"self" </span>&amp;&amp; <a href="#155">alias</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_none">is_none</a>() {
@@ -272,7 +272,7 @@
 <a href=#199 id=199 data-nosnippet>199</a>            }
 <a href=#200 id=200 data-nosnippet>200</a>        }
 <a href=#201 id=201 data-nosnippet>201</a>
-<a href=#202 id=202 data-nosnippet>202</a>        <a href="#136">input</a>.parse::&lt;<a href="https://docs.rs/syn/2.0.117/syn/macro.Token.html">Token!</a>[,]&gt;()<span class="question-mark">?</span>;
+<a href=#202 id=202 data-nosnippet>202</a>        input.parse::&lt;<span class="macro">Token!</span>[,]&gt;()<span class="question-mark">?</span>;
 <a href=#203 id=203 data-nosnippet>203</a>
 <a href=#204 id=204 data-nosnippet>204</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#127-131">Capture</a> { <a href="#180">name</a>, <a href="#155">alias</a>, <a href="#144">kind</a> }))
 <a href=#205 id=205 data-nosnippet>205</a>    }
@@ -390,7 +390,7 @@
 <a href=#317 id=317 data-nosnippet>317</a>
 <a href=#318 id=318 data-nosnippet>318</a><span class="kw">impl </span><a href="https://docs.rs/syn/2.0.117/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#313-316">ClosureOrAsync</a> {
 <a href=#319 id=319 data-nosnippet>319</a>    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.117/syn/parse/type.ParseStream.html">ParseStream</a>) -&gt; syn::<a href="https://docs.rs/syn/2.0.117/syn/error/type.Result.html">Result</a>&lt;<span class="self">Self</span>&gt; {
-<a href=#320 id=320 data-nosnippet>320</a>        <span class="kw">let </span>expr = <a href="#319">input</a>.parse::&lt;<a href="https://docs.rs/syn/2.0.117/syn/expr/enum.Expr.html">Expr</a>&gt;()<span class="question-mark">?</span>;
+<a href=#320 id=320 data-nosnippet>320</a>        <span class="kw">let </span>expr = input.parse::&lt;Expr&gt;()<span class="question-mark">?</span>;
 <a href=#321 id=321 data-nosnippet>321</a>        <span class="kw">match </span><a href="#320">expr</a> {
 <a href=#322 id=322 data-nosnippet>322</a>            Expr::<a href="https://docs.rs/syn/2.0.117/syn/expr/enum.Expr.html#variant.Async">Async</a>(async_) =&gt; {
 <a href=#323 id=323 data-nosnippet>323</a>                <span class="kw">if </span><a href="#322">async_</a>.capture.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_none">is_none</a>() {
@@ -457,12 +457,12 @@
 <a href=#384 id=384 data-nosnippet>384</a>            //
 <a href=#385 id=385 data-nosnippet>385</a>            // If this is not an attribute then it is a closure, async closure or async block which
 <a href=#386 id=386 data-nosnippet>386</a>            // is handled outside the loop
-<a href=#387 id=387 data-nosnippet>387</a>            </span><span class="kw">let </span>attrs = <a href="#366">input</a>.<a href="https://docs.rs/syn/2.0.117/syn/parse/struct.ParseBuffer.html#method.call">call</a>(<a href="https://docs.rs/syn/2.0.117/syn/attr/struct.Attribute.html">Attribute</a>::<a href="https://docs.rs/syn/2.0.117/syn/attr/struct.Attribute.html#method.parse_outer">parse_outer</a>)<span class="question-mark">?</span>;
+<a href=#387 id=387 data-nosnippet>387</a>            </span><span class="kw">let </span>attrs = input.call(Attribute::parse_outer)<span class="question-mark">?</span>;
 <a href=#388 id=388 data-nosnippet>388</a>            <span class="kw">if </span><a href="#387">attrs</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.is_empty">is_empty</a>() {
 <a href=#389 id=389 data-nosnippet>389</a>                <span class="kw">break</span>;
 <a href=#390 id=390 data-nosnippet>390</a>            };
 <a href=#391 id=391 data-nosnippet>391</a>
-<a href=#392 id=392 data-nosnippet>392</a>            <span class="kw">match </span><a href="#127-131">Capture</a>::<a href="#134-205">maybe_parse</a>(<span class="kw-2">&amp;</span><a href="#387">attrs</a>, <a href="#366">input</a>)<span class="question-mark">? </span>{
+<a href=#392 id=392 data-nosnippet>392</a>            <span class="kw">match </span>Capture::maybe_parse(<span class="kw-2">&amp;</span>attrs, input)<span class="question-mark">? </span>{
 <a href=#393 id=393 data-nosnippet>393</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(capture) =&gt; {
 <a href=#394 id=394 data-nosnippet>394</a>                    <span class="kw">if </span><a href="#393">capture</a>.kind == CaptureKind::<a href="#15">Watch</a> {
 <a href=#395 id=395 data-nosnippet>395</a>                        <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(syn::<a href="https://docs.rs/syn/2.0.117/syn/error/struct.Error.html">Error</a>::<a href="https://docs.rs/syn/2.0.117/syn/error/struct.Error.html#method.new_spanned">new_spanned</a>(
@@ -473,7 +473,7 @@
 <a href=#400 id=400 data-nosnippet>400</a>
 <a href=#401 id=401 data-nosnippet>401</a>                    <a href="#374">captures</a>.<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html#method.push">push</a>(<a href="#393">capture</a>);
 <a href=#402 id=402 data-nosnippet>402</a>                }
-<a href=#403 id=403 data-nosnippet>403</a>                <span class="kw">_ </span>=&gt; <span class="kw">match </span><a href="#47-54">UpgradeBehaviour</a>::<a href="#57-124">maybe_parse</a>(<span class="kw-2">&amp;</span><a href="#387">attrs</a>, <a href="#366">input</a>)<span class="question-mark">? </span>{
+<a href=#403 id=403 data-nosnippet>403</a>                <span class="kw">_ </span>=&gt; <span class="kw">match </span>UpgradeBehaviour::maybe_parse(<span class="kw-2">&amp;</span>attrs, input)<span class="question-mark">? </span>{
 <a href=#404 id=404 data-nosnippet>404</a>                    <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(behaviour) =&gt; {
 <a href=#405 id=405 data-nosnippet>405</a>                        <span class="kw">if </span><a href="#375">upgrade_behaviour</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.is_some">is_some</a>() {
 <a href=#406 id=406 data-nosnippet>406</a>                            <span class="kw">return </span><a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(syn::<a href="https://docs.rs/syn/2.0.117/syn/error/struct.Error.html">Error</a>::<a href="https://docs.rs/syn/2.0.117/syn/error/struct.Error.html#method.new_spanned">new_spanned</a>(
@@ -516,11 +516,11 @@
 <a href=#443 id=443 data-nosnippet>443</a>        <span class="kw">let </span>upgrade_behaviour = <a href="#375">upgrade_behaviour</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|x| <a href="#443">x</a>.<span class="number">0</span>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_default">unwrap_or_default</a>();
 <a href=#444 id=444 data-nosnippet>444</a>
 <a href=#445 id=445 data-nosnippet>445</a>        <span class="comment">// Following is a closure or async block
-<a href=#446 id=446 data-nosnippet>446</a>        </span><span class="kw">let </span>body = <a href="#366">input</a>.parse::&lt;<a href="#313-316">ClosureOrAsync</a>&gt;()<span class="question-mark">?</span>;
+<a href=#446 id=446 data-nosnippet>446</a>        </span><span class="kw">let </span>body = input.parse::&lt;ClosureOrAsync&gt;()<span class="question-mark">?</span>;
 <a href=#447 id=447 data-nosnippet>447</a>
 <a href=#448 id=448 data-nosnippet>448</a>        <span class="comment">// Trailing comma, if any
 <a href=#449 id=449 data-nosnippet>449</a>        </span><span class="kw">if </span><a href="#366">input</a>.<a href="https://docs.rs/syn/2.0.117/syn/parse/struct.ParseBuffer.html#method.peek">peek</a>(<a href="https://docs.rs/syn/2.0.117/syn/macro.Token.html">Token!</a>[,]) {
-<a href=#450 id=450 data-nosnippet>450</a>            <a href="#366">input</a>.parse::&lt;<a href="https://docs.rs/syn/2.0.117/syn/macro.Token.html">Token!</a>[,]&gt;()<span class="question-mark">?</span>;
+<a href=#450 id=450 data-nosnippet>450</a>            input.parse::&lt;<span class="macro">Token!</span>[,]&gt;()<span class="question-mark">?</span>;
 <a href=#451 id=451 data-nosnippet>451</a>        }
 <a href=#452 id=452 data-nosnippet>452</a>
 <a href=#453 id=453 data-nosnippet>453</a>        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#359-363">Clone</a> {
