@@ -5,31 +5,329 @@
 use crate::DateTime;
 use crate::{ffi, translate::*};
 
-#[allow(clippy::missing_safety_doc)]
-unsafe fn g_bookmark_file_copy(bookmark: *mut ffi::GBookmarkFile) -> *mut ffi::GBookmarkFile {
-    #[cfg(not(feature = "v2_76"))]
-    unsafe {
-        crate::gobject_ffi::g_boxed_copy(
-            ffi::g_bookmark_file_get_type(),
-            bookmark as ffi::gconstpointer,
-        ) as *mut ffi::GBookmarkFile
-    }
-
-    #[cfg(feature = "v2_76")]
-    unsafe {
-        ffi::g_bookmark_file_copy(mut_override(bookmark))
-    }
-}
-
+#[cfg(feature = "v2_76")]
 crate::wrapper! {
     #[doc(alias = "GBookmarkFile")]
     #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct BookmarkFile(Boxed<ffi::GBookmarkFile>);
 
     match fn {
-        copy => |ptr| g_bookmark_file_copy(mut_override(ptr)),
+        copy => |ptr| ffi::g_bookmark_file_copy(mut_override(ptr)),
         free => |ptr| ffi::g_bookmark_file_free(ptr),
         type_ => || ffi::g_bookmark_file_get_type(),
+    }
+}
+
+#[cfg(not(feature = "v2_76"))]
+pub use non_boxed::BookmarkFile;
+#[cfg(not(feature = "v2_76"))]
+mod non_boxed {
+    use std::{
+        marker::PhantomData,
+        ptr::{self, NonNull},
+    };
+
+    use super::*;
+
+    #[doc(alias = "GBookmarkFile")]
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[repr(transparent)]
+    pub struct BookmarkFile {
+        inner: ptr::NonNull<ffi::GBookmarkFile>,
+    }
+
+    impl Drop for BookmarkFile {
+        fn drop(&mut self) {
+            unsafe {
+                ffi::g_bookmark_file_free(self.as_ptr());
+            }
+        }
+    }
+
+    impl BookmarkFile {
+        // rustdoc-stripper-ignore-next
+        /// Return the inner pointer to the underlying C value.
+        #[inline]
+        pub fn as_ptr(&self) -> *mut ffi::GBookmarkFile {
+            unsafe {
+                *(self as *const Self as *const *const ffi::GBookmarkFile)
+                    as *mut ffi::GBookmarkFile
+            }
+        }
+
+        // rustdoc-stripper-ignore-next
+        /// Borrows the underlying C value.
+        #[inline]
+        pub unsafe fn from_glib_ptr_borrow(ptr: &*mut ffi::GBookmarkFile) -> &Self {
+            unsafe {
+                debug_assert_eq!(
+                    std::mem::size_of::<Self>(),
+                    std::mem::size_of::<crate::ffi::gpointer>()
+                );
+                debug_assert!(!ptr.is_null());
+                &*(ptr as *const *mut ffi::GBookmarkFile as *const Self)
+            }
+        }
+
+        // rustdoc-stripper-ignore-next
+        /// Borrows the underlying C value mutably.
+        #[inline]
+        pub unsafe fn from_glib_ptr_borrow_mut(ptr: &mut *mut ffi::GBookmarkFile) -> &mut Self {
+            unsafe {
+                debug_assert_eq!(
+                    std::mem::size_of::<Self>(),
+                    std::mem::size_of::<crate::ffi::gpointer>()
+                );
+                debug_assert!(!ptr.is_null());
+                &mut *(ptr as *mut *mut ffi::GBookmarkFile as *mut Self)
+            }
+        }
+    }
+
+    #[doc(hidden)]
+    impl crate::translate::GlibPtrDefault for BookmarkFile {
+        type GlibType = *mut ffi::GBookmarkFile;
+    }
+
+    #[doc(hidden)]
+    impl<'a> crate::translate::ToGlibPtr<'a, *const ffi::GBookmarkFile> for BookmarkFile {
+        type Storage = PhantomData<&'a Self>;
+
+        #[inline]
+        fn to_glib_none(&'a self) -> Stash<'a, *const ffi::GBookmarkFile, Self> {
+            Stash(self.inner.as_ptr(), PhantomData)
+        }
+    }
+
+    #[doc(hidden)]
+    impl<'a> crate::translate::ToGlibPtr<'a, *mut ffi::GBookmarkFile> for BookmarkFile {
+        type Storage = PhantomData<&'a Self>;
+
+        #[inline]
+        fn to_glib_none(&'a self) -> Stash<'a, *mut ffi::GBookmarkFile, Self> {
+            Stash(self.inner.as_ptr(), PhantomData)
+        }
+    }
+
+    #[doc(hidden)]
+    impl<'a> crate::translate::ToGlibPtrMut<'a, *mut ffi::GBookmarkFile> for BookmarkFile {
+        type Storage = PhantomData<&'a mut Self>;
+        #[inline]
+        fn to_glib_none_mut(&'a mut self) -> StashMut<'a, *mut ffi::GBookmarkFile, Self> {
+            StashMut(self.inner.as_ptr(), PhantomData)
+        }
+    }
+
+    #[doc(hidden)]
+    impl<'a> crate::translate::ToGlibContainerFromSlice<'a, *mut *const ffi::GBookmarkFile>
+        for BookmarkFile
+    {
+        type Storage = (
+            PhantomData<&'a [Self]>,
+            Option<Vec<*const ffi::GBookmarkFile>>,
+        );
+
+        fn to_glib_none_from_slice(
+            t: &'a [Self],
+        ) -> (*mut *const ffi::GBookmarkFile, Self::Storage) {
+            let mut v_ptr = Vec::with_capacity(t.len() + 1);
+            unsafe {
+                let ptr = v_ptr.as_mut_ptr();
+                std::ptr::copy_nonoverlapping(
+                    t.as_ptr() as *mut *const ffi::GBookmarkFile,
+                    ptr,
+                    t.len(),
+                );
+                std::ptr::write(ptr.add(t.len()), std::ptr::null_mut());
+                v_ptr.set_len(t.len() + 1);
+            }
+            (
+                v_ptr.as_ptr() as *mut *const ffi::GBookmarkFile,
+                (PhantomData, Some(v_ptr)),
+            )
+        }
+
+        fn to_glib_container_from_slice(
+            t: &'a [Self],
+        ) -> (*mut *const ffi::GBookmarkFile, Self::Storage) {
+            let v_ptr = unsafe {
+                let v_ptr = crate::ffi::g_malloc(
+                    std::mem::size_of::<*const ffi::GBookmarkFile>() * (t.len() + 1),
+                ) as *mut *const ffi::GBookmarkFile;
+                std::ptr::copy_nonoverlapping(
+                    t.as_ptr() as *mut *const ffi::GBookmarkFile,
+                    v_ptr,
+                    t.len(),
+                );
+                std::ptr::write(v_ptr.add(t.len()), std::ptr::null_mut());
+                v_ptr
+            };
+            (v_ptr, (PhantomData, None))
+        }
+
+        fn to_glib_full_from_slice(_: &[Self]) -> *mut *const ffi::GBookmarkFile {
+            // `g_bookmark_file_copy` is missing
+            unimplemented!()
+        }
+    }
+
+    #[doc(hidden)]
+    impl<'a> crate::translate::ToGlibContainerFromSlice<'a, *const *const ffi::GBookmarkFile>
+        for BookmarkFile
+    {
+        type Storage = (
+            PhantomData<&'a [Self]>,
+            Option<Vec<*const ffi::GBookmarkFile>>,
+        );
+        fn to_glib_none_from_slice(
+            t: &'a [Self],
+        ) -> (*const *const ffi::GBookmarkFile, Self::Storage) {
+            let (ptr, stash) = crate::translate::ToGlibContainerFromSlice::<
+                'a,
+                *mut *const ffi::GBookmarkFile,
+            >::to_glib_none_from_slice(t);
+            (ptr as *const *const ffi::GBookmarkFile, stash)
+        }
+
+        fn to_glib_container_from_slice(
+            _: &'a [Self],
+        ) -> (*const *const ffi::GBookmarkFile, Self::Storage) {
+            unimplemented!()
+        }
+
+        fn to_glib_full_from_slice(_: &[Self]) -> *const *const ffi::GBookmarkFile {
+            unimplemented!()
+        }
+    }
+
+    #[doc(hidden)]
+    impl crate::translate::FromGlibPtrFull<*mut ffi::GBookmarkFile> for BookmarkFile {
+        unsafe fn from_glib_full(ptr: *mut ffi::GBookmarkFile) -> Self {
+            unsafe {
+                Self {
+                    inner: NonNull::new_unchecked(ptr),
+                }
+            }
+        }
+    }
+
+    #[doc(hidden)]
+    impl crate::translate::FromGlibPtrFull<*const ffi::GBookmarkFile> for BookmarkFile {
+        unsafe fn from_glib_full(ptr: *const ffi::GBookmarkFile) -> Self {
+            unsafe {
+                Self {
+                    inner: NonNull::new_unchecked(ptr as *mut _),
+                }
+            }
+        }
+    }
+
+    #[doc(hidden)]
+    impl crate::translate::FromGlibPtrBorrow<*mut ffi::GBookmarkFile> for BookmarkFile {
+        #[inline]
+        unsafe fn from_glib_borrow(
+            ptr: *mut ffi::GBookmarkFile,
+        ) -> crate::translate::Borrowed<Self> {
+            unsafe {
+                crate::translate::Borrowed::new(Self {
+                    inner: NonNull::new_unchecked(ptr),
+                })
+            }
+        }
+    }
+
+    #[doc(hidden)]
+    impl crate::translate::FromGlibPtrBorrow<*const ffi::GBookmarkFile> for BookmarkFile {
+        #[inline]
+        unsafe fn from_glib_borrow(
+            ptr: *const ffi::GBookmarkFile,
+        ) -> crate::translate::Borrowed<Self> {
+            unsafe { crate::translate::from_glib_borrow::<_, Self>(ptr as *mut ffi::GBookmarkFile) }
+        }
+    }
+
+    impl
+        crate::translate::FromGlibContainerAsVec<
+            *mut ffi::GBookmarkFile,
+            *mut *mut ffi::GBookmarkFile,
+        > for BookmarkFile
+    {
+        unsafe fn from_glib_none_num_as_vec(
+            _ptr: *mut *mut ffi::GBookmarkFile,
+            _num: usize,
+        ) -> Vec<Self> {
+            // `g_bookmark_file_copy` is missing
+            unimplemented!()
+        }
+
+        unsafe fn from_glib_container_num_as_vec(
+            _ptr: *mut *mut ffi::GBookmarkFile,
+            _num: usize,
+        ) -> Vec<Self> {
+            // `g_bookmark_file_copy` is missing
+            unimplemented!()
+        }
+
+        unsafe fn from_glib_full_num_as_vec(
+            ptr: *mut *mut ffi::GBookmarkFile,
+            num: usize,
+        ) -> Vec<Self> {
+            unsafe {
+                if num == 0 || ptr.is_null() {
+                    crate::ffi::g_free(ptr as *mut _);
+                    return Vec::new();
+                }
+                let mut res = Vec::with_capacity(num);
+                let res_ptr = res.as_mut_ptr();
+                ::std::ptr::copy_nonoverlapping(ptr as *mut Self, res_ptr, num);
+                res.set_len(num);
+                crate::ffi::g_free(ptr as *mut _);
+                res
+            }
+        }
+    }
+
+    #[doc(hidden)]
+    impl
+        crate::translate::FromGlibPtrArrayContainerAsVec<
+            *mut ffi::GBookmarkFile,
+            *mut *mut ffi::GBookmarkFile,
+        > for BookmarkFile
+    {
+        unsafe fn from_glib_none_as_vec(_ptr: *mut *mut ffi::GBookmarkFile) -> Vec<Self> {
+            // `g_bookmark_file_copy` is missing
+            unimplemented!()
+        }
+
+        unsafe fn from_glib_container_as_vec(_ptr: *mut *mut ffi::GBookmarkFile) -> Vec<Self> {
+            // `g_bookmark_file_copy` is missing
+            unimplemented!()
+        }
+
+        unsafe fn from_glib_full_as_vec(ptr: *mut *mut ffi::GBookmarkFile) -> Vec<Self> {
+            unsafe {
+                crate::translate::FromGlibContainerAsVec::from_glib_full_num_as_vec(
+                    ptr,
+                    crate::translate::c_ptr_array_len(ptr),
+                )
+            }
+        }
+    }
+
+    #[doc(hidden)]
+    impl crate::translate::IntoGlibPtr<*mut ffi::GBookmarkFile> for BookmarkFile {
+        #[inline]
+        fn into_glib_ptr(self) -> *mut ffi::GBookmarkFile {
+            std::mem::ManuallyDrop::new(self).as_ptr()
+        }
+    }
+
+    #[doc(hidden)]
+    impl crate::translate::IntoGlibPtr<*const ffi::GBookmarkFile> for BookmarkFile {
+        #[inline]
+        fn into_glib_ptr(self) -> *const ffi::GBookmarkFile {
+            std::mem::ManuallyDrop::new(self).as_ptr()
+        }
     }
 }
 
