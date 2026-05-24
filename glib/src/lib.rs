@@ -214,6 +214,8 @@ mod log;
 #[cfg_attr(docsrs, doc(cfg(feature = "log_macros")))]
 pub use rs_log;
 
+#[cfg(feature = "v2_80")]
+pub use self::log::log_writer_default_set_debug_domains;
 pub use self::log::{
     LogField, LogHandlerId, LogLevel, LogLevels, log_default_handler, log_remove_handler,
     log_set_always_fatal, log_set_default_handler, log_set_fatal_mask, log_set_handler,
