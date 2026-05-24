@@ -7,6 +7,8 @@ use std::{
     sync::{Arc, Mutex, OnceLock},
 };
 
+#[cfg(feature = "v2_80")]
+use crate::StrVRef;
 use crate::{GStr, GString, LogWriterOutput, ffi, translate::*};
 
 #[derive(Debug)]
@@ -1090,4 +1092,12 @@ pub fn log_writer_default_would_drop(log_level: LogLevel, log_domain: Option<&st
             log_domain.to_glib_none().0,
         ))
     }
+}
+
+#[cfg(feature = "v2_80")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
+#[doc(alias = "g_log_writer_default_set_debug_domains")]
+#[inline]
+pub fn log_writer_default_set_debug_domains(domains: &StrVRef) {
+    unsafe { ffi::g_log_writer_default_set_debug_domains(domains.to_glib_none().0) }
 }
