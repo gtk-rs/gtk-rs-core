@@ -51,7 +51,7 @@ unsafe impl<'a> glib::value::FromValue<'a> for SocketMsgFlags {
     type Checker = glib::value::GenericValueTypeChecker<Self>;
 
     unsafe fn from_value(value: &'a glib::Value) -> Self {
-        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0) as i32)
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0) as i32) }
     }
 }
 
