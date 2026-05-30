@@ -80,6 +80,37 @@ manual_traits = ["FileDescriptorBasedExtManual"]
     manual = true
 
 [[object]]
+name = "GioUnix.InputStream"
+status = "generate"
+trait_name = "UnixInputStreamExt"
+manual_traits = ["UnixInputStreamExtManual"]
+    [[object.function]]
+    name = "new"
+    # has to use RawFd
+    manual = true
+    generate_doc = false
+
+    [[object.function]]
+    name = "set_close_fd"
+    # Can cause file descriptor leaks
+    manual = true
+    generate_doc = false
+
+    [[object.function]]
+    name = "get_fd"
+    # conflicts with as FileDescriptorBased::fd
+    ignore = true
+
+    [[object.property]]
+    name = "fd"
+    # has to use RawFd
+    ignore = true
+
+    [[object.property]]
+    name = "close-fd"
+    ignore = true
+
+[[object]]
 name = "GioUnix.MountEntry"
 status = "generate"
 concurrency = "send+sync"
@@ -124,38 +155,6 @@ concurrency = "send+sync"
         [[object.function.parameter]]
         pattern = "(mount1|mount2|mount_point)"
         const = true
-
-[[object]]
-name = "GioUnix.InputStream"
-status = "generate"
-trait_name = "UnixInputStreamExt"
-manual_traits = ["UnixInputStreamExtManual"]
-    [[object.function]]
-    name = "new"
-    # has to use RawFd
-    manual = true
-    generate_doc = false
-
-    [[object.function]]
-    name = "set_close_fd"
-    # Can cause file descriptor leaks
-    manual = true
-    generate_doc = false
-
-    [[object.function]]
-    name = "get_fd"
-    # conflicts with as FileDescriptorBased::fd
-    ignore = true
-
-    [[object.property]]
-    name = "fd"
-    # has to use RawFd
-    ignore = true
-
-    [[object.property]]
-    name = "close-fd"
-    ignore = true
-
 
 [[object]]
 name = "GioUnix.OutputStream"
