@@ -87,6 +87,8 @@ pub use socket::{InputMessage, InputVector, OutputMessage, OutputVector, SocketC
 mod dbus_object_manager_client;
 mod socket_control_message;
 mod socket_listener;
+mod socket_msg_flags;
+pub use socket_msg_flags::*;
 mod subprocess;
 mod subprocess_launcher;
 mod threaded_socket_service;
