@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/log.rs`."><title>log.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.97.0-nightly (b954122bb 2026-05-20)" data-channel="nightly" data-search-js="search-fd9372ac.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-fcd733ba.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/log.rs`."><title>log.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.98.0-nightly (f8a08b688 2026-05-30)" data-channel="nightly" data-search-js="search-fd9372ac.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-fcd733ba.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -80,7 +80,7 @@
 <a href=#7 id=7 data-nosnippet>7</a>    sync::{<a href="https://doc.rust-lang.org/nightly/alloc/sync/struct.Arc.html">Arc</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/poison/mutex/struct.Mutex.html">Mutex</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html">OnceLock</a>},
 <a href=#8 id=8 data-nosnippet>8</a>};
 <a href=#9 id=9 data-nosnippet>9</a>
-<a href=#10 id=10 data-nosnippet>10</a><span class="kw">use crate</span>::{<a href="gstring.rs.html#24">GStr</a>, <a href="gstring.rs.html#1087">GString</a>, <a href="auto/enums.rs.html#522-531">LogWriterOutput</a>, ffi, <a href="lib.rs.html#175">translate</a>::<span class="kw-2">*</span>};
+<a href=#10 id=10 data-nosnippet>10</a><span class="kw">use crate</span>::{<a href="gstring.rs.html#24">GStr</a>, <a href="gstring.rs.html#1087">GString</a>, <a href="auto/enums.rs.html#650-659">LogWriterOutput</a>, ffi, <a href="lib.rs.html#175">translate</a>::<span class="kw-2">*</span>};
 <a href=#11 id=11 data-nosnippet>11</a>
 <a href=#12 id=12 data-nosnippet>12</a><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>)]
 <a href=#13 id=13 data-nosnippet>13</a></span><span class="kw">pub struct </span><a href="#13">LogHandlerId</a>(<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>);
@@ -449,17 +449,17 @@
 <a href=#376 id=376 data-nosnippet>376</a>    <span class="comment">// rustdoc-stripper-ignore-next
 <a href=#377 id=377 data-nosnippet>377</a>    </span><span class="doccomment">/// Creates a field from a borrowed key and value.
 <a href=#378 id=378 data-nosnippet>378</a>    </span><span class="kw">pub fn </span>new(key: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="gstring.rs.html#24">GStr</a>, value: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; <span class="self">Self </span>{
-<a href=#379 id=379 data-nosnippet>379</a>        <span class="kw">let </span>(value, length) = <span class="kw">if </span><a href="#378">value</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.is_empty">is_empty</a>() {
+<a href=#379 id=379 data-nosnippet>379</a>        <span class="kw">let </span>(value, length) = <span class="kw">if </span><a href="#378">value</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.slice.html#method.is_empty">is_empty</a>() {
 <a href=#380 id=380 data-nosnippet>380</a>            <span class="comment">// Use an empty C string to represent empty data, since length: 0 is reserved for user
 <a href=#381 id=381 data-nosnippet>381</a>            // data fields.
 <a href=#382 id=382 data-nosnippet>382</a>            </span>(<span class="kw-2">&amp;</span>[<span class="number">0u8</span>] <span class="kw">as </span><span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>], -<span class="number">1isize</span>)
 <a href=#383 id=383 data-nosnippet>383</a>        } <span class="kw">else </span>{
-<a href=#384 id=384 data-nosnippet>384</a>            (<a href="#378">value</a>, <a href="#378">value</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryInto.html#tymethod.try_into">try_into</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>())
+<a href=#384 id=384 data-nosnippet>384</a>            (<a href="#378">value</a>, <a href="#378">value</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.slice.html#method.len">len</a>().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryInto.html#tymethod.try_into">try_into</a>().<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap">unwrap</a>())
 <a href=#385 id=385 data-nosnippet>385</a>        };
 <a href=#386 id=386 data-nosnippet>386</a>        <span class="self">Self</span>(
 <a href=#387 id=387 data-nosnippet>387</a>            ffi::GLogField {
 <a href=#388 id=388 data-nosnippet>388</a>                key: <a href="#378">key</a>.<a href="gstring.rs.html#217-219">as_ptr</a>(),
-<a href=#389 id=389 data-nosnippet>389</a>                value: <a href="#379">value</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+<a href=#389 id=389 data-nosnippet>389</a>                value: <a href="#379">value</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
 <a href=#390 id=390 data-nosnippet>390</a>                <a href="#379">length</a>,
 <a href=#391 id=391 data-nosnippet>391</a>            },
 <a href=#392 id=392 data-nosnippet>392</a>            Default::<a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">default</a>(),
@@ -515,17 +515,17 @@
 <a href=#442 id=442 data-nosnippet>442</a>    </span><span class="doccomment">/// Retrieves the the user data value from a field created with [`Self::new_user_data`].
 <a href=#443 id=443 data-nosnippet>443</a>    /// Returns `None` if the field was created with [`Self::new`].
 <a href=#444 id=444 data-nosnippet>444</a>    </span><span class="kw">pub fn </span>user_data(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; {
-<a href=#445 id=445 data-nosnippet>445</a>        (<a class="self" href="#444">self</a>.<span class="number">0</span>.length == <span class="number">0</span>).<a href="https://doc.rust-lang.org/nightly/core/foreigntype.bool.html#method.then_some">then_some</a>(<a class="self" href="#444">self</a>.<span class="number">0</span>.value.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.const_ptr.html#method.addr">addr</a>())
+<a href=#445 id=445 data-nosnippet>445</a>        (<a class="self" href="#444">self</a>.<span class="number">0</span>.length == <span class="number">0</span>).<a href="https://doc.rust-lang.org/nightly/core/primitive.bool.html#method.then_some">then_some</a>(<a class="self" href="#444">self</a>.<span class="number">0</span>.value.<a href="https://doc.rust-lang.org/nightly/core/primitive.pointer.html#method.addr">addr</a>())
 <a href=#446 id=446 data-nosnippet>446</a>    }
 <a href=#447 id=447 data-nosnippet>447</a>}
 <a href=#448 id=448 data-nosnippet>448</a>
-<a href=#449 id=449 data-nosnippet>449</a><span class="kw">type </span>WriterCallback = <span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[<a href="#373">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#522-531">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>;
+<a href=#449 id=449 data-nosnippet>449</a><span class="kw">type </span>WriterCallback = <span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[<a href="#373">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>;
 <a href=#450 id=450 data-nosnippet>450</a>
 <a href=#451 id=451 data-nosnippet>451</a><span class="kw">static </span>WRITER_FUNC: <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html">OnceLock</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<a href="#449">WriterCallback</a>&gt;&gt; = <a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html">OnceLock</a>::<a href="https://doc.rust-lang.org/nightly/std/sync/once_lock/struct.OnceLock.html#method.new">new</a>();
 <a href=#452 id=452 data-nosnippet>452</a>
 <a href=#453 id=453 data-nosnippet>453</a><span class="attr">#[doc(alias = <span class="string">"g_log_set_writer_func"</span>)]
 <a href=#454 id=454 data-nosnippet>454</a></span><span class="kw">pub fn </span><a href="../../glib/fn.log_set_writer_func.html">log_set_writer_func</a>&lt;
-<a href=#455 id=455 data-nosnippet>455</a>    P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[<a href="#373">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#522-531">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
+<a href=#455 id=455 data-nosnippet>455</a>    P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<a href="#34-47">LogLevel</a>, <span class="kw-2">&amp;</span>[<a href="#373">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>,
 <a href=#456 id=456 data-nosnippet>456</a>&gt;(
 <a href=#457 id=457 data-nosnippet>457</a>    writer_func: P,
 <a href=#458 id=458 data-nosnippet>458</a>) {
@@ -1035,15 +1035,15 @@
 <a href=#962 id=962 data-nosnippet>962</a>    <span class="kw">unsafe </span>{
 <a href=#963 id=963 data-nosnippet>963</a>        ffi::g_log_structured_array(
 <a href=#964 id=964 data-nosnippet>964</a>            <a href="#961">log_level</a>.<a href="translate.rs.html#334">into_glib</a>(),
-<a href=#965 id=965 data-nosnippet>965</a>            <a href="#961">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GLogField,
-<a href=#966 id=966 data-nosnippet>966</a>            <a href="#961">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
+<a href=#965 id=965 data-nosnippet>965</a>            <a href="#961">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GLogField,
+<a href=#966 id=966 data-nosnippet>966</a>            <a href="#961">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.slice.html#method.len">len</a>(),
 <a href=#967 id=967 data-nosnippet>967</a>        )
 <a href=#968 id=968 data-nosnippet>968</a>    }
 <a href=#969 id=969 data-nosnippet>969</a>}
 <a href=#970 id=970 data-nosnippet>970</a>
 <a href=#971 id=971 data-nosnippet>971</a><span class="attr">#[doc(alias = <span class="string">"g_log_variant"</span>)]
 <a href=#972 id=972 data-nosnippet>972</a>#[inline]
-<a href=#973 id=973 data-nosnippet>973</a></span><span class="kw">pub fn </span><a href="../../glib/fn.log_variant.html">log_variant</a>(log_domain: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span><span class="kw">crate</span>::<a href="variant.rs.html#119-625">Variant</a>) {
+<a href=#973 id=973 data-nosnippet>973</a></span><span class="kw">pub fn </span><a href="../../glib/fn.log_variant.html">log_variant</a>(log_domain: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span><span class="kw">crate</span>::<a href="variant.rs.html#119-378">Variant</a>) {
 <a href=#974 id=974 data-nosnippet>974</a>    <span class="kw">unsafe </span>{
 <a href=#975 id=975 data-nosnippet>975</a>        ffi::g_log_variant(
 <a href=#976 id=976 data-nosnippet>976</a>            <a href="#973">log_domain</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
@@ -1083,8 +1083,8 @@
 <a href=#1010 id=1010 data-nosnippet>1010</a>    <span class="kw">unsafe </span>{
 <a href=#1011 id=1011 data-nosnippet>1011</a>        <a href="translate.rs.html#1636-1638">from_glib_full</a>(ffi::g_log_writer_format_fields(
 <a href=#1012 id=1012 data-nosnippet>1012</a>            <a href="#1006">log_level</a>.<a href="translate.rs.html#334">into_glib</a>(),
-<a href=#1013 id=1013 data-nosnippet>1013</a>            <a href="#1007">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GLogField,
-<a href=#1014 id=1014 data-nosnippet>1014</a>            <a href="#1007">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
+<a href=#1013 id=1013 data-nosnippet>1013</a>            <a href="#1007">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GLogField,
+<a href=#1014 id=1014 data-nosnippet>1014</a>            <a href="#1007">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.slice.html#method.len">len</a>(),
 <a href=#1015 id=1015 data-nosnippet>1015</a>            <a href="#1008">use_color</a>.<a href="translate.rs.html#334">into_glib</a>(),
 <a href=#1016 id=1016 data-nosnippet>1016</a>        ))
 <a href=#1017 id=1017 data-nosnippet>1017</a>    }
@@ -1092,12 +1092,12 @@
 <a href=#1019 id=1019 data-nosnippet>1019</a>
 <a href=#1020 id=1020 data-nosnippet>1020</a><span class="attr">#[doc(alias = <span class="string">"g_log_writer_journald"</span>)]
 <a href=#1021 id=1021 data-nosnippet>1021</a>#[inline]
-<a href=#1022 id=1022 data-nosnippet>1022</a></span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_journald.html">log_writer_journald</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[<a href="#373">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#522-531">LogWriterOutput</a> {
+<a href=#1022 id=1022 data-nosnippet>1022</a></span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_journald.html">log_writer_journald</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[<a href="#373">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> {
 <a href=#1023 id=1023 data-nosnippet>1023</a>    <span class="kw">unsafe </span>{
 <a href=#1024 id=1024 data-nosnippet>1024</a>        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_log_writer_journald(
 <a href=#1025 id=1025 data-nosnippet>1025</a>            <a href="#1022">log_level</a>.<a href="translate.rs.html#334">into_glib</a>(),
-<a href=#1026 id=1026 data-nosnippet>1026</a>            <a href="#1022">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GLogField,
-<a href=#1027 id=1027 data-nosnippet>1027</a>            <a href="#1022">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
+<a href=#1026 id=1026 data-nosnippet>1026</a>            <a href="#1022">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GLogField,
+<a href=#1027 id=1027 data-nosnippet>1027</a>            <a href="#1022">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.slice.html#method.len">len</a>(),
 <a href=#1028 id=1028 data-nosnippet>1028</a>            std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>(),
 <a href=#1029 id=1029 data-nosnippet>1029</a>        ))
 <a href=#1030 id=1030 data-nosnippet>1030</a>    }
@@ -1108,12 +1108,12 @@
 <a href=#1035 id=1035 data-nosnippet>1035</a></span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_standard_streams.html">log_writer_standard_streams</a>(
 <a href=#1036 id=1036 data-nosnippet>1036</a>    log_level: <a href="#34-47">LogLevel</a>,
 <a href=#1037 id=1037 data-nosnippet>1037</a>    fields: <span class="kw-2">&amp;</span>[<a href="#373">LogField</a>&lt;<span class="lifetime">'_</span>&gt;],
-<a href=#1038 id=1038 data-nosnippet>1038</a>) -&gt; <a href="auto/enums.rs.html#522-531">LogWriterOutput</a> {
+<a href=#1038 id=1038 data-nosnippet>1038</a>) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> {
 <a href=#1039 id=1039 data-nosnippet>1039</a>    <span class="kw">unsafe </span>{
 <a href=#1040 id=1040 data-nosnippet>1040</a>        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_log_writer_standard_streams(
 <a href=#1041 id=1041 data-nosnippet>1041</a>            <a href="#1036">log_level</a>.<a href="translate.rs.html#334">into_glib</a>(),
-<a href=#1042 id=1042 data-nosnippet>1042</a>            <a href="#1037">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GLogField,
-<a href=#1043 id=1043 data-nosnippet>1043</a>            <a href="#1037">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
+<a href=#1042 id=1042 data-nosnippet>1042</a>            <a href="#1037">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GLogField,
+<a href=#1043 id=1043 data-nosnippet>1043</a>            <a href="#1037">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.slice.html#method.len">len</a>(),
 <a href=#1044 id=1044 data-nosnippet>1044</a>            std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>(),
 <a href=#1045 id=1045 data-nosnippet>1045</a>        ))
 <a href=#1046 id=1046 data-nosnippet>1046</a>    }
@@ -1121,12 +1121,12 @@
 <a href=#1048 id=1048 data-nosnippet>1048</a>
 <a href=#1049 id=1049 data-nosnippet>1049</a><span class="attr">#[doc(alias = <span class="string">"g_log_writer_default"</span>)]
 <a href=#1050 id=1050 data-nosnippet>1050</a>#[inline]
-<a href=#1051 id=1051 data-nosnippet>1051</a></span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_default.html">log_writer_default</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[<a href="#373">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#522-531">LogWriterOutput</a> {
+<a href=#1051 id=1051 data-nosnippet>1051</a></span><span class="kw">pub fn </span><a href="../../glib/fn.log_writer_default.html">log_writer_default</a>(log_level: <a href="#34-47">LogLevel</a>, fields: <span class="kw-2">&amp;</span>[<a href="#373">LogField</a>&lt;<span class="lifetime">'_</span>&gt;]) -&gt; <a href="auto/enums.rs.html#650-659">LogWriterOutput</a> {
 <a href=#1052 id=1052 data-nosnippet>1052</a>    <span class="kw">unsafe </span>{
 <a href=#1053 id=1053 data-nosnippet>1053</a>        <a href="translate.rs.html#1417-1419">from_glib</a>(ffi::g_log_writer_default(
 <a href=#1054 id=1054 data-nosnippet>1054</a>            <a href="#1051">log_level</a>.<a href="translate.rs.html#334">into_glib</a>(),
-<a href=#1055 id=1055 data-nosnippet>1055</a>            <a href="#1051">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GLogField,
-<a href=#1056 id=1056 data-nosnippet>1056</a>            <a href="#1051">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/foreigntype.slice.html#method.len">len</a>(),
+<a href=#1055 id=1055 data-nosnippet>1055</a>            <a href="#1051">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.slice.html#method.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*const </span>ffi::GLogField,
+<a href=#1056 id=1056 data-nosnippet>1056</a>            <a href="#1051">fields</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.slice.html#method.len">len</a>(),
 <a href=#1057 id=1057 data-nosnippet>1057</a>            std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>(),
 <a href=#1058 id=1058 data-nosnippet>1058</a>        ))
 <a href=#1059 id=1059 data-nosnippet>1059</a>    }
