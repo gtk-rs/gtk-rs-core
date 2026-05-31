@@ -1,5 +1,9 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+#![cfg_attr(feature = "strict-provenance", feature(strict_provenance_lints))]
+#![cfg_attr(feature = "strict-provenance", deny(fuzzy_provenance_casts))]
+#![cfg_attr(feature = "strict-provenance", deny(lossy_provenance_casts))]
+
 mod async_test;
 mod boxed_derive;
 mod clone;
@@ -1459,7 +1463,7 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 ///         #[property(get, set)]
 ///         extra_comments: RefCell<bool>,
 ///     }
-///     
+///
 ///     #[glib::derived_properties]
 ///     impl ObjectImpl for Foo {}
 ///
