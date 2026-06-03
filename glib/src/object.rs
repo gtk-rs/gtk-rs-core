@@ -1771,7 +1771,7 @@ pub trait ObjectExt: ObjectType {
     ///
     /// # Panics
     ///
-    /// If the property does not exist or is not writable.
+    /// If the property does not exist or is not readable.
     #[doc(alias = "get_property")]
     #[doc(alias = "g_object_get_property")]
     fn property_value(&self, property_name: &str) -> Value;
