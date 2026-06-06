@@ -159,16 +159,9 @@ impl BoxedAnyObject {
     ///
     /// This is the non-panicking variant of [`borrow`](#method.borrow).
     pub fn try_borrow<T: 'static>(&self) -> Result<Ref<'_, T>, BorrowError> {
-        // The required function is only available on nightly:
-        // https://doc.rust-lang.org/std/cell/struct.Ref.html#method.filter_map.
-        // As a workaround, I check if everything is safe, then I unwrap
-
         let borrowed = self.imp().value.try_borrow()?;
-        borrowed
-            .as_ref()
-            .downcast_ref::<T>()
-            .ok_or(BorrowError::InvalidType)?;
-        Ok(self.borrow()) // Now this won't panic
+        Ref::filter_map(borrowed, |value| value.downcast_ref::<T>())
+            .map_err(|_| BorrowError::InvalidType)
     }
 
     // rustdoc-stripper-ignore-next
@@ -181,17 +174,9 @@ impl BoxedAnyObject {
     ///
     /// This is the non-panicking variant of [`borrow_mut`](#method.borrow_mut).
     pub fn try_borrow_mut<T: 'static>(&mut self) -> Result<RefMut<'_, T>, BorrowMutError> {
-        // The required function is only available on nightly:
-        // https://doc.rust-lang.org/std/cell/struct.Ref.html#method.filter_map
-        // As a workaround, I check if everything is safe, then I unwrap.
-
-        let mut borrowed_mut = self.imp().value.try_borrow_mut()?;
-        borrowed_mut
-            .as_mut()
-            .downcast_mut::<T>()
-            .ok_or(BorrowMutError::InvalidType)?;
-        drop(borrowed_mut);
-        Ok(self.borrow_mut()) // Now this won't panic
+        let borrowed_mut = self.imp().value.try_borrow_mut()?;
+        RefMut::filter_map(borrowed_mut, |value| value.downcast_mut::<T>())
+            .map_err(|_| BorrowMutError::InvalidType)
     }
 
     // rustdoc-stripper-ignore-next
