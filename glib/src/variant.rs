@@ -1946,7 +1946,9 @@ impl<A: AsRef<[T]>, T: FixedSizeVariantType> ToVariant for FixedSizeVariantArray
     }
 }
 
-impl<A: AsRef<[T]>, T: FixedSizeVariantType> From<FixedSizeVariantArray<A, T>> for Variant {
+impl<A: AsRef<[T]> + 'static, T: FixedSizeVariantType> From<FixedSizeVariantArray<A, T>>
+    for Variant
+{
     #[doc(alias = "g_variant_new_from_data")]
     fn from(a: FixedSizeVariantArray<A, T>) -> Self {
         unsafe {
