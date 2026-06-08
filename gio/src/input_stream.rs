@@ -42,12 +42,13 @@ pub trait InputStreamExtManual: IsA<InputStream> + Sized {
         &self,
         mut buffer: B,
         cancellable: Option<&C>,
-    ) -> Result<(usize, Option<glib::Error>), glib::Error> {
+    ) -> Result<(B, usize), (B, usize, glib::Error)> {
         let cancellable = cancellable.map(|c| c.as_ref());
         let gcancellable = cancellable.to_glib_none();
-        let buffer = buffer.as_mut();
-        let buffer_ptr = buffer.as_mut_ptr();
-        let count = buffer.len();
+        let (count, buffer_ptr) = {
+            let buffer = buffer.as_mut();
+            (buffer.len(), buffer.as_mut_ptr())
+        };
         unsafe {
             let mut bytes_read = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();
@@ -62,11 +63,9 @@ pub trait InputStreamExtManual: IsA<InputStream> + Sized {
 
             let bytes_read = bytes_read.assume_init();
             if error.is_null() {
-                Ok((bytes_read, None))
-            } else if bytes_read != 0 {
-                Ok((bytes_read, Some(from_glib_full(error))))
+                Ok((buffer, bytes_read))
             } else {
-                Err(from_glib_full(error))
+                Err((buffer, bytes_read, from_glib_full(error)))
             }
         }
     }
@@ -74,7 +73,7 @@ pub trait InputStreamExtManual: IsA<InputStream> + Sized {
     #[doc(alias = "g_input_stream_read_all_async")]
     fn read_all_async<
         B: AsMut<[u8]> + Send + 'static,
-        Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + 'static,
+        Q: FnOnce(Result<(B, usize), (B, usize, glib::Error)>) + 'static,
         C: IsA<Cancellable>,
     >(
         &self,
@@ -105,7 +104,7 @@ pub trait InputStreamExtManual: IsA<InputStream> + Sized {
         };
         unsafe extern "C" fn read_all_async_trampoline<
             B: AsMut<[u8]> + Send + 'static,
-            Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + 'static,
+            Q: FnOnce(Result<(B, usize), (B, usize, glib::Error)>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
@@ -128,11 +127,9 @@ pub trait InputStreamExtManual: IsA<InputStream> + Sized {
 
                 let bytes_read = bytes_read.assume_init();
                 let result = if error.is_null() {
-                    Ok((buffer, bytes_read, None))
-                } else if bytes_read != 0 {
-                    Ok((buffer, bytes_read, Some(from_glib_full(error))))
+                    Ok((buffer, bytes_read))
                 } else {
-                    Err((buffer, from_glib_full(error)))
+                    Err((buffer, bytes_read, from_glib_full(error)))
                 };
 
                 callback(result);
@@ -231,9 +228,7 @@ pub trait InputStreamExtManual: IsA<InputStream> + Sized {
         io_priority: Priority,
     ) -> Pin<
         Box<
-            dyn std::future::Future<
-                    Output = Result<(B, usize, Option<glib::Error>), (B, glib::Error)>,
-                > + 'static,
+            dyn std::future::Future<Output = Result<(B, usize), (B, usize, glib::Error)>> + 'static,
         >,
     > {
         Box::pin(crate::GioFuture::new(
@@ -569,27 +564,82 @@ mod tests {
             );
         });
 
-        let (buf, count, err) = ret.unwrap();
+        let (buf, count) = ret.unwrap();
         assert_eq!(count, 3);
-        assert!(err.is_none());
         assert_eq!(buf[0], 1);
         assert_eq!(buf[1], 2);
         assert_eq!(buf[2], 3);
     }
 
     #[test]
-    fn read_all() {
+    fn read_all_future() {
+        let c = glib::MainContext::new();
         let b = Bytes::from_owned(vec![1, 2, 3]);
         let strm = MemoryInputStream::from_bytes(&b);
-        let mut buf = vec![0; 10];
 
-        let ret = strm.read_all(&mut buf, crate::Cancellable::NONE).unwrap();
+        let (buf, count) = c
+            .block_on(strm.read_all_future(vec![0; 10], glib::Priority::default()))
+            .unwrap();
 
-        assert_eq!(ret.0, 3);
-        assert!(ret.1.is_none());
+        assert_eq!(count, 3);
         assert_eq!(buf[0], 1);
         assert_eq!(buf[1], 2);
         assert_eq!(buf[2], 3);
+    }
+
+    #[test]
+    fn read_all_async_cancelled() {
+        let ret = run_async(|tx, l| {
+            let b = Bytes::from_owned(vec![1, 2, 3]);
+            let strm = MemoryInputStream::from_bytes(&b);
+            let cancellable = crate::Cancellable::new();
+            cancellable.cancel();
+
+            let buf = vec![0; 10];
+            strm.read_all_async(
+                buf,
+                glib::Priority::DEFAULT_IDLE,
+                Some(&cancellable),
+                move |ret| {
+                    tx.send(ret).unwrap();
+                    l.quit();
+                },
+            );
+        });
+
+        let (buf, count, err) = ret.unwrap_err();
+        assert_eq!(count, 0);
+        assert_eq!(buf, vec![0; 10]);
+        assert!(err.matches::<crate::IOErrorEnum>(crate::IOErrorEnum::Cancelled));
+    }
+
+    #[test]
+    fn read_all() {
+        let b = Bytes::from_owned(vec![1, 2, 3]);
+        let strm = MemoryInputStream::from_bytes(&b);
+
+        let (buf, count) = strm
+            .read_all(vec![0; 10], crate::Cancellable::NONE)
+            .unwrap();
+
+        assert_eq!(count, 3);
+        assert_eq!(buf[0], 1);
+        assert_eq!(buf[1], 2);
+        assert_eq!(buf[2], 3);
+    }
+
+    #[test]
+    fn read_all_cancelled() {
+        let b = Bytes::from_owned(vec![1, 2, 3]);
+        let strm = MemoryInputStream::from_bytes(&b);
+        let cancellable = crate::Cancellable::new();
+        cancellable.cancel();
+
+        let (buf, count, err) = strm.read_all(vec![0; 10], Some(&cancellable)).unwrap_err();
+
+        assert_eq!(count, 0);
+        assert_eq!(buf, vec![0; 10]);
+        assert!(err.matches::<crate::IOErrorEnum>(crate::IOErrorEnum::Cancelled));
     }
 
     #[test]
