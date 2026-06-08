@@ -627,7 +627,7 @@ impl Variant {
     // rustdoc-stripper-ignore-next
     /// Constructs a new serialized-mode GVariant instance.
     #[doc(alias = "g_variant_new_from_data")]
-    pub fn from_data<T: StaticVariantType, A: AsRef<[u8]>>(data: A) -> Self {
+    pub fn from_data<T: StaticVariantType, A: AsRef<[u8]> + 'static>(data: A) -> Self {
         Variant::from_data_with_type(data, &T::static_variant_type())
     }
 
@@ -644,7 +644,9 @@ impl Variant {
     /// Since the data is not validated, this is potentially dangerous if called
     /// on bytes which are not guaranteed to have come from serialising another
     /// Variant.  The caller is responsible for ensuring bad data is not passed in.
-    pub unsafe fn from_data_trusted<T: StaticVariantType, A: AsRef<[u8]>>(data: A) -> Self {
+    pub unsafe fn from_data_trusted<T: StaticVariantType, A: AsRef<[u8]> + 'static>(
+        data: A,
+    ) -> Self {
         unsafe { Variant::from_data_with_type_trusted(data, &T::static_variant_type()) }
     }
 
@@ -687,7 +689,7 @@ impl Variant {
     // rustdoc-stripper-ignore-next
     /// Constructs a new serialized-mode GVariant instance with a given type.
     #[doc(alias = "g_variant_new_from_data")]
-    pub fn from_data_with_type<A: AsRef<[u8]>>(data: A, type_: &VariantTy) -> Self {
+    pub fn from_data_with_type<A: AsRef<[u8]> + 'static>(data: A, type_: &VariantTy) -> Self {
         unsafe {
             let data = Box::new(data);
             let (data_ptr, len) = {
@@ -725,7 +727,10 @@ impl Variant {
     /// Since the data is not validated, this is potentially dangerous if called
     /// on bytes which are not guaranteed to have come from serialising another
     /// Variant.  The caller is responsible for ensuring bad data is not passed in.
-    pub unsafe fn from_data_with_type_trusted<A: AsRef<[u8]>>(data: A, type_: &VariantTy) -> Self {
+    pub unsafe fn from_data_with_type_trusted<A: AsRef<[u8]> + 'static>(
+        data: A,
+        type_: &VariantTy,
+    ) -> Self {
         unsafe {
             let data = Box::new(data);
             let (data_ptr, len) = {
