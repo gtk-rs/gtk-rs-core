@@ -115,7 +115,7 @@ pub trait OutputStreamExtManual: IsA<OutputStream> + Sized {
     #[doc(alias = "g_output_stream_write_all_async")]
     fn write_all_async<
         B: AsRef<[u8]> + Send + 'static,
-        Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + 'static,
+        Q: FnOnce(Result<(B, usize), (B, usize, glib::Error)>) + 'static,
         C: IsA<Cancellable>,
     >(
         &self,
@@ -146,7 +146,7 @@ pub trait OutputStreamExtManual: IsA<OutputStream> + Sized {
         };
         unsafe extern "C" fn write_all_async_trampoline<
             B: AsRef<[u8]> + Send + 'static,
-            Q: FnOnce(Result<(B, usize, Option<glib::Error>), (B, glib::Error)>) + 'static,
+            Q: FnOnce(Result<(B, usize), (B, usize, glib::Error)>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut ffi::GAsyncResult,
@@ -168,11 +168,9 @@ pub trait OutputStreamExtManual: IsA<OutputStream> + Sized {
                 );
                 let bytes_written = bytes_written.assume_init();
                 let result = if error.is_null() {
-                    Ok((buffer, bytes_written, None))
-                } else if bytes_written != 0 {
-                    Ok((buffer, bytes_written, from_glib_full(error)))
+                    Ok((buffer, bytes_written))
                 } else {
-                    Err((buffer, from_glib_full(error)))
+                    Err((buffer, bytes_written, from_glib_full(error)))
                 };
                 callback(result);
             }
@@ -213,9 +211,7 @@ pub trait OutputStreamExtManual: IsA<OutputStream> + Sized {
         io_priority: Priority,
     ) -> Pin<
         Box<
-            dyn std::future::Future<
-                    Output = Result<(B, usize, Option<glib::Error>), (B, glib::Error)>,
-                > + 'static,
+            dyn std::future::Future<Output = Result<(B, usize), (B, usize, glib::Error)>> + 'static,
         >,
     > {
         Box::pin(crate::GioFuture::new(
@@ -666,10 +662,47 @@ mod tests {
             );
         });
 
-        let (buf, size, err) = ret.unwrap();
+        let (buf, size) = ret.unwrap();
         assert_eq!(buf, vec![1, 2, 3]);
         assert_eq!(size, 3);
-        assert!(err.is_none());
+    }
+
+    #[test]
+    fn write_all_future() {
+        let c = glib::MainContext::new();
+        let strm = MemoryOutputStream::new_resizable();
+
+        let (buf, size) = c
+            .block_on(strm.write_all_future(vec![1, 2, 3], glib::Priority::default()))
+            .unwrap();
+
+        assert_eq!(buf, vec![1, 2, 3]);
+        assert_eq!(size, 3);
+    }
+
+    #[test]
+    fn write_all_async_cancelled() {
+        let ret = run_async(|tx, l| {
+            let strm = MemoryOutputStream::new_resizable();
+            let cancellable = crate::Cancellable::new();
+            cancellable.cancel();
+
+            let buf = vec![1, 2, 3];
+            strm.write_all_async(
+                buf,
+                glib::Priority::DEFAULT_IDLE,
+                Some(&cancellable),
+                move |ret| {
+                    tx.send(ret).unwrap();
+                    l.quit();
+                },
+            );
+        });
+
+        let (buf, size, err) = ret.unwrap_err();
+        assert_eq!(buf, vec![1, 2, 3]);
+        assert_eq!(size, 0);
+        assert!(err.matches::<crate::IOErrorEnum>(crate::IOErrorEnum::Cancelled));
     }
 
     #[test]
