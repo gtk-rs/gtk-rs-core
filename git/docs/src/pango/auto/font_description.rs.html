@@ -671,106 +671,55 @@
 <a href=#598 id=598 data-nosnippet>598</a>        }
 <a href=#599 id=599 data-nosnippet>599</a>    }
 <a href=#600 id=600 data-nosnippet>600</a>
-<a href=#601 id=601 data-nosnippet>601</a>    <span class="doccomment">/// Creates a new font description from a string representation.
-<a href=#602 id=602 data-nosnippet>602</a>    ///
-<a href=#603 id=603 data-nosnippet>603</a>    /// The string must have the form
+<a href=#601 id=601 data-nosnippet>601</a>    <span class="doccomment">/// tnum=1
+<a href=#602 id=602 data-nosnippet>602</a>    /// ## `str`
+<a href=#603 id=603 data-nosnippet>603</a>    /// string representation of a font description.
 <a href=#604 id=604 data-nosnippet>604</a>    ///
-<a href=#605 id=605 data-nosnippet>605</a>    ///     [FAMILY-LIST] [STYLE-OPTIONS] [SIZE] [VARIATIONS] [FEATURES]
+<a href=#605 id=605 data-nosnippet>605</a>    /// # Returns
 <a href=#606 id=606 data-nosnippet>606</a>    ///
-<a href=#607 id=607 data-nosnippet>607</a>    /// where FAMILY-LIST is a comma-separated list of families optionally
-<a href=#608 id=608 data-nosnippet>608</a>    /// terminated by a comma, STYLE_OPTIONS is a whitespace-separated list
-<a href=#609 id=609 data-nosnippet>609</a>    /// of words where each word describes one of style, variant, weight,
-<a href=#610 id=610 data-nosnippet>610</a>    /// stretch, or gravity, and SIZE is a decimal number (size in points)
-<a href=#611 id=611 data-nosnippet>611</a>    /// or optionally followed by the unit modifier "px" for absolute size.
-<a href=#612 id=612 data-nosnippet>612</a>    ///
-<a href=#613 id=613 data-nosnippet>613</a>    /// The following words are understood as styles:
-<a href=#614 id=614 data-nosnippet>614</a>    /// "Normal", "Roman", "Oblique", "Italic".
-<a href=#615 id=615 data-nosnippet>615</a>    ///
-<a href=#616 id=616 data-nosnippet>616</a>    /// The following words are understood as variants:
-<a href=#617 id=617 data-nosnippet>617</a>    /// "Small-Caps", "All-Small-Caps", "Petite-Caps", "All-Petite-Caps",
-<a href=#618 id=618 data-nosnippet>618</a>    /// "Unicase", "Title-Caps".
-<a href=#619 id=619 data-nosnippet>619</a>    ///
-<a href=#620 id=620 data-nosnippet>620</a>    /// The following words are understood as weights:
-<a href=#621 id=621 data-nosnippet>621</a>    /// "Thin", "Ultra-Light", "Extra-Light", "Light", "Semi-Light",
-<a href=#622 id=622 data-nosnippet>622</a>    /// "Demi-Light", "Book", "Regular", "Medium", "Semi-Bold", "Demi-Bold",
-<a href=#623 id=623 data-nosnippet>623</a>    /// "Bold", "Ultra-Bold", "Extra-Bold", "Heavy", "Black", "Ultra-Black",
-<a href=#624 id=624 data-nosnippet>624</a>    /// "Extra-Black".
-<a href=#625 id=625 data-nosnippet>625</a>    ///
-<a href=#626 id=626 data-nosnippet>626</a>    /// The following words are understood as stretch values:
-<a href=#627 id=627 data-nosnippet>627</a>    /// "Ultra-Condensed", "Extra-Condensed", "Condensed", "Semi-Condensed",
-<a href=#628 id=628 data-nosnippet>628</a>    /// "Semi-Expanded", "Expanded", "Extra-Expanded", "Ultra-Expanded".
-<a href=#629 id=629 data-nosnippet>629</a>    ///
-<a href=#630 id=630 data-nosnippet>630</a>    /// The following words are understood as gravity values:
-<a href=#631 id=631 data-nosnippet>631</a>    /// "Not-Rotated", "South", "Upside-Down", "North", "Rotated-Left",
-<a href=#632 id=632 data-nosnippet>632</a>    /// "East", "Rotated-Right", "West".
-<a href=#633 id=633 data-nosnippet>633</a>    ///
-<a href=#634 id=634 data-nosnippet>634</a>    /// The following words are understood as color values:
-<a href=#635 id=635 data-nosnippet>635</a>    /// "With-Color", "Without-Color".
-<a href=#636 id=636 data-nosnippet>636</a>    ///
-<a href=#637 id=637 data-nosnippet>637</a>    /// VARIATIONS is a comma-separated list of font variations
-<a href=#638 id=638 data-nosnippet>638</a>    /// of the form @‍axis1=value,axis2=value,...
-<a href=#639 id=639 data-nosnippet>639</a>    ///
-<a href=#640 id=640 data-nosnippet>640</a>    /// FEATURES is a comma-separated list of font features of the form
-<a href=#641 id=641 data-nosnippet>641</a>    /// \#‍feature1=value,feature2=value,...
-<a href=#642 id=642 data-nosnippet>642</a>    /// The =value part can be ommitted if the value is 1.
-<a href=#643 id=643 data-nosnippet>643</a>    ///
-<a href=#644 id=644 data-nosnippet>644</a>    /// Any one of the options may be absent. If FAMILY-LIST is absent, then
-<a href=#645 id=645 data-nosnippet>645</a>    /// the family_name field of the resulting font description will be
-<a href=#646 id=646 data-nosnippet>646</a>    /// initialized to [`None`]. If STYLE-OPTIONS is missing, then all style
-<a href=#647 id=647 data-nosnippet>647</a>    /// options will be set to the default values. If SIZE is missing, the
-<a href=#648 id=648 data-nosnippet>648</a>    /// size in the resulting font description will be set to 0.
-<a href=#649 id=649 data-nosnippet>649</a>    ///
-<a href=#650 id=650 data-nosnippet>650</a>    /// A typical example:
-<a href=#651 id=651 data-nosnippet>651</a>    ///
-<a href=#652 id=652 data-nosnippet>652</a>    ///     Cantarell Italic Light 15 @‍wght=200 #‍tnum=1
-<a href=#653 id=653 data-nosnippet>653</a>    /// ## `str`
-<a href=#654 id=654 data-nosnippet>654</a>    /// string representation of a font description.
-<a href=#655 id=655 data-nosnippet>655</a>    ///
-<a href=#656 id=656 data-nosnippet>656</a>    /// # Returns
-<a href=#657 id=657 data-nosnippet>657</a>    ///
-<a href=#658 id=658 data-nosnippet>658</a>    /// a new [`FontDescription`][crate::FontDescription].
-<a href=#659 id=659 data-nosnippet>659</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_from_string"</span>)]
-<a href=#660 id=660 data-nosnippet>660</a>    </span><span class="kw">pub fn </span>from_string(str: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="#11-26">FontDescription</a> {
-<a href=#661 id=661 data-nosnippet>661</a>        <span class="kw">unsafe </span>{
-<a href=#662 id=662 data-nosnippet>662</a>            <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(ffi::<a href="../../../pango_sys/fn.pango_font_description_from_string.html">pango_font_description_from_string</a>(
-<a href=#663 id=663 data-nosnippet>663</a>                <a href="#660">str</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#664 id=664 data-nosnippet>664</a>            ))
-<a href=#665 id=665 data-nosnippet>665</a>        }
-<a href=#666 id=666 data-nosnippet>666</a>    }
-<a href=#667 id=667 data-nosnippet>667</a>}
-<a href=#668 id=668 data-nosnippet>668</a>
-<a href=#669 id=669 data-nosnippet>669</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#11-26">FontDescription</a> {
-<a href=#670 id=670 data-nosnippet>670</a>    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-<a href=#671 id=671 data-nosnippet>671</a>        <span class="self">Self</span>::<a href="#36-38">new</a>()
-<a href=#672 id=672 data-nosnippet>672</a>    }
-<a href=#673 id=673 data-nosnippet>673</a>}
-<a href=#674 id=674 data-nosnippet>674</a>
-<a href=#675 id=675 data-nosnippet>675</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#11-26">FontDescription</a> {
-<a href=#676 id=676 data-nosnippet>676</a>    <span class="attr">#[inline]
-<a href=#677 id=677 data-nosnippet>677</a>    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#678 id=678 data-nosnippet>678</a>        <a class="self" href="#677">self</a>.<a href="#75-82">equal</a>(<a href="#677">other</a>)
-<a href=#679 id=679 data-nosnippet>679</a>    }
-<a href=#680 id=680 data-nosnippet>680</a>}
-<a href=#681 id=681 data-nosnippet>681</a>
-<a href=#682 id=682 data-nosnippet>682</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#11-26">FontDescription</a> {}
-<a href=#683 id=683 data-nosnippet>683</a>
-<a href=#684 id=684 data-nosnippet>684</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">std::fmt::Display</a> <span class="kw">for </span><a href="#11-26">FontDescription</a> {
-<a href=#685 id=685 data-nosnippet>685</a>    <span class="attr">#[inline]
-<a href=#686 id=686 data-nosnippet>686</a>    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">Formatter</a>) -&gt; std::fmt::<a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">Result</a> {
-<a href=#687 id=687 data-nosnippet>687</a>        <a href="#686">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="kw-2">&amp;</span><a class="self" href="#686">self</a>.<a href="#582-584">to_str</a>())
-<a href=#688 id=688 data-nosnippet>688</a>    }
-<a href=#689 id=689 data-nosnippet>689</a>}
-<a href=#690 id=690 data-nosnippet>690</a>
-<a href=#691 id=691 data-nosnippet>691</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">std::hash::Hash</a> <span class="kw">for </span><a href="#11-26">FontDescription</a> {
-<a href=#692 id=692 data-nosnippet>692</a>    <span class="attr">#[inline]
-<a href=#693 id=693 data-nosnippet>693</a>    </span><span class="kw">fn </span>hash&lt;H&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H)
-<a href=#694 id=694 data-nosnippet>694</a>    <span class="kw">where
-<a href=#695 id=695 data-nosnippet>695</a>        </span>H: <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html">std::hash::Hasher</a>,
-<a href=#696 id=696 data-nosnippet>696</a>    {
-<a href=#697 id=697 data-nosnippet>697</a>        std::hash::Hash::<a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash">hash</a>(<span class="kw-2">&amp;</span><a class="self" href="#693">self</a>.<a href="#306-308">hash</a>(), <a href="#693">state</a>)
-<a href=#698 id=698 data-nosnippet>698</a>    }
-<a href=#699 id=699 data-nosnippet>699</a>}
-<a href=#700 id=700 data-nosnippet>700</a>
-<a href=#701 id=701 data-nosnippet>701</a><span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#11-26">FontDescription</a> {}
-<a href=#702 id=702 data-nosnippet>702</a><span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#11-26">FontDescription</a> {}
+<a href=#607 id=607 data-nosnippet>607</a>    /// a new [`FontDescription`][crate::FontDescription].
+<a href=#608 id=608 data-nosnippet>608</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_font_description_from_string"</span>)]
+<a href=#609 id=609 data-nosnippet>609</a>    </span><span class="kw">pub fn </span>from_string(str: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="#11-26">FontDescription</a> {
+<a href=#610 id=610 data-nosnippet>610</a>        <span class="kw">unsafe </span>{
+<a href=#611 id=611 data-nosnippet>611</a>            <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(ffi::<a href="../../../pango_sys/fn.pango_font_description_from_string.html">pango_font_description_from_string</a>(
+<a href=#612 id=612 data-nosnippet>612</a>                <a href="#609">str</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#613 id=613 data-nosnippet>613</a>            ))
+<a href=#614 id=614 data-nosnippet>614</a>        }
+<a href=#615 id=615 data-nosnippet>615</a>    }
+<a href=#616 id=616 data-nosnippet>616</a>}
+<a href=#617 id=617 data-nosnippet>617</a>
+<a href=#618 id=618 data-nosnippet>618</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#11-26">FontDescription</a> {
+<a href=#619 id=619 data-nosnippet>619</a>    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+<a href=#620 id=620 data-nosnippet>620</a>        <span class="self">Self</span>::<a href="#36-38">new</a>()
+<a href=#621 id=621 data-nosnippet>621</a>    }
+<a href=#622 id=622 data-nosnippet>622</a>}
+<a href=#623 id=623 data-nosnippet>623</a>
+<a href=#624 id=624 data-nosnippet>624</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#11-26">FontDescription</a> {
+<a href=#625 id=625 data-nosnippet>625</a>    <span class="attr">#[inline]
+<a href=#626 id=626 data-nosnippet>626</a>    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+<a href=#627 id=627 data-nosnippet>627</a>        <a class="self" href="#626">self</a>.<a href="#75-82">equal</a>(<a href="#626">other</a>)
+<a href=#628 id=628 data-nosnippet>628</a>    }
+<a href=#629 id=629 data-nosnippet>629</a>}
+<a href=#630 id=630 data-nosnippet>630</a>
+<a href=#631 id=631 data-nosnippet>631</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#11-26">FontDescription</a> {}
+<a href=#632 id=632 data-nosnippet>632</a>
+<a href=#633 id=633 data-nosnippet>633</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">std::fmt::Display</a> <span class="kw">for </span><a href="#11-26">FontDescription</a> {
+<a href=#634 id=634 data-nosnippet>634</a>    <span class="attr">#[inline]
+<a href=#635 id=635 data-nosnippet>635</a>    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">Formatter</a>) -&gt; std::fmt::<a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">Result</a> {
+<a href=#636 id=636 data-nosnippet>636</a>        <a href="#635">f</a>.<a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html#method.write_str">write_str</a>(<span class="kw-2">&amp;</span><a class="self" href="#635">self</a>.<a href="#582-584">to_str</a>())
+<a href=#637 id=637 data-nosnippet>637</a>    }
+<a href=#638 id=638 data-nosnippet>638</a>}
+<a href=#639 id=639 data-nosnippet>639</a>
+<a href=#640 id=640 data-nosnippet>640</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">std::hash::Hash</a> <span class="kw">for </span><a href="#11-26">FontDescription</a> {
+<a href=#641 id=641 data-nosnippet>641</a>    <span class="attr">#[inline]
+<a href=#642 id=642 data-nosnippet>642</a>    </span><span class="kw">fn </span>hash&lt;H&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H)
+<a href=#643 id=643 data-nosnippet>643</a>    <span class="kw">where
+<a href=#644 id=644 data-nosnippet>644</a>        </span>H: <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html">std::hash::Hasher</a>,
+<a href=#645 id=645 data-nosnippet>645</a>    {
+<a href=#646 id=646 data-nosnippet>646</a>        std::hash::Hash::<a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html#tymethod.hash">hash</a>(<span class="kw-2">&amp;</span><a class="self" href="#642">self</a>.<a href="#306-308">hash</a>(), <a href="#642">state</a>)
+<a href=#647 id=647 data-nosnippet>647</a>    }
+<a href=#648 id=648 data-nosnippet>648</a>}
+<a href=#649 id=649 data-nosnippet>649</a>
+<a href=#650 id=650 data-nosnippet>650</a><span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#11-26">FontDescription</a> {}
+<a href=#651 id=651 data-nosnippet>651</a><span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#11-26">FontDescription</a> {}
 </code></pre></div></section></main></body></html>

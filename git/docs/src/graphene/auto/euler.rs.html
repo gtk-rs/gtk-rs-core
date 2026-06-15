@@ -218,77 +218,65 @@
 <a href=#145 id=145 data-nosnippet>145</a>        }
 <a href=#146 id=146 data-nosnippet>146</a>    }
 <a href=#147 id=147 data-nosnippet>147</a>
-<a href=#148 id=148 data-nosnippet>148</a>    <span class="doccomment">/// Converts a [`Euler`][crate::Euler] into a transformation matrix expressing
-<a href=#149 id=149 data-nosnippet>149</a>    /// the extrinsic composition of rotations described by the Euler angles.
-<a href=#150 id=150 data-nosnippet>150</a>    ///
-<a href=#151 id=151 data-nosnippet>151</a>    /// The rotations are applied over the reference frame axes in the order
-<a href=#152 id=152 data-nosnippet>152</a>    /// associated with the [`Euler`][crate::Euler]; for instance, if the order
-<a href=#153 id=153 data-nosnippet>153</a>    /// used to initialize `self` is [`EulerOrder::Xyz`][crate::EulerOrder::Xyz]:
+<a href=#148 id=148 data-nosnippet>148</a>    <span class="doccomment">///
+<a href=#149 id=149 data-nosnippet>149</a>    ///
+<a href=#150 id=150 data-nosnippet>150</a>    /// The rotation sign convention is right-handed, to preserve compatibility
+<a href=#151 id=151 data-nosnippet>151</a>    /// between Euler-based, quaternion-based, and angle-axis-based rotations.
+<a href=#152 id=152 data-nosnippet>152</a>    ///
+<a href=#153 id=153 data-nosnippet>153</a>    /// # Returns
 <a href=#154 id=154 data-nosnippet>154</a>    ///
-<a href=#155 id=155 data-nosnippet>155</a>    ///  * the first rotation moves the body around the X axis with
-<a href=#156 id=156 data-nosnippet>156</a>    ///  an angle φ
-<a href=#157 id=157 data-nosnippet>157</a>    ///  * the second rotation moves the body around the Y axis with
-<a href=#158 id=158 data-nosnippet>158</a>    ///  an angle of ϑ
-<a href=#159 id=159 data-nosnippet>159</a>    ///  * the third rotation moves the body around the Z axis with
-<a href=#160 id=160 data-nosnippet>160</a>    ///  an angle of ψ
-<a href=#161 id=161 data-nosnippet>161</a>    ///
-<a href=#162 id=162 data-nosnippet>162</a>    /// The rotation sign convention is right-handed, to preserve compatibility
-<a href=#163 id=163 data-nosnippet>163</a>    /// between Euler-based, quaternion-based, and angle-axis-based rotations.
-<a href=#164 id=164 data-nosnippet>164</a>    ///
-<a href=#165 id=165 data-nosnippet>165</a>    /// # Returns
-<a href=#166 id=166 data-nosnippet>166</a>    ///
-<a href=#167 id=167 data-nosnippet>167</a>    ///
-<a href=#168 id=168 data-nosnippet>168</a>    /// ## `res`
-<a href=#169 id=169 data-nosnippet>169</a>    /// return location for a [`Matrix`][crate::Matrix]
-<a href=#170 id=170 data-nosnippet>170</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_euler_to_matrix"</span>)]
-<a href=#171 id=171 data-nosnippet>171</a>    </span><span class="kw">pub fn </span>to_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="matrix.rs.html#8-20">Matrix</a> {
-<a href=#172 id=172 data-nosnippet>172</a>        <span class="kw">unsafe </span>{
-<a href=#173 id=173 data-nosnippet>173</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="matrix.rs.html#8-20">Matrix</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
-<a href=#174 id=174 data-nosnippet>174</a>            ffi::<a href="../../../graphene_sys/fn.graphene_euler_to_matrix.html">graphene_euler_to_matrix</a>(<a class="self" href="#171">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#173">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
-<a href=#175 id=175 data-nosnippet>175</a>            <a href="#173">res</a>
-<a href=#176 id=176 data-nosnippet>176</a>        }
-<a href=#177 id=177 data-nosnippet>177</a>    }
-<a href=#178 id=178 data-nosnippet>178</a>
-<a href=#179 id=179 data-nosnippet>179</a>    <span class="doccomment">/// Converts a [`Euler`][crate::Euler] into a [`Quaternion`][crate::Quaternion].
-<a href=#180 id=180 data-nosnippet>180</a>    ///
-<a href=#181 id=181 data-nosnippet>181</a>    /// # Returns
-<a href=#182 id=182 data-nosnippet>182</a>    ///
-<a href=#183 id=183 data-nosnippet>183</a>    ///
-<a href=#184 id=184 data-nosnippet>184</a>    /// ## `res`
-<a href=#185 id=185 data-nosnippet>185</a>    /// return location for a [`Quaternion`][crate::Quaternion]
-<a href=#186 id=186 data-nosnippet>186</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_euler_to_quaternion"</span>)]
-<a href=#187 id=187 data-nosnippet>187</a>    </span><span class="kw">pub fn </span>to_quaternion(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="quaternion.rs.html#8-20">Quaternion</a> {
-<a href=#188 id=188 data-nosnippet>188</a>        <span class="kw">unsafe </span>{
-<a href=#189 id=189 data-nosnippet>189</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="quaternion.rs.html#8-20">Quaternion</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
-<a href=#190 id=190 data-nosnippet>190</a>            ffi::<a href="../../../graphene_sys/fn.graphene_euler_to_quaternion.html">graphene_euler_to_quaternion</a>(<a class="self" href="#187">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#189">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
-<a href=#191 id=191 data-nosnippet>191</a>            <a href="#189">res</a>
-<a href=#192 id=192 data-nosnippet>192</a>        }
-<a href=#193 id=193 data-nosnippet>193</a>    }
-<a href=#194 id=194 data-nosnippet>194</a>
-<a href=#195 id=195 data-nosnippet>195</a>    <span class="doccomment">/// Retrieves the angles of a [`Euler`][crate::Euler] and initializes a
-<a href=#196 id=196 data-nosnippet>196</a>    /// [`Vec3`][crate::Vec3] with them.
-<a href=#197 id=197 data-nosnippet>197</a>    ///
-<a href=#198 id=198 data-nosnippet>198</a>    /// # Returns
-<a href=#199 id=199 data-nosnippet>199</a>    ///
-<a href=#200 id=200 data-nosnippet>200</a>    ///
-<a href=#201 id=201 data-nosnippet>201</a>    /// ## `res`
-<a href=#202 id=202 data-nosnippet>202</a>    /// return location for a [`Vec3`][crate::Vec3]
-<a href=#203 id=203 data-nosnippet>203</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_euler_to_vec3"</span>)]
-<a href=#204 id=204 data-nosnippet>204</a>    </span><span class="kw">pub fn </span>to_vec3(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="vec3.rs.html#8-20">Vec3</a> {
-<a href=#205 id=205 data-nosnippet>205</a>        <span class="kw">unsafe </span>{
-<a href=#206 id=206 data-nosnippet>206</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="vec3.rs.html#8-20">Vec3</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
-<a href=#207 id=207 data-nosnippet>207</a>            ffi::<a href="../../../graphene_sys/fn.graphene_euler_to_vec3.html">graphene_euler_to_vec3</a>(<a class="self" href="#204">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#206">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
-<a href=#208 id=208 data-nosnippet>208</a>            <a href="#206">res</a>
-<a href=#209 id=209 data-nosnippet>209</a>        }
-<a href=#210 id=210 data-nosnippet>210</a>    }
-<a href=#211 id=211 data-nosnippet>211</a>}
-<a href=#212 id=212 data-nosnippet>212</a>
-<a href=#213 id=213 data-nosnippet>213</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#8-20">Euler</a> {
-<a href=#214 id=214 data-nosnippet>214</a>    <span class="attr">#[inline]
-<a href=#215 id=215 data-nosnippet>215</a>    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#216 id=216 data-nosnippet>216</a>        <a class="self" href="#215">self</a>.<a href="#24-26">equal</a>(<a href="#215">other</a>)
-<a href=#217 id=217 data-nosnippet>217</a>    }
-<a href=#218 id=218 data-nosnippet>218</a>}
-<a href=#219 id=219 data-nosnippet>219</a>
-<a href=#220 id=220 data-nosnippet>220</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#8-20">Euler</a> {}
+<a href=#155 id=155 data-nosnippet>155</a>    ///
+<a href=#156 id=156 data-nosnippet>156</a>    /// ## `res`
+<a href=#157 id=157 data-nosnippet>157</a>    /// return location for a [`Matrix`][crate::Matrix]
+<a href=#158 id=158 data-nosnippet>158</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_euler_to_matrix"</span>)]
+<a href=#159 id=159 data-nosnippet>159</a>    </span><span class="kw">pub fn </span>to_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="matrix.rs.html#8-20">Matrix</a> {
+<a href=#160 id=160 data-nosnippet>160</a>        <span class="kw">unsafe </span>{
+<a href=#161 id=161 data-nosnippet>161</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="matrix.rs.html#8-20">Matrix</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#162 id=162 data-nosnippet>162</a>            ffi::<a href="../../../graphene_sys/fn.graphene_euler_to_matrix.html">graphene_euler_to_matrix</a>(<a class="self" href="#159">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#161">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#163 id=163 data-nosnippet>163</a>            <a href="#161">res</a>
+<a href=#164 id=164 data-nosnippet>164</a>        }
+<a href=#165 id=165 data-nosnippet>165</a>    }
+<a href=#166 id=166 data-nosnippet>166</a>
+<a href=#167 id=167 data-nosnippet>167</a>    <span class="doccomment">/// Converts a [`Euler`][crate::Euler] into a [`Quaternion`][crate::Quaternion].
+<a href=#168 id=168 data-nosnippet>168</a>    ///
+<a href=#169 id=169 data-nosnippet>169</a>    /// # Returns
+<a href=#170 id=170 data-nosnippet>170</a>    ///
+<a href=#171 id=171 data-nosnippet>171</a>    ///
+<a href=#172 id=172 data-nosnippet>172</a>    /// ## `res`
+<a href=#173 id=173 data-nosnippet>173</a>    /// return location for a [`Quaternion`][crate::Quaternion]
+<a href=#174 id=174 data-nosnippet>174</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_euler_to_quaternion"</span>)]
+<a href=#175 id=175 data-nosnippet>175</a>    </span><span class="kw">pub fn </span>to_quaternion(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="quaternion.rs.html#8-20">Quaternion</a> {
+<a href=#176 id=176 data-nosnippet>176</a>        <span class="kw">unsafe </span>{
+<a href=#177 id=177 data-nosnippet>177</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="quaternion.rs.html#8-20">Quaternion</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#178 id=178 data-nosnippet>178</a>            ffi::<a href="../../../graphene_sys/fn.graphene_euler_to_quaternion.html">graphene_euler_to_quaternion</a>(<a class="self" href="#175">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#177">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#179 id=179 data-nosnippet>179</a>            <a href="#177">res</a>
+<a href=#180 id=180 data-nosnippet>180</a>        }
+<a href=#181 id=181 data-nosnippet>181</a>    }
+<a href=#182 id=182 data-nosnippet>182</a>
+<a href=#183 id=183 data-nosnippet>183</a>    <span class="doccomment">/// Retrieves the angles of a [`Euler`][crate::Euler] and initializes a
+<a href=#184 id=184 data-nosnippet>184</a>    /// [`Vec3`][crate::Vec3] with them.
+<a href=#185 id=185 data-nosnippet>185</a>    ///
+<a href=#186 id=186 data-nosnippet>186</a>    /// # Returns
+<a href=#187 id=187 data-nosnippet>187</a>    ///
+<a href=#188 id=188 data-nosnippet>188</a>    ///
+<a href=#189 id=189 data-nosnippet>189</a>    /// ## `res`
+<a href=#190 id=190 data-nosnippet>190</a>    /// return location for a [`Vec3`][crate::Vec3]
+<a href=#191 id=191 data-nosnippet>191</a>    </span><span class="attr">#[doc(alias = <span class="string">"graphene_euler_to_vec3"</span>)]
+<a href=#192 id=192 data-nosnippet>192</a>    </span><span class="kw">pub fn </span>to_vec3(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="vec3.rs.html#8-20">Vec3</a> {
+<a href=#193 id=193 data-nosnippet>193</a>        <span class="kw">unsafe </span>{
+<a href=#194 id=194 data-nosnippet>194</a>            <span class="kw">let </span><span class="kw-2">mut </span>res = <a href="vec3.rs.html#8-20">Vec3</a>::<a href="../../../glib/translate/trait.Uninitialized.html#tymethod.uninitialized">uninitialized</a>();
+<a href=#195 id=195 data-nosnippet>195</a>            ffi::<a href="../../../graphene_sys/fn.graphene_euler_to_vec3.html">graphene_euler_to_vec3</a>(<a class="self" href="#192">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#194">res</a>.<a href="../../../glib/translate/trait.ToGlibPtrMut.html#tymethod.to_glib_none_mut">to_glib_none_mut</a>().<span class="number">0</span>);
+<a href=#196 id=196 data-nosnippet>196</a>            <a href="#194">res</a>
+<a href=#197 id=197 data-nosnippet>197</a>        }
+<a href=#198 id=198 data-nosnippet>198</a>    }
+<a href=#199 id=199 data-nosnippet>199</a>}
+<a href=#200 id=200 data-nosnippet>200</a>
+<a href=#201 id=201 data-nosnippet>201</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#8-20">Euler</a> {
+<a href=#202 id=202 data-nosnippet>202</a>    <span class="attr">#[inline]
+<a href=#203 id=203 data-nosnippet>203</a>    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+<a href=#204 id=204 data-nosnippet>204</a>        <a class="self" href="#203">self</a>.<a href="#24-26">equal</a>(<a href="#203">other</a>)
+<a href=#205 id=205 data-nosnippet>205</a>    }
+<a href=#206 id=206 data-nosnippet>206</a>}
+<a href=#207 id=207 data-nosnippet>207</a>
+<a href=#208 id=208 data-nosnippet>208</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#8-20">Euler</a> {}
 </code></pre></div></section></main></body></html>
