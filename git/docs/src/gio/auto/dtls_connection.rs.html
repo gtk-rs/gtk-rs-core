@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/dtls_connection.rs`."><title>dtls_connection.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-74eb0058.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.98.0-nightly (f20a92ec0 2026-06-07)" data-channel="nightly" data-search-js="search-fd9372ac.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-fcd733ba.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/dtls_connection.rs`."><title>dtls_connection.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-1ed95124.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.98.0-nightly (3daae5e42 2026-06-14)" data-channel="nightly" data-search-js="search-fd9372ac.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-fcd733ba.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -122,21 +122,21 @@
 <a href=#49 id=49 data-nosnippet>49</a>    /// advertises that it is willing to speak. See
 <a href=#50 id=50 data-nosnippet>50</a>    /// g_dtls_connection_set_advertised_protocols().
 <a href=#51 id=51 data-nosnippet>51</a>    ///
-<a href=#52 id=52 data-nosnippet>52</a>    /// Readable | Writeable
+<a href=#52 id=52 data-nosnippet>52</a>    /// Readable | Writable
 <a href=#53 id=53 data-nosnippet>53</a>    ///
 <a href=#54 id=54 data-nosnippet>54</a>    ///
 <a href=#55 id=55 data-nosnippet>55</a>    /// #### `base-socket`
 <a href=#56 id=56 data-nosnippet>56</a>    ///  The #GDatagramBased that the connection wraps. Note that this may be any
 <a href=#57 id=57 data-nosnippet>57</a>    /// implementation of #GDatagramBased, not just a #GSocket.
 <a href=#58 id=58 data-nosnippet>58</a>    ///
-<a href=#59 id=59 data-nosnippet>59</a>    /// Readable | Writeable | Construct Only
+<a href=#59 id=59 data-nosnippet>59</a>    /// Readable | Writable | Construct Only
 <a href=#60 id=60 data-nosnippet>60</a>    ///
 <a href=#61 id=61 data-nosnippet>61</a>    ///
 <a href=#62 id=62 data-nosnippet>62</a>    /// #### `certificate`
 <a href=#63 id=63 data-nosnippet>63</a>    ///  The connection's certificate; see
 <a href=#64 id=64 data-nosnippet>64</a>    /// g_dtls_connection_set_certificate().
 <a href=#65 id=65 data-nosnippet>65</a>    ///
-<a href=#66 id=66 data-nosnippet>66</a>    /// Readable | Writeable
+<a href=#66 id=66 data-nosnippet>66</a>    /// Readable | Writable
 <a href=#67 id=67 data-nosnippet>67</a>    ///
 <a href=#68 id=68 data-nosnippet>68</a>    ///
 <a href=#69 id=69 data-nosnippet>69</a>    /// #### `ciphersuite-name`
@@ -163,7 +163,7 @@
 <a href=#90 id=90 data-nosnippet>90</a>    /// non-default database is discouraged except for specialty applications with
 <a href=#91 id=91 data-nosnippet>91</a>    /// unusual security requirements.
 <a href=#92 id=92 data-nosnippet>92</a>    ///
-<a href=#93 id=93 data-nosnippet>93</a>    /// Readable | Writeable
+<a href=#93 id=93 data-nosnippet>93</a>    /// Readable | Writable
 <a href=#94 id=94 data-nosnippet>94</a>    ///
 <a href=#95 id=95 data-nosnippet>95</a>    ///
 <a href=#96 id=96 data-nosnippet>96</a>    /// #### `interaction`
@@ -171,7 +171,7 @@
 <a href=#98 id=98 data-nosnippet>98</a>    /// database need to interact with the user. This will be used to prompt the
 <a href=#99 id=99 data-nosnippet>99</a>    /// user for passwords where necessary.
 <a href=#100 id=100 data-nosnippet>100</a>    ///
-<a href=#101 id=101 data-nosnippet>101</a>    /// Readable | Writeable
+<a href=#101 id=101 data-nosnippet>101</a>    /// Readable | Writable
 <a href=#102 id=102 data-nosnippet>102</a>    ///
 <a href=#103 id=103 data-nosnippet>103</a>    ///
 <a href=#104 id=104 data-nosnippet>104</a>    /// #### `negotiated-protocol`
@@ -221,14 +221,14 @@
 <a href=#148 id=148 data-nosnippet>148</a>    ///  The rehandshaking mode. See
 <a href=#149 id=149 data-nosnippet>149</a>    /// g_dtls_connection_set_rehandshake_mode().
 <a href=#150 id=150 data-nosnippet>150</a>    ///
-<a href=#151 id=151 data-nosnippet>151</a>    /// Readable | Writeable | Construct
+<a href=#151 id=151 data-nosnippet>151</a>    /// Readable | Writable | Construct
 <a href=#152 id=152 data-nosnippet>152</a>    ///
 <a href=#153 id=153 data-nosnippet>153</a>    ///
 <a href=#154 id=154 data-nosnippet>154</a>    /// #### `require-close-notify`
 <a href=#155 id=155 data-nosnippet>155</a>    ///  Whether or not proper TLS close notification is required.
 <a href=#156 id=156 data-nosnippet>156</a>    /// See g_dtls_connection_set_require_close_notify().
 <a href=#157 id=157 data-nosnippet>157</a>    ///
-<a href=#158 id=158 data-nosnippet>158</a>    /// Readable | Writeable | Construct
+<a href=#158 id=158 data-nosnippet>158</a>    /// Readable | Writable | Construct
 <a href=#159 id=159 data-nosnippet>159</a>    ///
 <a href=#160 id=160 data-nosnippet>160</a>    /// ## Signals
 <a href=#161 id=161 data-nosnippet>161</a>    ///
