@@ -502,7 +502,7 @@ pub trait SettingsExt: IsA<Settings> + 'static {
 
     //#[doc(alias = "change-event")]
     //fn connect_change_event<Unsupported or ignored types>(&self, f: F) -> SignalHandlerId {
-    //    Unimplemented keys: *.CArray TypeId { ns_id: 2, id: 5 }
+    //    Unimplemented keys: *.CArray TypeId { ns_id: 3, id: 13 }
     //}
 
     #[doc(alias = "changed")]

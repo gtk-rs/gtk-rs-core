@@ -336,7 +336,7 @@ pub trait MountOperationExt: IsA<MountOperation> + 'static {
 
     //#[doc(alias = "show-processes")]
     //fn connect_show_processes<Unsupported or ignored types>(&self, f: F) -> SignalHandlerId {
-    //    Empty ctype processes: *.Array TypeId { ns_id: 2, id: 4 }
+    //    Empty ctype processes: *.Array TypeId { ns_id: 3, id: 20 }
     //    Empty ctype choices: *.CArray TypeId { ns_id: 0, id: 28 }
     //}
 
