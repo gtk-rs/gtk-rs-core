@@ -2125,10 +2125,101 @@ pub trait FileExt: IsA<File> + 'static {
         }
     }
 
-    //#[doc(alias = "g_file_replace_contents_bytes_async")]
-    //fn replace_contents_bytes_async<P: FnOnce(Result<(), glib::Error>) + 'static>(&self, contents: &glib::Bytes, etag: Option<&str>, make_backup: bool, flags: FileCreateFlags, cancellable: Option<&impl IsA<Cancellable>>, callback: P) {
-    //    unsafe { TODO: call ffi:g_file_replace_contents_bytes_async() }
-    //}
+    #[doc(alias = "g_file_replace_contents_bytes_async")]
+    fn replace_contents_bytes_async<
+        P: FnOnce(Result<Option<glib::GString>, glib::Error>) + 'static,
+    >(
+        &self,
+        contents: &glib::Bytes,
+        etag: Option<&str>,
+        make_backup: bool,
+        flags: FileCreateFlags,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
+    ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        unsafe extern "C" fn replace_contents_bytes_async_trampoline<
+            P: FnOnce(Result<Option<glib::GString>, glib::Error>) + 'static,
+        >(
+            _source_object: *mut glib::gobject_ffi::GObject,
+            res: *mut crate::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
+        ) {
+            unsafe {
+                let mut error = std::ptr::null_mut();
+                let mut new_etag = std::ptr::null_mut();
+                ffi::g_file_replace_contents_finish(
+                    _source_object as *mut _,
+                    res,
+                    &mut new_etag,
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    Ok(from_glib_full(new_etag))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                    Box_::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
+        }
+        let callback = replace_contents_bytes_async_trampoline::<P>;
+        unsafe {
+            ffi::g_file_replace_contents_bytes_async(
+                self.as_ref().to_glib_none().0,
+                contents.to_glib_none().0,
+                etag.to_glib_none().0,
+                make_backup.into_glib(),
+                flags.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                Some(callback),
+                Box_::into_raw(user_data) as *mut _,
+            );
+        }
+    }
+
+    fn replace_contents_bytes_future(
+        &self,
+        contents: &glib::Bytes,
+        etag: Option<&str>,
+        make_backup: bool,
+        flags: FileCreateFlags,
+    ) -> Pin<
+        Box_<
+            dyn std::future::Future<Output = Result<Option<glib::GString>, glib::Error>> + 'static,
+        >,
+    > {
+        let contents = contents.clone();
+        let etag = etag.map(ToOwned::to_owned);
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.replace_contents_bytes_async(
+                    &contents,
+                    etag.as_ref().map(::std::borrow::Borrow::borrow),
+                    make_backup,
+                    flags,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
+    }
 
     #[doc(alias = "g_file_replace_readwrite")]
     fn replace_readwrite(

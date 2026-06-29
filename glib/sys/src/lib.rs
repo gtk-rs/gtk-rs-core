@@ -673,7 +673,10 @@ pub const G_USER_DIRECTORY_PICTURES: GUserDirectory = 4;
 pub const G_USER_DIRECTORY_PUBLIC_SHARE: GUserDirectory = 5;
 pub const G_USER_DIRECTORY_TEMPLATES: GUserDirectory = 6;
 pub const G_USER_DIRECTORY_VIDEOS: GUserDirectory = 7;
-pub const G_USER_N_DIRECTORIES: GUserDirectory = 8;
+#[cfg(feature = "v2_90")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+pub const G_USER_DIRECTORY_PROJECTS: GUserDirectory = 8;
+pub const G_USER_N_DIRECTORIES: GUserDirectory = 9;
 
 pub type GVariantClass = c_int;
 pub const G_VARIANT_CLASS_BOOLEAN: GVariantClass = 98;
