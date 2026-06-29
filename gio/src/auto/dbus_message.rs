@@ -71,6 +71,11 @@ impl DBusMessage {
         }
     }
 
+    //#[doc(alias = "g_dbus_message_new_method_error")]
+    //pub fn new_method_error(method_call_message: &DBusMessage, error_name: &str, error_message_format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> DBusMessage {
+    //    unsafe { TODO: call ffi:g_dbus_message_new_method_error() }
+    //}
+
     #[doc(alias = "g_dbus_message_new_signal")]
     pub fn new_signal(path: &str, interface_: &str, signal: &str) -> DBusMessage {
         unsafe {
@@ -228,12 +233,6 @@ impl DBusMessage {
         }
     }
 
-    //#[doc(alias = "g_dbus_message_new_method_error")]
-    //#[must_use]
-    //pub fn new_method_error(&self, error_name: &str, error_message_format: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> DBusMessage {
-    //    unsafe { TODO: call ffi:g_dbus_message_new_method_error() }
-    //}
-
     #[doc(alias = "g_dbus_message_new_method_error_literal")]
     #[must_use]
     pub fn new_method_error_literal(&self, error_name: &str, error_message: &str) -> DBusMessage {
@@ -285,7 +284,7 @@ impl DBusMessage {
     }
 
     #[doc(alias = "g_dbus_message_set_error_name")]
-    pub fn set_error_name(&self, value: &str) {
+    pub fn set_error_name(&self, value: Option<&str>) {
         unsafe {
             ffi::g_dbus_message_set_error_name(self.to_glib_none().0, value.to_glib_none().0);
         }
