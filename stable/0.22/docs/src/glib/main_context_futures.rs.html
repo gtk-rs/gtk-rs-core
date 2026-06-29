@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/main_context_futures.rs`."><title>main_context_futures.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.97.0-nightly (37d85e592 2026-04-28)" data-channel="nightly" data-search-js="search-b5634cc7.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-aa4d37ac.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/main_context_futures.rs`."><title>main_context_futures.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-1ed95124.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.98.0-nightly (df6ee909e 2026-06-28)" data-channel="nightly" data-search-js="search-9944d736.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-417ebf0a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -86,8 +86,8 @@
 <a href=#13 id=13 data-nosnippet>13</a><span class="kw">use </span>futures_task::{FutureObj, LocalFutureObj, LocalSpawn, Spawn, SpawnError};
 <a href=#14 id=14 data-nosnippet>14</a><span class="kw">use </span>futures_util::FutureExt;
 <a href=#15 id=15 data-nosnippet>15</a>
-<a href=#16 id=16 data-nosnippet>16</a><span class="kw">use </span>crate::{
-<a href=#17 id=17 data-nosnippet>17</a>    <a href="auto/main_context.rs.html#10-21">MainContext</a>, <a href="auto/main_loop.rs.html#7-18">MainLoop</a>, <a href="source.rs.html#704">Priority</a>, <a href="auto/source.rs.html#7-18">Source</a>, <a href="source.rs.html#15">SourceId</a>, ffi, <a href="thread_guard.rs.html#24-29">thread_guard::ThreadGuard</a>, translate::<span class="kw-2">*</span>,
+<a href=#16 id=16 data-nosnippet>16</a><span class="kw">use crate</span>::{
+<a href=#17 id=17 data-nosnippet>17</a>    <a href="auto/main_context.rs.html#10-21">MainContext</a>, <a href="auto/main_loop.rs.html#7-18">MainLoop</a>, <a href="source.rs.html#704">Priority</a>, <a href="auto/source.rs.html#7-18">Source</a>, <a href="source.rs.html#15">SourceId</a>, ffi, <a href="thread_guard.rs.html#24-29">thread_guard::ThreadGuard</a>, <a href="lib.rs.html#175">translate</a>::<span class="kw-2">*</span>,
 <a href=#18 id=18 data-nosnippet>18</a>};
 <a href=#19 id=19 data-nosnippet>19</a>
 <a href=#20 id=20 data-nosnippet>20</a><span class="comment">// Wrapper around Send Futures and non-Send Futures that will panic
@@ -173,7 +173,7 @@
 <a href=#100 id=100 data-nosnippet>100</a>                }
 <a href=#101 id=101 data-nosnippet>101</a>                FutureWrapper::<a href="#25">NonSend</a>(<span class="kw-2">ref mut </span>future) =&gt; {
 <a href=#102 id=102 data-nosnippet>102</a>                    <span class="kw">let </span>context = ffi::g_source_get_context(<a href="#86">source</a> <span class="kw">as </span><span class="kw-2">*mut </span>ffi::GSource);
-<a href=#103 id=103 data-nosnippet>103</a>                    <span class="kw">if </span>!<a href="#102">context</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
+<a href=#103 id=103 data-nosnippet>103</a>                    <span class="kw">if </span>!<a href="#102">context</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.pointer.html#method.is_null">is_null</a>() {
 <a href=#104 id=104 data-nosnippet>104</a>                        <span class="kw">let </span>future = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.read.html">read</a>(<a href="#101">future</a>);
 <a href=#105 id=105 data-nosnippet>105</a>                        <span class="kw">let </span>context = <a href="auto/main_context.rs.html#10-21">MainContext</a>::<a href="translate.rs.html#1560">from_glib_none</a>(<a href="#102">context</a>);
 <a href=#106 id=106 data-nosnippet>106</a>                        <a href="#105">context</a>.<a href="main_context.rs.html#100-105">invoke</a>(<span class="kw">move </span>|| {
@@ -279,12 +279,12 @@
 <a href=#206 id=206 data-nosnippet>206</a>
 <a href=#207 id=207 data-nosnippet>207</a>            <span class="kw">let </span>source = ffi::g_source_new(
 <a href=#208 id=208 data-nosnippet>208</a>                <a href="translate.rs.html#202-204">mut_override</a>(<span class="kw-2">&amp;</span><a href="#190-197">TASK_SOURCE_FUNCS</a>),
-<a href=#209 id=209 data-nosnippet>209</a>                mem::size_of::&lt;<span class="self">Self</span>&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
+<a href=#209 id=209 data-nosnippet>209</a>                mem::<a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">size_of</a>::&lt;<span class="self">Self</span>&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
 <a href=#210 id=210 data-nosnippet>210</a>            );
 <a href=#211 id=211 data-nosnippet>211</a>
 <a href=#212 id=212 data-nosnippet>212</a>            <span class="kw">let </span>waker_source = ffi::g_source_new(
 <a href=#213 id=213 data-nosnippet>213</a>                <a href="translate.rs.html#202-204">mut_override</a>(<span class="kw-2">&amp;</span><a href="#198-205">WAKER_SOURCE_FUNCS</a>),
-<a href=#214 id=214 data-nosnippet>214</a>                mem::size_of::&lt;<a href="#60-62">WakerSource</a>&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
+<a href=#214 id=214 data-nosnippet>214</a>                mem::<a href="https://doc.rust-lang.org/nightly/core/mem/fn.size_of.html">size_of</a>::&lt;<a href="#60-62">WakerSource</a>&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
 <a href=#215 id=215 data-nosnippet>215</a>            );
 <a href=#216 id=216 data-nosnippet>216</a>
 <a href=#217 id=217 data-nosnippet>217</a>            ffi::g_source_set_priority(<a href="#207">source</a>, <a href="#185">priority</a>.<a href="translate.rs.html#334">into_glib</a>());
@@ -364,7 +364,7 @@
 <a href=#291 id=291 data-nosnippet>291</a>/// task can be retrieved by awaiting on this object. Dropping the handle "detaches" the task,
 <a href=#292 id=292 data-nosnippet>292</a>/// allowing it to complete but discarding the return value.
 <a href=#293 id=293 data-nosnippet>293</a></span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>)]
-<a href=#294 id=294 data-nosnippet>294</a></span><span class="kw">pub struct </span><a href="#294-299">JoinHandle</a>&lt;T&gt; {
+<a href=#294 id=294 data-nosnippet>294</a></span><span class="kw">pub struct </span><a href="../../glib/struct.JoinHandle.html">JoinHandle</a>&lt;T&gt; {
 <a href=#295 id=295 data-nosnippet>295</a>    rx: oneshot::Receiver&lt;std::thread::<a href="https://doc.rust-lang.org/nightly/std/thread/type.Result.html">Result</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;&gt;&gt;,
 <a href=#296 id=296 data-nosnippet>296</a>    source: <a href="auto/source.rs.html#7-18">Source</a>,
 <a href=#297 id=297 data-nosnippet>297</a>    id: <a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html">Cell</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="https://doc.rust-lang.org/nightly/core/num/nonzero/type.NonZeroU32.html">NonZeroU32</a>&gt;&gt;,
@@ -452,7 +452,7 @@
 <a href=#379 id=379 data-nosnippet>379</a><span class="comment">// rustdoc-stripper-ignore-next
 <a href=#380 id=380 data-nosnippet>380</a></span><span class="doccomment">/// Variant of [`JoinHandle`] that is returned from [`MainContext::spawn_from_within`].
 <a href=#381 id=381 data-nosnippet>381</a></span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>)]
-<a href=#382 id=382 data-nosnippet>382</a></span><span class="kw">pub struct </span><a href="#382-385">SpawnWithinJoinHandle</a>&lt;T&gt; {
+<a href=#382 id=382 data-nosnippet>382</a></span><span class="kw">pub struct </span><a href="../../glib/struct.SpawnWithinJoinHandle.html">SpawnWithinJoinHandle</a>&lt;T&gt; {
 <a href=#383 id=383 data-nosnippet>383</a>    rx: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;oneshot::Receiver&lt;<a href="#294-299">JoinHandle</a>&lt;T&gt;&gt;&gt;,
 <a href=#384 id=384 data-nosnippet>384</a>    join_handle: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#294-299">JoinHandle</a>&lt;T&gt;&gt;,
 <a href=#385 id=385 data-nosnippet>385</a>}
@@ -531,7 +531,7 @@
 <a href=#458 id=458 data-nosnippet>458</a><span class="comment">// rustdoc-stripper-ignore-next
 <a href=#459 id=459 data-nosnippet>459</a></span><span class="doccomment">/// Task failure from awaiting a [`JoinHandle`].
 <a href=#460 id=460 data-nosnippet>460</a></span><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>)]
-<a href=#461 id=461 data-nosnippet>461</a></span><span class="kw">pub struct </span><a href="#461">JoinError</a>(<a href="#511-514">JoinErrorInner</a>);
+<a href=#461 id=461 data-nosnippet>461</a></span><span class="kw">pub struct </span><a href="../../glib/struct.JoinError.html">JoinError</a>(<a href="#511-514">JoinErrorInner</a>);
 <a href=#462 id=462 data-nosnippet>462</a>
 <a href=#463 id=463 data-nosnippet>463</a><span class="kw">impl </span><a href="#461">JoinError</a> {
 <a href=#464 id=464 data-nosnippet>464</a>    <span class="comment">// rustdoc-stripper-ignore-next
@@ -581,7 +581,7 @@
 <a href=#508 id=508 data-nosnippet>508</a>}
 <a href=#509 id=509 data-nosnippet>509</a>
 <a href=#510 id=510 data-nosnippet>510</a><span class="attr">#[derive(<a href="https://doc.rust-lang.org/nightly/core/fmt/macros/derive.Debug.html">Debug</a>)]
-<a href=#511 id=511 data-nosnippet>511</a></span><span class="kw">enum </span><a href="#511-514">JoinErrorInner</a> {
+<a href=#511 id=511 data-nosnippet>511</a></span><span class="kw">enum </span>JoinErrorInner {
 <a href=#512 id=512 data-nosnippet>512</a>    Cancelled,
 <a href=#513 id=513 data-nosnippet>513</a>    Panic(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;),
 <a href=#514 id=514 data-nosnippet>514</a>}
@@ -640,7 +640,7 @@
 <a href=#567 id=567 data-nosnippet>567</a>        f: F,
 <a href=#568 id=568 data-nosnippet>568</a>    ) -&gt; <a href="#294-299">JoinHandle</a>&lt;R&gt; {
 <a href=#569 id=569 data-nosnippet>569</a>        <span class="kw">let </span>f = FutureObj::new(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<span class="kw">async move </span>{
-<a href=#570 id=570 data-nosnippet>570</a>            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#567">f</a>.<span class="kw">await</span>) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;
+<a href=#570 id=570 data-nosnippet>570</a>            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(f.<span class="kw">await</span>) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;
 <a href=#571 id=571 data-nosnippet>571</a>        }));
 <a href=#572 id=572 data-nosnippet>572</a>        <span class="kw">let </span>(tx, rx) = oneshot::channel();
 <a href=#573 id=573 data-nosnippet>573</a>        <span class="kw">let </span>source = <a href="#52-57">TaskSource</a>::<a href="#184-241">new</a>(<a href="#566">priority</a>, FutureWrapper::<a href="#24">Send</a>(<a href="#569">f</a>), <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#572">tx</a>));
@@ -664,7 +664,7 @@
 <a href=#591 id=591 data-nosnippet>591</a>            .<a href="main_context.rs.html#293-304">acquire</a>()
 <a href=#592 id=592 data-nosnippet>592</a>            .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.expect">expect</a>(<span class="string">"Spawning local futures only allowed on the thread owning the MainContext"</span>);
 <a href=#593 id=593 data-nosnippet>593</a>        <span class="kw">let </span>f = LocalFutureObj::new(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<span class="kw">async move </span>{
-<a href=#594 id=594 data-nosnippet>594</a>            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#588">f</a>.<span class="kw">await</span>) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;
+<a href=#594 id=594 data-nosnippet>594</a>            <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(f.<span class="kw">await</span>) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;
 <a href=#595 id=595 data-nosnippet>595</a>        }));
 <a href=#596 id=596 data-nosnippet>596</a>        <span class="kw">let </span>(tx, rx) = oneshot::channel();
 <a href=#597 id=597 data-nosnippet>597</a>        <span class="kw">let </span>source = <a href="#52-57">TaskSource</a>::<a href="#184-241">new</a>(
@@ -728,7 +728,7 @@
 <a href=#655 id=655 data-nosnippet>655</a>            <span class="kw">let </span>l = <a href="auto/main_loop.rs.html#7-18">MainLoop</a>::<a href="auto/main_loop.rs.html#34-41">new</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a class="self" href="#652">self</a>), <span class="bool-val">false</span>);
 <a href=#656 id=656 data-nosnippet>656</a>
 <a href=#657 id=657 data-nosnippet>657</a>            <span class="kw">let </span>f = <span class="kw">async </span>{
-<a href=#658 id=658 data-nosnippet>658</a>                <a href="#654">res</a> = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(panic::<a href="https://doc.rust-lang.org/nightly/core/panic/unwind_safe/struct.AssertUnwindSafe.html">AssertUnwindSafe</a>(<a href="#652">f</a>).catch_unwind().<span class="kw">await</span>);
+<a href=#658 id=658 data-nosnippet>658</a>                <a href="#654">res</a> = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(panic::AssertUnwindSafe(f).catch_unwind().<span class="kw">await</span>);
 <a href=#659 id=659 data-nosnippet>659</a>                <a href="#655">l</a>.<a href="auto/main_loop.rs.html#71-75">quit</a>();
 <a href=#660 id=660 data-nosnippet>660</a>            };
 <a href=#661 id=661 data-nosnippet>661</a>
@@ -736,7 +736,7 @@
 <a href=#663 id=663 data-nosnippet>663</a>                <span class="comment">// Super-unsafe: We transmute here to get rid of the 'static lifetime
 <a href=#664 id=664 data-nosnippet>664</a>                // See also https://github.com/rust-lang/unsafe-code-guidelines/issues/282
 <a href=#665 id=665 data-nosnippet>665</a>                </span><span class="kw">let </span>f = LocalFutureObj::new(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<span class="kw">async move </span>{
-<a href=#666 id=666 data-nosnippet>666</a>                    <a href="#657">f</a>.<span class="kw">await</span>;
+<a href=#666 id=666 data-nosnippet>666</a>                    f.<span class="kw">await</span>;
 <a href=#667 id=667 data-nosnippet>667</a>                    <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(()) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;
 <a href=#668 id=668 data-nosnippet>668</a>                }));
 <a href=#669 id=669 data-nosnippet>669</a>                <span class="kw">let </span>f: LocalFutureObj&lt;<span class="lifetime">'static</span>, <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;&gt; = mem::<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>(<a href="#665">f</a>);
@@ -767,7 +767,7 @@
 <a href=#694 id=694 data-nosnippet>694</a>        <span class="kw">let </span>source = <a href="#52-57">TaskSource</a>::<a href="#184-241">new</a>(
 <a href=#695 id=695 data-nosnippet>695</a>            <span class="kw">crate</span>::<a href="source.rs.html#704">Priority</a>::<a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">default</a>(),
 <a href=#696 id=696 data-nosnippet>696</a>            FutureWrapper::<a href="#24">Send</a>(FutureObj::new(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<span class="kw">async move </span>{
-<a href=#697 id=697 data-nosnippet>697</a>                <a href="#692">f</a>.<span class="kw">await</span>;
+<a href=#697 id=697 data-nosnippet>697</a>                f.<span class="kw">await</span>;
 <a href=#698 id=698 data-nosnippet>698</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(()) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;
 <a href=#699 id=699 data-nosnippet>699</a>            }))),
 <a href=#700 id=700 data-nosnippet>700</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#693">tx</a>),
@@ -784,7 +784,7 @@
 <a href=#711 id=711 data-nosnippet>711</a>            <span class="kw">crate</span>::<a href="source.rs.html#704">Priority</a>::<a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">default</a>(),
 <a href=#712 id=712 data-nosnippet>712</a>            FutureWrapper::<a href="#25">NonSend</a>(<a href="thread_guard.rs.html#24-29">ThreadGuard</a>::<a href="thread_guard.rs.html#40-45">new</a>(LocalFutureObj::new(<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(
 <a href=#713 id=713 data-nosnippet>713</a>                <span class="kw">async move </span>{
-<a href=#714 id=714 data-nosnippet>714</a>                    <a href="#708">f</a>.<span class="kw">await</span>;
+<a href=#714 id=714 data-nosnippet>714</a>                    f.<span class="kw">await</span>;
 <a href=#715 id=715 data-nosnippet>715</a>                    <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(()) <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/any/trait.Any.html">Any</a> + <span class="lifetime">'static</span>&gt;
 <a href=#716 id=716 data-nosnippet>716</a>                },
 <a href=#717 id=717 data-nosnippet>717</a>            )))),
@@ -802,7 +802,7 @@
 <a href=#729 id=729 data-nosnippet>729</a>    <span class="kw">use </span>futures_channel::oneshot;
 <a href=#730 id=730 data-nosnippet>730</a>    <span class="kw">use </span>futures_util::future::{FutureExt, TryFutureExt};
 <a href=#731 id=731 data-nosnippet>731</a>
-<a href=#732 id=732 data-nosnippet>732</a>    <span class="kw">use </span>super::<span class="kw-2">*</span>;
+<a href=#732 id=732 data-nosnippet>732</a>    <span class="kw">use super</span>::<span class="kw-2">*</span>;
 <a href=#733 id=733 data-nosnippet>733</a>
 <a href=#734 id=734 data-nosnippet>734</a>    <span class="attr">#[test]
 <a href=#735 id=735 data-nosnippet>735</a>    </span><span class="kw">fn </span>test_spawn() {
@@ -886,7 +886,7 @@
 <a href=#813 id=813 data-nosnippet>813</a>
 <a href=#814 id=814 data-nosnippet>814</a>            <span class="kw">let </span>future = futures_util::future::lazy(|_ctx| {
 <a href=#815 id=815 data-nosnippet>815</a>                <span class="kw-2">*</span>v = <span class="prelude-val">Some</span>(<span class="number">123</span>);
-<a href=#816 id=816 data-nosnippet>816</a>                Ok::&lt;i32, ()&gt;(<span class="number">123</span>)
+<a href=#816 id=816 data-nosnippet>816</a>                <span class="prelude-val">Ok</span>::&lt;i32, ()&gt;(<span class="number">123</span>)
 <a href=#817 id=817 data-nosnippet>817</a>            });
 <a href=#818 id=818 data-nosnippet>818</a>
 <a href=#819 id=819 data-nosnippet>819</a>            <span class="kw">let </span>res = c.block_on(future);

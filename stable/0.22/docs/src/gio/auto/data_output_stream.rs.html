@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/data_output_stream.rs`."><title>data_output_stream.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.97.0-nightly (37d85e592 2026-04-28)" data-channel="nightly" data-search-js="search-b5634cc7.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-aa4d37ac.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/data_output_stream.rs`."><title>data_output_stream.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-1ed95124.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.98.0-nightly (df6ee909e 2026-06-28)" data-channel="nightly" data-search-js="search-9944d736.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-417ebf0a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -75,11 +75,11 @@
 <a href=#2 id=2 data-nosnippet>2</a>// from gir-files (https://github.com/gtk-rs/gir-files)
 <a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use </span>crate::{<a href="cancellable.rs.html#8-86">Cancellable</a>, <a href="enums.rs.html#1117-1129">DataStreamByteOrder</a>, <a href="filter_output_stream.rs.html#13-44">FilterOutputStream</a>, <a href="output_stream.rs.html#9-39">OutputStream</a>, <a href="seekable.rs.html#8-33">Seekable</a>, <a href="../../../gio_sys/index.html">ffi</a>};
+<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{<a href="cancellable.rs.html#8-86">Cancellable</a>, <a href="enums.rs.html#1117-1129">DataStreamByteOrder</a>, <a href="filter_output_stream.rs.html#13-44">FilterOutputStream</a>, <a href="output_stream.rs.html#9-39">OutputStream</a>, <a href="seekable.rs.html#8-33">Seekable</a>, <a href="../../../gio_sys/index.html">ffi</a>};
 <a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>glib::{
-<a href=#7 id=7 data-nosnippet>7</a>    prelude::<span class="kw-2">*</span>,
+<a href=#7 id=7 data-nosnippet>7</a>    <a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
 <a href=#8 id=8 data-nosnippet>8</a>    signal::{<a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>, <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>},
-<a href=#9 id=9 data-nosnippet>9</a>    translate::<span class="kw-2">*</span>,
+<a href=#9 id=9 data-nosnippet>9</a>    <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>,
 <a href=#10 id=10 data-nosnippet>10</a>};
 <a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 <a href=#12 id=12 data-nosnippet>12</a>
@@ -94,27 +94,27 @@
 <a href=#21 id=21 data-nosnippet>21</a>    ///  Determines the byte ordering that is used when writing
 <a href=#22 id=22 data-nosnippet>22</a>    /// multi-byte entities (such as integers) to the stream.
 <a href=#23 id=23 data-nosnippet>23</a>    ///
-<a href=#24 id=24 data-nosnippet>24</a>    /// Readable | Writeable
+<a href=#24 id=24 data-nosnippet>24</a>    /// Readable | Writable
 <a href=#25 id=25 data-nosnippet>25</a>    /// &lt;details&gt;&lt;summary&gt;&lt;h4&gt;FilterOutputStream&lt;/h4&gt;&lt;/summary&gt;
 <a href=#26 id=26 data-nosnippet>26</a>    ///
 <a href=#27 id=27 data-nosnippet>27</a>    ///
 <a href=#28 id=28 data-nosnippet>28</a>    /// #### `base-stream`
 <a href=#29 id=29 data-nosnippet>29</a>    ///  The underlying base stream on which the I/O ops will be done.
 <a href=#30 id=30 data-nosnippet>30</a>    ///
-<a href=#31 id=31 data-nosnippet>31</a>    /// Readable | Writeable | Construct Only
+<a href=#31 id=31 data-nosnippet>31</a>    /// Readable | Writable | Construct Only
 <a href=#32 id=32 data-nosnippet>32</a>    ///
 <a href=#33 id=33 data-nosnippet>33</a>    ///
 <a href=#34 id=34 data-nosnippet>34</a>    /// #### `close-base-stream`
 <a href=#35 id=35 data-nosnippet>35</a>    ///  Whether the base stream should be closed when the filter stream is closed.
 <a href=#36 id=36 data-nosnippet>36</a>    ///
-<a href=#37 id=37 data-nosnippet>37</a>    /// Readable | Writeable | Construct Only
+<a href=#37 id=37 data-nosnippet>37</a>    /// Readable | Writable | Construct Only
 <a href=#38 id=38 data-nosnippet>38</a>    /// &lt;/details&gt;
 <a href=#39 id=39 data-nosnippet>39</a>    ///
 <a href=#40 id=40 data-nosnippet>40</a>    /// # Implements
 <a href=#41 id=41 data-nosnippet>41</a>    ///
 <a href=#42 id=42 data-nosnippet>42</a>    /// [`DataOutputStreamExt`][trait@crate::prelude::DataOutputStreamExt], [`FilterOutputStreamExt`][trait@crate::prelude::FilterOutputStreamExt], [`OutputStreamExt`][trait@crate::prelude::OutputStreamExt], [`trait@glib::ObjectExt`], [`SeekableExt`][trait@crate::prelude::SeekableExt], [`OutputStreamExtManual`][trait@crate::prelude::OutputStreamExtManual]
 <a href=#43 id=43 data-nosnippet>43</a>    </span><span class="attr">#[doc(alias = <span class="string">"GDataOutputStream"</span>)]
-<a href=#44 id=44 data-nosnippet>44</a>    </span><span class="kw">pub struct </span><a href="#13-49">DataOutputStream</a>(Object&lt;ffi::<a href="../../../gio_sys/struct.GDataOutputStream.html">GDataOutputStream</a>, ffi::<a href="../../../gio_sys/struct.GDataOutputStreamClass.html">GDataOutputStreamClass</a>&gt;) @extends <a href="filter_output_stream.rs.html#13-44">FilterOutputStream</a>, <a href="output_stream.rs.html#9-39">OutputStream</a>, @implements <a href="seekable.rs.html#8-33">Seekable</a>;
+<a href=#44 id=44 data-nosnippet>44</a>    </span><span class="kw">pub struct </span><a href="../../../gio/struct.DataOutputStream.html">DataOutputStream</a>(Object&lt;ffi::<a href="../../../gio_sys/struct.GDataOutputStream.html">GDataOutputStream</a>, ffi::<a href="../../../gio_sys/struct.GDataOutputStreamClass.html">GDataOutputStreamClass</a>&gt;) @extends <a href="filter_output_stream.rs.html#13-44">FilterOutputStream</a>, <a href="output_stream.rs.html#9-39">OutputStream</a>, @implements <a href="seekable.rs.html#8-33">Seekable</a>;
 <a href=#45 id=45 data-nosnippet>45</a>
 <a href=#46 id=46 data-nosnippet>46</a>    <span class="kw">match fn </span>{
 <a href=#47 id=47 data-nosnippet>47</a>        type_ =&gt; || ffi::g_data_output_stream_get_type(),
@@ -151,7 +151,7 @@
 <a href=#78 id=78 data-nosnippet>78</a>
 <a href=#79 id=79 data-nosnippet>79</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#13-49">DataOutputStream</a> {
 <a href=#80 id=80 data-nosnippet>80</a>    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-<a href=#81 id=81 data-nosnippet>81</a>        glib::object::<a href="../../../glib/object/struct.Object.html">Object</a>::new::&lt;<span class="self">Self</span>&gt;()
+<a href=#81 id=81 data-nosnippet>81</a>        glib::object::<a href="../../../glib/object/struct.Object.html">Object</a>::<a href="../../../glib/object/struct.Object.html#method.new">new</a>::&lt;<span class="self">Self</span>&gt;()
 <a href=#82 id=82 data-nosnippet>82</a>    }
 <a href=#83 id=83 data-nosnippet>83</a>}
 <a href=#84 id=84 data-nosnippet>84</a>
@@ -251,7 +251,7 @@
 <a href=#178 id=178 data-nosnippet>178</a>                <span class="kw-2">&amp;mut </span><a href="#173">error</a>,
 <a href=#179 id=179 data-nosnippet>179</a>            );
 <a href=#180 id=180 data-nosnippet>180</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#181 id=181 data-nosnippet>181</a>            <span class="kw">if </span><a href="#173">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
+<a href=#181 id=181 data-nosnippet>181</a>            <span class="kw">if </span><a href="#173">error</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.pointer.html#method.is_null">is_null</a>() {
 <a href=#182 id=182 data-nosnippet>182</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#183 id=183 data-nosnippet>183</a>            } <span class="kw">else </span>{
 <a href=#184 id=184 data-nosnippet>184</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#173">error</a>))
@@ -283,7 +283,7 @@
 <a href=#210 id=210 data-nosnippet>210</a>                <span class="kw-2">&amp;mut </span><a href="#205">error</a>,
 <a href=#211 id=211 data-nosnippet>211</a>            );
 <a href=#212 id=212 data-nosnippet>212</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#213 id=213 data-nosnippet>213</a>            <span class="kw">if </span><a href="#205">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
+<a href=#213 id=213 data-nosnippet>213</a>            <span class="kw">if </span><a href="#205">error</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.pointer.html#method.is_null">is_null</a>() {
 <a href=#214 id=214 data-nosnippet>214</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#215 id=215 data-nosnippet>215</a>            } <span class="kw">else </span>{
 <a href=#216 id=216 data-nosnippet>216</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#205">error</a>))
@@ -315,7 +315,7 @@
 <a href=#242 id=242 data-nosnippet>242</a>                <span class="kw-2">&amp;mut </span><a href="#237">error</a>,
 <a href=#243 id=243 data-nosnippet>243</a>            );
 <a href=#244 id=244 data-nosnippet>244</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#245 id=245 data-nosnippet>245</a>            <span class="kw">if </span><a href="#237">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
+<a href=#245 id=245 data-nosnippet>245</a>            <span class="kw">if </span><a href="#237">error</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.pointer.html#method.is_null">is_null</a>() {
 <a href=#246 id=246 data-nosnippet>246</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#247 id=247 data-nosnippet>247</a>            } <span class="kw">else </span>{
 <a href=#248 id=248 data-nosnippet>248</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#237">error</a>))
@@ -347,7 +347,7 @@
 <a href=#274 id=274 data-nosnippet>274</a>                <span class="kw-2">&amp;mut </span><a href="#269">error</a>,
 <a href=#275 id=275 data-nosnippet>275</a>            );
 <a href=#276 id=276 data-nosnippet>276</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#277 id=277 data-nosnippet>277</a>            <span class="kw">if </span><a href="#269">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
+<a href=#277 id=277 data-nosnippet>277</a>            <span class="kw">if </span><a href="#269">error</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.pointer.html#method.is_null">is_null</a>() {
 <a href=#278 id=278 data-nosnippet>278</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#279 id=279 data-nosnippet>279</a>            } <span class="kw">else </span>{
 <a href=#280 id=280 data-nosnippet>280</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#269">error</a>))
@@ -379,7 +379,7 @@
 <a href=#306 id=306 data-nosnippet>306</a>                <span class="kw-2">&amp;mut </span><a href="#301">error</a>,
 <a href=#307 id=307 data-nosnippet>307</a>            );
 <a href=#308 id=308 data-nosnippet>308</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#309 id=309 data-nosnippet>309</a>            <span class="kw">if </span><a href="#301">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
+<a href=#309 id=309 data-nosnippet>309</a>            <span class="kw">if </span><a href="#301">error</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.pointer.html#method.is_null">is_null</a>() {
 <a href=#310 id=310 data-nosnippet>310</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#311 id=311 data-nosnippet>311</a>            } <span class="kw">else </span>{
 <a href=#312 id=312 data-nosnippet>312</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#301">error</a>))
@@ -411,7 +411,7 @@
 <a href=#338 id=338 data-nosnippet>338</a>                <span class="kw-2">&amp;mut </span><a href="#333">error</a>,
 <a href=#339 id=339 data-nosnippet>339</a>            );
 <a href=#340 id=340 data-nosnippet>340</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#341 id=341 data-nosnippet>341</a>            <span class="kw">if </span><a href="#333">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
+<a href=#341 id=341 data-nosnippet>341</a>            <span class="kw">if </span><a href="#333">error</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.pointer.html#method.is_null">is_null</a>() {
 <a href=#342 id=342 data-nosnippet>342</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#343 id=343 data-nosnippet>343</a>            } <span class="kw">else </span>{
 <a href=#344 id=344 data-nosnippet>344</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#333">error</a>))
@@ -443,7 +443,7 @@
 <a href=#370 id=370 data-nosnippet>370</a>                <span class="kw-2">&amp;mut </span><a href="#365">error</a>,
 <a href=#371 id=371 data-nosnippet>371</a>            );
 <a href=#372 id=372 data-nosnippet>372</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#373 id=373 data-nosnippet>373</a>            <span class="kw">if </span><a href="#365">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
+<a href=#373 id=373 data-nosnippet>373</a>            <span class="kw">if </span><a href="#365">error</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.pointer.html#method.is_null">is_null</a>() {
 <a href=#374 id=374 data-nosnippet>374</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#375 id=375 data-nosnippet>375</a>            } <span class="kw">else </span>{
 <a href=#376 id=376 data-nosnippet>376</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#365">error</a>))
@@ -475,7 +475,7 @@
 <a href=#402 id=402 data-nosnippet>402</a>                <span class="kw-2">&amp;mut </span><a href="#397">error</a>,
 <a href=#403 id=403 data-nosnippet>403</a>            );
 <a href=#404 id=404 data-nosnippet>404</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
-<a href=#405 id=405 data-nosnippet>405</a>            <span class="kw">if </span><a href="#397">error</a>.<a href="https://doc.rust-lang.org/nightly/core/ptr/foreigntype.mut_ptr.html#method.is_null">is_null</a>() {
+<a href=#405 id=405 data-nosnippet>405</a>            <span class="kw">if </span><a href="#397">error</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.pointer.html#method.is_null">is_null</a>() {
 <a href=#406 id=406 data-nosnippet>406</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(())
 <a href=#407 id=407 data-nosnippet>407</a>            } <span class="kw">else </span>{
 <a href=#408 id=408 data-nosnippet>408</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#397">error</a>))
@@ -517,8 +517,8 @@
 <a href=#444 id=444 data-nosnippet>444</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
 <a href=#445 id=445 data-nosnippet>445</a>                <a class="self" href="#428">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
 <a href=#446 id=446 data-nosnippet>446</a>                <span class="string">c"notify::byte-order"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>(),
-<a href=#447 id=447 data-nosnippet>447</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::transmute::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-<a href=#448 id=448 data-nosnippet>448</a>                    notify_byte_order_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+<a href=#447 id=447 data-nosnippet>447</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#448 id=448 data-nosnippet>448</a>                    <a href="#429-441">notify_byte_order_trampoline</a>::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
 <a href=#449 id=449 data-nosnippet>449</a>                )),
 <a href=#450 id=450 data-nosnippet>450</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#443">f</a>),
 <a href=#451 id=451 data-nosnippet>451</a>            )
