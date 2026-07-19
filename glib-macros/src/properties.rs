@@ -390,7 +390,7 @@ fn expand_param_spec(prop: &PropDesc) -> TokenStream2 {
                 attrs: vec![],
                 lit: syn::Lit::Str(stripped_name.to_owned()),
             };
-            required_params.insert(0, name_expr.into());
+            required_params.insert(0, syn::Expr::Lit(name_expr));
             let required_params = required_params.iter();
 
             quote!((#(#required_params,)*)#chained_methods)

@@ -74,7 +74,7 @@ impl Input {
         let trait_path = trait_
             .as_ref()
             .ok_or_else(|| syn::Error::new(Span::call_site(), wrong_place_msg))?
-            .1
+            .0
             .clone();
 
         Ok(Self {
