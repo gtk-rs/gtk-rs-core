@@ -499,26 +499,25 @@ impl ToTokens for Clone {
                     attrs,
                     lifetimes,
                     constness,
-                    movability,
                     asyncness,
                     capture,
-                    or1_token,
+                    inputs_begin,
                     inputs,
-                    or2_token,
+                    inputs_end,
                     output,
                     body,
+                    ..
                 } = c;
 
                 quote! {
                     #(#attrs)*
                     #lifetimes
                     #constness
-                    #movability
                     #asyncness
                     #capture
-                    #or1_token
+                    #inputs_begin
                     #inputs
-                    #or2_token
+                    #inputs_end
                     #output
                     {
                         #upgrade_failure_closure
@@ -533,6 +532,7 @@ impl ToTokens for Clone {
                     async_token,
                     capture,
                     block,
+                    ..
                 } = a;
 
                 // Directly output the statements instead of the whole block including braces as we
