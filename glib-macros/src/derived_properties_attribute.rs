@@ -19,7 +19,7 @@ pub fn impl_derived_properties(input: &syn::ItemImpl) -> syn::Result<TokenStream
     let trait_path = &trait_
         .as_ref()
         .ok_or_else(|| syn::Error::new(Span::call_site(), WRONG_PLACE_MSG))?
-        .1;
+        .0;
 
     let mut has_property = false;
     let mut has_properties = false;
