@@ -629,17 +629,18 @@ mod tests {
     }
 
     #[test]
-    fn read_all_cancelled() {
+    fn read_all_closed() {
         let b = Bytes::from_owned(vec![1, 2, 3]);
         let strm = MemoryInputStream::from_bytes(&b);
-        let cancellable = crate::Cancellable::new();
-        cancellable.cancel();
+        strm.close(crate::Cancellable::NONE).unwrap();
 
-        let (buf, count, err) = strm.read_all(vec![0; 10], Some(&cancellable)).unwrap_err();
+        let (buf, count, err) = strm
+            .read_all(vec![0; 10], crate::Cancellable::NONE)
+            .unwrap_err();
 
         assert_eq!(count, 0);
         assert_eq!(buf, vec![0; 10]);
-        assert!(err.matches::<crate::IOErrorEnum>(crate::IOErrorEnum::Cancelled));
+        assert!(err.matches::<crate::IOErrorEnum>(crate::IOErrorEnum::Closed));
     }
 
     #[test]
