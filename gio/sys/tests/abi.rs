@@ -440,6 +440,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         },
     ),
     (
+        "GDBusActionGroupClass",
+        Layout {
+            size: size_of::<GDBusActionGroupClass>(),
+            alignment: align_of::<GDBusActionGroupClass>(),
+        },
+    ),
+    (
         "GDBusAnnotationInfo",
         Layout {
             size: size_of::<GDBusAnnotationInfo>(),
@@ -843,6 +850,13 @@ const RUST_LAYOUTS: &[(&str, Layout)] = &[
         Layout {
             size: size_of::<GEcnCodePoint>(),
             alignment: align_of::<GEcnCodePoint>(),
+        },
+    ),
+    (
+        "GEmblemClass",
+        Layout {
+            size: size_of::<GEmblemClass>(),
+            alignment: align_of::<GEmblemClass>(),
         },
     ),
     (
