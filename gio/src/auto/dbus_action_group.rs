@@ -7,7 +7,7 @@ use glib::translate::*;
 
 glib::wrapper! {
     #[doc(alias = "GDBusActionGroup")]
-    pub struct DBusActionGroup(Object<ffi::GDBusActionGroup>) @implements ActionGroup, RemoteActionGroup;
+    pub struct DBusActionGroup(Object<ffi::GDBusActionGroup, ffi::GDBusActionGroupClass>) @implements ActionGroup, RemoteActionGroup;
 
     match fn {
         type_ => || ffi::g_dbus_action_group_get_type(),

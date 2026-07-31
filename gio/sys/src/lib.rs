@@ -1582,6 +1582,20 @@ pub type GCredentialsClass = _GCredentialsClass;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
+pub struct GDBusActionGroupClass {
+    pub parent_class: gobject::GObjectClass,
+}
+
+impl ::std::fmt::Debug for GDBusActionGroupClass {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GDBusActionGroupClass @ {self:p}"))
+            .field("parent_class", &self.parent_class)
+            .finish()
+    }
+}
+
+#[derive(Copy, Clone)]
+#[repr(C)]
 pub struct GDBusAnnotationInfo {
     pub ref_count: c_int,
     pub key: *mut c_char,
@@ -2486,14 +2500,19 @@ impl ::std::fmt::Debug for GDtlsServerConnectionInterface {
     }
 }
 
+#[derive(Copy, Clone)]
 #[repr(C)]
-#[allow(dead_code)]
-pub struct _GEmblemClass {
-    _data: [u8; 0],
-    _marker: core::marker::PhantomData<(*mut u8, core::marker::PhantomPinned)>,
+pub struct GEmblemClass {
+    pub parent_class: gobject::GObjectClass,
 }
 
-pub type GEmblemClass = _GEmblemClass;
+impl ::std::fmt::Debug for GEmblemClass {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        f.debug_struct(&format!("GEmblemClass @ {self:p}"))
+            .field("parent_class", &self.parent_class)
+            .finish()
+    }
+}
 
 #[derive(Copy, Clone)]
 #[repr(C)]
