@@ -77,7 +77,7 @@
 <a href=#4 id=4 data-nosnippet>4</a>
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>glib::{<a href="../../glib/object/struct.Object.html">Object</a>, <a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 <a href=#6 id=6 data-nosnippet>6</a>
-<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use crate</span>::{<a href="auto/list_model.rs.html#14-66">ListModel</a>, <a href="auto/list_store.rs.html#8-39">ListStore</a>, <a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#116">prelude</a>::<span class="kw-2">*</span>};
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use crate</span>::{<a href="auto/list_model.rs.html#14-104">ListModel</a>, <a href="auto/list_store.rs.html#8-39">ListStore</a>, <a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#116">prelude</a>::<span class="kw-2">*</span>};
 <a href=#8 id=8 data-nosnippet>8</a>
 <a href=#9 id=9 data-nosnippet>9</a><span class="kw">impl </span><a href="auto/list_store.rs.html#8-39">ListStore</a> {
 <a href=#10 id=10 data-nosnippet>10</a>    <span class="doccomment">/// Creates a new #GListStore with items of type @item_type. @item_type
@@ -192,7 +192,7 @@
 <a href=#119 id=119 data-nosnippet>119</a>    <span class="comment">// rustdoc-stripper-ignore-next
 <a href=#120 id=120 data-nosnippet>120</a>    </span><span class="doccomment">/// Appends all elements in a slice to the `ListStore`.
 <a href=#121 id=121 data-nosnippet>121</a>    </span><span class="kw">pub fn </span>extend_from_slice(<span class="kw-2">&amp;</span><span class="self">self</span>, additions: <span class="kw-2">&amp;</span>[<span class="kw">impl </span><a href="../../glib/object/trait.IsA.html">IsA</a>&lt;glib::<a href="../../glib/object/struct.Object.html">Object</a>&gt;]) {
-<a href=#122 id=122 data-nosnippet>122</a>        <a class="self" href="#121">self</a>.<a href="#104-117">splice</a>(<a class="self" href="#121">self</a>.<a href="auto/list_model.rs.html#111-113">n_items</a>(), <span class="number">0</span>, <a href="#121">additions</a>)
+<a href=#122 id=122 data-nosnippet>122</a>        <a class="self" href="#121">self</a>.<a href="#104-117">splice</a>(<a class="self" href="#121">self</a>.<a href="auto/list_model.rs.html#149-151">n_items</a>(), <span class="number">0</span>, <a href="#121">additions</a>)
 <a href=#123 id=123 data-nosnippet>123</a>    }
 <a href=#124 id=124 data-nosnippet>124</a>
 <a href=#125 id=125 data-nosnippet>125</a>    <span class="comment">// rustdoc-stripper-ignore-next
@@ -211,7 +211,7 @@
 <a href=#138 id=138 data-nosnippet>138</a>
 <a href=#139 id=139 data-nosnippet>139</a>        </span><span class="kw">let </span>changed = <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html">Rc</a>::<a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html#method.new">new</a>(<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html">Cell</a>::<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.new">new</a>(<span class="bool-val">false</span>));
 <a href=#140 id=140 data-nosnippet>140</a>        <span class="kw">let </span>changed_clone = <a href="#139">changed</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
-<a href=#141 id=141 data-nosnippet>141</a>        <span class="kw">let </span>signal_id = <a class="self" href="#134">self</a>.<a href="auto/list_model.rs.html#195-230">connect_items_changed</a>(<span class="kw">move </span>|_list, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>| <a href="#140">changed_clone</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.set">set</a>(<span class="bool-val">true</span>));
+<a href=#141 id=141 data-nosnippet>141</a>        <span class="kw">let </span>signal_id = <a class="self" href="#134">self</a>.<a href="auto/list_model.rs.html#233-268">connect_items_changed</a>(<span class="kw">move </span>|_list, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>| <a href="#140">changed_clone</a>.<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html#method.set">set</a>(<span class="bool-val">true</span>));
 <a href=#142 id=142 data-nosnippet>142</a>
 <a href=#143 id=143 data-nosnippet>143</a>        <span class="kw">let </span>_signal_guard = {
 <a href=#144 id=144 data-nosnippet>144</a>            <span class="kw">struct </span>Guard&lt;<span class="lifetime">'a</span>&gt; {
@@ -352,11 +352,11 @@
 <a href=#279 id=279 data-nosnippet>279</a>}
 <a href=#280 id=280 data-nosnippet>280</a>
 <a href=#281 id=281 data-nosnippet>281</a><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">std::iter::IntoIterator</a> <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/list_store.rs.html#8-39">ListStore</a> {
-<a href=#282 id=282 data-nosnippet>282</a>    <span class="kw">type </span>Item = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/list_model.rs.html#14-66">ListModel</a> <span class="kw">as </span>IntoIterator&gt;::<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#associatedtype.Item">Item</a>;
-<a href=#283 id=283 data-nosnippet>283</a>    <span class="kw">type </span>IntoIter = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/list_model.rs.html#14-66">ListModel</a> <span class="kw">as </span>IntoIterator&gt;::<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#associatedtype.IntoIter">IntoIter</a>;
+<a href=#282 id=282 data-nosnippet>282</a>    <span class="kw">type </span>Item = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/list_model.rs.html#14-104">ListModel</a> <span class="kw">as </span>IntoIterator&gt;::<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#associatedtype.Item">Item</a>;
+<a href=#283 id=283 data-nosnippet>283</a>    <span class="kw">type </span>IntoIter = &lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/list_model.rs.html#14-104">ListModel</a> <span class="kw">as </span>IntoIterator&gt;::<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#associatedtype.IntoIter">IntoIter</a>;
 <a href=#284 id=284 data-nosnippet>284</a>
 <a href=#285 id=285 data-nosnippet>285</a>    <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
-<a href=#286 id=286 data-nosnippet>286</a>        <a class="self" href="#285">self</a>.<a href="../../glib/object/trait.Cast.html#method.upcast_ref">upcast_ref</a>::&lt;<a href="auto/list_model.rs.html#14-66">ListModel</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>()
+<a href=#286 id=286 data-nosnippet>286</a>        <a class="self" href="#285">self</a>.<a href="../../glib/object/trait.Cast.html#method.upcast_ref">upcast_ref</a>::&lt;<a href="auto/list_model.rs.html#14-104">ListModel</a>&gt;().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>()
 <a href=#287 id=287 data-nosnippet>287</a>    }
 <a href=#288 id=288 data-nosnippet>288</a>}
 <a href=#289 id=289 data-nosnippet>289</a>
@@ -381,7 +381,7 @@
 <a href=#308 id=308 data-nosnippet>308</a>            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html#tymethod.into_iter">into_iter</a>()
 <a href=#309 id=309 data-nosnippet>309</a>            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.map">map</a>(|o| <a href="#309">o</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>())
 <a href=#310 id=310 data-nosnippet>310</a>            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.collect">collect</a>::&lt;<a href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html">Vec</a>&lt;<span class="kw">_</span>&gt;&gt;();
-<a href=#311 id=311 data-nosnippet>311</a>        <a class="self" href="#306">self</a>.<a href="#104-117">splice</a>(<a class="self" href="#306">self</a>.<a href="auto/list_model.rs.html#111-113">n_items</a>(), <span class="number">0</span>, <span class="kw-2">&amp;</span><a href="#307">additions</a>)
+<a href=#311 id=311 data-nosnippet>311</a>        <a class="self" href="#306">self</a>.<a href="#104-117">splice</a>(<a class="self" href="#306">self</a>.<a href="auto/list_model.rs.html#149-151">n_items</a>(), <span class="number">0</span>, <span class="kw-2">&amp;</span><a href="#307">additions</a>)
 <a href=#312 id=312 data-nosnippet>312</a>    }
 <a href=#313 id=313 data-nosnippet>313</a>}
 <a href=#314 id=314 data-nosnippet>314</a>

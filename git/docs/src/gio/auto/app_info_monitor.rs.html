@@ -146,49 +146,52 @@
 <a href=#73 id=73 data-nosnippet>73</a>}
 <a href=#74 id=74 data-nosnippet>74</a>
 <a href=#75 id=75 data-nosnippet>75</a><span class="kw">impl </span><a href="#14-73">AppInfoMonitor</a> {
-<a href=#76 id=76 data-nosnippet>76</a>    <span class="doccomment">///  signal in the
-<a href=#77 id=77 data-nosnippet>77</a>    /// thread-default main context whenever the list of installed
-<a href=#78 id=78 data-nosnippet>78</a>    /// applications (as reported by g_app_info_get_all()) may have changed.
-<a href=#79 id=79 data-nosnippet>79</a>    ///
-<a href=#80 id=80 data-nosnippet>80</a>    /// The #GAppInfoMonitor::changed signal will only be emitted once until
-<a href=#81 id=81 data-nosnippet>81</a>    /// g_app_info_get_all() (or another `g_app_info_*()` function) is called. Doing
-<a href=#82 id=82 data-nosnippet>82</a>    /// so will re-arm the signal ready to notify about the next change.
-<a href=#83 id=83 data-nosnippet>83</a>    ///
-<a href=#84 id=84 data-nosnippet>84</a>    /// You must only call g_object_unref() on the return value from under
-<a href=#85 id=85 data-nosnippet>85</a>    /// the same main context as you created it.
+<a href=#76 id=76 data-nosnippet>76</a>    <span class="doccomment">/// Gets the #GAppInfoMonitor for the current thread-default main
+<a href=#77 id=77 data-nosnippet>77</a>    /// context.
+<a href=#78 id=78 data-nosnippet>78</a>    ///
+<a href=#79 id=79 data-nosnippet>79</a>    /// The #GAppInfoMonitor will emit a “changed” signal in the
+<a href=#80 id=80 data-nosnippet>80</a>    /// thread-default main context whenever the list of installed
+<a href=#81 id=81 data-nosnippet>81</a>    /// applications (as reported by g_app_info_get_all()) may have changed.
+<a href=#82 id=82 data-nosnippet>82</a>    ///
+<a href=#83 id=83 data-nosnippet>83</a>    /// The #GAppInfoMonitor::changed signal will only be emitted once until
+<a href=#84 id=84 data-nosnippet>84</a>    /// g_app_info_get_all() (or another `g_app_info_*()` function) is called. Doing
+<a href=#85 id=85 data-nosnippet>85</a>    /// so will re-arm the signal ready to notify about the next change.
 <a href=#86 id=86 data-nosnippet>86</a>    ///
-<a href=#87 id=87 data-nosnippet>87</a>    /// # Returns
-<a href=#88 id=88 data-nosnippet>88</a>    ///
-<a href=#89 id=89 data-nosnippet>89</a>    /// a reference to a #GAppInfoMonitor
-<a href=#90 id=90 data-nosnippet>90</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_app_info_monitor_get"</span>)]
-<a href=#91 id=91 data-nosnippet>91</a>    </span><span class="kw">pub fn </span>get() -&gt; <a href="#14-73">AppInfoMonitor</a> {
-<a href=#92 id=92 data-nosnippet>92</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(ffi::<a href="../../../gio_sys/fn.g_app_info_monitor_get.html">g_app_info_monitor_get</a>()) }
-<a href=#93 id=93 data-nosnippet>93</a>    }
-<a href=#94 id=94 data-nosnippet>94</a>
-<a href=#95 id=95 data-nosnippet>95</a>    <span class="doccomment">/// Signal emitted when the app info database changes, when applications are
-<a href=#96 id=96 data-nosnippet>96</a>    /// installed or removed.
-<a href=#97 id=97 data-nosnippet>97</a>    </span><span class="attr">#[doc(alias = <span class="string">"changed"</span>)]
-<a href=#98 id=98 data-nosnippet>98</a>    </span><span class="kw">pub fn </span>connect_changed&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
-<a href=#99 id=99 data-nosnippet>99</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>changed_trampoline&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="#14-73">AppInfoMonitor</a>) + <span class="lifetime">'static</span>&gt;(
-<a href=#100 id=100 data-nosnippet>100</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GAppInfoMonitor.html">GAppInfoMonitor</a>,
-<a href=#101 id=101 data-nosnippet>101</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
-<a href=#102 id=102 data-nosnippet>102</a>        ) {
-<a href=#103 id=103 data-nosnippet>103</a>            <span class="kw">unsafe </span>{
-<a href=#104 id=104 data-nosnippet>104</a>                <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#101">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-<a href=#105 id=105 data-nosnippet>105</a>                <a href="#104">f</a>(<span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#100">this</a>))
-<a href=#106 id=106 data-nosnippet>106</a>            }
-<a href=#107 id=107 data-nosnippet>107</a>        }
-<a href=#108 id=108 data-nosnippet>108</a>        <span class="kw">unsafe </span>{
-<a href=#109 id=109 data-nosnippet>109</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#98">f</a>);
-<a href=#110 id=110 data-nosnippet>110</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-<a href=#111 id=111 data-nosnippet>111</a>                <a class="self" href="#98">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-<a href=#112 id=112 data-nosnippet>112</a>                <span class="string">c"changed"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>(),
-<a href=#113 id=113 data-nosnippet>113</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
-<a href=#114 id=114 data-nosnippet>114</a>                    <a href="#99-107">changed_trampoline</a>::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
-<a href=#115 id=115 data-nosnippet>115</a>                )),
-<a href=#116 id=116 data-nosnippet>116</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#109">f</a>),
-<a href=#117 id=117 data-nosnippet>117</a>            )
-<a href=#118 id=118 data-nosnippet>118</a>        }
-<a href=#119 id=119 data-nosnippet>119</a>    }
-<a href=#120 id=120 data-nosnippet>120</a>}
+<a href=#87 id=87 data-nosnippet>87</a>    /// You must only call g_object_unref() on the return value from under
+<a href=#88 id=88 data-nosnippet>88</a>    /// the same main context as you created it.
+<a href=#89 id=89 data-nosnippet>89</a>    ///
+<a href=#90 id=90 data-nosnippet>90</a>    /// # Returns
+<a href=#91 id=91 data-nosnippet>91</a>    ///
+<a href=#92 id=92 data-nosnippet>92</a>    /// a reference to a #GAppInfoMonitor
+<a href=#93 id=93 data-nosnippet>93</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_app_info_monitor_get"</span>)]
+<a href=#94 id=94 data-nosnippet>94</a>    </span><span class="kw">pub fn </span>get() -&gt; <a href="#14-73">AppInfoMonitor</a> {
+<a href=#95 id=95 data-nosnippet>95</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(ffi::<a href="../../../gio_sys/fn.g_app_info_monitor_get.html">g_app_info_monitor_get</a>()) }
+<a href=#96 id=96 data-nosnippet>96</a>    }
+<a href=#97 id=97 data-nosnippet>97</a>
+<a href=#98 id=98 data-nosnippet>98</a>    <span class="doccomment">/// Signal emitted when the app info database changes, when applications are
+<a href=#99 id=99 data-nosnippet>99</a>    /// installed or removed.
+<a href=#100 id=100 data-nosnippet>100</a>    </span><span class="attr">#[doc(alias = <span class="string">"changed"</span>)]
+<a href=#101 id=101 data-nosnippet>101</a>    </span><span class="kw">pub fn </span>connect_changed&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">'static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+<a href=#102 id=102 data-nosnippet>102</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>changed_trampoline&lt;F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html">Fn</a>(<span class="kw-2">&amp;</span><a href="#14-73">AppInfoMonitor</a>) + <span class="lifetime">'static</span>&gt;(
+<a href=#103 id=103 data-nosnippet>103</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../../gio_sys/struct.GAppInfoMonitor.html">GAppInfoMonitor</a>,
+<a href=#104 id=104 data-nosnippet>104</a>            f: glib::ffi::<a href="../../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#105 id=105 data-nosnippet>105</a>        ) {
+<a href=#106 id=106 data-nosnippet>106</a>            <span class="kw">unsafe </span>{
+<a href=#107 id=107 data-nosnippet>107</a>                <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#104">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+<a href=#108 id=108 data-nosnippet>108</a>                <a href="#107">f</a>(<span class="kw-2">&amp;</span><a href="../../../glib/translate/fn.from_glib_borrow.html">from_glib_borrow</a>(<a href="#103">this</a>))
+<a href=#109 id=109 data-nosnippet>109</a>            }
+<a href=#110 id=110 data-nosnippet>110</a>        }
+<a href=#111 id=111 data-nosnippet>111</a>        <span class="kw">unsafe </span>{
+<a href=#112 id=112 data-nosnippet>112</a>            <span class="kw">let </span>f: <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;F&gt; = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#101">f</a>);
+<a href=#113 id=113 data-nosnippet>113</a>            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+<a href=#114 id=114 data-nosnippet>114</a>                <a class="self" href="#101">self</a>.<a href="../../../glib/object/trait.ObjectType.html#tymethod.as_ptr">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+<a href=#115 id=115 data-nosnippet>115</a>                <span class="string">c"changed"</span>.<a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html#method.as_ptr">as_ptr</a>(),
+<a href=#116 id=116 data-nosnippet>116</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(std::mem::<a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">transmute</a>::&lt;<span class="kw-2">*const </span>(), <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn</span>()&gt;(
+<a href=#117 id=117 data-nosnippet>117</a>                    <a href="#102-110">changed_trampoline</a>::&lt;F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+<a href=#118 id=118 data-nosnippet>118</a>                )),
+<a href=#119 id=119 data-nosnippet>119</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#112">f</a>),
+<a href=#120 id=120 data-nosnippet>120</a>            )
+<a href=#121 id=121 data-nosnippet>121</a>        }
+<a href=#122 id=122 data-nosnippet>122</a>    }
+<a href=#123 id=123 data-nosnippet>123</a>}
 </code></pre></div></section></main></body></html>
