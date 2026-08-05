@@ -219,10 +219,7 @@ impl<T: TransparentPtrType> List<T> {
     #[doc(alias = "g_list_last")]
     pub fn back(&self) -> Option<&T> {
         unsafe {
-            let ptr = match self.ptr {
-                None => return None,
-                Some(ptr) => ptr.as_ptr(),
-            };
+            let ptr = self.ptr?.as_ptr();
             let last_ptr = ffi::g_list_last(ptr);
             let item = &*(&(*last_ptr).data as *const ffi::gpointer as *const T);
             Some(item)
@@ -237,10 +234,7 @@ impl<T: TransparentPtrType> List<T> {
     #[doc(alias = "g_list_last")]
     pub fn back_mut(&mut self) -> Option<&mut T> {
         unsafe {
-            let ptr = match self.ptr {
-                None => return None,
-                Some(ptr) => ptr.as_ptr(),
-            };
+            let ptr = self.ptr?.as_ptr();
             let last_ptr = ffi::g_list_last(ptr);
             let item = &mut *(&mut (*last_ptr).data as *mut ffi::gpointer as *mut T);
             Some(item)
@@ -254,10 +248,7 @@ impl<T: TransparentPtrType> List<T> {
     #[inline]
     pub fn pop_back(&mut self) -> Option<T> {
         unsafe {
-            let ptr = match self.ptr {
-                None => return None,
-                Some(ptr) => ptr.as_ptr(),
-            };
+            let ptr = self.ptr?.as_ptr();
             let last_ptr = ffi::g_list_last(ptr);
             let item = ptr::read(&mut (*last_ptr).data as *mut ffi::gpointer as *mut T);
             self.ptr = ptr::NonNull::new(ffi::g_list_delete_link(ptr, last_ptr));
