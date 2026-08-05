@@ -101,13 +101,13 @@ pub fn layout_path(cr: &cairo::Context, layout: &pango::Layout) {
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
 #[doc(alias = "pango_cairo_layout_path_for_components")]
 pub fn layout_path_for_components(
-    cr: &mut cairo::Context,
+    cr: &cairo::Context,
     layout: &pango::Layout,
     components: pango::RenderComponent,
 ) {
     unsafe {
         ffi::pango_cairo_layout_path_for_components(
-            cr.to_glib_none_mut().0,
+            mut_override(cr.to_glib_none().0),
             layout.to_glib_none().0,
             components.into_glib(),
         );
