@@ -84,7 +84,7 @@
 <a href=#11 id=11 data-nosnippet>11</a>    <a href="https://doc.rust-lang.org/nightly/core/str/traits/trait.FromStr.html">str::FromStr</a>,
 <a href=#12 id=12 data-nosnippet>12</a>};
 <a href=#13 id=13 data-nosnippet>13</a>
-<a href=#14 id=14 data-nosnippet>14</a><span class="kw">use crate</span>::{<a href="error.rs.html#276-284">BoolError</a>, <a href="types.rs.html#22">Type</a>, ffi, <a href="../../gobject_sys/index.html">gobject_ffi</a>, <a href="lib.rs.html#170">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#175">translate</a>::<span class="kw-2">*</span>};
+<a href=#14 id=14 data-nosnippet>14</a><span class="kw">use crate</span>::{<a href="error.rs.html#311-319">BoolError</a>, <a href="types.rs.html#22">Type</a>, ffi, gobject_ffi, <a href="lib.rs.html#170">prelude</a>::<span class="kw-2">*</span>, <a href="lib.rs.html#175">translate</a>::<span class="kw-2">*</span>};
 <a href=#15 id=15 data-nosnippet>15</a>
 <a href=#16 id=16 data-nosnippet>16</a><span class="comment">// rustdoc-stripper-ignore-next
 <a href=#17 id=17 data-nosnippet>17</a></span><span class="doccomment">/// Describes `Variant` types.
@@ -138,7 +138,7 @@
 <a href=#65 id=65 data-nosnippet>65</a>    /// # Returns
 <a href=#66 id=66 data-nosnippet>66</a>    ///
 <a href=#67 id=67 data-nosnippet>67</a>    /// a new [type@GLib.VariantType]
-<a href=#68 id=68 data-nosnippet>68</a>    </span><span class="kw">pub fn </span>new(type_string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#40-47">VariantType</a>, <a href="error.rs.html#276-284">BoolError</a>&gt; {
+<a href=#68 id=68 data-nosnippet>68</a>    </span><span class="kw">pub fn </span>new(type_string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#40-47">VariantType</a>, <a href="error.rs.html#311-319">BoolError</a>&gt; {
 <a href=#69 id=69 data-nosnippet>69</a>        <a href="#358-360">VariantTy</a>::<a href="#529-546">new</a>(<a href="#68">type_string</a>).<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.map">map</a>(ToOwned::<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">to_owned</a>)
 <a href=#70 id=70 data-nosnippet>70</a>    }
 <a href=#71 id=71 data-nosnippet>71</a>
@@ -239,7 +239,7 @@
 <a href=#166 id=166 data-nosnippet>166</a>    </span><span class="doccomment">/// Tries to create a `VariantType` from an owned string.
 <a href=#167 id=167 data-nosnippet>167</a>    ///
 <a href=#168 id=168 data-nosnippet>168</a>    /// Returns `Ok` if the string is a valid type string, `Err` otherwise.
-<a href=#169 id=169 data-nosnippet>169</a>    </span><span class="kw">pub fn </span>from_string(type_string: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<span class="kw">crate</span>::<a href="gstring.rs.html#1087">GString</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#40-47">VariantType</a>, <a href="error.rs.html#276-284">BoolError</a>&gt; {
+<a href=#169 id=169 data-nosnippet>169</a>    </span><span class="kw">pub fn </span>from_string(type_string: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<span class="kw">crate</span>::<a href="gstring.rs.html#1087">GString</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#40-47">VariantType</a>, <a href="error.rs.html#311-319">BoolError</a>&gt; {
 <a href=#170 id=170 data-nosnippet>170</a>        <span class="kw">let </span>type_string = <a href="#169">type_string</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>();
 <a href=#171 id=171 data-nosnippet>171</a>        VariantTy::new(<span class="kw-2">&amp;</span>type_string)<span class="question-mark">?</span>;
 <a href=#172 id=172 data-nosnippet>172</a>
@@ -317,7 +317,7 @@
 <a href=#244 id=244 data-nosnippet>244</a>}
 <a href=#245 id=245 data-nosnippet>245</a>
 <a href=#246 id=246 data-nosnippet>246</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/str/traits/trait.FromStr.html">FromStr</a> <span class="kw">for </span><a href="#40-47">VariantType</a> {
-<a href=#247 id=247 data-nosnippet>247</a>    <span class="kw">type </span><span class="prelude-val">Err </span>= <a href="error.rs.html#276-284">BoolError</a>;
+<a href=#247 id=247 data-nosnippet>247</a>    <span class="kw">type </span><span class="prelude-val">Err </span>= <a href="error.rs.html#311-319">BoolError</a>;
 <a href=#248 id=248 data-nosnippet>248</a>
 <a href=#249 id=249 data-nosnippet>249</a>    <span class="kw">fn </span>from_str(s: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Err&gt; {
 <a href=#250 id=250 data-nosnippet>250</a>        <span class="self">Self</span>::<a href="#68-70">new</a>(<a href="#249">s</a>)
@@ -599,7 +599,7 @@
 <a href=#526 id=526 data-nosnippet>526</a>    </span><span class="doccomment">/// Tries to create a `&amp;VariantTy` from a string slice.
 <a href=#527 id=527 data-nosnippet>527</a>    ///
 <a href=#528 id=528 data-nosnippet>528</a>    /// Returns `Ok` if the string is a valid type string, `Err` otherwise.
-<a href=#529 id=529 data-nosnippet>529</a>    </span><span class="kw">pub fn </span>new(type_string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="kw-2">&amp;</span><a href="#358-360">VariantTy</a>, <a href="error.rs.html#276-284">BoolError</a>&gt; {
+<a href=#529 id=529 data-nosnippet>529</a>    </span><span class="kw">pub fn </span>new(type_string: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="kw-2">&amp;</span><a href="#358-360">VariantTy</a>, <a href="error.rs.html#311-319">BoolError</a>&gt; {
 <a href=#530 id=530 data-nosnippet>530</a>        <span class="kw">unsafe </span>{
 <a href=#531 id=531 data-nosnippet>531</a>            <span class="kw">let </span>ptr = <a href="#529">type_string</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.str.html#method.as_ptr">as_ptr</a>();
 <a href=#532 id=532 data-nosnippet>532</a>            <span class="kw">let </span>limit = <a href="#531">ptr</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.pointer.html#method.add">add</a>(<a href="#529">type_string</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.str.html#method.len">len</a>());
@@ -613,7 +613,7 @@
 <a href=#540 id=540 data-nosnippet>540</a>            <span class="kw">if </span><a href="#535">ok</a> &amp;&amp; <a href="#533">end</a> <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_ </span>== <a href="#532">limit</a> {
 <a href=#541 id=541 data-nosnippet>541</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="kw-2">&amp;*</span>(<a href="#529">type_string</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.str.html#method.as_bytes">as_bytes</a>() <span class="kw">as </span><span class="kw-2">*const </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>] <span class="kw">as </span><span class="kw-2">*const </span><a href="#358-360">VariantTy</a>))
 <a href=#542 id=542 data-nosnippet>542</a>            } <span class="kw">else </span>{
-<a href=#543 id=543 data-nosnippet>543</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="error.rs.html#222-244">bool_error!</a>(<span class="string">"Invalid type string: '{}'"</span>, type_string))
+<a href=#543 id=543 data-nosnippet>543</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="error.rs.html#257-279">bool_error!</a>(<span class="string">"Invalid type string: '{}'"</span>, type_string))
 <a href=#544 id=544 data-nosnippet>544</a>            }
 <a href=#545 id=545 data-nosnippet>545</a>        }
 <a href=#546 id=546 data-nosnippet>546</a>    }
@@ -902,9 +902,9 @@
 <a href=#829 id=829 data-nosnippet>829</a></span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="value.rs.html#271-282"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#358-360">VariantTy</a> {
 <a href=#830 id=830 data-nosnippet>830</a>    <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::<a href="value.rs.html#245">GenericValueTypeOrNoneChecker</a>&lt;<span class="self">Self</span>&gt;;
 <a href=#831 id=831 data-nosnippet>831</a>
-<a href=#832 id=832 data-nosnippet>832</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">crate</span>::<a href="value.rs.html#490-526">Value</a>) -&gt; <span class="self">Self </span>{
+<a href=#832 id=832 data-nosnippet>832</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">crate</span>::<a href="value.rs.html#490-539">Value</a>) -&gt; <span class="self">Self </span>{
 <a href=#833 id=833 data-nosnippet>833</a>        <span class="kw">unsafe </span>{
-<a href=#834 id=834 data-nosnippet>834</a>            <span class="kw">let </span>ptr = gobject_ffi::<a href="../../gobject_sys/fn.g_value_get_boxed.html">g_value_get_boxed</a>(<a href="#832">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+<a href=#834 id=834 data-nosnippet>834</a>            <span class="kw">let </span>ptr = gobject_ffi::g_value_get_boxed(<a href="#832">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
 <a href=#835 id=835 data-nosnippet>835</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
 <a href=#836 id=836 data-nosnippet>836</a>            <a href="#358-360">VariantTy</a>::<a href="#565-572">from_ptr</a>(<a href="#834">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span>ffi::GVariantType)
 <a href=#837 id=837 data-nosnippet>837</a>        }
@@ -913,10 +913,10 @@
 <a href=#840 id=840 data-nosnippet>840</a>
 <a href=#841 id=841 data-nosnippet>841</a><span class="attr">#[doc(hidden)]
 <a href=#842 id=842 data-nosnippet>842</a></span><span class="kw">impl </span><a href="value.rs.html#372-382"><span class="kw">crate</span>::value::ToValue</a> <span class="kw">for </span><a href="#358-360">VariantTy</a> {
-<a href=#843 id=843 data-nosnippet>843</a>    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::<a href="value.rs.html#490-526">Value</a> {
+<a href=#843 id=843 data-nosnippet>843</a>    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::<a href="value.rs.html#490-539">Value</a> {
 <a href=#844 id=844 data-nosnippet>844</a>        <span class="kw">unsafe </span>{
-<a href=#845 id=845 data-nosnippet>845</a>            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::<a href="value.rs.html#490-526">Value</a>::<a href="value.rs.html#552-558">from_type_unchecked</a>(<a href="#358-360">VariantTy</a>::<a href="types.rs.html#293">static_type</a>());
-<a href=#846 id=846 data-nosnippet>846</a>            gobject_ffi::<a href="../../gobject_sys/fn.g_value_set_boxed.html">g_value_set_boxed</a>(
+<a href=#845 id=845 data-nosnippet>845</a>            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::<a href="value.rs.html#490-539">Value</a>::<a href="value.rs.html#565-571">from_type_unchecked</a>(<a href="#358-360">VariantTy</a>::<a href="types.rs.html#293">static_type</a>());
+<a href=#846 id=846 data-nosnippet>846</a>            gobject_ffi::g_value_set_boxed(
 <a href=#847 id=847 data-nosnippet>847</a>                <a href="#845">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>,
 <a href=#848 id=848 data-nosnippet>848</a>                <a class="self" href="#843">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
 <a href=#849 id=849 data-nosnippet>849</a>            );
@@ -931,7 +931,7 @@
 <a href=#858 id=858 data-nosnippet>858</a>
 <a href=#859 id=859 data-nosnippet>859</a><span class="attr">#[doc(hidden)]
 <a href=#860 id=860 data-nosnippet>860</a></span><span class="kw">impl </span><a href="value.rs.html#372-382"><span class="kw">crate</span>::value::ToValue</a> <span class="kw">for </span><span class="kw-2">&amp;</span><a href="#358-360">VariantTy</a> {
-<a href=#861 id=861 data-nosnippet>861</a>    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::<a href="value.rs.html#490-526">Value</a> {
+<a href=#861 id=861 data-nosnippet>861</a>    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::<a href="value.rs.html#490-539">Value</a> {
 <a href=#862 id=862 data-nosnippet>862</a>        (<span class="kw-2">*</span><a class="self" href="#861">self</a>).<a href="value.rs.html#375">to_value</a>()
 <a href=#863 id=863 data-nosnippet>863</a>    }
 <a href=#864 id=864 data-nosnippet>864</a>
@@ -943,10 +943,10 @@
 <a href=#870 id=870 data-nosnippet>870</a>
 <a href=#871 id=871 data-nosnippet>871</a><span class="attr">#[doc(hidden)]
 <a href=#872 id=872 data-nosnippet>872</a></span><span class="kw">impl </span><a href="value.rs.html#400-405"><span class="kw">crate</span>::value::ToValueOptional</a> <span class="kw">for </span><span class="kw-2">&amp;</span><a href="#358-360">VariantTy</a> {
-<a href=#873 id=873 data-nosnippet>873</a>    <span class="kw">fn </span>to_value_optional(s: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <span class="kw">crate</span>::<a href="value.rs.html#490-526">Value</a> {
-<a href=#874 id=874 data-nosnippet>874</a>        <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::<a href="value.rs.html#490-526">Value</a>::<a href="value.rs.html#563-565">for_value_type</a>::&lt;<a href="#40-47">VariantType</a>&gt;();
+<a href=#873 id=873 data-nosnippet>873</a>    <span class="kw">fn </span>to_value_optional(s: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <span class="kw">crate</span>::<a href="value.rs.html#490-539">Value</a> {
+<a href=#874 id=874 data-nosnippet>874</a>        <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::<a href="value.rs.html#490-539">Value</a>::<a href="value.rs.html#576-578">for_value_type</a>::&lt;<a href="#40-47">VariantType</a>&gt;();
 <a href=#875 id=875 data-nosnippet>875</a>        <span class="kw">unsafe </span>{
-<a href=#876 id=876 data-nosnippet>876</a>            gobject_ffi::<a href="../../gobject_sys/fn.g_value_set_boxed.html">g_value_set_boxed</a>(
+<a href=#876 id=876 data-nosnippet>876</a>            gobject_ffi::g_value_set_boxed(
 <a href=#877 id=877 data-nosnippet>877</a>                <a href="#874">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>,
 <a href=#878 id=878 data-nosnippet>878</a>                <a href="#873">s</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
 <a href=#879 id=879 data-nosnippet>879</a>            );
@@ -975,9 +975,9 @@
 <a href=#902 id=902 data-nosnippet>902</a></span><span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; <a href="value.rs.html#271-282"><span class="kw">crate</span>::value::FromValue</a>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span><a href="#40-47">VariantType</a> {
 <a href=#903 id=903 data-nosnippet>903</a>    <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::<a href="value.rs.html#245">GenericValueTypeOrNoneChecker</a>&lt;<span class="self">Self</span>&gt;;
 <a href=#904 id=904 data-nosnippet>904</a>
-<a href=#905 id=905 data-nosnippet>905</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">crate</span>::<a href="value.rs.html#490-526">Value</a>) -&gt; <span class="self">Self </span>{
+<a href=#905 id=905 data-nosnippet>905</a>    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw">crate</span>::<a href="value.rs.html#490-539">Value</a>) -&gt; <span class="self">Self </span>{
 <a href=#906 id=906 data-nosnippet>906</a>        <span class="kw">unsafe </span>{
-<a href=#907 id=907 data-nosnippet>907</a>            <span class="kw">let </span>ptr = gobject_ffi::<a href="../../gobject_sys/fn.g_value_get_boxed.html">g_value_get_boxed</a>(<a href="#905">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+<a href=#907 id=907 data-nosnippet>907</a>            <span class="kw">let </span>ptr = gobject_ffi::g_value_get_boxed(<a href="#905">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
 <a href=#908 id=908 data-nosnippet>908</a>            <a href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
 <a href=#909 id=909 data-nosnippet>909</a>            <a href="translate.rs.html#1627-1629">from_glib_none</a>(<a href="#907">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span>ffi::GVariantType)
 <a href=#910 id=910 data-nosnippet>910</a>        }
@@ -986,10 +986,10 @@
 <a href=#913 id=913 data-nosnippet>913</a>
 <a href=#914 id=914 data-nosnippet>914</a><span class="attr">#[doc(hidden)]
 <a href=#915 id=915 data-nosnippet>915</a></span><span class="kw">impl </span><a href="value.rs.html#372-382"><span class="kw">crate</span>::value::ToValue</a> <span class="kw">for </span><a href="#40-47">VariantType</a> {
-<a href=#916 id=916 data-nosnippet>916</a>    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::<a href="value.rs.html#490-526">Value</a> {
+<a href=#916 id=916 data-nosnippet>916</a>    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::<a href="value.rs.html#490-539">Value</a> {
 <a href=#917 id=917 data-nosnippet>917</a>        <span class="kw">unsafe </span>{
-<a href=#918 id=918 data-nosnippet>918</a>            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::<a href="value.rs.html#490-526">Value</a>::<a href="value.rs.html#552-558">from_type_unchecked</a>(<a href="#40-47">VariantType</a>::<a href="types.rs.html#293">static_type</a>());
-<a href=#919 id=919 data-nosnippet>919</a>            gobject_ffi::<a href="../../gobject_sys/fn.g_value_set_boxed.html">g_value_set_boxed</a>(
+<a href=#918 id=918 data-nosnippet>918</a>            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::<a href="value.rs.html#490-539">Value</a>::<a href="value.rs.html#565-571">from_type_unchecked</a>(<a href="#40-47">VariantType</a>::<a href="types.rs.html#293">static_type</a>());
+<a href=#919 id=919 data-nosnippet>919</a>            gobject_ffi::g_value_set_boxed(
 <a href=#920 id=920 data-nosnippet>920</a>                <a href="#918">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>,
 <a href=#921 id=921 data-nosnippet>921</a>                ToGlibPtr::&lt;<span class="kw-2">*mut </span><span class="kw">_</span>&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<span class="kw-2">&amp;</span><a class="self" href="#916">self</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
 <a href=#922 id=922 data-nosnippet>922</a>            );
@@ -1003,11 +1003,11 @@
 <a href=#930 id=930 data-nosnippet>930</a>}
 <a href=#931 id=931 data-nosnippet>931</a>
 <a href=#932 id=932 data-nosnippet>932</a><span class="attr">#[doc(hidden)]
-<a href=#933 id=933 data-nosnippet>933</a></span><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#40-47">VariantType</a>&gt; <span class="kw">for </span><span class="kw">crate</span>::<a href="value.rs.html#490-526">Value</a> {
+<a href=#933 id=933 data-nosnippet>933</a></span><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#40-47">VariantType</a>&gt; <span class="kw">for </span><span class="kw">crate</span>::<a href="value.rs.html#490-539">Value</a> {
 <a href=#934 id=934 data-nosnippet>934</a>    <span class="kw">fn </span>from(t: <a href="#40-47">VariantType</a>) -&gt; <span class="self">Self </span>{
 <a href=#935 id=935 data-nosnippet>935</a>        <span class="kw">unsafe </span>{
-<a href=#936 id=936 data-nosnippet>936</a>            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::<a href="value.rs.html#490-526">Value</a>::<a href="value.rs.html#552-558">from_type_unchecked</a>(<a href="#40-47">VariantType</a>::<a href="types.rs.html#293">static_type</a>());
-<a href=#937 id=937 data-nosnippet>937</a>            gobject_ffi::<a href="../../gobject_sys/fn.g_value_take_boxed.html">g_value_take_boxed</a>(
+<a href=#936 id=936 data-nosnippet>936</a>            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::<a href="value.rs.html#490-539">Value</a>::<a href="value.rs.html#565-571">from_type_unchecked</a>(<a href="#40-47">VariantType</a>::<a href="types.rs.html#293">static_type</a>());
+<a href=#937 id=937 data-nosnippet>937</a>            gobject_ffi::g_value_take_boxed(
 <a href=#938 id=938 data-nosnippet>938</a>                <a href="#936">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>,
 <a href=#939 id=939 data-nosnippet>939</a>                IntoGlibPtr::&lt;<span class="kw-2">*mut </span><span class="kw">_</span>&gt;::<a href="translate.rs.html#715">into_glib_ptr</a>(<a href="#934">t</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
 <a href=#940 id=940 data-nosnippet>940</a>            );
@@ -1018,10 +1018,10 @@
 <a href=#945 id=945 data-nosnippet>945</a>
 <a href=#946 id=946 data-nosnippet>946</a><span class="attr">#[doc(hidden)]
 <a href=#947 id=947 data-nosnippet>947</a></span><span class="kw">impl </span><a href="value.rs.html#400-405"><span class="kw">crate</span>::value::ToValueOptional</a> <span class="kw">for </span><a href="#40-47">VariantType</a> {
-<a href=#948 id=948 data-nosnippet>948</a>    <span class="kw">fn </span>to_value_optional(s: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <span class="kw">crate</span>::<a href="value.rs.html#490-526">Value</a> {
-<a href=#949 id=949 data-nosnippet>949</a>        <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::<a href="value.rs.html#490-526">Value</a>::<a href="value.rs.html#563-565">for_value_type</a>::&lt;<span class="self">Self</span>&gt;();
+<a href=#948 id=948 data-nosnippet>948</a>    <span class="kw">fn </span>to_value_optional(s: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <span class="kw">crate</span>::<a href="value.rs.html#490-539">Value</a> {
+<a href=#949 id=949 data-nosnippet>949</a>        <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::<a href="value.rs.html#490-539">Value</a>::<a href="value.rs.html#576-578">for_value_type</a>::&lt;<span class="self">Self</span>&gt;();
 <a href=#950 id=950 data-nosnippet>950</a>        <span class="kw">unsafe </span>{
-<a href=#951 id=951 data-nosnippet>951</a>            gobject_ffi::<a href="../../gobject_sys/fn.g_value_set_boxed.html">g_value_set_boxed</a>(
+<a href=#951 id=951 data-nosnippet>951</a>            gobject_ffi::g_value_set_boxed(
 <a href=#952 id=952 data-nosnippet>952</a>                <a href="#949">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>,
 <a href=#953 id=953 data-nosnippet>953</a>                ToGlibPtr::&lt;<span class="kw-2">*mut </span><span class="kw">_</span>&gt;::<a href="translate.rs.html#437">to_glib_none</a>(<span class="kw-2">&amp;</span><a href="#948">s</a>).<span class="number">0 </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
 <a href=#954 id=954 data-nosnippet>954</a>            );
@@ -1110,11 +1110,11 @@
 <a href=#1037 id=1037 data-nosnippet>1037</a>    ///
 <a href=#1038 id=1038 data-nosnippet>1038</a>    /// Returns `Ok` if the type is a definite tuple or dictionary entry type,
 <a href=#1039 id=1039 data-nosnippet>1039</a>    /// `Err` otherwise.
-<a href=#1040 id=1040 data-nosnippet>1040</a>    </span><span class="kw">pub fn </span>new(ty: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#358-360">VariantTy</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#276-284">BoolError</a>&gt; {
+<a href=#1040 id=1040 data-nosnippet>1040</a>    </span><span class="kw">pub fn </span>new(ty: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="#358-360">VariantTy</a>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="self">Self</span>, <a href="error.rs.html#311-319">BoolError</a>&gt; {
 <a href=#1041 id=1041 data-nosnippet>1041</a>        <span class="kw">if </span>(<a href="#1040">ty</a>.<a href="#627-629">is_tuple</a>() &amp;&amp; <a href="#1040">ty</a> != <a href="#358-360">VariantTy</a>::<a href="#480-481">TUPLE</a>) || <a href="#1040">ty</a>.<a href="#634-636">is_dict_entry</a>() {
 <a href=#1042 id=1042 data-nosnippet>1042</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<span class="self">Self </span>{ elem: <a href="#1040">ty</a>.<a href="#690-701">first</a>() })
 <a href=#1043 id=1043 data-nosnippet>1043</a>        } <span class="kw">else </span>{
-<a href=#1044 id=1044 data-nosnippet>1044</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="error.rs.html#222-244">bool_error!</a>(
+<a href=#1044 id=1044 data-nosnippet>1044</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="error.rs.html#257-279">bool_error!</a>(
 <a href=#1045 id=1045 data-nosnippet>1045</a>                <span class="string">"Expected a definite tuple or dictionary entry type"
 <a href=#1046 id=1046 data-nosnippet>1046</a>            </span>))
 <a href=#1047 id=1047 data-nosnippet>1047</a>        }
