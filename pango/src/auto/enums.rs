@@ -3076,6 +3076,144 @@ impl From<Weight> for glib::Value {
     }
 }
 
+#[cfg(feature = "v1_58")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+#[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
+#[non_exhaustive]
+#[doc(alias = "PangoWidth")]
+pub enum Width {
+    #[doc(alias = "PANGO_WIDTH_ULTRA_CONDENSED")]
+    UltraCondensed,
+    #[doc(alias = "PANGO_WIDTH_EXTRA_CONDENSED")]
+    ExtraCondensed,
+    #[doc(alias = "PANGO_WIDTH_CONDENSED")]
+    Condensed,
+    #[doc(alias = "PANGO_WIDTH_SEMI_CONDENSED")]
+    SemiCondensed,
+    #[doc(alias = "PANGO_WIDTH_NORMAL")]
+    Normal,
+    #[doc(alias = "PANGO_WIDTH_SEMI_EXPANDED")]
+    SemiExpanded,
+    #[doc(alias = "PANGO_WIDTH_EXPANDED")]
+    Expanded,
+    #[doc(alias = "PANGO_WIDTH_EXTRA_EXPANDED")]
+    ExtraExpanded,
+    #[doc(alias = "PANGO_WIDTH_ULTRA_EXPANDED")]
+    UltraExpanded,
+    #[doc(hidden)]
+    __Unknown(i32),
+}
+
+#[cfg(feature = "v1_58")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+#[doc(hidden)]
+impl IntoGlib for Width {
+    type GlibType = ffi::PangoWidth;
+
+    #[inline]
+    fn into_glib(self) -> ffi::PangoWidth {
+        match self {
+            Self::UltraCondensed => ffi::PANGO_WIDTH_ULTRA_CONDENSED,
+            Self::ExtraCondensed => ffi::PANGO_WIDTH_EXTRA_CONDENSED,
+            Self::Condensed => ffi::PANGO_WIDTH_CONDENSED,
+            Self::SemiCondensed => ffi::PANGO_WIDTH_SEMI_CONDENSED,
+            Self::Normal => ffi::PANGO_WIDTH_NORMAL,
+            Self::SemiExpanded => ffi::PANGO_WIDTH_SEMI_EXPANDED,
+            Self::Expanded => ffi::PANGO_WIDTH_EXPANDED,
+            Self::ExtraExpanded => ffi::PANGO_WIDTH_EXTRA_EXPANDED,
+            Self::UltraExpanded => ffi::PANGO_WIDTH_ULTRA_EXPANDED,
+            Self::__Unknown(value) => value,
+        }
+    }
+}
+
+#[cfg(feature = "v1_58")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+#[doc(hidden)]
+impl FromGlib<ffi::PangoWidth> for Width {
+    #[inline]
+    unsafe fn from_glib(value: ffi::PangoWidth) -> Self {
+        match value {
+            ffi::PANGO_WIDTH_ULTRA_CONDENSED => Self::UltraCondensed,
+            ffi::PANGO_WIDTH_EXTRA_CONDENSED => Self::ExtraCondensed,
+            ffi::PANGO_WIDTH_CONDENSED => Self::Condensed,
+            ffi::PANGO_WIDTH_SEMI_CONDENSED => Self::SemiCondensed,
+            ffi::PANGO_WIDTH_NORMAL => Self::Normal,
+            ffi::PANGO_WIDTH_SEMI_EXPANDED => Self::SemiExpanded,
+            ffi::PANGO_WIDTH_EXPANDED => Self::Expanded,
+            ffi::PANGO_WIDTH_EXTRA_EXPANDED => Self::ExtraExpanded,
+            ffi::PANGO_WIDTH_ULTRA_EXPANDED => Self::UltraExpanded,
+            value => Self::__Unknown(value),
+        }
+    }
+}
+
+#[cfg(feature = "v1_58")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+impl StaticType for Width {
+    #[inline]
+    #[doc(alias = "pango_width_get_type")]
+    fn static_type() -> glib::Type {
+        unsafe { from_glib(ffi::pango_width_get_type()) }
+    }
+}
+
+#[cfg(feature = "v1_58")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+impl glib::HasParamSpec for Width {
+    type ParamSpec = glib::ParamSpecEnum;
+    type SetValue = Self;
+    type BuilderFn = fn(&str, Self) -> glib::ParamSpecEnumBuilder<Self>;
+
+    fn param_spec_builder() -> Self::BuilderFn {
+        Self::ParamSpec::builder_with_default
+    }
+}
+
+#[cfg(feature = "v1_58")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+impl glib::value::ValueType for Width {
+    type Type = Self;
+}
+
+#[cfg(feature = "v1_58")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+unsafe impl<'a> glib::value::FromValue<'a> for Width {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    #[inline]
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        unsafe { from_glib(glib::gobject_ffi::g_value_get_enum(value.to_glib_none().0)) }
+    }
+}
+
+#[cfg(feature = "v1_58")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+impl ToValue for Width {
+    #[inline]
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_enum(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    #[inline]
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+#[cfg(feature = "v1_58")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+impl From<Width> for glib::Value {
+    #[inline]
+    fn from(v: Width) -> Self {
+        ToValue::to_value(&v)
+    }
+}
+
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Clone, Copy)]
 #[non_exhaustive]
 #[doc(alias = "PangoWrapMode")]
