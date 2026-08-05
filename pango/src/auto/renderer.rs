@@ -2,6 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+#[cfg(feature = "v1_58")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+use crate::RenderComponent;
 use crate::{
     Color, Font, Glyph, GlyphItem, GlyphString, Layout, LayoutLine, Matrix, RenderPart, ffi,
 };
@@ -167,13 +170,17 @@ pub trait RendererExt: IsA<Renderer> + 'static {
         }
     }
 
-    //#[cfg(feature = "v1_58")]
-    //#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
-    //#[doc(alias = "pango_renderer_get_components")]
-    //#[doc(alias = "get_components")]
-    //fn components(&self) -> /*Ignored*/RenderComponent {
-    //    unsafe { TODO: call ffi:pango_renderer_get_components() }
-    //}
+    #[cfg(feature = "v1_58")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+    #[doc(alias = "pango_renderer_get_components")]
+    #[doc(alias = "get_components")]
+    fn components(&self) -> RenderComponent {
+        unsafe {
+            from_glib(ffi::pango_renderer_get_components(
+                self.as_ref().to_glib_none().0,
+            ))
+        }
+    }
 
     #[doc(alias = "pango_renderer_get_layout")]
     #[doc(alias = "get_layout")]
@@ -230,12 +237,17 @@ pub trait RendererExt: IsA<Renderer> + 'static {
         }
     }
 
-    //#[cfg(feature = "v1_58")]
-    //#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
-    //#[doc(alias = "pango_renderer_set_components")]
-    //fn set_components(&self, components: /*Ignored*/RenderComponent) {
-    //    unsafe { TODO: call ffi:pango_renderer_set_components() }
-    //}
+    #[cfg(feature = "v1_58")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+    #[doc(alias = "pango_renderer_set_components")]
+    fn set_components(&self, components: RenderComponent) {
+        unsafe {
+            ffi::pango_renderer_set_components(
+                self.as_ref().to_glib_none().0,
+                components.into_glib(),
+            );
+        }
+    }
 
     #[doc(alias = "pango_renderer_set_matrix")]
     fn set_matrix(&self, matrix: Option<&Matrix>) {

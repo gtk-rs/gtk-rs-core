@@ -101,6 +101,9 @@ pub use self::enums::TextTransform;
 pub use self::enums::Underline;
 pub use self::enums::Variant;
 pub use self::enums::Weight;
+#[cfg(feature = "v1_58")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+pub use self::enums::Width;
 pub use self::enums::WrapMode;
 
 mod flags;
@@ -111,6 +114,9 @@ pub use self::flags::LayoutDeserializeFlags;
 #[cfg(feature = "v1_50")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
 pub use self::flags::LayoutSerializeFlags;
+#[cfg(feature = "v1_58")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+pub use self::flags::RenderComponent;
 #[cfg(feature = "v1_44")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v1_44")))]
 pub use self::flags::ShapeFlags;
