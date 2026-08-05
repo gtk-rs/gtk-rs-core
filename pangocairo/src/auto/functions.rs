@@ -97,12 +97,22 @@ pub fn layout_path(cr: &cairo::Context, layout: &pango::Layout) {
     }
 }
 
-//#[cfg(feature = "v1_58")]
-//#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
-//#[doc(alias = "pango_cairo_layout_path_for_components")]
-//pub fn layout_path_for_components(cr: &mut cairo::Context, layout: &pango::Layout, components: /*Ignored*/pango::RenderComponent) {
-//    unsafe { TODO: call ffi:pango_cairo_layout_path_for_components() }
-//}
+#[cfg(feature = "v1_58")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+#[doc(alias = "pango_cairo_layout_path_for_components")]
+pub fn layout_path_for_components(
+    cr: &mut cairo::Context,
+    layout: &pango::Layout,
+    components: pango::RenderComponent,
+) {
+    unsafe {
+        ffi::pango_cairo_layout_path_for_components(
+            cr.to_glib_none_mut().0,
+            layout.to_glib_none().0,
+            components.into_glib(),
+        );
+    }
+}
 
 #[doc(alias = "pango_cairo_show_error_underline")]
 pub fn show_error_underline(cr: &cairo::Context, x: f64, y: f64, width: f64, height: f64) {
