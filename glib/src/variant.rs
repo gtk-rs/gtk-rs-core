@@ -1393,10 +1393,8 @@ impl<T: FromVariant> FromVariant for Vec<T> {
         let mut vec = Vec::with_capacity(variant.n_children());
 
         for i in 0..variant.n_children() {
-            match variant.child_value(i).get() {
-                Some(child) => vec.push(child),
-                None => return None,
-            }
+            let child = variant.child_value(i).get()?;
+            vec.push(child)
         }
 
         Some(vec)
