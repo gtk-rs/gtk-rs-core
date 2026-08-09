@@ -78,6 +78,8 @@ pub const G_BINDING_SYNC_CREATE: GBindingFlags = 2;
 pub const G_BINDING_INVERT_BOOLEAN: GBindingFlags = 4;
 
 pub type GConnectFlags = c_uint;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_CONNECT_DEFAULT: GConnectFlags = 0;
 pub const G_CONNECT_AFTER: GConnectFlags = 1;
 pub const G_CONNECT_SWAPPED: GConnectFlags = 2;
@@ -134,6 +136,8 @@ pub const G_TYPE_DEBUG_INSTANCE_COUNT: GTypeDebugFlags = 4;
 pub const G_TYPE_DEBUG_MASK: GTypeDebugFlags = 7;
 
 pub type GTypeFlags = c_uint;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_TYPE_FLAG_NONE: GTypeFlags = 0;
 pub const G_TYPE_FLAG_ABSTRACT: GTypeFlags = 16;
 pub const G_TYPE_FLAG_VALUE_ABSTRACT: GTypeFlags = 32;
