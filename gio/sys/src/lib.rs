@@ -343,6 +343,8 @@ pub const G_TLS_CHANNEL_BINDING_ERROR_GENERAL_ERROR: GTlsChannelBindingError = 4
 pub type GTlsChannelBindingType = c_int;
 pub const G_TLS_CHANNEL_BINDING_TLS_UNIQUE: GTlsChannelBindingType = 0;
 pub const G_TLS_CHANNEL_BINDING_TLS_SERVER_END_POINT: GTlsChannelBindingType = 1;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_TLS_CHANNEL_BINDING_TLS_EXPORTER: GTlsChannelBindingType = 2;
 
 pub type GTlsError = c_int;
@@ -582,6 +584,8 @@ pub const G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS: GDBusConnectio
 pub const G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION: GDBusConnectionFlags = 8;
 pub const G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING: GDBusConnectionFlags = 16;
 pub const G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER: GDBusConnectionFlags = 32;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_DBUS_CONNECTION_FLAGS_CROSS_NAMESPACE: GDBusConnectionFlags = 64;
 
 pub type GDBusInterfaceSkeletonFlags = c_uint;
@@ -731,6 +735,8 @@ pub type GTestDBusFlags = c_uint;
 pub const G_TEST_DBUS_NONE: GTestDBusFlags = 0;
 
 pub type GTlsCertificateFlags = c_uint;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_TLS_CERTIFICATE_NO_FLAGS: GTlsCertificateFlags = 0;
 pub const G_TLS_CERTIFICATE_UNKNOWN_CA: GTlsCertificateFlags = 1;
 pub const G_TLS_CERTIFICATE_BAD_IDENTITY: GTlsCertificateFlags = 2;
@@ -14596,12 +14602,21 @@ unsafe extern "C" {
         fd: c_int,
         error: *mut *mut glib::GError,
     ) -> c_int;
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    pub fn g_unix_fd_list_append_take(list: *mut GUnixFDList, fd: c_int) -> size_t;
     pub fn g_unix_fd_list_get(
         list: *mut GUnixFDList,
         index_: c_int,
         error: *mut *mut glib::GError,
     ) -> c_int;
     pub fn g_unix_fd_list_get_length(list: *mut GUnixFDList) -> c_int;
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    pub fn g_unix_fd_list_lookup(list: *mut GUnixFDList, index_: size_t) -> c_int;
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    pub fn g_unix_fd_list_peek(list: *mut GUnixFDList, index_: size_t) -> c_int;
     pub fn g_unix_fd_list_peek_fds(list: *mut GUnixFDList, length: *mut c_int) -> *const c_int;
     pub fn g_unix_fd_list_steal_fds(list: *mut GUnixFDList, length: *mut c_int) -> *mut c_int;
 
