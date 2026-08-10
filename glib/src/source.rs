@@ -845,6 +845,43 @@ where
 }
 
 // rustdoc-stripper-ignore-next
+/// Adds a closure to be called by the main loop the returned `Source` is attached to at regular
+/// intervals with nanosecond granularity.
+///
+/// `func` will be called repeatedly every `interval` nanoseconds until it
+/// returns `ControlFlow::Break`. Precise timing is not guaranteed, the timeout may
+/// be delayed by other events.
+#[cfg(feature = "v2_90")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+#[doc(alias = "g_timeout_source_new_ns")]
+pub fn timeout_source_new_ns<F>(
+    interval: u64,
+    name: Option<&str>,
+    priority: Priority,
+    func: F,
+) -> Source
+where
+    F: FnMut() -> ControlFlow + Send + 'static,
+{
+    unsafe {
+        let source = ffi::g_timeout_source_new_ns(interval);
+        ffi::g_source_set_callback(
+            source,
+            Some(trampoline::<F>),
+            into_raw(func),
+            Some(destroy_closure::<F>),
+        );
+        ffi::g_source_set_priority(source, priority.into_glib());
+
+        if let Some(name) = name {
+            ffi::g_source_set_name(source, name.to_glib_none().0);
+        }
+
+        from_glib_full(source)
+    }
+}
+
+// rustdoc-stripper-ignore-next
 /// Adds a closure to be called by the main loop the returned `Source` is attached to when a child
 /// process exits.
 ///
