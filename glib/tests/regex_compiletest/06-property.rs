@@ -31,15 +31,15 @@ fn main() {
 
     let r = glib::Regex::new(
         "hello",
-        glib::RegexCompileFlags::DEFAULT,
-        glib::RegexMatchFlags::DEFAULT,
+        glib::RegexCompileFlags::empty(),
+        glib::RegexMatchFlags::empty(),
     )
     .unwrap()
     .unwrap();
 
     let s = glib::GStr::from_str_until_nul("hello\0").unwrap();
     let match_info = r
-        .match_(s, glib::RegexMatchFlags::DEFAULT)
+        .match_(s, glib::RegexMatchFlags::empty())
         .expect("should match");
 
     myfoo.set_match_info(match_info);
