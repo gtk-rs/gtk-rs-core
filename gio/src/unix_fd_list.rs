@@ -79,6 +79,27 @@ pub trait UnixFDListExtManual: IsA<UnixFDList> + Sized {
             )
         }
     }
+
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    #[doc(alias = "g_unix_fd_list_append_take")]
+    fn append_take(&self, fd: impl IntoRawFd) -> usize {
+        unsafe { ffi::g_unix_fd_list_append_take(self.as_ref().to_glib_none().0, fd.into_raw_fd()) }
+    }
+
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    #[doc(alias = "g_unix_fd_list_lookup")]
+    fn lookup(&self, index_: usize) -> RawFd {
+        unsafe { ffi::g_unix_fd_list_lookup(self.as_ref().to_glib_none().0, index_) }
+    }
+
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    #[doc(alias = "g_unix_fd_list_peek")]
+    fn peek(&self, index_: usize) -> RawFd {
+        unsafe { ffi::g_unix_fd_list_peek(self.as_ref().to_glib_none().0, index_) }
+    }
 }
 
 impl<O: IsA<UnixFDList>> UnixFDListExtManual for O {}
