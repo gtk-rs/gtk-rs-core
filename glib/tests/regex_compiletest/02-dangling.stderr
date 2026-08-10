@@ -4,7 +4,7 @@ error[E0505]: cannot move out of `s` because it is borrowed
  9 |     let s = glib::GString::from("hello");
    |         - binding `s` declared here
 10 |     let match_info = r
-11 |         .match_(s.as_gstr(), glib::RegexMatchFlags::DEFAULT)
+11 |         .match_(s.as_gstr(), glib::RegexMatchFlags::empty())
    |                 - borrow of `s` occurs here
 ...
 14 |     drop(s);
@@ -14,5 +14,5 @@ error[E0505]: cannot move out of `s` because it is borrowed
    |
 help: consider cloning the value if the performance cost is acceptable
    |
-11 |         .match_(s.clone().as_gstr(), glib::RegexMatchFlags::DEFAULT)
+11 |         .match_(s.clone().as_gstr(), glib::RegexMatchFlags::empty())
    |                  ++++++++

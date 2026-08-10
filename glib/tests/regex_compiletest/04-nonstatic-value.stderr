@@ -4,7 +4,7 @@ error[E0597]: `s` does not live long enough
 13 |     let s = glib::GString::from("hello");
    |         - binding `s` declared here
 14 |     let match_info = r
-15 |         .match_(s.as_gstr(), glib::RegexMatchFlags::DEFAULT)
+15 |         .match_(s.as_gstr(), glib::RegexMatchFlags::empty())
    |                 ^ borrowed value does not live long enough
 ...
 18 |     let v: glib::Value = match_info.to_value();
@@ -19,7 +19,7 @@ error[E0505]: cannot move out of `s` because it is borrowed
 13 |     let s = glib::GString::from("hello");
    |         - binding `s` declared here
 14 |     let match_info = r
-15 |         .match_(s.as_gstr(), glib::RegexMatchFlags::DEFAULT)
+15 |         .match_(s.as_gstr(), glib::RegexMatchFlags::empty())
    |                 - borrow of `s` occurs here
 ...
 18 |     let v: glib::Value = match_info.to_value();
@@ -30,5 +30,5 @@ error[E0505]: cannot move out of `s` because it is borrowed
    |
 help: consider cloning the value if the performance cost is acceptable
    |
-15 |         .match_(s.clone().as_gstr(), glib::RegexMatchFlags::DEFAULT)
+15 |         .match_(s.clone().as_gstr(), glib::RegexMatchFlags::empty())
    |                  ++++++++
