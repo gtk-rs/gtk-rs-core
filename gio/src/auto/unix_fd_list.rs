@@ -30,31 +30,10 @@ impl Default for UnixFDList {
 }
 
 pub trait UnixFDListExt: IsA<UnixFDList> + 'static {
-    #[cfg(feature = "v2_90")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
-    #[doc(alias = "g_unix_fd_list_append_take")]
-    fn append_take(&self, fd: i32) -> usize {
-        unsafe { ffi::g_unix_fd_list_append_take(self.as_ref().to_glib_none().0, fd) }
-    }
-
     #[doc(alias = "g_unix_fd_list_get_length")]
     #[doc(alias = "get_length")]
     fn length(&self) -> i32 {
         unsafe { ffi::g_unix_fd_list_get_length(self.as_ref().to_glib_none().0) }
-    }
-
-    #[cfg(feature = "v2_90")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
-    #[doc(alias = "g_unix_fd_list_lookup")]
-    fn lookup(&self, index_: usize) -> i32 {
-        unsafe { ffi::g_unix_fd_list_lookup(self.as_ref().to_glib_none().0, index_) }
-    }
-
-    #[cfg(feature = "v2_90")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
-    #[doc(alias = "g_unix_fd_list_peek")]
-    fn peek(&self, index_: usize) -> i32 {
-        unsafe { ffi::g_unix_fd_list_peek(self.as_ref().to_glib_none().0, index_) }
     }
 }
 
