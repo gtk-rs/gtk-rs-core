@@ -374,7 +374,7 @@ pub mod plugin {
                         glib::Type::FLAGS,
                         type_name,
                         self.obj().upcast_ref::<glib::TypePlugin>(),
-                        glib::TypeFlags::NONE,
+                        glib::TypeFlags::empty(),
                     )
                 });
                 if type_.is_valid() {
