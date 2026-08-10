@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/file.rs`."><title>file.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-650bd49d.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.99.0-nightly (7608eb7b0 2026-08-05)" data-channel="nightly" data-search-js="search-cf4fc35e.js" data-stringdex-js="stringdex-b5109af9.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-417ebf0a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-d4bd101e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/file.rs`."><title>file.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-650bd49d.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.99.0-nightly (969b803cb 2026-08-09)" data-channel="nightly" data-search-js="search-cf4fc35e.js" data-stringdex-js="stringdex-b5109af9.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-417ebf0a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-d4bd101e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -76,10 +76,10 @@
 <a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
 <a href=#4 id=4 data-nosnippet>4</a>
 <a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{
-<a href=#6 id=6 data-nosnippet>6</a>    <a href="app_info.rs.html#9-77">AppInfo</a>, <a href="async_result.rs.html#8-106">AsyncResult</a>, <a href="cancellable.rs.html#8-58">Cancellable</a>, <a href="flags.rs.html#1748-1757">DriveStartFlags</a>, <a href="file_attribute_info_list.rs.html#8-19">FileAttributeInfoList</a>, <a href="flags.rs.html#1920-1953">FileCopyFlags</a>,
-<a href=#7 id=7 data-nosnippet>7</a>    <a href="flags.rs.html#2027-2052">FileCreateFlags</a>, <a href="file_enumerator.rs.html#9-54">FileEnumerator</a>, <a href="file_io_stream.rs.html#9-39">FileIOStream</a>, <a href="file_info.rs.html#9-56">FileInfo</a>, <a href="file_input_stream.rs.html#9-29">FileInputStream</a>, <a href="flags.rs.html#2126-2153">FileMeasureFlags</a>,
-<a href=#8 id=8 data-nosnippet>8</a>    <a href="file_monitor.rs.html#14-89">FileMonitor</a>, <a href="flags.rs.html#2227-2257">FileMonitorFlags</a>, <a href="file_output_stream.rs.html#9-34">FileOutputStream</a>, <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>, <a href="enums.rs.html#2063-2089">FileType</a>, <a href="mount.rs.html#17-80">Mount</a>,
-<a href=#9 id=9 data-nosnippet>9</a>    <a href="flags.rs.html#2600-2609">MountMountFlags</a>, <a href="mount_operation.rs.html#14-189">MountOperation</a>, <a href="flags.rs.html#2683-2696">MountUnmountFlags</a>, <a href="../../../gio_sys/index.html">ffi</a>,
+<a href=#6 id=6 data-nosnippet>6</a>    <a href="app_info.rs.html#9-77">AppInfo</a>, <a href="async_result.rs.html#8-106">AsyncResult</a>, <a href="cancellable.rs.html#8-58">Cancellable</a>, <a href="flags.rs.html#1751-1760">DriveStartFlags</a>, <a href="file_attribute_info_list.rs.html#8-19">FileAttributeInfoList</a>, <a href="flags.rs.html#1923-1956">FileCopyFlags</a>,
+<a href=#7 id=7 data-nosnippet>7</a>    <a href="flags.rs.html#2030-2055">FileCreateFlags</a>, <a href="file_enumerator.rs.html#9-54">FileEnumerator</a>, <a href="file_io_stream.rs.html#9-39">FileIOStream</a>, <a href="file_info.rs.html#9-56">FileInfo</a>, <a href="file_input_stream.rs.html#9-29">FileInputStream</a>, <a href="flags.rs.html#2129-2156">FileMeasureFlags</a>,
+<a href=#8 id=8 data-nosnippet>8</a>    <a href="file_monitor.rs.html#14-89">FileMonitor</a>, <a href="flags.rs.html#2230-2260">FileMonitorFlags</a>, <a href="file_output_stream.rs.html#9-34">FileOutputStream</a>, <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>, <a href="enums.rs.html#2063-2089">FileType</a>, <a href="mount.rs.html#17-80">Mount</a>,
+<a href=#9 id=9 data-nosnippet>9</a>    <a href="flags.rs.html#2603-2612">MountMountFlags</a>, <a href="mount_operation.rs.html#14-189">MountOperation</a>, <a href="flags.rs.html#2686-2699">MountUnmountFlags</a>, <a href="../../../gio_sys/index.html">ffi</a>,
 <a href=#10 id=10 data-nosnippet>10</a>};
 <a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 <a href=#12 id=12 data-nosnippet>12</a><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>};
@@ -410,7 +410,7 @@
 <a href=#337 id=337 data-nosnippet>337</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_append_to"</span>)]
 <a href=#338 id=338 data-nosnippet>338</a>    </span><span class="kw">fn </span>append_to(
 <a href=#339 id=339 data-nosnippet>339</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#340 id=340 data-nosnippet>340</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#340 id=340 data-nosnippet>340</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#341 id=341 data-nosnippet>341</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#342 id=342 data-nosnippet>342</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_output_stream.rs.html#9-34">FileOutputStream</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#343 id=343 data-nosnippet>343</a>        <span class="kw">unsafe </span>{
@@ -450,7 +450,7 @@
 <a href=#377 id=377 data-nosnippet>377</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_append_to_async"</span>)]
 <a href=#378 id=378 data-nosnippet>378</a>    </span><span class="kw">fn </span>append_to_async&lt;P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_output_stream.rs.html#9-34">FileOutputStream</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#379 id=379 data-nosnippet>379</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#380 id=380 data-nosnippet>380</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#380 id=380 data-nosnippet>380</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#381 id=381 data-nosnippet>381</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#382 id=382 data-nosnippet>382</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#383 id=383 data-nosnippet>383</a>        callback: P,
@@ -503,7 +503,7 @@
 <a href=#430 id=430 data-nosnippet>430</a>
 <a href=#431 id=431 data-nosnippet>431</a>    <span class="kw">fn </span>append_to_future(
 <a href=#432 id=432 data-nosnippet>432</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#433 id=433 data-nosnippet>433</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#433 id=433 data-nosnippet>433</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#434 id=434 data-nosnippet>434</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#435 id=435 data-nosnippet>435</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_output_stream.rs.html#9-34">FileOutputStream</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
 <a href=#436 id=436 data-nosnippet>436</a>    {
@@ -522,7 +522,7 @@
 <a href=#449 id=449 data-nosnippet>449</a>    #[doc(alias = <span class="string">"g_file_build_attribute_list_for_copy"</span>)]
 <a href=#450 id=450 data-nosnippet>450</a>    </span><span class="kw">fn </span>build_attribute_list_for_copy(
 <a href=#451 id=451 data-nosnippet>451</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#452 id=452 data-nosnippet>452</a>        flags: <a href="flags.rs.html#1920-1953">FileCopyFlags</a>,
+<a href=#452 id=452 data-nosnippet>452</a>        flags: <a href="flags.rs.html#1923-1956">FileCopyFlags</a>,
 <a href=#453 id=453 data-nosnippet>453</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#454 id=454 data-nosnippet>454</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;glib::<a href="../../../glib/gstring/struct.GString.html">GString</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#455 id=455 data-nosnippet>455</a>        <span class="kw">unsafe </span>{
@@ -545,7 +545,7 @@
 <a href=#472 id=472 data-nosnippet>472</a>    </span><span class="kw">fn </span>copy(
 <a href=#473 id=473 data-nosnippet>473</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#474 id=474 data-nosnippet>474</a>        destination: <span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#14-116">File</a>&gt;,
-<a href=#475 id=475 data-nosnippet>475</a>        flags: <a href="flags.rs.html#1920-1953">FileCopyFlags</a>,
+<a href=#475 id=475 data-nosnippet>475</a>        flags: <a href="flags.rs.html#1923-1956">FileCopyFlags</a>,
 <a href=#476 id=476 data-nosnippet>476</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#477 id=477 data-nosnippet>477</a>        progress_callback: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>)&gt;,
 <a href=#478 id=478 data-nosnippet>478</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
@@ -614,7 +614,7 @@
 <a href=#541 id=541 data-nosnippet>541</a>    </span><span class="kw">fn </span>copy_attributes(
 <a href=#542 id=542 data-nosnippet>542</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#543 id=543 data-nosnippet>543</a>        destination: <span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#14-116">File</a>&gt;,
-<a href=#544 id=544 data-nosnippet>544</a>        flags: <a href="flags.rs.html#1920-1953">FileCopyFlags</a>,
+<a href=#544 id=544 data-nosnippet>544</a>        flags: <a href="flags.rs.html#1923-1956">FileCopyFlags</a>,
 <a href=#545 id=545 data-nosnippet>545</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#546 id=546 data-nosnippet>546</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#547 id=547 data-nosnippet>547</a>        <span class="kw">unsafe </span>{
@@ -668,7 +668,7 @@
 <a href=#595 id=595 data-nosnippet>595</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_create"</span>)]
 <a href=#596 id=596 data-nosnippet>596</a>    </span><span class="kw">fn </span>create(
 <a href=#597 id=597 data-nosnippet>597</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#598 id=598 data-nosnippet>598</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#598 id=598 data-nosnippet>598</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#599 id=599 data-nosnippet>599</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#600 id=600 data-nosnippet>600</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_output_stream.rs.html#9-34">FileOutputStream</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#601 id=601 data-nosnippet>601</a>        <span class="kw">unsafe </span>{
@@ -709,7 +709,7 @@
 <a href=#636 id=636 data-nosnippet>636</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_create_async"</span>)]
 <a href=#637 id=637 data-nosnippet>637</a>    </span><span class="kw">fn </span>create_async&lt;P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_output_stream.rs.html#9-34">FileOutputStream</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#638 id=638 data-nosnippet>638</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#639 id=639 data-nosnippet>639</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#639 id=639 data-nosnippet>639</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#640 id=640 data-nosnippet>640</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#641 id=641 data-nosnippet>641</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#642 id=642 data-nosnippet>642</a>        callback: P,
@@ -762,7 +762,7 @@
 <a href=#689 id=689 data-nosnippet>689</a>
 <a href=#690 id=690 data-nosnippet>690</a>    <span class="kw">fn </span>create_future(
 <a href=#691 id=691 data-nosnippet>691</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#692 id=692 data-nosnippet>692</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#692 id=692 data-nosnippet>692</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#693 id=693 data-nosnippet>693</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#694 id=694 data-nosnippet>694</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_output_stream.rs.html#9-34">FileOutputStream</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
 <a href=#695 id=695 data-nosnippet>695</a>    {
@@ -813,7 +813,7 @@
 <a href=#740 id=740 data-nosnippet>740</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_create_readwrite"</span>)]
 <a href=#741 id=741 data-nosnippet>741</a>    </span><span class="kw">fn </span>create_readwrite(
 <a href=#742 id=742 data-nosnippet>742</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#743 id=743 data-nosnippet>743</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#743 id=743 data-nosnippet>743</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#744 id=744 data-nosnippet>744</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#745 id=745 data-nosnippet>745</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_io_stream.rs.html#9-39">FileIOStream</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#746 id=746 data-nosnippet>746</a>        <span class="kw">unsafe </span>{
@@ -854,7 +854,7 @@
 <a href=#781 id=781 data-nosnippet>781</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_create_readwrite_async"</span>)]
 <a href=#782 id=782 data-nosnippet>782</a>    </span><span class="kw">fn </span>create_readwrite_async&lt;P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_io_stream.rs.html#9-39">FileIOStream</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#783 id=783 data-nosnippet>783</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#784 id=784 data-nosnippet>784</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#784 id=784 data-nosnippet>784</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#785 id=785 data-nosnippet>785</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#786 id=786 data-nosnippet>786</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#787 id=787 data-nosnippet>787</a>        callback: P,
@@ -908,7 +908,7 @@
 <a href=#835 id=835 data-nosnippet>835</a>
 <a href=#836 id=836 data-nosnippet>836</a>    <span class="kw">fn </span>create_readwrite_future(
 <a href=#837 id=837 data-nosnippet>837</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#838 id=838 data-nosnippet>838</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#838 id=838 data-nosnippet>838</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#839 id=839 data-nosnippet>839</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#840 id=840 data-nosnippet>840</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_io_stream.rs.html#9-39">FileIOStream</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
 <a href=#841 id=841 data-nosnippet>841</a>    {
@@ -1074,7 +1074,7 @@
 <a href=#1001 id=1001 data-nosnippet>1001</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_eject_mountable_with_operation"</span>)]
 <a href=#1002 id=1002 data-nosnippet>1002</a>    </span><span class="kw">fn </span>eject_mountable_with_operation&lt;P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#1003 id=1003 data-nosnippet>1003</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#1004 id=1004 data-nosnippet>1004</a>        flags: <a href="flags.rs.html#2683-2696">MountUnmountFlags</a>,
+<a href=#1004 id=1004 data-nosnippet>1004</a>        flags: <a href="flags.rs.html#2686-2699">MountUnmountFlags</a>,
 <a href=#1005 id=1005 data-nosnippet>1005</a>        mount_operation: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="mount_operation.rs.html#14-189">MountOperation</a>&gt;&gt;,
 <a href=#1006 id=1006 data-nosnippet>1006</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#1007 id=1007 data-nosnippet>1007</a>        callback: P,
@@ -1131,7 +1131,7 @@
 <a href=#1058 id=1058 data-nosnippet>1058</a>
 <a href=#1059 id=1059 data-nosnippet>1059</a>    <span class="kw">fn </span>eject_mountable_with_operation_future(
 <a href=#1060 id=1060 data-nosnippet>1060</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#1061 id=1061 data-nosnippet>1061</a>        flags: <a href="flags.rs.html#2683-2696">MountUnmountFlags</a>,
+<a href=#1061 id=1061 data-nosnippet>1061</a>        flags: <a href="flags.rs.html#2686-2699">MountUnmountFlags</a>,
 <a href=#1062 id=1062 data-nosnippet>1062</a>        mount_operation: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="mount_operation.rs.html#14-189">MountOperation</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>)&gt;,
 <a href=#1063 id=1063 data-nosnippet>1063</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
 <a href=#1064 id=1064 data-nosnippet>1064</a>        <span class="kw">let </span>mount_operation = <a href="#1062">mount_operation</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(ToOwned::<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">to_owned</a>);
@@ -1191,7 +1191,7 @@
 <a href=#1118 id=1118 data-nosnippet>1118</a>    </span><span class="kw">fn </span>enumerate_children(
 <a href=#1119 id=1119 data-nosnippet>1119</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#1120 id=1120 data-nosnippet>1120</a>        attributes: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-<a href=#1121 id=1121 data-nosnippet>1121</a>        flags: <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>,
+<a href=#1121 id=1121 data-nosnippet>1121</a>        flags: <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>,
 <a href=#1122 id=1122 data-nosnippet>1122</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#1123 id=1123 data-nosnippet>1123</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_enumerator.rs.html#9-54">FileEnumerator</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#1124 id=1124 data-nosnippet>1124</a>        <span class="kw">unsafe </span>{
@@ -1941,7 +1941,7 @@
 <a href=#1868 id=1868 data-nosnippet>1868</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_measure_disk_usage"</span>)]
 <a href=#1869 id=1869 data-nosnippet>1869</a>    </span><span class="kw">fn </span>measure_disk_usage(
 <a href=#1870 id=1870 data-nosnippet>1870</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#1871 id=1871 data-nosnippet>1871</a>        flags: <a href="flags.rs.html#2126-2153">FileMeasureFlags</a>,
+<a href=#1871 id=1871 data-nosnippet>1871</a>        flags: <a href="flags.rs.html#2129-2156">FileMeasureFlags</a>,
 <a href=#1872 id=1872 data-nosnippet>1872</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#1873 id=1873 data-nosnippet>1873</a>        progress_callback: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>)&gt;,
 <a href=#1874 id=1874 data-nosnippet>1874</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
@@ -2020,7 +2020,7 @@
 <a href=#1947 id=1947 data-nosnippet>1947</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_monitor"</span>)]
 <a href=#1948 id=1948 data-nosnippet>1948</a>    </span><span class="kw">fn </span>monitor(
 <a href=#1949 id=1949 data-nosnippet>1949</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#1950 id=1950 data-nosnippet>1950</a>        flags: <a href="flags.rs.html#2227-2257">FileMonitorFlags</a>,
+<a href=#1950 id=1950 data-nosnippet>1950</a>        flags: <a href="flags.rs.html#2230-2260">FileMonitorFlags</a>,
 <a href=#1951 id=1951 data-nosnippet>1951</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#1952 id=1952 data-nosnippet>1952</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_monitor.rs.html#14-89">FileMonitor</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#1953 id=1953 data-nosnippet>1953</a>        <span class="kw">unsafe </span>{
@@ -2064,7 +2064,7 @@
 <a href=#1991 id=1991 data-nosnippet>1991</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_monitor_directory"</span>)]
 <a href=#1992 id=1992 data-nosnippet>1992</a>    </span><span class="kw">fn </span>monitor_directory(
 <a href=#1993 id=1993 data-nosnippet>1993</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#1994 id=1994 data-nosnippet>1994</a>        flags: <a href="flags.rs.html#2227-2257">FileMonitorFlags</a>,
+<a href=#1994 id=1994 data-nosnippet>1994</a>        flags: <a href="flags.rs.html#2230-2260">FileMonitorFlags</a>,
 <a href=#1995 id=1995 data-nosnippet>1995</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#1996 id=1996 data-nosnippet>1996</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_monitor.rs.html#14-89">FileMonitor</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#1997 id=1997 data-nosnippet>1997</a>        <span class="kw">unsafe </span>{
@@ -2111,7 +2111,7 @@
 <a href=#2038 id=2038 data-nosnippet>2038</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_monitor_file"</span>)]
 <a href=#2039 id=2039 data-nosnippet>2039</a>    </span><span class="kw">fn </span>monitor_file(
 <a href=#2040 id=2040 data-nosnippet>2040</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#2041 id=2041 data-nosnippet>2041</a>        flags: <a href="flags.rs.html#2227-2257">FileMonitorFlags</a>,
+<a href=#2041 id=2041 data-nosnippet>2041</a>        flags: <a href="flags.rs.html#2230-2260">FileMonitorFlags</a>,
 <a href=#2042 id=2042 data-nosnippet>2042</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#2043 id=2043 data-nosnippet>2043</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_monitor.rs.html#14-89">FileMonitor</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#2044 id=2044 data-nosnippet>2044</a>        <span class="kw">unsafe </span>{
@@ -2154,7 +2154,7 @@
 <a href=#2081 id=2081 data-nosnippet>2081</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_mount_enclosing_volume"</span>)]
 <a href=#2082 id=2082 data-nosnippet>2082</a>    </span><span class="kw">fn </span>mount_enclosing_volume&lt;P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#2083 id=2083 data-nosnippet>2083</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#2084 id=2084 data-nosnippet>2084</a>        flags: <a href="flags.rs.html#2600-2609">MountMountFlags</a>,
+<a href=#2084 id=2084 data-nosnippet>2084</a>        flags: <a href="flags.rs.html#2603-2612">MountMountFlags</a>,
 <a href=#2085 id=2085 data-nosnippet>2085</a>        mount_operation: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="mount_operation.rs.html#14-189">MountOperation</a>&gt;&gt;,
 <a href=#2086 id=2086 data-nosnippet>2086</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#2087 id=2087 data-nosnippet>2087</a>        callback: P,
@@ -2211,7 +2211,7 @@
 <a href=#2138 id=2138 data-nosnippet>2138</a>
 <a href=#2139 id=2139 data-nosnippet>2139</a>    <span class="kw">fn </span>mount_enclosing_volume_future(
 <a href=#2140 id=2140 data-nosnippet>2140</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#2141 id=2141 data-nosnippet>2141</a>        flags: <a href="flags.rs.html#2600-2609">MountMountFlags</a>,
+<a href=#2141 id=2141 data-nosnippet>2141</a>        flags: <a href="flags.rs.html#2603-2612">MountMountFlags</a>,
 <a href=#2142 id=2142 data-nosnippet>2142</a>        mount_operation: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="mount_operation.rs.html#14-189">MountOperation</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>)&gt;,
 <a href=#2143 id=2143 data-nosnippet>2143</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
 <a href=#2144 id=2144 data-nosnippet>2144</a>        <span class="kw">let </span>mount_operation = <a href="#2142">mount_operation</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(ToOwned::<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">to_owned</a>);
@@ -2255,7 +2255,7 @@
 <a href=#2182 id=2182 data-nosnippet>2182</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_mount_mountable"</span>)]
 <a href=#2183 id=2183 data-nosnippet>2183</a>    </span><span class="kw">fn </span>mount_mountable&lt;P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#14-116">File</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#2184 id=2184 data-nosnippet>2184</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#2185 id=2185 data-nosnippet>2185</a>        flags: <a href="flags.rs.html#2600-2609">MountMountFlags</a>,
+<a href=#2185 id=2185 data-nosnippet>2185</a>        flags: <a href="flags.rs.html#2603-2612">MountMountFlags</a>,
 <a href=#2186 id=2186 data-nosnippet>2186</a>        mount_operation: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="mount_operation.rs.html#14-189">MountOperation</a>&gt;&gt;,
 <a href=#2187 id=2187 data-nosnippet>2187</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#2188 id=2188 data-nosnippet>2188</a>        callback: P,
@@ -2309,7 +2309,7 @@
 <a href=#2236 id=2236 data-nosnippet>2236</a>
 <a href=#2237 id=2237 data-nosnippet>2237</a>    <span class="kw">fn </span>mount_mountable_future(
 <a href=#2238 id=2238 data-nosnippet>2238</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#2239 id=2239 data-nosnippet>2239</a>        flags: <a href="flags.rs.html#2600-2609">MountMountFlags</a>,
+<a href=#2239 id=2239 data-nosnippet>2239</a>        flags: <a href="flags.rs.html#2603-2612">MountMountFlags</a>,
 <a href=#2240 id=2240 data-nosnippet>2240</a>        mount_operation: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="mount_operation.rs.html#14-189">MountOperation</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>)&gt;,
 <a href=#2241 id=2241 data-nosnippet>2241</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="#14-116">File</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
 <a href=#2242 id=2242 data-nosnippet>2242</a>        <span class="kw">let </span>mount_operation = <a href="#2240">mount_operation</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(ToOwned::<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">to_owned</a>);
@@ -2383,7 +2383,7 @@
 <a href=#2310 id=2310 data-nosnippet>2310</a>    </span><span class="kw">fn </span>move_(
 <a href=#2311 id=2311 data-nosnippet>2311</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#2312 id=2312 data-nosnippet>2312</a>        destination: <span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="#14-116">File</a>&gt;,
-<a href=#2313 id=2313 data-nosnippet>2313</a>        flags: <a href="flags.rs.html#1920-1953">FileCopyFlags</a>,
+<a href=#2313 id=2313 data-nosnippet>2313</a>        flags: <a href="flags.rs.html#1923-1956">FileCopyFlags</a>,
 <a href=#2314 id=2314 data-nosnippet>2314</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#2315 id=2315 data-nosnippet>2315</a>        progress_callback: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;mut </span><span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>)&gt;,
 <a href=#2316 id=2316 data-nosnippet>2316</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
@@ -2825,7 +2825,7 @@
 <a href=#2752 id=2752 data-nosnippet>2752</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_query_file_type"</span>)]
 <a href=#2753 id=2753 data-nosnippet>2753</a>    </span><span class="kw">fn </span>query_file_type(
 <a href=#2754 id=2754 data-nosnippet>2754</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#2755 id=2755 data-nosnippet>2755</a>        flags: <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>,
+<a href=#2755 id=2755 data-nosnippet>2755</a>        flags: <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>,
 <a href=#2756 id=2756 data-nosnippet>2756</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#2757 id=2757 data-nosnippet>2757</a>    ) -&gt; <a href="enums.rs.html#2063-2089">FileType</a> {
 <a href=#2758 id=2758 data-nosnippet>2758</a>        <span class="kw">unsafe </span>{
@@ -3051,7 +3051,7 @@
 <a href=#2978 id=2978 data-nosnippet>2978</a>    </span><span class="kw">fn </span>query_info(
 <a href=#2979 id=2979 data-nosnippet>2979</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#2980 id=2980 data-nosnippet>2980</a>        attributes: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-<a href=#2981 id=2981 data-nosnippet>2981</a>        flags: <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>,
+<a href=#2981 id=2981 data-nosnippet>2981</a>        flags: <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>,
 <a href=#2982 id=2982 data-nosnippet>2982</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#2983 id=2983 data-nosnippet>2983</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_info.rs.html#9-56">FileInfo</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#2984 id=2984 data-nosnippet>2984</a>        <span class="kw">unsafe </span>{
@@ -3096,7 +3096,7 @@
 <a href=#3023 id=3023 data-nosnippet>3023</a>    </span><span class="kw">fn </span>query_info_async&lt;P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_info.rs.html#9-56">FileInfo</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#3024 id=3024 data-nosnippet>3024</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#3025 id=3025 data-nosnippet>3025</a>        attributes: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-<a href=#3026 id=3026 data-nosnippet>3026</a>        flags: <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>,
+<a href=#3026 id=3026 data-nosnippet>3026</a>        flags: <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>,
 <a href=#3027 id=3027 data-nosnippet>3027</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#3028 id=3028 data-nosnippet>3028</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#3029 id=3029 data-nosnippet>3029</a>        callback: P,
@@ -3151,7 +3151,7 @@
 <a href=#3078 id=3078 data-nosnippet>3078</a>    <span class="kw">fn </span>query_info_future(
 <a href=#3079 id=3079 data-nosnippet>3079</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#3080 id=3080 data-nosnippet>3080</a>        attributes: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-<a href=#3081 id=3081 data-nosnippet>3081</a>        flags: <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>,
+<a href=#3081 id=3081 data-nosnippet>3081</a>        flags: <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>,
 <a href=#3082 id=3082 data-nosnippet>3082</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#3083 id=3083 data-nosnippet>3083</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_info.rs.html#9-56">FileInfo</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
 <a href=#3084 id=3084 data-nosnippet>3084</a>        <span class="kw">let </span>attributes = <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>::<a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from">from</a>(<a href="#3080">attributes</a>);
@@ -3428,7 +3428,7 @@
 <a href=#3355 id=3355 data-nosnippet>3355</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#3356 id=3356 data-nosnippet>3356</a>        etag: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
 <a href=#3357 id=3357 data-nosnippet>3357</a>        make_backup: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-<a href=#3358 id=3358 data-nosnippet>3358</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#3358 id=3358 data-nosnippet>3358</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#3359 id=3359 data-nosnippet>3359</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#3360 id=3360 data-nosnippet>3360</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_output_stream.rs.html#9-34">FileOutputStream</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#3361 id=3361 data-nosnippet>3361</a>        <span class="kw">unsafe </span>{
@@ -3478,7 +3478,7 @@
 <a href=#3405 id=3405 data-nosnippet>3405</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#3406 id=3406 data-nosnippet>3406</a>        etag: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
 <a href=#3407 id=3407 data-nosnippet>3407</a>        make_backup: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-<a href=#3408 id=3408 data-nosnippet>3408</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#3408 id=3408 data-nosnippet>3408</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#3409 id=3409 data-nosnippet>3409</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#3410 id=3410 data-nosnippet>3410</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#3411 id=3411 data-nosnippet>3411</a>        callback: P,
@@ -3535,7 +3535,7 @@
 <a href=#3462 id=3462 data-nosnippet>3462</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#3463 id=3463 data-nosnippet>3463</a>        etag: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
 <a href=#3464 id=3464 data-nosnippet>3464</a>        make_backup: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-<a href=#3465 id=3465 data-nosnippet>3465</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#3465 id=3465 data-nosnippet>3465</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#3466 id=3466 data-nosnippet>3466</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#3467 id=3467 data-nosnippet>3467</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_output_stream.rs.html#9-34">FileOutputStream</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
 <a href=#3468 id=3468 data-nosnippet>3468</a>    {
@@ -3600,7 +3600,7 @@
 <a href=#3527 id=3527 data-nosnippet>3527</a>        contents: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
 <a href=#3528 id=3528 data-nosnippet>3528</a>        etag: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
 <a href=#3529 id=3529 data-nosnippet>3529</a>        make_backup: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-<a href=#3530 id=3530 data-nosnippet>3530</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#3530 id=3530 data-nosnippet>3530</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#3531 id=3531 data-nosnippet>3531</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#3532 id=3532 data-nosnippet>3532</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;glib::<a href="../../../glib/gstring/struct.GString.html">GString</a>&gt;, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#3533 id=3533 data-nosnippet>3533</a>        <span class="kw">let </span>length = <a href="#3527">contents</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.slice.html#method.len">len</a>() <span class="kw">as _</span>;
@@ -3655,7 +3655,7 @@
 <a href=#3582 id=3582 data-nosnippet>3582</a>        contents: <span class="kw-2">&amp;</span>glib::<a href="../../../glib/bytes/struct.Bytes.html">Bytes</a>,
 <a href=#3583 id=3583 data-nosnippet>3583</a>        etag: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
 <a href=#3584 id=3584 data-nosnippet>3584</a>        make_backup: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-<a href=#3585 id=3585 data-nosnippet>3585</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#3585 id=3585 data-nosnippet>3585</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#3586 id=3586 data-nosnippet>3586</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#3587 id=3587 data-nosnippet>3587</a>        callback: P,
 <a href=#3588 id=3588 data-nosnippet>3588</a>    ) {
@@ -3718,7 +3718,7 @@
 <a href=#3645 id=3645 data-nosnippet>3645</a>        contents: <span class="kw-2">&amp;</span>glib::<a href="../../../glib/bytes/struct.Bytes.html">Bytes</a>,
 <a href=#3646 id=3646 data-nosnippet>3646</a>        etag: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
 <a href=#3647 id=3647 data-nosnippet>3647</a>        make_backup: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-<a href=#3648 id=3648 data-nosnippet>3648</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#3648 id=3648 data-nosnippet>3648</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#3649 id=3649 data-nosnippet>3649</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;
 <a href=#3650 id=3650 data-nosnippet>3650</a>        <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;
 <a href=#3651 id=3651 data-nosnippet>3651</a>            <span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;glib::<a href="../../../glib/gstring/struct.GString.html">GString</a>&gt;, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>,
@@ -3773,7 +3773,7 @@
 <a href=#3700 id=3700 data-nosnippet>3700</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#3701 id=3701 data-nosnippet>3701</a>        etag: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
 <a href=#3702 id=3702 data-nosnippet>3702</a>        make_backup: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-<a href=#3703 id=3703 data-nosnippet>3703</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#3703 id=3703 data-nosnippet>3703</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#3704 id=3704 data-nosnippet>3704</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#3705 id=3705 data-nosnippet>3705</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_io_stream.rs.html#9-39">FileIOStream</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#3706 id=3706 data-nosnippet>3706</a>        <span class="kw">unsafe </span>{
@@ -3824,7 +3824,7 @@
 <a href=#3751 id=3751 data-nosnippet>3751</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#3752 id=3752 data-nosnippet>3752</a>        etag: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
 <a href=#3753 id=3753 data-nosnippet>3753</a>        make_backup: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-<a href=#3754 id=3754 data-nosnippet>3754</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#3754 id=3754 data-nosnippet>3754</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#3755 id=3755 data-nosnippet>3755</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#3756 id=3756 data-nosnippet>3756</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#3757 id=3757 data-nosnippet>3757</a>        callback: P,
@@ -3882,7 +3882,7 @@
 <a href=#3809 id=3809 data-nosnippet>3809</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#3810 id=3810 data-nosnippet>3810</a>        etag: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
 <a href=#3811 id=3811 data-nosnippet>3811</a>        make_backup: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
-<a href=#3812 id=3812 data-nosnippet>3812</a>        flags: <a href="flags.rs.html#2027-2052">FileCreateFlags</a>,
+<a href=#3812 id=3812 data-nosnippet>3812</a>        flags: <a href="flags.rs.html#2030-2055">FileCreateFlags</a>,
 <a href=#3813 id=3813 data-nosnippet>3813</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#3814 id=3814 data-nosnippet>3814</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_io_stream.rs.html#9-39">FileIOStream</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt;
 <a href=#3815 id=3815 data-nosnippet>3815</a>    {
@@ -3958,7 +3958,7 @@
 <a href=#3885 id=3885 data-nosnippet>3885</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#3886 id=3886 data-nosnippet>3886</a>        attribute: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#3887 id=3887 data-nosnippet>3887</a>        value: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-<a href=#3888 id=3888 data-nosnippet>3888</a>        flags: <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>,
+<a href=#3888 id=3888 data-nosnippet>3888</a>        flags: <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>,
 <a href=#3889 id=3889 data-nosnippet>3889</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#3890 id=3890 data-nosnippet>3890</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#3891 id=3891 data-nosnippet>3891</a>        <span class="kw">unsafe </span>{
@@ -4005,7 +4005,7 @@
 <a href=#3932 id=3932 data-nosnippet>3932</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#3933 id=3933 data-nosnippet>3933</a>        attribute: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#3934 id=3934 data-nosnippet>3934</a>        value: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-<a href=#3935 id=3935 data-nosnippet>3935</a>        flags: <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>,
+<a href=#3935 id=3935 data-nosnippet>3935</a>        flags: <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>,
 <a href=#3936 id=3936 data-nosnippet>3936</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#3937 id=3937 data-nosnippet>3937</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#3938 id=3938 data-nosnippet>3938</a>        <span class="kw">unsafe </span>{
@@ -4051,7 +4051,7 @@
 <a href=#3978 id=3978 data-nosnippet>3978</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#3979 id=3979 data-nosnippet>3979</a>        attribute: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#3980 id=3980 data-nosnippet>3980</a>        value: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>,
-<a href=#3981 id=3981 data-nosnippet>3981</a>        flags: <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>,
+<a href=#3981 id=3981 data-nosnippet>3981</a>        flags: <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>,
 <a href=#3982 id=3982 data-nosnippet>3982</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#3983 id=3983 data-nosnippet>3983</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#3984 id=3984 data-nosnippet>3984</a>        <span class="kw">unsafe </span>{
@@ -4097,7 +4097,7 @@
 <a href=#4024 id=4024 data-nosnippet>4024</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#4025 id=4025 data-nosnippet>4025</a>        attribute: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#4026 id=4026 data-nosnippet>4026</a>        value: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-<a href=#4027 id=4027 data-nosnippet>4027</a>        flags: <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>,
+<a href=#4027 id=4027 data-nosnippet>4027</a>        flags: <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>,
 <a href=#4028 id=4028 data-nosnippet>4028</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#4029 id=4029 data-nosnippet>4029</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#4030 id=4030 data-nosnippet>4030</a>        <span class="kw">unsafe </span>{
@@ -4144,7 +4144,7 @@
 <a href=#4071 id=4071 data-nosnippet>4071</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#4072 id=4072 data-nosnippet>4072</a>        attribute: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#4073 id=4073 data-nosnippet>4073</a>        value: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
-<a href=#4074 id=4074 data-nosnippet>4074</a>        flags: <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>,
+<a href=#4074 id=4074 data-nosnippet>4074</a>        flags: <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>,
 <a href=#4075 id=4075 data-nosnippet>4075</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#4076 id=4076 data-nosnippet>4076</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#4077 id=4077 data-nosnippet>4077</a>        <span class="kw">unsafe </span>{
@@ -4191,7 +4191,7 @@
 <a href=#4118 id=4118 data-nosnippet>4118</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#4119 id=4119 data-nosnippet>4119</a>        attribute: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#4120 id=4120 data-nosnippet>4120</a>        value: <a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>,
-<a href=#4121 id=4121 data-nosnippet>4121</a>        flags: <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>,
+<a href=#4121 id=4121 data-nosnippet>4121</a>        flags: <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>,
 <a href=#4122 id=4122 data-nosnippet>4122</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#4123 id=4123 data-nosnippet>4123</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#4124 id=4124 data-nosnippet>4124</a>        <span class="kw">unsafe </span>{
@@ -4237,7 +4237,7 @@
 <a href=#4164 id=4164 data-nosnippet>4164</a>    </span><span class="kw">fn </span>set_attributes_async&lt;P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_info.rs.html#9-56">FileInfo</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#4165 id=4165 data-nosnippet>4165</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#4166 id=4166 data-nosnippet>4166</a>        info: <span class="kw-2">&amp;</span><a href="file_info.rs.html#9-56">FileInfo</a>,
-<a href=#4167 id=4167 data-nosnippet>4167</a>        flags: <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>,
+<a href=#4167 id=4167 data-nosnippet>4167</a>        flags: <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>,
 <a href=#4168 id=4168 data-nosnippet>4168</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#4169 id=4169 data-nosnippet>4169</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#4170 id=4170 data-nosnippet>4170</a>        callback: P,
@@ -4298,7 +4298,7 @@
 <a href=#4225 id=4225 data-nosnippet>4225</a>    <span class="kw">fn </span>set_attributes_future(
 <a href=#4226 id=4226 data-nosnippet>4226</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#4227 id=4227 data-nosnippet>4227</a>        info: <span class="kw-2">&amp;</span><a href="file_info.rs.html#9-56">FileInfo</a>,
-<a href=#4228 id=4228 data-nosnippet>4228</a>        flags: <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>,
+<a href=#4228 id=4228 data-nosnippet>4228</a>        flags: <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>,
 <a href=#4229 id=4229 data-nosnippet>4229</a>        io_priority: glib::<a href="../../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#4230 id=4230 data-nosnippet>4230</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="file_info.rs.html#9-56">FileInfo</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
 <a href=#4231 id=4231 data-nosnippet>4231</a>        <span class="kw">let </span>info = <a href="#4227">info</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
@@ -4345,7 +4345,7 @@
 <a href=#4272 id=4272 data-nosnippet>4272</a>    </span><span class="kw">fn </span>set_attributes_from_info(
 <a href=#4273 id=4273 data-nosnippet>4273</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#4274 id=4274 data-nosnippet>4274</a>        info: <span class="kw-2">&amp;</span><a href="file_info.rs.html#9-56">FileInfo</a>,
-<a href=#4275 id=4275 data-nosnippet>4275</a>        flags: <a href="flags.rs.html#2331-2343">FileQueryInfoFlags</a>,
+<a href=#4275 id=4275 data-nosnippet>4275</a>        flags: <a href="flags.rs.html#2334-2346">FileQueryInfoFlags</a>,
 <a href=#4276 id=4276 data-nosnippet>4276</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#4277 id=4277 data-nosnippet>4277</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#4278 id=4278 data-nosnippet>4278</a>        <span class="kw">unsafe </span>{
@@ -4530,7 +4530,7 @@
 <a href=#4457 id=4457 data-nosnippet>4457</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_start_mountable"</span>)]
 <a href=#4458 id=4458 data-nosnippet>4458</a>    </span><span class="kw">fn </span>start_mountable&lt;P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#4459 id=4459 data-nosnippet>4459</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#4460 id=4460 data-nosnippet>4460</a>        flags: <a href="flags.rs.html#1748-1757">DriveStartFlags</a>,
+<a href=#4460 id=4460 data-nosnippet>4460</a>        flags: <a href="flags.rs.html#1751-1760">DriveStartFlags</a>,
 <a href=#4461 id=4461 data-nosnippet>4461</a>        start_operation: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="mount_operation.rs.html#14-189">MountOperation</a>&gt;&gt;,
 <a href=#4462 id=4462 data-nosnippet>4462</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#4463 id=4463 data-nosnippet>4463</a>        callback: P,
@@ -4583,7 +4583,7 @@
 <a href=#4510 id=4510 data-nosnippet>4510</a>
 <a href=#4511 id=4511 data-nosnippet>4511</a>    <span class="kw">fn </span>start_mountable_future(
 <a href=#4512 id=4512 data-nosnippet>4512</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#4513 id=4513 data-nosnippet>4513</a>        flags: <a href="flags.rs.html#1748-1757">DriveStartFlags</a>,
+<a href=#4513 id=4513 data-nosnippet>4513</a>        flags: <a href="flags.rs.html#1751-1760">DriveStartFlags</a>,
 <a href=#4514 id=4514 data-nosnippet>4514</a>        start_operation: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="mount_operation.rs.html#14-189">MountOperation</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>)&gt;,
 <a href=#4515 id=4515 data-nosnippet>4515</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
 <a href=#4516 id=4516 data-nosnippet>4516</a>        <span class="kw">let </span>start_operation = <a href="#4514">start_operation</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(ToOwned::<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">to_owned</a>);
@@ -4625,7 +4625,7 @@
 <a href=#4552 id=4552 data-nosnippet>4552</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_stop_mountable"</span>)]
 <a href=#4553 id=4553 data-nosnippet>4553</a>    </span><span class="kw">fn </span>stop_mountable&lt;P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#4554 id=4554 data-nosnippet>4554</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#4555 id=4555 data-nosnippet>4555</a>        flags: <a href="flags.rs.html#2683-2696">MountUnmountFlags</a>,
+<a href=#4555 id=4555 data-nosnippet>4555</a>        flags: <a href="flags.rs.html#2686-2699">MountUnmountFlags</a>,
 <a href=#4556 id=4556 data-nosnippet>4556</a>        mount_operation: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="mount_operation.rs.html#14-189">MountOperation</a>&gt;&gt;,
 <a href=#4557 id=4557 data-nosnippet>4557</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#4558 id=4558 data-nosnippet>4558</a>        callback: P,
@@ -4678,7 +4678,7 @@
 <a href=#4605 id=4605 data-nosnippet>4605</a>
 <a href=#4606 id=4606 data-nosnippet>4606</a>    <span class="kw">fn </span>stop_mountable_future(
 <a href=#4607 id=4607 data-nosnippet>4607</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#4608 id=4608 data-nosnippet>4608</a>        flags: <a href="flags.rs.html#2683-2696">MountUnmountFlags</a>,
+<a href=#4608 id=4608 data-nosnippet>4608</a>        flags: <a href="flags.rs.html#2686-2699">MountUnmountFlags</a>,
 <a href=#4609 id=4609 data-nosnippet>4609</a>        mount_operation: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="mount_operation.rs.html#14-189">MountOperation</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>)&gt;,
 <a href=#4610 id=4610 data-nosnippet>4610</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
 <a href=#4611 id=4611 data-nosnippet>4611</a>        <span class="kw">let </span>mount_operation = <a href="#4609">mount_operation</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(ToOwned::<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">to_owned</a>);
@@ -4850,7 +4850,7 @@
 <a href=#4777 id=4777 data-nosnippet>4777</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_file_unmount_mountable_with_operation"</span>)]
 <a href=#4778 id=4778 data-nosnippet>4778</a>    </span><span class="kw">fn </span>unmount_mountable_with_operation&lt;P: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;) + <span class="lifetime">'static</span>&gt;(
 <a href=#4779 id=4779 data-nosnippet>4779</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#4780 id=4780 data-nosnippet>4780</a>        flags: <a href="flags.rs.html#2683-2696">MountUnmountFlags</a>,
+<a href=#4780 id=4780 data-nosnippet>4780</a>        flags: <a href="flags.rs.html#2686-2699">MountUnmountFlags</a>,
 <a href=#4781 id=4781 data-nosnippet>4781</a>        mount_operation: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="mount_operation.rs.html#14-189">MountOperation</a>&gt;&gt;,
 <a href=#4782 id=4782 data-nosnippet>4782</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;,
 <a href=#4783 id=4783 data-nosnippet>4783</a>        callback: P,
@@ -4907,7 +4907,7 @@
 <a href=#4834 id=4834 data-nosnippet>4834</a>
 <a href=#4835 id=4835 data-nosnippet>4835</a>    <span class="kw">fn </span>unmount_mountable_with_operation_future(
 <a href=#4836 id=4836 data-nosnippet>4836</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#4837 id=4837 data-nosnippet>4837</a>        flags: <a href="flags.rs.html#2683-2696">MountUnmountFlags</a>,
+<a href=#4837 id=4837 data-nosnippet>4837</a>        flags: <a href="flags.rs.html#2686-2699">MountUnmountFlags</a>,
 <a href=#4838 id=4838 data-nosnippet>4838</a>        mount_operation: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="mount_operation.rs.html#14-189">MountOperation</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">'static</span>)&gt;,
 <a href=#4839 id=4839 data-nosnippet>4839</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box_</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt;&gt; + <span class="lifetime">'static</span>&gt;&gt; {
 <a href=#4840 id=4840 data-nosnippet>4840</a>        <span class="kw">let </span>mount_operation = <a href="#4838">mount_operation</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(ToOwned::<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html#tymethod.to_owned">to_owned</a>);

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/regex.rs`."><title>regex.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-650bd49d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.99.0-nightly (7608eb7b0 2026-08-05)" data-channel="nightly" data-search-js="search-cf4fc35e.js" data-stringdex-js="stringdex-b5109af9.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-417ebf0a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-d4bd101e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/regex.rs`."><title>regex.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-650bd49d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.99.0-nightly (969b803cb 2026-08-09)" data-channel="nightly" data-search-js="search-cf4fc35e.js" data-stringdex-js="stringdex-b5109af9.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-417ebf0a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-d4bd101e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -78,7 +78,7 @@
 <a href=#5 id=5 data-nosnippet>5</a>//! compatibility with GLib.Regex based APIs.
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a></span><span class="kw">use crate</span>::{
-<a href=#8 id=8 data-nosnippet>8</a>    <a href="gstring.rs.html#24">GStr</a>, <a href="gstring.rs.html#763">GStringPtr</a>, <a href="match_info.rs.html#10-13">MatchInfo</a>, <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>, <a href="auto/regex.rs.html#7-60">Regex</a>, <a href="auto/flags.rs.html#485-586">RegexCompileFlags</a>, <a href="auto/flags.rs.html#606-711">RegexMatchFlags</a>, ffi,
+<a href=#8 id=8 data-nosnippet>8</a>    <a href="gstring.rs.html#24">GStr</a>, <a href="gstring.rs.html#763">GStringPtr</a>, <a href="match_info.rs.html#10-13">MatchInfo</a>, <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>, <a href="auto/regex.rs.html#7-60">Regex</a>, <a href="auto/flags.rs.html#487-590">RegexCompileFlags</a>, <a href="auto/flags.rs.html#610-717">RegexMatchFlags</a>, ffi,
 <a href=#9 id=9 data-nosnippet>9</a>    <a href="lib.rs.html#175">translate</a>::<span class="kw-2">*</span>,
 <a href=#10 id=10 data-nosnippet>10</a>};
 <a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
@@ -216,8 +216,8 @@
 <a href=#143 id=143 data-nosnippet>143</a>    </span><span class="kw">pub fn </span>match_simple(
 <a href=#144 id=144 data-nosnippet>144</a>        pattern: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>,
 <a href=#145 id=145 data-nosnippet>145</a>        string: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>,
-<a href=#146 id=146 data-nosnippet>146</a>        compile_options: <a href="auto/flags.rs.html#485-586">RegexCompileFlags</a>,
-<a href=#147 id=147 data-nosnippet>147</a>        match_options: <a href="auto/flags.rs.html#606-711">RegexMatchFlags</a>,
+<a href=#146 id=146 data-nosnippet>146</a>        compile_options: <a href="auto/flags.rs.html#487-590">RegexCompileFlags</a>,
+<a href=#147 id=147 data-nosnippet>147</a>        match_options: <a href="auto/flags.rs.html#610-717">RegexMatchFlags</a>,
 <a href=#148 id=148 data-nosnippet>148</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
 <a href=#149 id=149 data-nosnippet>149</a>        <a href="#144">pattern</a>.<a href="gstring.rs.html#2475">run_with_gstr</a>(|pattern| {
 <a href=#150 id=150 data-nosnippet>150</a>            <a href="#145">string</a>.<a href="gstring.rs.html#2475">run_with_gstr</a>(|string| <span class="kw">unsafe </span>{
@@ -274,7 +274,7 @@
 <a href=#201 id=201 data-nosnippet>201</a>        string: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>,
 <a href=#202 id=202 data-nosnippet>202</a>        start_position: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#203 id=203 data-nosnippet>203</a>        replacement: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>,
-<a href=#204 id=204 data-nosnippet>204</a>        match_options: <a href="auto/flags.rs.html#606-711">RegexMatchFlags</a>,
+<a href=#204 id=204 data-nosnippet>204</a>        match_options: <a href="auto/flags.rs.html#610-717">RegexMatchFlags</a>,
 <a href=#205 id=205 data-nosnippet>205</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="kw">crate</span>::<a href="gstring.rs.html#1087">GString</a>, <span class="kw">crate</span>::<a href="error.rs.html#10-25">Error</a>&gt; {
 <a href=#206 id=206 data-nosnippet>206</a>        <span class="kw">unsafe </span>{
 <a href=#207 id=207 data-nosnippet>207</a>            <a href="#201">string</a>.<a href="gstring.rs.html#2475">run_with_gstr</a>(|string| {
@@ -330,7 +330,7 @@
 <a href=#257 id=257 data-nosnippet>257</a>    </span><span class="kw">pub fn </span>match_all&lt;<span class="lifetime">'input</span>&gt;(
 <a href=#258 id=258 data-nosnippet>258</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#259 id=259 data-nosnippet>259</a>        string: <span class="kw-2">&amp;</span><span class="lifetime">'input </span><a href="gstring.rs.html#24">GStr</a>,
-<a href=#260 id=260 data-nosnippet>260</a>        match_options: <a href="auto/flags.rs.html#606-711">RegexMatchFlags</a>,
+<a href=#260 id=260 data-nosnippet>260</a>        match_options: <a href="auto/flags.rs.html#610-717">RegexMatchFlags</a>,
 <a href=#261 id=261 data-nosnippet>261</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="match_info.rs.html#10-13">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt;, <span class="kw">crate</span>::<a href="error.rs.html#10-25">Error</a>&gt; {
 <a href=#262 id=262 data-nosnippet>262</a>        <a class="self" href="#258">self</a>.<a href="#309-336">match_all_full</a>(<a href="#259">string</a>, <span class="number">0</span>, <a href="#260">match_options</a>)
 <a href=#263 id=263 data-nosnippet>263</a>    }
@@ -383,7 +383,7 @@
 <a href=#310 id=310 data-nosnippet>310</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#311 id=311 data-nosnippet>311</a>        string: <span class="kw-2">&amp;</span><span class="lifetime">'input </span><a href="gstring.rs.html#24">GStr</a>,
 <a href=#312 id=312 data-nosnippet>312</a>        start_position: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-<a href=#313 id=313 data-nosnippet>313</a>        match_options: <a href="auto/flags.rs.html#606-711">RegexMatchFlags</a>,
+<a href=#313 id=313 data-nosnippet>313</a>        match_options: <a href="auto/flags.rs.html#610-717">RegexMatchFlags</a>,
 <a href=#314 id=314 data-nosnippet>314</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="match_info.rs.html#10-13">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt;, <span class="kw">crate</span>::<a href="error.rs.html#10-25">Error</a>&gt; {
 <a href=#315 id=315 data-nosnippet>315</a>        <span class="kw">unsafe </span>{
 <a href=#316 id=316 data-nosnippet>316</a>            <span class="kw">let </span><span class="kw-2">mut </span>match_info = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
@@ -440,7 +440,7 @@
 <a href=#367 id=367 data-nosnippet>367</a>    </span><span class="kw">pub fn </span>match_&lt;<span class="lifetime">'input</span>&gt;(
 <a href=#368 id=368 data-nosnippet>368</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#369 id=369 data-nosnippet>369</a>        string: <span class="kw-2">&amp;</span><span class="lifetime">'input </span><a href="gstring.rs.html#24">GStr</a>,
-<a href=#370 id=370 data-nosnippet>370</a>        match_options: <a href="auto/flags.rs.html#606-711">RegexMatchFlags</a>,
+<a href=#370 id=370 data-nosnippet>370</a>        match_options: <a href="auto/flags.rs.html#610-717">RegexMatchFlags</a>,
 <a href=#371 id=371 data-nosnippet>371</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="match_info.rs.html#10-13">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt;, <span class="kw">crate</span>::<a href="error.rs.html#10-25">Error</a>&gt; {
 <a href=#372 id=372 data-nosnippet>372</a>        <a class="self" href="#368">self</a>.<a href="#397-424">match_full</a>(<a href="#369">string</a>, <span class="number">0</span>, <a href="#370">match_options</a>)
 <a href=#373 id=373 data-nosnippet>373</a>    }
@@ -471,7 +471,7 @@
 <a href=#398 id=398 data-nosnippet>398</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#399 id=399 data-nosnippet>399</a>        string: <span class="kw-2">&amp;</span><span class="lifetime">'input </span><a href="gstring.rs.html#24">GStr</a>,
 <a href=#400 id=400 data-nosnippet>400</a>        start_position: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-<a href=#401 id=401 data-nosnippet>401</a>        match_options: <a href="auto/flags.rs.html#606-711">RegexMatchFlags</a>,
+<a href=#401 id=401 data-nosnippet>401</a>        match_options: <a href="auto/flags.rs.html#610-717">RegexMatchFlags</a>,
 <a href=#402 id=402 data-nosnippet>402</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="match_info.rs.html#10-13">MatchInfo</a>&lt;<span class="lifetime">'input</span>&gt;, <span class="kw">crate</span>::<a href="error.rs.html#10-25">Error</a>&gt; {
 <a href=#403 id=403 data-nosnippet>403</a>        <span class="kw">unsafe </span>{
 <a href=#404 id=404 data-nosnippet>404</a>            <span class="kw">let </span><span class="kw-2">mut </span>match_info = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
@@ -524,7 +524,7 @@
 <a href=#451 id=451 data-nosnippet>451</a>        string: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>,
 <a href=#452 id=452 data-nosnippet>452</a>        start_position: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#453 id=453 data-nosnippet>453</a>        replacement: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>,
-<a href=#454 id=454 data-nosnippet>454</a>        match_options: <a href="auto/flags.rs.html#606-711">RegexMatchFlags</a>,
+<a href=#454 id=454 data-nosnippet>454</a>        match_options: <a href="auto/flags.rs.html#610-717">RegexMatchFlags</a>,
 <a href=#455 id=455 data-nosnippet>455</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<span class="kw">crate</span>::<a href="gstring.rs.html#1087">GString</a>, <span class="kw">crate</span>::<a href="error.rs.html#10-25">Error</a>&gt; {
 <a href=#456 id=456 data-nosnippet>456</a>        <span class="kw">unsafe </span>{
 <a href=#457 id=457 data-nosnippet>457</a>            <a href="#451">string</a>.<a href="gstring.rs.html#2475">run_with_gstr</a>(|string| {
@@ -580,7 +580,7 @@
 <a href=#507 id=507 data-nosnippet>507</a>    </span><span class="kw">pub fn </span>split(
 <a href=#508 id=508 data-nosnippet>508</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#509 id=509 data-nosnippet>509</a>        string: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>,
-<a href=#510 id=510 data-nosnippet>510</a>        match_options: <a href="auto/flags.rs.html#606-711">RegexMatchFlags</a>,
+<a href=#510 id=510 data-nosnippet>510</a>        match_options: <a href="auto/flags.rs.html#610-717">RegexMatchFlags</a>,
 <a href=#511 id=511 data-nosnippet>511</a>    ) -&gt; <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>&lt;<a href="gstring.rs.html#763">GStringPtr</a>&gt; {
 <a href=#512 id=512 data-nosnippet>512</a>        <a class="self" href="#508">self</a>.<a href="#554-581">split_full</a>(<a href="#509">string</a>, <span class="number">0</span>, <a href="#510">match_options</a>, <span class="number">0</span>)
 <a href=#513 id=513 data-nosnippet>513</a>            .<a href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#method.unwrap_or_default">unwrap_or_default</a>()
@@ -628,7 +628,7 @@
 <a href=#555 id=555 data-nosnippet>555</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#556 id=556 data-nosnippet>556</a>        string: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>,
 <a href=#557 id=557 data-nosnippet>557</a>        start_position: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
-<a href=#558 id=558 data-nosnippet>558</a>        match_options: <a href="auto/flags.rs.html#606-711">RegexMatchFlags</a>,
+<a href=#558 id=558 data-nosnippet>558</a>        match_options: <a href="auto/flags.rs.html#610-717">RegexMatchFlags</a>,
 <a href=#559 id=559 data-nosnippet>559</a>        max_tokens: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
 <a href=#560 id=560 data-nosnippet>560</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>&lt;<a href="gstring.rs.html#763">GStringPtr</a>&gt;, <span class="kw">crate</span>::<a href="error.rs.html#10-25">Error</a>&gt; {
 <a href=#561 id=561 data-nosnippet>561</a>        <span class="kw">unsafe </span>{
@@ -697,8 +697,8 @@
 <a href=#624 id=624 data-nosnippet>624</a>    </span><span class="kw">pub fn </span>split_simple(
 <a href=#625 id=625 data-nosnippet>625</a>        pattern: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>,
 <a href=#626 id=626 data-nosnippet>626</a>        string: <span class="kw">impl </span><a href="gstring.rs.html#2474-2476">IntoGStr</a>,
-<a href=#627 id=627 data-nosnippet>627</a>        compile_options: <a href="auto/flags.rs.html#485-586">RegexCompileFlags</a>,
-<a href=#628 id=628 data-nosnippet>628</a>        match_options: <a href="auto/flags.rs.html#606-711">RegexMatchFlags</a>,
+<a href=#627 id=627 data-nosnippet>627</a>        compile_options: <a href="auto/flags.rs.html#487-590">RegexCompileFlags</a>,
+<a href=#628 id=628 data-nosnippet>628</a>        match_options: <a href="auto/flags.rs.html#610-717">RegexMatchFlags</a>,
 <a href=#629 id=629 data-nosnippet>629</a>    ) -&gt; <a href="collections/ptr_slice.rs.html#18-26">PtrSlice</a>&lt;<a href="gstring.rs.html#763">GStringPtr</a>&gt; {
 <a href=#630 id=630 data-nosnippet>630</a>        <a href="#625">pattern</a>.<a href="gstring.rs.html#2475">run_with_gstr</a>(|pattern| {
 <a href=#631 id=631 data-nosnippet>631</a>            <a href="#626">string</a>.<a href="gstring.rs.html#2475">run_with_gstr</a>(|string| <span class="kw">unsafe </span>{
@@ -722,14 +722,14 @@
 <a href=#649 id=649 data-nosnippet>649</a>        <span class="kw">let </span>regex = Regex::new(
 <a href=#650 id=650 data-nosnippet>650</a>            <span class="string">"s[ai]mple"</span>,
 <a href=#651 id=651 data-nosnippet>651</a>            RegexCompileFlags::OPTIMIZE,
-<a href=#652 id=652 data-nosnippet>652</a>            RegexMatchFlags::DEFAULT,
+<a href=#652 id=652 data-nosnippet>652</a>            RegexMatchFlags::empty(),
 <a href=#653 id=653 data-nosnippet>653</a>        )
 <a href=#654 id=654 data-nosnippet>654</a>        .expect(<span class="string">"Regex new"</span>)
 <a href=#655 id=655 data-nosnippet>655</a>        .expect(<span class="string">"Null regex"</span>);
 <a href=#656 id=656 data-nosnippet>656</a>
 <a href=#657 id=657 data-nosnippet>657</a>        <span class="kw">let </span>quote = <span class="string">"This is a simple sample."</span>;
 <a href=#658 id=658 data-nosnippet>658</a>        <span class="kw">let </span>result = regex
-<a href=#659 id=659 data-nosnippet>659</a>            .replace_literal(quote, <span class="number">0</span>, <span class="string">"XXX"</span>, RegexMatchFlags::DEFAULT)
+<a href=#659 id=659 data-nosnippet>659</a>            .replace_literal(quote, <span class="number">0</span>, <span class="string">"XXX"</span>, RegexMatchFlags::empty())
 <a href=#660 id=660 data-nosnippet>660</a>            .expect(<span class="string">"regex replace"</span>);
 <a href=#661 id=661 data-nosnippet>661</a>
 <a href=#662 id=662 data-nosnippet>662</a>        <span class="macro">assert_eq!</span>(result, <span class="string">"This is a XXX XXX."</span>);
@@ -740,13 +740,13 @@
 <a href=#667 id=667 data-nosnippet>667</a>        <span class="kw">let </span>regex = Regex::new(
 <a href=#668 id=668 data-nosnippet>668</a>            <span class="string">"s[ai]mple"</span>,
 <a href=#669 id=669 data-nosnippet>669</a>            RegexCompileFlags::OPTIMIZE,
-<a href=#670 id=670 data-nosnippet>670</a>            RegexMatchFlags::DEFAULT,
+<a href=#670 id=670 data-nosnippet>670</a>            RegexMatchFlags::empty(),
 <a href=#671 id=671 data-nosnippet>671</a>        )
 <a href=#672 id=672 data-nosnippet>672</a>        .expect(<span class="string">"Regex new"</span>)
 <a href=#673 id=673 data-nosnippet>673</a>        .expect(<span class="string">"Null regex"</span>);
 <a href=#674 id=674 data-nosnippet>674</a>
 <a href=#675 id=675 data-nosnippet>675</a>        <span class="kw">let </span>quote = <span class="string">"This is a simple sample."</span>;
-<a href=#676 id=676 data-nosnippet>676</a>        <span class="kw">let </span>result = regex.split(quote, RegexMatchFlags::DEFAULT);
+<a href=#676 id=676 data-nosnippet>676</a>        <span class="kw">let </span>result = regex.split(quote, RegexMatchFlags::empty());
 <a href=#677 id=677 data-nosnippet>677</a>
 <a href=#678 id=678 data-nosnippet>678</a>        <span class="macro">assert_eq!</span>(result.len(), <span class="number">3</span>);
 <a href=#679 id=679 data-nosnippet>679</a>        <span class="macro">assert_eq!</span>(result[<span class="number">0</span>], <span class="string">"This is a "</span>);
@@ -756,12 +756,12 @@
 <a href=#683 id=683 data-nosnippet>683</a>
 <a href=#684 id=684 data-nosnippet>684</a>    <span class="attr">#[test]
 <a href=#685 id=685 data-nosnippet>685</a>    </span><span class="kw">fn </span>test_match() {
-<a href=#686 id=686 data-nosnippet>686</a>        <span class="kw">let </span>regex = Regex::new(<span class="string">r"\d"</span>, RegexCompileFlags::DEFAULT, RegexMatchFlags::DEFAULT)
+<a href=#686 id=686 data-nosnippet>686</a>        <span class="kw">let </span>regex = Regex::new(<span class="string">r"\d"</span>, RegexCompileFlags::empty(), RegexMatchFlags::empty())
 <a href=#687 id=687 data-nosnippet>687</a>            .expect(<span class="string">"Regex new"</span>)
 <a href=#688 id=688 data-nosnippet>688</a>            .expect(<span class="string">"Null regex"</span>);
 <a href=#689 id=689 data-nosnippet>689</a>
 <a href=#690 id=690 data-nosnippet>690</a>        <span class="kw">let </span>input = <span class="kw">crate</span>::GString::from(<span class="string">"87"</span>);
-<a href=#691 id=691 data-nosnippet>691</a>        <span class="kw">let </span>m = regex.match_(input.as_gstr(), RegexMatchFlags::DEFAULT);
+<a href=#691 id=691 data-nosnippet>691</a>        <span class="kw">let </span>m = regex.match_(input.as_gstr(), RegexMatchFlags::empty());
 <a href=#692 id=692 data-nosnippet>692</a>        <span class="kw">let </span>m = m.unwrap();
 <a href=#693 id=693 data-nosnippet>693</a>        <span class="macro">assert!</span>(m.matches());
 <a href=#694 id=694 data-nosnippet>694</a>        <span class="macro">assert_eq!</span>(m.match_count(), <span class="number">1</span>);
@@ -772,7 +772,7 @@
 <a href=#699 id=699 data-nosnippet>699</a>        <span class="macro">assert!</span>(m.fetch(<span class="number">0</span>).is_none());
 <a href=#700 id=700 data-nosnippet>700</a>
 <a href=#701 id=701 data-nosnippet>701</a>        <span class="kw">let </span>input = <span class="kw">crate</span>::GString::from(<span class="string">"a"</span>);
-<a href=#702 id=702 data-nosnippet>702</a>        <span class="kw">let </span>m = regex.match_(input.as_gstr(), RegexMatchFlags::DEFAULT);
+<a href=#702 id=702 data-nosnippet>702</a>        <span class="kw">let </span>m = regex.match_(input.as_gstr(), RegexMatchFlags::empty());
 <a href=#703 id=703 data-nosnippet>703</a>        <span class="kw">let </span>m = m.unwrap();
 <a href=#704 id=704 data-nosnippet>704</a>        <span class="macro">assert!</span>(!m.matches());
 <a href=#705 id=705 data-nosnippet>705</a>        <span class="macro">assert_eq!</span>(m.match_count(), <span class="number">0</span>);
