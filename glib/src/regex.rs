@@ -292,14 +292,14 @@ mod tests {
         let regex = Regex::new(
             "s[ai]mple",
             RegexCompileFlags::OPTIMIZE,
-            RegexMatchFlags::DEFAULT,
+            RegexMatchFlags::empty(),
         )
         .expect("Regex new")
         .expect("Null regex");
 
         let quote = "This is a simple sample.";
         let result = regex
-            .replace_literal(quote, 0, "XXX", RegexMatchFlags::DEFAULT)
+            .replace_literal(quote, 0, "XXX", RegexMatchFlags::empty())
             .expect("regex replace");
 
         assert_eq!(result, "This is a XXX XXX.");
@@ -310,13 +310,13 @@ mod tests {
         let regex = Regex::new(
             "s[ai]mple",
             RegexCompileFlags::OPTIMIZE,
-            RegexMatchFlags::DEFAULT,
+            RegexMatchFlags::empty(),
         )
         .expect("Regex new")
         .expect("Null regex");
 
         let quote = "This is a simple sample.";
-        let result = regex.split(quote, RegexMatchFlags::DEFAULT);
+        let result = regex.split(quote, RegexMatchFlags::empty());
 
         assert_eq!(result.len(), 3);
         assert_eq!(result[0], "This is a ");
@@ -326,12 +326,12 @@ mod tests {
 
     #[test]
     fn test_match() {
-        let regex = Regex::new(r"\d", RegexCompileFlags::DEFAULT, RegexMatchFlags::DEFAULT)
+        let regex = Regex::new(r"\d", RegexCompileFlags::empty(), RegexMatchFlags::empty())
             .expect("Regex new")
             .expect("Null regex");
 
         let input = crate::GString::from("87");
-        let m = regex.match_(input.as_gstr(), RegexMatchFlags::DEFAULT);
+        let m = regex.match_(input.as_gstr(), RegexMatchFlags::empty());
         let m = m.unwrap();
         assert!(m.matches());
         assert_eq!(m.match_count(), 1);
@@ -342,7 +342,7 @@ mod tests {
         assert!(m.fetch(0).is_none());
 
         let input = crate::GString::from("a");
-        let m = regex.match_(input.as_gstr(), RegexMatchFlags::DEFAULT);
+        let m = regex.match_(input.as_gstr(), RegexMatchFlags::empty());
         let m = m.unwrap();
         assert!(!m.matches());
         assert_eq!(m.match_count(), 0);

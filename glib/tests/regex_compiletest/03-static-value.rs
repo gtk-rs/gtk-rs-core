@@ -5,14 +5,14 @@ use glib::prelude::*;
 fn main() {
     let r = glib::Regex::new(
         "hello",
-        glib::RegexCompileFlags::DEFAULT,
-        glib::RegexMatchFlags::DEFAULT,
+        glib::RegexCompileFlags::empty(),
+        glib::RegexMatchFlags::empty(),
     )
     .unwrap()
     .unwrap();
     let s = glib::GStr::from_str_until_nul("hello\0").unwrap();
     let match_info = r
-        .match_(s, glib::RegexMatchFlags::DEFAULT)
+        .match_(s, glib::RegexMatchFlags::empty())
         .expect("should match");
     assert_eq!(match_info.fetch_all(), vec!["hello"]);
     let v: glib::Value = match_info.to_value();
