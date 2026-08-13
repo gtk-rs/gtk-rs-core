@@ -521,13 +521,35 @@ where
     T: Send + 'static,
     F: FnOnce() -> T + Send + 'static,
 {
-    // use Cancellable::NONE as source obj to fulfill `Send` requirement
-    let task = unsafe { Task::<bool>::new(Cancellable::NONE, Cancellable::NONE, |_, _| {}) };
+    unsafe extern "C" fn free_box<T: Send + 'static>(ptr: glib::ffi::gpointer) {
+        unsafe {
+            let _ = Box::from_raw(ptr as *mut std::thread::Result<T>);
+        }
+    }
+
     let (join, tx) = JoinHandle::new();
+
+    // use Cancellable::NONE as source obj to fulfill `Send` requirement
+    let task = unsafe {
+        Task::<bool>::new(Cancellable::NONE, Cancellable::NONE, move |task, _| {
+            let mut err = ptr::null_mut();
+            let ptr = ffi::g_task_propagate_pointer(task.to_glib_none().0, &mut err);
+
+            let res = *Box::from_raw(ptr as *mut std::thread::Result<T>);
+            let _ = tx.send(res);
+        })
+    };
     task.run_in_thread(move |task, _: Option<&Cancellable>, _| {
         let res = panic::catch_unwind(panic::AssertUnwindSafe(func));
-        let _ = tx.send(res);
-        unsafe { ffi::g_task_return_pointer(task.to_glib_none().0, ptr::null_mut(), None) }
+        let tx = Box::new(res);
+
+        unsafe {
+            ffi::g_task_return_pointer(
+                task.to_glib_none().0,
+                Box::into_raw(tx) as glib::ffi::gpointer,
+                Some(free_box::<T>),
+            )
+        }
     });
 
     join
@@ -733,5 +755,16 @@ mod test {
             },
             Ok(_) => panic!(),
         }
+    }
+
+    #[test]
+    fn test_spawn_blocking() {
+        let main_context = glib::MainContext::new();
+        main_context.block_on(async {
+            let x = super::spawn_blocking(|| 123).await;
+            assert_eq!(x.unwrap(), 123);
+        });
+        // Drain remaining sources so the task and its idle callback are fully cleaned up
+        while main_context.iteration(false) {}
     }
 }
