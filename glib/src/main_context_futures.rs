@@ -679,6 +679,10 @@ impl MainContext {
 
             l.run();
 
+            // Drain remaining sources so any pending callbacks are fully processed before
+            // returning.
+            while self.iteration(false) {}
+
             match res.unwrap() {
                 Ok(v) => v,
                 Err(e) => panic::resume_unwind(e),
