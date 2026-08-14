@@ -764,7 +764,5 @@ mod test {
             let x = super::spawn_blocking(|| 123).await;
             assert_eq!(x.unwrap(), 123);
         });
-        // Drain remaining sources so the task and its idle callback are fully cleaned up
-        while main_context.iteration(false) {}
     }
 }
