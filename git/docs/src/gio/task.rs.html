@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/task.rs`."><title>task.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-650bd49d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.99.0-nightly (969b803cb 2026-08-09)" data-channel="nightly" data-search-js="search-cf4fc35e.js" data-stringdex-js="stringdex-b5109af9.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-417ebf0a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-d4bd101e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/task.rs`."><title>task.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-0c87338a.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.99.0-nightly (ba28ff76f 2026-08-13)" data-channel="nightly" data-search-js="search-cf4fc35e.js" data-stringdex-js="stringdex-b5109af9.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-417ebf0a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-9f56287d.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -774,218 +774,249 @@
 <a href=#701 id=701 data-nosnippet>701</a>    </span>T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 <a href=#702 id=702 data-nosnippet>702</a>    F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>() -&gt; T + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>,
 <a href=#703 id=703 data-nosnippet>703</a>{
-<a href=#704 id=704 data-nosnippet>704</a>    <span class="comment">// use Cancellable::NONE as source obj to fulfill `Send` requirement
-<a href=#705 id=705 data-nosnippet>705</a>    </span><span class="kw">let </span>task = <span class="kw">unsafe </span>{ <a href="#35-239">Task</a>::&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;::<a href="#591">new</a>(<a href="auto/cancellable.rs.html#8-58">Cancellable</a>::<a href="auto/cancellable.rs.html#61">NONE</a>, <a href="auto/cancellable.rs.html#8-58">Cancellable</a>::<a href="auto/cancellable.rs.html#61">NONE</a>, |<span class="kw">_</span>, <span class="kw">_</span>| {}) };
-<a href=#706 id=706 data-nosnippet>706</a>    <span class="kw">let </span>(join, tx) = <a href="#658-660">JoinHandle</a>::<a href="#664-667">new</a>();
-<a href=#707 id=707 data-nosnippet>707</a>    <a href="#705">task</a>.<a href="#595-645">run_in_thread</a>(<span class="kw">move </span>|task, <span class="kw">_</span>: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-58">Cancellable</a>&gt;, <span class="kw">_</span>| {
-<a href=#708 id=708 data-nosnippet>708</a>        <span class="kw">let </span>res = panic::<a href="https://doc.rust-lang.org/nightly/std/panic/fn.catch_unwind.html">catch_unwind</a>(panic::<a href="https://doc.rust-lang.org/nightly/core/panic/unwind_safe/struct.AssertUnwindSafe.html">AssertUnwindSafe</a>(<a href="#699">func</a>));
-<a href=#709 id=709 data-nosnippet>709</a>        <span class="kw">let _ </span>= <a href="#706">tx</a>.send(<a href="#708">res</a>);
-<a href=#710 id=710 data-nosnippet>710</a>        <span class="kw">unsafe </span>{ ffi::<a href="../../gio_sys/fn.g_task_return_pointer.html">g_task_return_pointer</a>(<a href="#707">task</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>(), <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>) }
-<a href=#711 id=711 data-nosnippet>711</a>    });
-<a href=#712 id=712 data-nosnippet>712</a>
-<a href=#713 id=713 data-nosnippet>713</a>    <a href="#706">join</a>
-<a href=#714 id=714 data-nosnippet>714</a>}
-<a href=#715 id=715 data-nosnippet>715</a>
-<a href=#716 id=716 data-nosnippet>716</a><span class="attr">#[cfg(test)]
-<a href=#717 id=717 data-nosnippet>717</a></span><span class="kw">mod </span>test {
-<a href=#718 id=718 data-nosnippet>718</a>    <span class="kw">use super</span>::<span class="kw-2">*</span>;
-<a href=#719 id=719 data-nosnippet>719</a>    <span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, test_util::run_async_local};
-<a href=#720 id=720 data-nosnippet>720</a>
-<a href=#721 id=721 data-nosnippet>721</a>    <span class="attr">#[test]
-<a href=#722 id=722 data-nosnippet>722</a>    </span><span class="kw">fn </span>test_int_value_async_result() {
-<a href=#723 id=723 data-nosnippet>723</a>        <span class="kw">let </span>fut = run_async_local(|tx, l| {
-<a href=#724 id=724 data-nosnippet>724</a>            <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
-<a href=#725 id=725 data-nosnippet>725</a>            <span class="kw">let </span>task = <span class="kw">unsafe </span>{
-<a href=#726 id=726 data-nosnippet>726</a>                <span class="kw">crate</span>::LocalTask::new(
-<a href=#727 id=727 data-nosnippet>727</a>                    <span class="prelude-val">None</span>,
-<a href=#728 id=728 data-nosnippet>728</a>                    <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>cancellable),
-<a href=#729 id=729 data-nosnippet>729</a>                    <span class="kw">move </span>|t: LocalTask&lt;i32&gt;, _b: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Object&gt;| {
-<a href=#730 id=730 data-nosnippet>730</a>                        tx.send(t.propagate()).unwrap();
-<a href=#731 id=731 data-nosnippet>731</a>                        l.quit();
-<a href=#732 id=732 data-nosnippet>732</a>                    },
-<a href=#733 id=733 data-nosnippet>733</a>                )
-<a href=#734 id=734 data-nosnippet>734</a>            };
-<a href=#735 id=735 data-nosnippet>735</a>            task.return_result(<span class="prelude-val">Ok</span>(<span class="number">100_i32</span>));
-<a href=#736 id=736 data-nosnippet>736</a>        });
+<a href=#704 id=704 data-nosnippet>704</a>    <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>free_box&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">'static</span>&gt;(ptr: glib::ffi::<a href="../../glib_sys/type.gpointer.html">gpointer</a>) {
+<a href=#705 id=705 data-nosnippet>705</a>        <span class="kw">unsafe </span>{
+<a href=#706 id=706 data-nosnippet>706</a>            <span class="kw">let _ </span>= <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">from_raw</a>(<a href="#704">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>std::thread::<a href="https://doc.rust-lang.org/nightly/std/thread/type.Result.html">Result</a>&lt;T&gt;);
+<a href=#707 id=707 data-nosnippet>707</a>        }
+<a href=#708 id=708 data-nosnippet>708</a>    }
+<a href=#709 id=709 data-nosnippet>709</a>
+<a href=#710 id=710 data-nosnippet>710</a>    <span class="kw">let </span>(join, tx) = <a href="#658-660">JoinHandle</a>::<a href="#664-667">new</a>();
+<a href=#711 id=711 data-nosnippet>711</a>
+<a href=#712 id=712 data-nosnippet>712</a>    <span class="comment">// use Cancellable::NONE as source obj to fulfill `Send` requirement
+<a href=#713 id=713 data-nosnippet>713</a>    </span><span class="kw">let </span>task = <span class="kw">unsafe </span>{
+<a href=#714 id=714 data-nosnippet>714</a>        <a href="#35-239">Task</a>::&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>&gt;::<a href="#591">new</a>(<a href="auto/cancellable.rs.html#8-58">Cancellable</a>::<a href="auto/cancellable.rs.html#61">NONE</a>, <a href="auto/cancellable.rs.html#8-58">Cancellable</a>::<a href="auto/cancellable.rs.html#61">NONE</a>, <span class="kw">move </span>|task, <span class="kw">_</span>| {
+<a href=#715 id=715 data-nosnippet>715</a>            <span class="kw">let </span><span class="kw-2">mut </span>err = ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
+<a href=#716 id=716 data-nosnippet>716</a>            <span class="kw">let </span>ptr = ffi::<a href="../../gio_sys/fn.g_task_propagate_pointer.html">g_task_propagate_pointer</a>(<a href="#714">task</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#715">err</a>);
+<a href=#717 id=717 data-nosnippet>717</a>
+<a href=#718 id=718 data-nosnippet>718</a>            <span class="kw">let </span>res = <span class="kw-2">*</span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.from_raw">from_raw</a>(<a href="#716">ptr</a> <span class="kw">as </span><span class="kw-2">*mut </span>std::thread::<a href="https://doc.rust-lang.org/nightly/std/thread/type.Result.html">Result</a>&lt;T&gt;);
+<a href=#719 id=719 data-nosnippet>719</a>            <span class="kw">let _ </span>= <a href="#710">tx</a>.send(<a href="#718">res</a>);
+<a href=#720 id=720 data-nosnippet>720</a>        })
+<a href=#721 id=721 data-nosnippet>721</a>    };
+<a href=#722 id=722 data-nosnippet>722</a>    <a href="#713">task</a>.<a href="#595-645">run_in_thread</a>(<span class="kw">move </span>|task, <span class="kw">_</span>: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-58">Cancellable</a>&gt;, <span class="kw">_</span>| {
+<a href=#723 id=723 data-nosnippet>723</a>        <span class="kw">let </span>res = panic::<a href="https://doc.rust-lang.org/nightly/std/panic/fn.catch_unwind.html">catch_unwind</a>(panic::<a href="https://doc.rust-lang.org/nightly/core/panic/unwind_safe/struct.AssertUnwindSafe.html">AssertUnwindSafe</a>(<a href="#699">func</a>));
+<a href=#724 id=724 data-nosnippet>724</a>        <span class="kw">let </span>tx = <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.new">new</a>(<a href="#723">res</a>);
+<a href=#725 id=725 data-nosnippet>725</a>
+<a href=#726 id=726 data-nosnippet>726</a>        <span class="kw">unsafe </span>{
+<a href=#727 id=727 data-nosnippet>727</a>            ffi::<a href="../../gio_sys/fn.g_task_return_pointer.html">g_task_return_pointer</a>(
+<a href=#728 id=728 data-nosnippet>728</a>                <a href="#722">task</a>.<a href="../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#729 id=729 data-nosnippet>729</a>                <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.into_raw">into_raw</a>(<a href="#724">tx</a>) <span class="kw">as </span>glib::ffi::<a href="../../glib_sys/type.gpointer.html">gpointer</a>,
+<a href=#730 id=730 data-nosnippet>730</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#704-708">free_box</a>::&lt;T&gt;),
+<a href=#731 id=731 data-nosnippet>731</a>            )
+<a href=#732 id=732 data-nosnippet>732</a>        }
+<a href=#733 id=733 data-nosnippet>733</a>    });
+<a href=#734 id=734 data-nosnippet>734</a>
+<a href=#735 id=735 data-nosnippet>735</a>    <a href="#710">join</a>
+<a href=#736 id=736 data-nosnippet>736</a>}
 <a href=#737 id=737 data-nosnippet>737</a>
-<a href=#738 id=738 data-nosnippet>738</a>        <span class="kw">match </span>fut {
-<a href=#739 id=739 data-nosnippet>739</a>            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(),
-<a href=#740 id=740 data-nosnippet>740</a>            <span class="prelude-val">Ok</span>(i) =&gt; <span class="macro">assert_eq!</span>(i, <span class="number">100</span>),
-<a href=#741 id=741 data-nosnippet>741</a>        }
-<a href=#742 id=742 data-nosnippet>742</a>    }
-<a href=#743 id=743 data-nosnippet>743</a>
-<a href=#744 id=744 data-nosnippet>744</a>    <span class="attr">#[test]
-<a href=#745 id=745 data-nosnippet>745</a>    </span><span class="kw">fn </span>test_boolean_async_result() {
-<a href=#746 id=746 data-nosnippet>746</a>        <span class="kw">let </span>fut = run_async_local(|tx, l| {
-<a href=#747 id=747 data-nosnippet>747</a>            <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
-<a href=#748 id=748 data-nosnippet>748</a>            <span class="kw">let </span>task = <span class="kw">unsafe </span>{
-<a href=#749 id=749 data-nosnippet>749</a>                <span class="kw">crate</span>::LocalTask::new(
-<a href=#750 id=750 data-nosnippet>750</a>                    <span class="prelude-val">None</span>,
-<a href=#751 id=751 data-nosnippet>751</a>                    <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>cancellable),
-<a href=#752 id=752 data-nosnippet>752</a>                    <span class="kw">move </span>|t: LocalTask&lt;bool&gt;, _b: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Object&gt;| {
-<a href=#753 id=753 data-nosnippet>753</a>                        tx.send(t.propagate_boolean()).unwrap();
-<a href=#754 id=754 data-nosnippet>754</a>                        l.quit();
-<a href=#755 id=755 data-nosnippet>755</a>                    },
-<a href=#756 id=756 data-nosnippet>756</a>                )
-<a href=#757 id=757 data-nosnippet>757</a>            };
-<a href=#758 id=758 data-nosnippet>758</a>            task.return_boolean_result(<span class="prelude-val">Ok</span>(<span class="bool-val">true</span>));
-<a href=#759 id=759 data-nosnippet>759</a>        });
-<a href=#760 id=760 data-nosnippet>760</a>
-<a href=#761 id=761 data-nosnippet>761</a>        <span class="kw">match </span>fut {
-<a href=#762 id=762 data-nosnippet>762</a>            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(),
-<a href=#763 id=763 data-nosnippet>763</a>            <span class="prelude-val">Ok</span>(i) =&gt; <span class="macro">assert!</span>(i),
-<a href=#764 id=764 data-nosnippet>764</a>        }
-<a href=#765 id=765 data-nosnippet>765</a>    }
-<a href=#766 id=766 data-nosnippet>766</a>
-<a href=#767 id=767 data-nosnippet>767</a>    <span class="attr">#[test]
-<a href=#768 id=768 data-nosnippet>768</a>    </span><span class="kw">fn </span>test_int_async_result() {
-<a href=#769 id=769 data-nosnippet>769</a>        <span class="kw">let </span>fut = run_async_local(|tx, l| {
-<a href=#770 id=770 data-nosnippet>770</a>            <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
-<a href=#771 id=771 data-nosnippet>771</a>            <span class="kw">let </span>task = <span class="kw">unsafe </span>{
-<a href=#772 id=772 data-nosnippet>772</a>                <span class="kw">crate</span>::LocalTask::new(
-<a href=#773 id=773 data-nosnippet>773</a>                    <span class="prelude-val">None</span>,
-<a href=#774 id=774 data-nosnippet>774</a>                    <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>cancellable),
-<a href=#775 id=775 data-nosnippet>775</a>                    <span class="kw">move </span>|t: LocalTask&lt;i32&gt;, _b: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Object&gt;| {
-<a href=#776 id=776 data-nosnippet>776</a>                        tx.send(t.propagate_int()).unwrap();
-<a href=#777 id=777 data-nosnippet>777</a>                        l.quit();
-<a href=#778 id=778 data-nosnippet>778</a>                    },
-<a href=#779 id=779 data-nosnippet>779</a>                )
-<a href=#780 id=780 data-nosnippet>780</a>            };
-<a href=#781 id=781 data-nosnippet>781</a>            task.return_int_result(<span class="prelude-val">Ok</span>(<span class="number">100_isize</span>));
-<a href=#782 id=782 data-nosnippet>782</a>        });
-<a href=#783 id=783 data-nosnippet>783</a>
-<a href=#784 id=784 data-nosnippet>784</a>        <span class="kw">match </span>fut {
-<a href=#785 id=785 data-nosnippet>785</a>            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(),
-<a href=#786 id=786 data-nosnippet>786</a>            <span class="prelude-val">Ok</span>(i) =&gt; <span class="macro">assert_eq!</span>(i, <span class="number">100</span>),
-<a href=#787 id=787 data-nosnippet>787</a>        }
-<a href=#788 id=788 data-nosnippet>788</a>    }
-<a href=#789 id=789 data-nosnippet>789</a>
-<a href=#790 id=790 data-nosnippet>790</a>    <span class="attr">#[test]
-<a href=#791 id=791 data-nosnippet>791</a>    </span><span class="kw">fn </span>test_object_async_result() {
-<a href=#792 id=792 data-nosnippet>792</a>        <span class="kw">use </span>glib::subclass::prelude::<span class="kw-2">*</span>;
-<a href=#793 id=793 data-nosnippet>793</a>        <span class="kw">pub struct </span>MySimpleObjectPrivate {
-<a href=#794 id=794 data-nosnippet>794</a>            <span class="kw">pub </span>size: std::cell::RefCell&lt;<span class="prelude-ty">Option</span>&lt;i64&gt;&gt;,
-<a href=#795 id=795 data-nosnippet>795</a>        }
-<a href=#796 id=796 data-nosnippet>796</a>
-<a href=#797 id=797 data-nosnippet>797</a>        <span class="attr">#[glib::object_subclass]
-<a href=#798 id=798 data-nosnippet>798</a>        </span><span class="kw">impl </span>ObjectSubclass <span class="kw">for </span>MySimpleObjectPrivate {
-<a href=#799 id=799 data-nosnippet>799</a>            <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"MySimpleObjectPrivate"</span>;
-<a href=#800 id=800 data-nosnippet>800</a>            <span class="kw">type </span>Type = MySimpleObject;
-<a href=#801 id=801 data-nosnippet>801</a>
-<a href=#802 id=802 data-nosnippet>802</a>            <span class="kw">fn </span>new() -&gt; <span class="self">Self </span>{
-<a href=#803 id=803 data-nosnippet>803</a>                <span class="self">Self </span>{
-<a href=#804 id=804 data-nosnippet>804</a>                    size: std::cell::RefCell::new(<span class="prelude-val">Some</span>(<span class="number">100</span>)),
-<a href=#805 id=805 data-nosnippet>805</a>                }
-<a href=#806 id=806 data-nosnippet>806</a>            }
-<a href=#807 id=807 data-nosnippet>807</a>        }
-<a href=#808 id=808 data-nosnippet>808</a>
-<a href=#809 id=809 data-nosnippet>809</a>        <span class="kw">impl </span>ObjectImpl <span class="kw">for </span>MySimpleObjectPrivate {}
-<a href=#810 id=810 data-nosnippet>810</a>
-<a href=#811 id=811 data-nosnippet>811</a>        <span class="macro">glib::wrapper!</span> {
-<a href=#812 id=812 data-nosnippet>812</a>            <span class="kw">pub struct </span>MySimpleObject(ObjectSubclass&lt;MySimpleObjectPrivate&gt;);
-<a href=#813 id=813 data-nosnippet>813</a>        }
-<a href=#814 id=814 data-nosnippet>814</a>
-<a href=#815 id=815 data-nosnippet>815</a>        <span class="kw">impl </span>MySimpleObject {
-<a href=#816 id=816 data-nosnippet>816</a>            <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
-<a href=#817 id=817 data-nosnippet>817</a>                glib::Object::new()
-<a href=#818 id=818 data-nosnippet>818</a>            }
-<a href=#819 id=819 data-nosnippet>819</a>
-<a href=#820 id=820 data-nosnippet>820</a>            <span class="attr">#[doc(alias = <span class="string">"get_size"</span>)]
-<a href=#821 id=821 data-nosnippet>821</a>            </span><span class="kw">pub fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;i64&gt; {
-<a href=#822 id=822 data-nosnippet>822</a>                <span class="kw-2">*</span><span class="self">self</span>.imp().size.borrow()
-<a href=#823 id=823 data-nosnippet>823</a>            }
-<a href=#824 id=824 data-nosnippet>824</a>
-<a href=#825 id=825 data-nosnippet>825</a>            <span class="kw">pub fn </span>set_size(<span class="kw-2">&amp;</span><span class="self">self</span>, size: i64) {
-<a href=#826 id=826 data-nosnippet>826</a>                <span class="self">self</span>.imp().size.borrow_mut().replace(size);
-<a href=#827 id=827 data-nosnippet>827</a>            }
-<a href=#828 id=828 data-nosnippet>828</a>        }
-<a href=#829 id=829 data-nosnippet>829</a>
-<a href=#830 id=830 data-nosnippet>830</a>        <span class="kw">impl </span>Default <span class="kw">for </span>MySimpleObject {
-<a href=#831 id=831 data-nosnippet>831</a>            <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-<a href=#832 id=832 data-nosnippet>832</a>                <span class="self">Self</span>::new()
-<a href=#833 id=833 data-nosnippet>833</a>            }
-<a href=#834 id=834 data-nosnippet>834</a>        }
-<a href=#835 id=835 data-nosnippet>835</a>
-<a href=#836 id=836 data-nosnippet>836</a>        <span class="kw">let </span>fut = run_async_local(|tx, l| {
-<a href=#837 id=837 data-nosnippet>837</a>            <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
-<a href=#838 id=838 data-nosnippet>838</a>            <span class="kw">let </span>task = <span class="kw">unsafe </span>{
-<a href=#839 id=839 data-nosnippet>839</a>                <span class="kw">crate</span>::LocalTask::new(
-<a href=#840 id=840 data-nosnippet>840</a>                    <span class="prelude-val">None</span>,
-<a href=#841 id=841 data-nosnippet>841</a>                    <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>cancellable),
-<a href=#842 id=842 data-nosnippet>842</a>                    <span class="kw">move </span>|t: LocalTask&lt;glib::Object&gt;, _b: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Object&gt;| {
-<a href=#843 id=843 data-nosnippet>843</a>                        tx.send(t.propagate()).unwrap();
-<a href=#844 id=844 data-nosnippet>844</a>                        l.quit();
-<a href=#845 id=845 data-nosnippet>845</a>                    },
-<a href=#846 id=846 data-nosnippet>846</a>                )
-<a href=#847 id=847 data-nosnippet>847</a>            };
-<a href=#848 id=848 data-nosnippet>848</a>            <span class="kw">let </span>my_object = MySimpleObject::new();
-<a href=#849 id=849 data-nosnippet>849</a>            my_object.set_size(<span class="number">100</span>);
-<a href=#850 id=850 data-nosnippet>850</a>            task.return_result(<span class="prelude-val">Ok</span>(my_object.upcast::&lt;glib::Object&gt;()));
-<a href=#851 id=851 data-nosnippet>851</a>        });
-<a href=#852 id=852 data-nosnippet>852</a>
-<a href=#853 id=853 data-nosnippet>853</a>        <span class="kw">match </span>fut {
-<a href=#854 id=854 data-nosnippet>854</a>            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(),
-<a href=#855 id=855 data-nosnippet>855</a>            <span class="prelude-val">Ok</span>(o) =&gt; {
-<a href=#856 id=856 data-nosnippet>856</a>                <span class="kw">let </span>o = o.downcast::&lt;MySimpleObject&gt;().unwrap();
-<a href=#857 id=857 data-nosnippet>857</a>                <span class="macro">assert_eq!</span>(o.size(), <span class="prelude-val">Some</span>(<span class="number">100</span>));
-<a href=#858 id=858 data-nosnippet>858</a>            }
-<a href=#859 id=859 data-nosnippet>859</a>        }
-<a href=#860 id=860 data-nosnippet>860</a>    }
-<a href=#861 id=861 data-nosnippet>861</a>
-<a href=#862 id=862 data-nosnippet>862</a>    <span class="attr">#[test]
-<a href=#863 id=863 data-nosnippet>863</a>    </span><span class="kw">fn </span>test_error() {
-<a href=#864 id=864 data-nosnippet>864</a>        <span class="kw">let </span>fut = run_async_local(|tx, l| {
-<a href=#865 id=865 data-nosnippet>865</a>            <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
-<a href=#866 id=866 data-nosnippet>866</a>            <span class="kw">let </span>task = <span class="kw">unsafe </span>{
-<a href=#867 id=867 data-nosnippet>867</a>                <span class="kw">crate</span>::LocalTask::new(
-<a href=#868 id=868 data-nosnippet>868</a>                    <span class="prelude-val">None</span>,
-<a href=#869 id=869 data-nosnippet>869</a>                    <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>cancellable),
-<a href=#870 id=870 data-nosnippet>870</a>                    <span class="kw">move </span>|t: LocalTask&lt;i32&gt;, _b: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Object&gt;| {
-<a href=#871 id=871 data-nosnippet>871</a>                        tx.send(t.propagate()).unwrap();
-<a href=#872 id=872 data-nosnippet>872</a>                        l.quit();
-<a href=#873 id=873 data-nosnippet>873</a>                    },
-<a href=#874 id=874 data-nosnippet>874</a>                )
-<a href=#875 id=875 data-nosnippet>875</a>            };
-<a href=#876 id=876 data-nosnippet>876</a>            task.return_result(<span class="prelude-val">Err</span>(glib::Error::new(
-<a href=#877 id=877 data-nosnippet>877</a>                <span class="kw">crate</span>::IOErrorEnum::WouldBlock,
-<a href=#878 id=878 data-nosnippet>878</a>                <span class="string">"WouldBlock"</span>,
-<a href=#879 id=879 data-nosnippet>879</a>            )));
-<a href=#880 id=880 data-nosnippet>880</a>        });
-<a href=#881 id=881 data-nosnippet>881</a>
-<a href=#882 id=882 data-nosnippet>882</a>        <span class="kw">match </span>fut {
-<a href=#883 id=883 data-nosnippet>883</a>            <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">match </span>e.kind().unwrap() {
-<a href=#884 id=884 data-nosnippet>884</a>                <span class="kw">crate</span>::IOErrorEnum::WouldBlock =&gt; {}
-<a href=#885 id=885 data-nosnippet>885</a>                <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(),
-<a href=#886 id=886 data-nosnippet>886</a>            },
-<a href=#887 id=887 data-nosnippet>887</a>            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(),
-<a href=#888 id=888 data-nosnippet>888</a>        }
-<a href=#889 id=889 data-nosnippet>889</a>    }
-<a href=#890 id=890 data-nosnippet>890</a>
-<a href=#891 id=891 data-nosnippet>891</a>    <span class="attr">#[test]
-<a href=#892 id=892 data-nosnippet>892</a>    </span><span class="kw">fn </span>test_cancelled() {
-<a href=#893 id=893 data-nosnippet>893</a>        <span class="kw">let </span>fut = run_async_local(|tx, l| {
-<a href=#894 id=894 data-nosnippet>894</a>            <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
-<a href=#895 id=895 data-nosnippet>895</a>            <span class="kw">let </span>task = <span class="kw">unsafe </span>{
-<a href=#896 id=896 data-nosnippet>896</a>                <span class="kw">crate</span>::LocalTask::new(
-<a href=#897 id=897 data-nosnippet>897</a>                    <span class="prelude-val">None</span>,
-<a href=#898 id=898 data-nosnippet>898</a>                    <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>cancellable),
-<a href=#899 id=899 data-nosnippet>899</a>                    <span class="kw">move </span>|t: LocalTask&lt;i32&gt;, _b: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Object&gt;| {
-<a href=#900 id=900 data-nosnippet>900</a>                        tx.send(t.propagate()).unwrap();
-<a href=#901 id=901 data-nosnippet>901</a>                        l.quit();
-<a href=#902 id=902 data-nosnippet>902</a>                    },
-<a href=#903 id=903 data-nosnippet>903</a>                )
-<a href=#904 id=904 data-nosnippet>904</a>            };
-<a href=#905 id=905 data-nosnippet>905</a>            cancellable.cancel();
-<a href=#906 id=906 data-nosnippet>906</a>            task.return_error_if_cancelled();
-<a href=#907 id=907 data-nosnippet>907</a>        });
-<a href=#908 id=908 data-nosnippet>908</a>
-<a href=#909 id=909 data-nosnippet>909</a>        <span class="kw">match </span>fut {
-<a href=#910 id=910 data-nosnippet>910</a>            <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">match </span>e.kind().unwrap() {
-<a href=#911 id=911 data-nosnippet>911</a>                <span class="kw">crate</span>::IOErrorEnum::Cancelled =&gt; {}
-<a href=#912 id=912 data-nosnippet>912</a>                <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(),
-<a href=#913 id=913 data-nosnippet>913</a>            },
-<a href=#914 id=914 data-nosnippet>914</a>            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(),
-<a href=#915 id=915 data-nosnippet>915</a>        }
-<a href=#916 id=916 data-nosnippet>916</a>    }
-<a href=#917 id=917 data-nosnippet>917</a>}
+<a href=#738 id=738 data-nosnippet>738</a><span class="attr">#[cfg(test)]
+<a href=#739 id=739 data-nosnippet>739</a></span><span class="kw">mod </span>test {
+<a href=#740 id=740 data-nosnippet>740</a>    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+<a href=#741 id=741 data-nosnippet>741</a>    <span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, test_util::run_async_local};
+<a href=#742 id=742 data-nosnippet>742</a>
+<a href=#743 id=743 data-nosnippet>743</a>    <span class="attr">#[test]
+<a href=#744 id=744 data-nosnippet>744</a>    </span><span class="kw">fn </span>test_int_value_async_result() {
+<a href=#745 id=745 data-nosnippet>745</a>        <span class="kw">let </span>fut = run_async_local(|tx, l| {
+<a href=#746 id=746 data-nosnippet>746</a>            <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
+<a href=#747 id=747 data-nosnippet>747</a>            <span class="kw">let </span>task = <span class="kw">unsafe </span>{
+<a href=#748 id=748 data-nosnippet>748</a>                <span class="kw">crate</span>::LocalTask::new(
+<a href=#749 id=749 data-nosnippet>749</a>                    <span class="prelude-val">None</span>,
+<a href=#750 id=750 data-nosnippet>750</a>                    <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>cancellable),
+<a href=#751 id=751 data-nosnippet>751</a>                    <span class="kw">move </span>|t: LocalTask&lt;i32&gt;, _b: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Object&gt;| {
+<a href=#752 id=752 data-nosnippet>752</a>                        tx.send(t.propagate()).unwrap();
+<a href=#753 id=753 data-nosnippet>753</a>                        l.quit();
+<a href=#754 id=754 data-nosnippet>754</a>                    },
+<a href=#755 id=755 data-nosnippet>755</a>                )
+<a href=#756 id=756 data-nosnippet>756</a>            };
+<a href=#757 id=757 data-nosnippet>757</a>            task.return_result(<span class="prelude-val">Ok</span>(<span class="number">100_i32</span>));
+<a href=#758 id=758 data-nosnippet>758</a>        });
+<a href=#759 id=759 data-nosnippet>759</a>
+<a href=#760 id=760 data-nosnippet>760</a>        <span class="kw">match </span>fut {
+<a href=#761 id=761 data-nosnippet>761</a>            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(),
+<a href=#762 id=762 data-nosnippet>762</a>            <span class="prelude-val">Ok</span>(i) =&gt; <span class="macro">assert_eq!</span>(i, <span class="number">100</span>),
+<a href=#763 id=763 data-nosnippet>763</a>        }
+<a href=#764 id=764 data-nosnippet>764</a>    }
+<a href=#765 id=765 data-nosnippet>765</a>
+<a href=#766 id=766 data-nosnippet>766</a>    <span class="attr">#[test]
+<a href=#767 id=767 data-nosnippet>767</a>    </span><span class="kw">fn </span>test_boolean_async_result() {
+<a href=#768 id=768 data-nosnippet>768</a>        <span class="kw">let </span>fut = run_async_local(|tx, l| {
+<a href=#769 id=769 data-nosnippet>769</a>            <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
+<a href=#770 id=770 data-nosnippet>770</a>            <span class="kw">let </span>task = <span class="kw">unsafe </span>{
+<a href=#771 id=771 data-nosnippet>771</a>                <span class="kw">crate</span>::LocalTask::new(
+<a href=#772 id=772 data-nosnippet>772</a>                    <span class="prelude-val">None</span>,
+<a href=#773 id=773 data-nosnippet>773</a>                    <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>cancellable),
+<a href=#774 id=774 data-nosnippet>774</a>                    <span class="kw">move </span>|t: LocalTask&lt;bool&gt;, _b: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Object&gt;| {
+<a href=#775 id=775 data-nosnippet>775</a>                        tx.send(t.propagate_boolean()).unwrap();
+<a href=#776 id=776 data-nosnippet>776</a>                        l.quit();
+<a href=#777 id=777 data-nosnippet>777</a>                    },
+<a href=#778 id=778 data-nosnippet>778</a>                )
+<a href=#779 id=779 data-nosnippet>779</a>            };
+<a href=#780 id=780 data-nosnippet>780</a>            task.return_boolean_result(<span class="prelude-val">Ok</span>(<span class="bool-val">true</span>));
+<a href=#781 id=781 data-nosnippet>781</a>        });
+<a href=#782 id=782 data-nosnippet>782</a>
+<a href=#783 id=783 data-nosnippet>783</a>        <span class="kw">match </span>fut {
+<a href=#784 id=784 data-nosnippet>784</a>            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(),
+<a href=#785 id=785 data-nosnippet>785</a>            <span class="prelude-val">Ok</span>(i) =&gt; <span class="macro">assert!</span>(i),
+<a href=#786 id=786 data-nosnippet>786</a>        }
+<a href=#787 id=787 data-nosnippet>787</a>    }
+<a href=#788 id=788 data-nosnippet>788</a>
+<a href=#789 id=789 data-nosnippet>789</a>    <span class="attr">#[test]
+<a href=#790 id=790 data-nosnippet>790</a>    </span><span class="kw">fn </span>test_int_async_result() {
+<a href=#791 id=791 data-nosnippet>791</a>        <span class="kw">let </span>fut = run_async_local(|tx, l| {
+<a href=#792 id=792 data-nosnippet>792</a>            <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
+<a href=#793 id=793 data-nosnippet>793</a>            <span class="kw">let </span>task = <span class="kw">unsafe </span>{
+<a href=#794 id=794 data-nosnippet>794</a>                <span class="kw">crate</span>::LocalTask::new(
+<a href=#795 id=795 data-nosnippet>795</a>                    <span class="prelude-val">None</span>,
+<a href=#796 id=796 data-nosnippet>796</a>                    <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>cancellable),
+<a href=#797 id=797 data-nosnippet>797</a>                    <span class="kw">move </span>|t: LocalTask&lt;i32&gt;, _b: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Object&gt;| {
+<a href=#798 id=798 data-nosnippet>798</a>                        tx.send(t.propagate_int()).unwrap();
+<a href=#799 id=799 data-nosnippet>799</a>                        l.quit();
+<a href=#800 id=800 data-nosnippet>800</a>                    },
+<a href=#801 id=801 data-nosnippet>801</a>                )
+<a href=#802 id=802 data-nosnippet>802</a>            };
+<a href=#803 id=803 data-nosnippet>803</a>            task.return_int_result(<span class="prelude-val">Ok</span>(<span class="number">100_isize</span>));
+<a href=#804 id=804 data-nosnippet>804</a>        });
+<a href=#805 id=805 data-nosnippet>805</a>
+<a href=#806 id=806 data-nosnippet>806</a>        <span class="kw">match </span>fut {
+<a href=#807 id=807 data-nosnippet>807</a>            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(),
+<a href=#808 id=808 data-nosnippet>808</a>            <span class="prelude-val">Ok</span>(i) =&gt; <span class="macro">assert_eq!</span>(i, <span class="number">100</span>),
+<a href=#809 id=809 data-nosnippet>809</a>        }
+<a href=#810 id=810 data-nosnippet>810</a>    }
+<a href=#811 id=811 data-nosnippet>811</a>
+<a href=#812 id=812 data-nosnippet>812</a>    <span class="attr">#[test]
+<a href=#813 id=813 data-nosnippet>813</a>    </span><span class="kw">fn </span>test_object_async_result() {
+<a href=#814 id=814 data-nosnippet>814</a>        <span class="kw">use </span>glib::subclass::prelude::<span class="kw-2">*</span>;
+<a href=#815 id=815 data-nosnippet>815</a>        <span class="kw">pub struct </span>MySimpleObjectPrivate {
+<a href=#816 id=816 data-nosnippet>816</a>            <span class="kw">pub </span>size: std::cell::RefCell&lt;<span class="prelude-ty">Option</span>&lt;i64&gt;&gt;,
+<a href=#817 id=817 data-nosnippet>817</a>        }
+<a href=#818 id=818 data-nosnippet>818</a>
+<a href=#819 id=819 data-nosnippet>819</a>        <span class="attr">#[glib::object_subclass]
+<a href=#820 id=820 data-nosnippet>820</a>        </span><span class="kw">impl </span>ObjectSubclass <span class="kw">for </span>MySimpleObjectPrivate {
+<a href=#821 id=821 data-nosnippet>821</a>            <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"MySimpleObjectPrivate"</span>;
+<a href=#822 id=822 data-nosnippet>822</a>            <span class="kw">type </span>Type = MySimpleObject;
+<a href=#823 id=823 data-nosnippet>823</a>
+<a href=#824 id=824 data-nosnippet>824</a>            <span class="kw">fn </span>new() -&gt; <span class="self">Self </span>{
+<a href=#825 id=825 data-nosnippet>825</a>                <span class="self">Self </span>{
+<a href=#826 id=826 data-nosnippet>826</a>                    size: std::cell::RefCell::new(<span class="prelude-val">Some</span>(<span class="number">100</span>)),
+<a href=#827 id=827 data-nosnippet>827</a>                }
+<a href=#828 id=828 data-nosnippet>828</a>            }
+<a href=#829 id=829 data-nosnippet>829</a>        }
+<a href=#830 id=830 data-nosnippet>830</a>
+<a href=#831 id=831 data-nosnippet>831</a>        <span class="kw">impl </span>ObjectImpl <span class="kw">for </span>MySimpleObjectPrivate {}
+<a href=#832 id=832 data-nosnippet>832</a>
+<a href=#833 id=833 data-nosnippet>833</a>        <span class="macro">glib::wrapper!</span> {
+<a href=#834 id=834 data-nosnippet>834</a>            <span class="kw">pub struct </span>MySimpleObject(ObjectSubclass&lt;MySimpleObjectPrivate&gt;);
+<a href=#835 id=835 data-nosnippet>835</a>        }
+<a href=#836 id=836 data-nosnippet>836</a>
+<a href=#837 id=837 data-nosnippet>837</a>        <span class="kw">impl </span>MySimpleObject {
+<a href=#838 id=838 data-nosnippet>838</a>            <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+<a href=#839 id=839 data-nosnippet>839</a>                glib::Object::new()
+<a href=#840 id=840 data-nosnippet>840</a>            }
+<a href=#841 id=841 data-nosnippet>841</a>
+<a href=#842 id=842 data-nosnippet>842</a>            <span class="attr">#[doc(alias = <span class="string">"get_size"</span>)]
+<a href=#843 id=843 data-nosnippet>843</a>            </span><span class="kw">pub fn </span>size(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;i64&gt; {
+<a href=#844 id=844 data-nosnippet>844</a>                <span class="kw-2">*</span><span class="self">self</span>.imp().size.borrow()
+<a href=#845 id=845 data-nosnippet>845</a>            }
+<a href=#846 id=846 data-nosnippet>846</a>
+<a href=#847 id=847 data-nosnippet>847</a>            <span class="kw">pub fn </span>set_size(<span class="kw-2">&amp;</span><span class="self">self</span>, size: i64) {
+<a href=#848 id=848 data-nosnippet>848</a>                <span class="self">self</span>.imp().size.borrow_mut().replace(size);
+<a href=#849 id=849 data-nosnippet>849</a>            }
+<a href=#850 id=850 data-nosnippet>850</a>        }
+<a href=#851 id=851 data-nosnippet>851</a>
+<a href=#852 id=852 data-nosnippet>852</a>        <span class="kw">impl </span>Default <span class="kw">for </span>MySimpleObject {
+<a href=#853 id=853 data-nosnippet>853</a>            <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+<a href=#854 id=854 data-nosnippet>854</a>                <span class="self">Self</span>::new()
+<a href=#855 id=855 data-nosnippet>855</a>            }
+<a href=#856 id=856 data-nosnippet>856</a>        }
+<a href=#857 id=857 data-nosnippet>857</a>
+<a href=#858 id=858 data-nosnippet>858</a>        <span class="kw">let </span>fut = run_async_local(|tx, l| {
+<a href=#859 id=859 data-nosnippet>859</a>            <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
+<a href=#860 id=860 data-nosnippet>860</a>            <span class="kw">let </span>task = <span class="kw">unsafe </span>{
+<a href=#861 id=861 data-nosnippet>861</a>                <span class="kw">crate</span>::LocalTask::new(
+<a href=#862 id=862 data-nosnippet>862</a>                    <span class="prelude-val">None</span>,
+<a href=#863 id=863 data-nosnippet>863</a>                    <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>cancellable),
+<a href=#864 id=864 data-nosnippet>864</a>                    <span class="kw">move </span>|t: LocalTask&lt;glib::Object&gt;, _b: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Object&gt;| {
+<a href=#865 id=865 data-nosnippet>865</a>                        tx.send(t.propagate()).unwrap();
+<a href=#866 id=866 data-nosnippet>866</a>                        l.quit();
+<a href=#867 id=867 data-nosnippet>867</a>                    },
+<a href=#868 id=868 data-nosnippet>868</a>                )
+<a href=#869 id=869 data-nosnippet>869</a>            };
+<a href=#870 id=870 data-nosnippet>870</a>            <span class="kw">let </span>my_object = MySimpleObject::new();
+<a href=#871 id=871 data-nosnippet>871</a>            my_object.set_size(<span class="number">100</span>);
+<a href=#872 id=872 data-nosnippet>872</a>            task.return_result(<span class="prelude-val">Ok</span>(my_object.upcast::&lt;glib::Object&gt;()));
+<a href=#873 id=873 data-nosnippet>873</a>        });
+<a href=#874 id=874 data-nosnippet>874</a>
+<a href=#875 id=875 data-nosnippet>875</a>        <span class="kw">match </span>fut {
+<a href=#876 id=876 data-nosnippet>876</a>            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(),
+<a href=#877 id=877 data-nosnippet>877</a>            <span class="prelude-val">Ok</span>(o) =&gt; {
+<a href=#878 id=878 data-nosnippet>878</a>                <span class="kw">let </span>o = o.downcast::&lt;MySimpleObject&gt;().unwrap();
+<a href=#879 id=879 data-nosnippet>879</a>                <span class="macro">assert_eq!</span>(o.size(), <span class="prelude-val">Some</span>(<span class="number">100</span>));
+<a href=#880 id=880 data-nosnippet>880</a>            }
+<a href=#881 id=881 data-nosnippet>881</a>        }
+<a href=#882 id=882 data-nosnippet>882</a>    }
+<a href=#883 id=883 data-nosnippet>883</a>
+<a href=#884 id=884 data-nosnippet>884</a>    <span class="attr">#[test]
+<a href=#885 id=885 data-nosnippet>885</a>    </span><span class="kw">fn </span>test_error() {
+<a href=#886 id=886 data-nosnippet>886</a>        <span class="kw">let </span>fut = run_async_local(|tx, l| {
+<a href=#887 id=887 data-nosnippet>887</a>            <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
+<a href=#888 id=888 data-nosnippet>888</a>            <span class="kw">let </span>task = <span class="kw">unsafe </span>{
+<a href=#889 id=889 data-nosnippet>889</a>                <span class="kw">crate</span>::LocalTask::new(
+<a href=#890 id=890 data-nosnippet>890</a>                    <span class="prelude-val">None</span>,
+<a href=#891 id=891 data-nosnippet>891</a>                    <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>cancellable),
+<a href=#892 id=892 data-nosnippet>892</a>                    <span class="kw">move </span>|t: LocalTask&lt;i32&gt;, _b: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Object&gt;| {
+<a href=#893 id=893 data-nosnippet>893</a>                        tx.send(t.propagate()).unwrap();
+<a href=#894 id=894 data-nosnippet>894</a>                        l.quit();
+<a href=#895 id=895 data-nosnippet>895</a>                    },
+<a href=#896 id=896 data-nosnippet>896</a>                )
+<a href=#897 id=897 data-nosnippet>897</a>            };
+<a href=#898 id=898 data-nosnippet>898</a>            task.return_result(<span class="prelude-val">Err</span>(glib::Error::new(
+<a href=#899 id=899 data-nosnippet>899</a>                <span class="kw">crate</span>::IOErrorEnum::WouldBlock,
+<a href=#900 id=900 data-nosnippet>900</a>                <span class="string">"WouldBlock"</span>,
+<a href=#901 id=901 data-nosnippet>901</a>            )));
+<a href=#902 id=902 data-nosnippet>902</a>        });
+<a href=#903 id=903 data-nosnippet>903</a>
+<a href=#904 id=904 data-nosnippet>904</a>        <span class="kw">match </span>fut {
+<a href=#905 id=905 data-nosnippet>905</a>            <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">match </span>e.kind().unwrap() {
+<a href=#906 id=906 data-nosnippet>906</a>                <span class="kw">crate</span>::IOErrorEnum::WouldBlock =&gt; {}
+<a href=#907 id=907 data-nosnippet>907</a>                <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(),
+<a href=#908 id=908 data-nosnippet>908</a>            },
+<a href=#909 id=909 data-nosnippet>909</a>            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(),
+<a href=#910 id=910 data-nosnippet>910</a>        }
+<a href=#911 id=911 data-nosnippet>911</a>    }
+<a href=#912 id=912 data-nosnippet>912</a>
+<a href=#913 id=913 data-nosnippet>913</a>    <span class="attr">#[test]
+<a href=#914 id=914 data-nosnippet>914</a>    </span><span class="kw">fn </span>test_cancelled() {
+<a href=#915 id=915 data-nosnippet>915</a>        <span class="kw">let </span>fut = run_async_local(|tx, l| {
+<a href=#916 id=916 data-nosnippet>916</a>            <span class="kw">let </span>cancellable = <span class="kw">crate</span>::Cancellable::new();
+<a href=#917 id=917 data-nosnippet>917</a>            <span class="kw">let </span>task = <span class="kw">unsafe </span>{
+<a href=#918 id=918 data-nosnippet>918</a>                <span class="kw">crate</span>::LocalTask::new(
+<a href=#919 id=919 data-nosnippet>919</a>                    <span class="prelude-val">None</span>,
+<a href=#920 id=920 data-nosnippet>920</a>                    <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>cancellable),
+<a href=#921 id=921 data-nosnippet>921</a>                    <span class="kw">move </span>|t: LocalTask&lt;i32&gt;, _b: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Object&gt;| {
+<a href=#922 id=922 data-nosnippet>922</a>                        tx.send(t.propagate()).unwrap();
+<a href=#923 id=923 data-nosnippet>923</a>                        l.quit();
+<a href=#924 id=924 data-nosnippet>924</a>                    },
+<a href=#925 id=925 data-nosnippet>925</a>                )
+<a href=#926 id=926 data-nosnippet>926</a>            };
+<a href=#927 id=927 data-nosnippet>927</a>            cancellable.cancel();
+<a href=#928 id=928 data-nosnippet>928</a>            task.return_error_if_cancelled();
+<a href=#929 id=929 data-nosnippet>929</a>        });
+<a href=#930 id=930 data-nosnippet>930</a>
+<a href=#931 id=931 data-nosnippet>931</a>        <span class="kw">match </span>fut {
+<a href=#932 id=932 data-nosnippet>932</a>            <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">match </span>e.kind().unwrap() {
+<a href=#933 id=933 data-nosnippet>933</a>                <span class="kw">crate</span>::IOErrorEnum::Cancelled =&gt; {}
+<a href=#934 id=934 data-nosnippet>934</a>                <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(),
+<a href=#935 id=935 data-nosnippet>935</a>            },
+<a href=#936 id=936 data-nosnippet>936</a>            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(),
+<a href=#937 id=937 data-nosnippet>937</a>        }
+<a href=#938 id=938 data-nosnippet>938</a>    }
+<a href=#939 id=939 data-nosnippet>939</a>
+<a href=#940 id=940 data-nosnippet>940</a>    <span class="attr">#[test]
+<a href=#941 id=941 data-nosnippet>941</a>    </span><span class="kw">fn </span>test_spawn_blocking() {
+<a href=#942 id=942 data-nosnippet>942</a>        <span class="kw">let </span>main_context = glib::MainContext::new();
+<a href=#943 id=943 data-nosnippet>943</a>        main_context.block_on(<span class="kw">async </span>{
+<a href=#944 id=944 data-nosnippet>944</a>            <span class="kw">let </span>x = <span class="kw">super</span>::spawn_blocking(|| <span class="number">123</span>).<span class="kw">await</span>;
+<a href=#945 id=945 data-nosnippet>945</a>            <span class="macro">assert_eq!</span>(x.unwrap(), <span class="number">123</span>);
+<a href=#946 id=946 data-nosnippet>946</a>        });
+<a href=#947 id=947 data-nosnippet>947</a>    }
+<a href=#948 id=948 data-nosnippet>948</a>}
 </code></pre></div></section></main></body></html>
