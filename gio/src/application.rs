@@ -1,6 +1,6 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{boxed::Box as Box_, mem::transmute, ops::ControlFlow};
+use std::{boxed::Box as Box_, ffi::OsStr, mem::transmute, ops::ControlFlow};
 
 use glib::{
     ExitCode, GString,
@@ -12,14 +12,35 @@ use glib::{
 use crate::{Application, ApplicationCommandLine, File, ffi};
 
 pub trait ApplicationExtManual: IsA<Application> {
+    // rustdoc-stripper-ignore-next
+    /// Runs the application with the arguments of the process.
+    ///
+    /// Arguments are taken as they are, without requiring them to be valid
+    /// UTF-8: on unix an argument is a byte string, and a file name that is not
+    /// valid UTF-8 is enough to make [`std::env::args()`] panic.
     #[doc(alias = "g_application_run")]
     fn run(&self) -> ExitCode {
-        self.run_with_args(&std::env::args().collect::<Vec<_>>())
+        self.run_with_args_os(&std::env::args_os().collect::<Vec<_>>())
     }
 
     #[doc(alias = "g_application_run")]
     fn run_with_args<S: AsRef<str>>(&self, args: &[S]) -> ExitCode {
         let argv: Vec<&str> = args.iter().map(|a| a.as_ref()).collect();
+        let argc = argv.len() as i32;
+        let exit_code = unsafe {
+            ffi::g_application_run(self.as_ref().to_glib_none().0, argc, argv.to_glib_none().0)
+        };
+        ExitCode::try_from(exit_code).unwrap()
+    }
+
+    // rustdoc-stripper-ignore-next
+    /// Runs the application with the given arguments.
+    ///
+    /// Same as [`run_with_args()`][Self::run_with_args()], for arguments that
+    /// are not necessarily valid UTF-8.
+    #[doc(alias = "g_application_run")]
+    fn run_with_args_os<S: AsRef<OsStr>>(&self, args: &[S]) -> ExitCode {
+        let argv: Vec<&OsStr> = args.iter().map(|a| a.as_ref()).collect();
         let argc = argv.len() as i32;
         let exit_code = unsafe {
             ffi::g_application_run(self.as_ref().to_glib_none().0, argc, argv.to_glib_none().0)
