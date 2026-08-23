@@ -1,5 +1,7 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+use std::ffi::c_void;
+
 use glib::{Slice, translate::*};
 
 use crate::{TabAlign, TabArray};
@@ -23,6 +25,7 @@ impl TabArray {
             for i in 0..locations.len() {
                 alignments_vec.push(from_glib(*alignments.add(i)));
             }
+            glib::ffi::g_free(alignments as *mut c_void);
             (alignments_vec, locations)
         }
     }
