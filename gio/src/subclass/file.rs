@@ -2613,6 +2613,8 @@ unsafe extern "C" fn file_get_child_for_display_name<T: FileImpl>(
             return std::ptr::null_mut();
         }
 
+        glib::ffi::g_free(basename as *mut _);
+
         let res = imp.child_for_display_name(&GString::from_glib_borrow(display_name));
         match res {
             Ok(child) => child.to_glib_full(),
