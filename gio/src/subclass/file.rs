@@ -2612,6 +2612,9 @@ unsafe extern "C" fn file_get_child_for_display_name<T: FileImpl>(
             }
             return std::ptr::null_mut();
         }
+        // `g_filename_from_utf8` returns a newly allocated string even when
+        // we only use it for validation; free it immediately.
+        glib::ffi::g_free(basename as *mut _);
 
         let res = imp.child_for_display_name(&GString::from_glib_borrow(display_name));
         match res {
