@@ -449,13 +449,13 @@ impl Context {
     #[doc(alias = "cairo_copy_clip_rectangle_list")]
     pub fn copy_clip_rectangle_list(&self) -> Result<RectangleList, Error> {
         unsafe {
-            let rectangle_list = ffi::cairo_copy_clip_rectangle_list(self.0.as_ptr());
+            let rectangle_list = RectangleList {
+                ptr: ffi::cairo_copy_clip_rectangle_list(self.0.as_ptr()),
+            };
 
-            status_to_result((*rectangle_list).status)?;
+            status_to_result((*rectangle_list.ptr).status)?;
 
-            Ok(RectangleList {
-                ptr: rectangle_list,
-            })
+            Ok(rectangle_list)
         }
     }
 
