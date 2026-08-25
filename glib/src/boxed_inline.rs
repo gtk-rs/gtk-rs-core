@@ -368,11 +368,11 @@ macro_rules! glib_boxed_inline_wrapper {
             unsafe fn from_glib_none(ptr: *mut $ffi_name) -> Self { unsafe {
                 debug_assert!(!ptr.is_null());
 
-                let mut v = <Self as $crate::translate::Uninitialized>::uninitialized();
-                let copy_into = |$copy_into_arg_dest: *mut $ffi_name, $copy_into_arg_src: *const $ffi_name| $copy_into_expr;
-                copy_into(&mut v.inner as *mut $ffi_name, ptr as *const $ffi_name);
 
-                v
+                let mut v = ::std::mem::MaybeUninit::<Self>::zeroed();
+                let copy_into = |$copy_into_arg_dest: *mut $ffi_name, $copy_into_arg_src: *const $ffi_name| $copy_into_expr;
+                copy_into(&mut (*v.as_mut_ptr()).inner as *mut $ffi_name, ptr as *const $ffi_name);
+                v.assume_init()
             }}
         }
 
@@ -390,14 +390,14 @@ macro_rules! glib_boxed_inline_wrapper {
             unsafe fn from_glib_full(ptr: *mut $ffi_name) -> Self { unsafe {
                 debug_assert!(!ptr.is_null());
 
-                let mut v = <Self as $crate::translate::Uninitialized>::uninitialized();
+                let mut v = ::std::mem::MaybeUninit::<Self>::zeroed();
                 let copy_into = |$copy_into_arg_dest: *mut $ffi_name, $copy_into_arg_src: *const $ffi_name| $copy_into_expr;
-                copy_into(&mut v.inner as *mut $ffi_name, ptr as *const $ffi_name);
+                copy_into(&mut (*v.as_mut_ptr()).inner as *mut $ffi_name, ptr as *const $ffi_name);
 
                 let free = |$free_arg: *mut $ffi_name| $free_expr;
                 free(ptr);
 
-                v
+                v.assume_init()
             }}
         }
 
