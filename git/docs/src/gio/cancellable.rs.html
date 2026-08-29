@@ -79,7 +79,7 @@
 <a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">futures_core::Future</a>;
 <a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 <a href=#8 id=8 data-nosnippet>8</a>
-<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use crate</span>::{<a href="auto/cancellable.rs.html#8-58">Cancellable</a>, <a href="../../gio_sys/index.html">ffi</a>};
+<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use crate</span>::{<a href="auto/cancellable.rs.html#8-86">Cancellable</a>, <a href="../../gio_sys/index.html">ffi</a>};
 <a href=#10 id=10 data-nosnippet>10</a>
 <a href=#11 id=11 data-nosnippet>11</a><span class="comment">// rustdoc-stripper-ignore-next
 <a href=#12 id=12 data-nosnippet>12</a></span><span class="doccomment">/// The id of a cancelled handler that is returned by `CancellableExtManual::connect`. This type is
@@ -105,7 +105,7 @@
 <a href=#32 id=32 data-nosnippet>32</a>    }
 <a href=#33 id=33 data-nosnippet>33</a>}
 <a href=#34 id=34 data-nosnippet>34</a>
-<a href=#35 id=35 data-nosnippet>35</a><span class="kw">pub trait </span><a href="../../gio/prelude/trait.CancellableExtManual.html">CancellableExtManual</a>: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-58">Cancellable</a>&gt; {
+<a href=#35 id=35 data-nosnippet>35</a><span class="kw">pub trait </span><a href="../../gio/prelude/trait.CancellableExtManual.html">CancellableExtManual</a>: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt; {
 <a href=#36 id=36 data-nosnippet>36</a>    <span class="comment">// rustdoc-stripper-ignore-next
 <a href=#37 id=37 data-nosnippet>37</a>    </span><span class="doccomment">/// Convenience function to connect to the `signal::Cancellable::cancelled` signal. Also
 <a href=#38 id=38 data-nosnippet>38</a>    /// handles the race condition that may happen if the cancellable is cancelled right before
@@ -129,7 +129,7 @@
 <a href=#56 id=56 data-nosnippet>56</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#57 id=57 data-nosnippet>57</a>        callback: F,
 <a href=#58 id=58 data-nosnippet>58</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="#16">CancelledHandlerId</a>&gt; {
-<a href=#59 id=59 data-nosnippet>59</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>connect_trampoline&lt;P: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-58">Cancellable</a>&gt;, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>P)&gt;(
+<a href=#59 id=59 data-nosnippet>59</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>connect_trampoline&lt;P: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;, F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html">FnOnce</a>(<span class="kw-2">&amp;</span>P)&gt;(
 <a href=#60 id=60 data-nosnippet>60</a>            this: <span class="kw-2">*mut </span>ffi::<a href="../../gio_sys/struct.GCancellable.html">GCancellable</a>,
 <a href=#61 id=61 data-nosnippet>61</a>            callback: glib::ffi::<a href="../../glib_sys/type.gpointer.html">gpointer</a>,
 <a href=#62 id=62 data-nosnippet>62</a>        ) {
@@ -138,7 +138,7 @@
 <a href=#65 id=65 data-nosnippet>65</a>                <span class="kw">let </span>callback = <a href="#64">callback</a>
 <a href=#66 id=66 data-nosnippet>66</a>                    .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.take">take</a>()
 <a href=#67 id=67 data-nosnippet>67</a>                    .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.expect">expect</a>(<span class="string">"Cancellable::cancel() closure called multiple times"</span>);
-<a href=#68 id=68 data-nosnippet>68</a>                <a href="#65">callback</a>(<a href="auto/cancellable.rs.html#8-58">Cancellable</a>::<a href="../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#60">this</a>).<a href="../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
+<a href=#68 id=68 data-nosnippet>68</a>                <a href="#65">callback</a>(<a href="auto/cancellable.rs.html#8-86">Cancellable</a>::<a href="../../glib/translate/trait.FromGlibPtrBorrow.html#method.from_glib_borrow">from_glib_borrow</a>(<a href="#60">this</a>).<a href="../../glib/object/trait.Cast.html#method.unsafe_cast_ref">unsafe_cast_ref</a>())
 <a href=#69 id=69 data-nosnippet>69</a>            }
 <a href=#70 id=70 data-nosnippet>70</a>        }
 <a href=#71 id=71 data-nosnippet>71</a>
@@ -228,9 +228,9 @@
 <a href=#155 id=155 data-nosnippet>155</a>    }
 <a href=#156 id=156 data-nosnippet>156</a>}
 <a href=#157 id=157 data-nosnippet>157</a>
-<a href=#158 id=158 data-nosnippet>158</a><span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-58">Cancellable</a>&gt;&gt; <a href="#35-156">CancellableExtManual</a> <span class="kw">for </span>O {}
+<a href=#158 id=158 data-nosnippet>158</a><span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt; <a href="#35-156">CancellableExtManual</a> <span class="kw">for </span>O {}
 <a href=#159 id=159 data-nosnippet>159</a>
-<a href=#160 id=160 data-nosnippet>160</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/future/into_future/trait.IntoFuture.html">IntoFuture</a> <span class="kw">for </span><a href="auto/cancellable.rs.html#8-58">Cancellable</a> {
+<a href=#160 id=160 data-nosnippet>160</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/future/into_future/trait.IntoFuture.html">IntoFuture</a> <span class="kw">for </span><a href="auto/cancellable.rs.html#8-86">Cancellable</a> {
 <a href=#161 id=161 data-nosnippet>161</a>    <span class="kw">type </span>Output = ();
 <a href=#162 id=162 data-nosnippet>162</a>
 <a href=#163 id=163 data-nosnippet>163</a>    <span class="kw">type </span>IntoFuture = std::pin::<a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a>&lt;Output = ()&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;&gt;;
@@ -240,7 +240,7 @@
 <a href=#167 id=167 data-nosnippet>167</a>    }
 <a href=#168 id=168 data-nosnippet>168</a>}
 <a href=#169 id=169 data-nosnippet>169</a>
-<a href=#170 id=170 data-nosnippet>170</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/future/into_future/trait.IntoFuture.html">IntoFuture</a> <span class="kw">for </span><span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-58">Cancellable</a> {
+<a href=#170 id=170 data-nosnippet>170</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/future/into_future/trait.IntoFuture.html">IntoFuture</a> <span class="kw">for </span><span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86">Cancellable</a> {
 <a href=#171 id=171 data-nosnippet>171</a>    <span class="kw">type </span>Output = ();
 <a href=#172 id=172 data-nosnippet>172</a>
 <a href=#173 id=173 data-nosnippet>173</a>    <span class="kw">type </span>IntoFuture = std::pin::<a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">Future</a>&lt;Output = ()&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">'static</span>&gt;&gt;;

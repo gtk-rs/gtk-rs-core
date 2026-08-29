@@ -82,7 +82,7 @@
 <a href=#9 id=9 data-nosnippet>9</a>
 <a href=#10 id=10 data-nosnippet>10</a><span class="kw">use </span>pin_project_lite::pin_project;
 <a href=#11 id=11 data-nosnippet>11</a>
-<a href=#12 id=12 data-nosnippet>12</a><span class="kw">use crate</span>::{<a href="auto/cancellable.rs.html#8-58">Cancellable</a>, <a href="cancellable.rs.html#16">CancelledHandlerId</a>, <a href="auto/enums.rs.html#2298-2461">IOErrorEnum</a>, <a href="lib.rs.html#116">prelude</a>::<span class="kw-2">*</span>};
+<a href=#12 id=12 data-nosnippet>12</a><span class="kw">use crate</span>::{<a href="auto/cancellable.rs.html#8-86">Cancellable</a>, <a href="cancellable.rs.html#16">CancelledHandlerId</a>, <a href="auto/enums.rs.html#2308-2471">IOErrorEnum</a>, <a href="lib.rs.html#116">prelude</a>::<span class="kw-2">*</span>};
 <a href=#13 id=13 data-nosnippet>13</a>
 <a href=#14 id=14 data-nosnippet>14</a><span class="comment">// rustdoc-stripper-ignore-next
 <a href=#15 id=15 data-nosnippet>15</a></span><span class="doccomment">/// Indicator that the [`CancellableFuture`] was cancelled.
@@ -112,7 +112,7 @@
 <a href=#39 id=39 data-nosnippet>39</a>        <span class="attr">#[pin]
 <a href=#40 id=40 data-nosnippet>40</a>        </span>waker_handler_cb: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="cancellable.rs.html#16">CancelledHandlerId</a>&gt;,
 <a href=#41 id=41 data-nosnippet>41</a>
-<a href=#42 id=42 data-nosnippet>42</a>        cancellable: <a href="auto/cancellable.rs.html#8-58">Cancellable</a>,
+<a href=#42 id=42 data-nosnippet>42</a>        cancellable: <a href="auto/cancellable.rs.html#8-86">Cancellable</a>,
 <a href=#43 id=43 data-nosnippet>43</a>    }
 <a href=#44 id=44 data-nosnippet>44</a>}
 <a href=#45 id=45 data-nosnippet>45</a>
@@ -123,7 +123,7 @@
 <a href=#50 id=50 data-nosnippet>50</a>    /// When [`cancel`](CancellableExt::cancel) is called, the future will complete
 <a href=#51 id=51 data-nosnippet>51</a>    /// immediately without making any further progress. In such a case, an error
 <a href=#52 id=52 data-nosnippet>52</a>    /// will be returned by this future (i.e., [`Cancelled`]).
-<a href=#53 id=53 data-nosnippet>53</a>    </span><span class="kw">pub fn </span>new(future: F, cancellable: <a href="auto/cancellable.rs.html#8-58">Cancellable</a>) -&gt; <span class="self">Self </span>{
+<a href=#53 id=53 data-nosnippet>53</a>    </span><span class="kw">pub fn </span>new(future: F, cancellable: <a href="auto/cancellable.rs.html#8-86">Cancellable</a>) -&gt; <span class="self">Self </span>{
 <a href=#54 id=54 data-nosnippet>54</a>        <span class="self">Self </span>{
 <a href=#55 id=55 data-nosnippet>55</a>            <a href="#53">future</a>,
 <a href=#56 id=56 data-nosnippet>56</a>            waker_handler_cb: <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
@@ -142,13 +142,13 @@
 <a href=#69 id=69 data-nosnippet>69</a>    ///   * `cancel` was called while the future was being polled.
 <a href=#70 id=70 data-nosnippet>70</a>    </span><span class="attr">#[inline]
 <a href=#71 id=71 data-nosnippet>71</a>    </span><span class="kw">pub fn </span>is_cancelled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-<a href=#72 id=72 data-nosnippet>72</a>        <a class="self" href="#71">self</a>.cancellable.<a href="auto/cancellable.rs.html#165-171">is_cancelled</a>()
+<a href=#72 id=72 data-nosnippet>72</a>        <a class="self" href="#71">self</a>.cancellable.<a href="auto/cancellable.rs.html#193-199">is_cancelled</a>()
 <a href=#73 id=73 data-nosnippet>73</a>    }
 <a href=#74 id=74 data-nosnippet>74</a>
 <a href=#75 id=75 data-nosnippet>75</a>    <span class="comment">// rustdoc-stripper-ignore-next
 <a href=#76 id=76 data-nosnippet>76</a>    </span><span class="doccomment">/// Returns the inner [`Cancellable`] associated during creation.
 <a href=#77 id=77 data-nosnippet>77</a>    </span><span class="attr">#[inline]
-<a href=#78 id=78 data-nosnippet>78</a>    </span><span class="kw">pub fn </span>cancellable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-58">Cancellable</a> {
+<a href=#78 id=78 data-nosnippet>78</a>    </span><span class="kw">pub fn </span>cancellable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="auto/cancellable.rs.html#8-86">Cancellable</a> {
 <a href=#79 id=79 data-nosnippet>79</a>        <span class="kw-2">&amp;</span><a class="self" href="#78">self</a>.cancellable
 <a href=#80 id=80 data-nosnippet>80</a>    }
 <a href=#81 id=81 data-nosnippet>81</a>}
@@ -194,7 +194,7 @@
 <a href=#121 id=121 data-nosnippet>121</a>
 <a href=#122 id=122 data-nosnippet>122</a><span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html">From</a>&lt;<a href="#16">Cancelled</a>&gt; <span class="kw">for </span>glib::<a href="../../glib/error/struct.Error.html">Error</a> {
 <a href=#123 id=123 data-nosnippet>123</a>    <span class="kw">fn </span>from(<span class="kw">_</span>: <a href="#16">Cancelled</a>) -&gt; <span class="self">Self </span>{
-<a href=#124 id=124 data-nosnippet>124</a>        glib::<a href="../../glib/error/struct.Error.html">Error</a>::<a href="../../glib/error/struct.Error.html#method.new">new</a>(IOErrorEnum::<a href="auto/enums.rs.html#2359">Cancelled</a>, <span class="string">"Task cancelled"</span>)
+<a href=#124 id=124 data-nosnippet>124</a>        glib::<a href="../../glib/error/struct.Error.html">Error</a>::<a href="../../glib/error/struct.Error.html#method.new">new</a>(IOErrorEnum::<a href="auto/enums.rs.html#2369">Cancelled</a>, <span class="string">"Task cancelled"</span>)
 <a href=#125 id=125 data-nosnippet>125</a>    }
 <a href=#126 id=126 data-nosnippet>126</a>}
 <a href=#127 id=127 data-nosnippet>127</a>

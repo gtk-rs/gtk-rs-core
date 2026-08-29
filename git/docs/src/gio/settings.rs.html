@@ -75,11 +75,11 @@
 <a href=#2 id=2 data-nosnippet>2</a>
 <a href=#3 id=3 data-nosnippet>3</a></span><span class="kw">use </span>glib::{<a href="../../glib/error/struct.BoolError.html">BoolError</a>, <a href="../../glib/collections/strv/struct.StrV.html">StrV</a>, <a href="../../glib_macros/derive.Variant.html">Variant</a>, <a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use crate</span>::{<a href="auto/settings.rs.html#17-172">Settings</a>, <a href="auto/flags.rs.html#3141-3175">SettingsBindFlags</a>, <a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#116">prelude</a>::<span class="kw-2">*</span>};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use crate</span>::{<a href="auto/settings.rs.html#17-548">Settings</a>, <a href="auto/flags.rs.html#3141-3175">SettingsBindFlags</a>, <a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#116">prelude</a>::<span class="kw-2">*</span>};
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="attr">#[must_use = <span class="string">"The builder must be built to be used"</span>]
 <a href=#8 id=8 data-nosnippet>8</a></span><span class="kw">pub struct </span><a href="../../gio/struct.BindingBuilder.html">BindingBuilder</a>&lt;<span class="lifetime">'a</span>&gt; {
-<a href=#9 id=9 data-nosnippet>9</a>    settings: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/settings.rs.html#17-172">Settings</a>,
+<a href=#9 id=9 data-nosnippet>9</a>    settings: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="auto/settings.rs.html#17-548">Settings</a>,
 <a href=#10 id=10 data-nosnippet>10</a>    key: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 <a href=#11 id=11 data-nosnippet>11</a>    object: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>glib::<a href="../../glib/object/struct.Object.html">Object</a>,
 <a href=#12 id=12 data-nosnippet>12</a>    property: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
@@ -247,9 +247,9 @@
 <a href=#174 id=174 data-nosnippet>174</a>    }
 <a href=#175 id=175 data-nosnippet>175</a>}
 <a href=#176 id=176 data-nosnippet>176</a>
-<a href=#177 id=177 data-nosnippet>177</a><span class="kw">pub trait </span><a href="../../gio/prelude/trait.SettingsExtManual.html">SettingsExtManual</a>: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/settings.rs.html#17-172">Settings</a>&gt; {
+<a href=#177 id=177 data-nosnippet>177</a><span class="kw">pub trait </span><a href="../../gio/prelude/trait.SettingsExtManual.html">SettingsExtManual</a>: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/settings.rs.html#17-548">Settings</a>&gt; {
 <a href=#178 id=178 data-nosnippet>178</a>    <span class="kw">fn </span>get&lt;U: <a href="../../glib/variant/trait.FromVariant.html">FromVariant</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; U {
-<a href=#179 id=179 data-nosnippet>179</a>        <span class="kw">let </span>val = <a class="self" href="#178">self</a>.<a href="auto/settings.rs.html#844-851">value</a>(<a href="#178">key</a>);
+<a href=#179 id=179 data-nosnippet>179</a>        <span class="kw">let </span>val = <a class="self" href="#178">self</a>.<a href="auto/settings.rs.html#1225-1232">value</a>(<a href="#178">key</a>);
 <a href=#180 id=180 data-nosnippet>180</a>        FromVariant::<a href="../../glib/variant/trait.FromVariant.html#tymethod.from_variant">from_variant</a>(<span class="kw-2">&amp;</span><a href="#179">val</a>).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or_else">unwrap_or_else</a>(|| {
 <a href=#181 id=181 data-nosnippet>181</a>            <a href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(
 <a href=#182 id=182 data-nosnippet>182</a>                <span class="string">"Type mismatch: Expected '{}' got '{}'"</span>,
@@ -260,7 +260,7 @@
 <a href=#187 id=187 data-nosnippet>187</a>    }
 <a href=#188 id=188 data-nosnippet>188</a>
 <a href=#189 id=189 data-nosnippet>189</a>    <span class="kw">fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">Into</a>&lt;<a href="../../glib/variant/struct.Variant.html">Variant</a>&gt;) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), <a href="../../glib/error/struct.BoolError.html">BoolError</a>&gt; {
-<a href=#190 id=190 data-nosnippet>190</a>        <a class="self" href="#189">self</a>.<a href="auto/settings.rs.html#1215-1226">set_value</a>(<a href="#189">key</a>, <span class="kw-2">&amp;</span><a href="#189">value</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
+<a href=#190 id=190 data-nosnippet>190</a>        <a class="self" href="#189">self</a>.<a href="auto/settings.rs.html#1596-1607">set_value</a>(<a href="#189">key</a>, <span class="kw-2">&amp;</span><a href="#189">value</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html#tymethod.into">into</a>())
 <a href=#191 id=191 data-nosnippet>191</a>    }
 <a href=#192 id=192 data-nosnippet>192</a>
 <a href=#193 id=193 data-nosnippet>193</a>    <span class="doccomment">/// A convenience variant of `Gio::Settings::get()` for string arrays.
@@ -366,7 +366,7 @@
 <a href=#293 id=293 data-nosnippet>293</a>    }
 <a href=#294 id=294 data-nosnippet>294</a>}
 <a href=#295 id=295 data-nosnippet>295</a>
-<a href=#296 id=296 data-nosnippet>296</a><span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/settings.rs.html#17-172">Settings</a>&gt;&gt; <a href="#177-294">SettingsExtManual</a> <span class="kw">for </span>O {}
+<a href=#296 id=296 data-nosnippet>296</a><span class="kw">impl</span>&lt;O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/settings.rs.html#17-548">Settings</a>&gt;&gt; <a href="#177-294">SettingsExtManual</a> <span class="kw">for </span>O {}
 <a href=#297 id=297 data-nosnippet>297</a>
 <a href=#298 id=298 data-nosnippet>298</a><span class="attr">#[cfg(test)]
 <a href=#299 id=299 data-nosnippet>299</a></span><span class="kw">mod </span>test {

@@ -77,7 +77,7 @@
 <a href=#4 id=4 data-nosnippet>4</a>
 <a href=#5 id=5 data-nosnippet>5</a></span><span class="attr">#[cfg(unix)]
 <a href=#6 id=6 data-nosnippet>6</a>#[cfg_attr(docsrs, doc(cfg(unix)))]
-<a href=#7 id=7 data-nosnippet>7</a></span><span class="kw">use </span><a href="unix_fd_list.rs.html#8-24"><span class="kw">crate</span>::UnixFDList</a>;
+<a href=#7 id=7 data-nosnippet>7</a></span><span class="kw">use </span><a href="unix_fd_list.rs.html#8-33"><span class="kw">crate</span>::UnixFDList</a>;
 <a href=#8 id=8 data-nosnippet>8</a><span class="kw">use crate</span>::{<a href="dbus_connection.rs.html#22-200">DBusConnection</a>, <a href="dbus_message.rs.html#19-38">DBusMessage</a>, <a href="dbus_method_info.rs.html#7-17">DBusMethodInfo</a>, <a href="dbus_property_info.rs.html#7-17">DBusPropertyInfo</a>, <a href="../../../gio_sys/index.html">ffi</a>};
 <a href=#9 id=9 data-nosnippet>9</a><span class="attr">#[cfg(unix)]
 <a href=#10 id=10 data-nosnippet>10</a>#[cfg_attr(docsrs, doc(cfg(unix)))]
@@ -314,63 +314,80 @@
 <a href=#241 id=241 data-nosnippet>241</a>    //    unsafe { TODO: call ffi:g_dbus_method_invocation_return_error_valist() }
 <a href=#242 id=242 data-nosnippet>242</a>    //}
 <a href=#243 id=243 data-nosnippet>243</a>
-<a href=#244 id=244 data-nosnippet>244</a>    </span><span class="doccomment">/// error);
-<a href=#245 id=245 data-nosnippet>245</a>    ///
-<a href=#246 id=246 data-nosnippet>246</a>    /// if (error != NULL)
-<a href=#247 id=247 data-nosnippet>247</a>    ///   g_dbus_method_invocation_return_gerror (invocation, error);
-<a href=#248 id=248 data-nosnippet>248</a>    /// else
-<a href=#249 id=249 data-nosnippet>249</a>    ///   g_dbus_method_invocation_return_value (invocation,
-<a href=#250 id=250 data-nosnippet>250</a>    ///                                          g_variant_new ("(s)", result_string));
+<a href=#244 id=244 data-nosnippet>244</a>    </span><span class="doccomment">/// Finishes handling a D-Bus method call by returning @parameters.
+<a href=#245 id=245 data-nosnippet>245</a>    /// If the @parameters GVariant is floating, it is consumed.
+<a href=#246 id=246 data-nosnippet>246</a>    ///
+<a href=#247 id=247 data-nosnippet>247</a>    /// It is an error if @parameters is not of the right format: it must be a tuple
+<a href=#248 id=248 data-nosnippet>248</a>    /// containing the out-parameters of the D-Bus method. Even if the method has a
+<a href=#249 id=249 data-nosnippet>249</a>    /// single out-parameter, it must be contained in a tuple. If the method has no
+<a href=#250 id=250 data-nosnippet>250</a>    /// out-parameters, @parameters may be [`None`] or an empty tuple.
 <a href=#251 id=251 data-nosnippet>251</a>    ///
-<a href=#252 id=252 data-nosnippet>252</a>    /// // Do not free @self here; returning a value does that
-<a href=#253 id=253 data-nosnippet>253</a>    /// ]|
-<a href=#254 id=254 data-nosnippet>254</a>    ///
-<a href=#255 id=255 data-nosnippet>255</a>    /// This method will take ownership of @self. See
-<a href=#256 id=256 data-nosnippet>256</a>    /// #GDBusInterfaceVTable for more information about the ownership of
-<a href=#257 id=257 data-nosnippet>257</a>    /// @self.
-<a href=#258 id=258 data-nosnippet>258</a>    ///
-<a href=#259 id=259 data-nosnippet>259</a>    /// Since 2.48, if the method call requested for a reply not to be sent
-<a href=#260 id=260 data-nosnippet>260</a>    /// then this call will sink @parameters and free @self, but
-<a href=#261 id=261 data-nosnippet>261</a>    /// otherwise do nothing (as per the recommendations of the D-Bus
-<a href=#262 id=262 data-nosnippet>262</a>    /// specification).
-<a href=#263 id=263 data-nosnippet>263</a>    /// ## `parameters`
-<a href=#264 id=264 data-nosnippet>264</a>    /// A #GVariant tuple with out parameters for the method or [`None`] if not passing any parameters.
-<a href=#265 id=265 data-nosnippet>265</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_method_invocation_return_value"</span>)]
-<a href=#266 id=266 data-nosnippet>266</a>    </span><span class="kw">pub fn </span>return_value(<span class="self">self</span>, parameters: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>glib::<a href="../../../glib/variant/struct.Variant.html">Variant</a>&gt;) {
-<a href=#267 id=267 data-nosnippet>267</a>        <span class="kw">unsafe </span>{
-<a href=#268 id=268 data-nosnippet>268</a>            ffi::<a href="../../../gio_sys/fn.g_dbus_method_invocation_return_value.html">g_dbus_method_invocation_return_value</a>(
-<a href=#269 id=269 data-nosnippet>269</a>                <a class="self" href="#266">self</a>.<a href="../../../glib/translate/trait.IntoGlibPtr.html#tymethod.into_glib_ptr">into_glib_ptr</a>(),
-<a href=#270 id=270 data-nosnippet>270</a>                <a href="#266">parameters</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#271 id=271 data-nosnippet>271</a>            );
-<a href=#272 id=272 data-nosnippet>272</a>        }
-<a href=#273 id=273 data-nosnippet>273</a>    }
-<a href=#274 id=274 data-nosnippet>274</a>
-<a href=#275 id=275 data-nosnippet>275</a>    <span class="doccomment">/// Like g_dbus_method_invocation_return_value() but also takes a #GUnixFDList.
-<a href=#276 id=276 data-nosnippet>276</a>    ///
-<a href=#277 id=277 data-nosnippet>277</a>    /// This method is only available on UNIX.
-<a href=#278 id=278 data-nosnippet>278</a>    ///
-<a href=#279 id=279 data-nosnippet>279</a>    /// This method will take ownership of @self. See
-<a href=#280 id=280 data-nosnippet>280</a>    /// #GDBusInterfaceVTable for more information about the ownership of
-<a href=#281 id=281 data-nosnippet>281</a>    /// @self.
-<a href=#282 id=282 data-nosnippet>282</a>    /// ## `parameters`
-<a href=#283 id=283 data-nosnippet>283</a>    /// A #GVariant tuple with out parameters for the method or [`None`] if not passing any parameters.
-<a href=#284 id=284 data-nosnippet>284</a>    /// ## `fd_list`
-<a href=#285 id=285 data-nosnippet>285</a>    /// A #GUnixFDList or [`None`].
-<a href=#286 id=286 data-nosnippet>286</a>    </span><span class="attr">#[cfg(unix)]
-<a href=#287 id=287 data-nosnippet>287</a>    #[cfg_attr(docsrs, doc(cfg(unix)))]
-<a href=#288 id=288 data-nosnippet>288</a>    #[doc(alias = <span class="string">"g_dbus_method_invocation_return_value_with_unix_fd_list"</span>)]
-<a href=#289 id=289 data-nosnippet>289</a>    </span><span class="kw">pub fn </span>return_value_with_unix_fd_list(
-<a href=#290 id=290 data-nosnippet>290</a>        <span class="self">self</span>,
-<a href=#291 id=291 data-nosnippet>291</a>        parameters: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>glib::<a href="../../../glib/variant/struct.Variant.html">Variant</a>&gt;,
-<a href=#292 id=292 data-nosnippet>292</a>        fd_list: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="unix_fd_list.rs.html#8-24">UnixFDList</a>&gt;&gt;,
-<a href=#293 id=293 data-nosnippet>293</a>    ) {
-<a href=#294 id=294 data-nosnippet>294</a>        <span class="kw">unsafe </span>{
-<a href=#295 id=295 data-nosnippet>295</a>            ffi::<a href="../../../gio_sys/fn.g_dbus_method_invocation_return_value_with_unix_fd_list.html">g_dbus_method_invocation_return_value_with_unix_fd_list</a>(
-<a href=#296 id=296 data-nosnippet>296</a>                <a class="self" href="#290">self</a>.<a href="../../../glib/translate/trait.IntoGlibPtr.html#tymethod.into_glib_ptr">into_glib_ptr</a>(),
-<a href=#297 id=297 data-nosnippet>297</a>                <a href="#291">parameters</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#298 id=298 data-nosnippet>298</a>                <a href="#292">fd_list</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#298">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#299 id=299 data-nosnippet>299</a>            );
-<a href=#300 id=300 data-nosnippet>300</a>        }
-<a href=#301 id=301 data-nosnippet>301</a>    }
-<a href=#302 id=302 data-nosnippet>302</a>}
+<a href=#252 id=252 data-nosnippet>252</a>    ///
+<a href=#253 id=253 data-nosnippet>253</a>    ///
+<a href=#254 id=254 data-nosnippet>254</a>    /// **⚠️ The following code is in C ⚠️**
+<a href=#255 id=255 data-nosnippet>255</a>    ///
+<a href=#256 id=256 data-nosnippet>256</a>    /// ```C
+<a href=#257 id=257 data-nosnippet>257</a>    /// GDBusMethodInvocation *invocation = some_invocation;
+<a href=#258 id=258 data-nosnippet>258</a>    /// g_autofree gchar *result_string = NULL;
+<a href=#259 id=259 data-nosnippet>259</a>    /// g_autoptr (GError) error = NULL;
+<a href=#260 id=260 data-nosnippet>260</a>    ///
+<a href=#261 id=261 data-nosnippet>261</a>    /// result_string = calculate_result (&amp;error);
+<a href=#262 id=262 data-nosnippet>262</a>    ///
+<a href=#263 id=263 data-nosnippet>263</a>    /// if (error != NULL)
+<a href=#264 id=264 data-nosnippet>264</a>    ///   g_dbus_method_invocation_return_gerror (invocation, error);
+<a href=#265 id=265 data-nosnippet>265</a>    /// else
+<a href=#266 id=266 data-nosnippet>266</a>    ///   g_dbus_method_invocation_return_value (invocation,
+<a href=#267 id=267 data-nosnippet>267</a>    ///                                          g_variant_new ("(s)", result_string));
+<a href=#268 id=268 data-nosnippet>268</a>    ///
+<a href=#269 id=269 data-nosnippet>269</a>    /// // Do not free @self here; returning a value does that
+<a href=#270 id=270 data-nosnippet>270</a>    /// ```
+<a href=#271 id=271 data-nosnippet>271</a>    ///
+<a href=#272 id=272 data-nosnippet>272</a>    /// This method will take ownership of @self. See
+<a href=#273 id=273 data-nosnippet>273</a>    /// #GDBusInterfaceVTable for more information about the ownership of
+<a href=#274 id=274 data-nosnippet>274</a>    /// @self.
+<a href=#275 id=275 data-nosnippet>275</a>    ///
+<a href=#276 id=276 data-nosnippet>276</a>    /// Since 2.48, if the method call requested for a reply not to be sent
+<a href=#277 id=277 data-nosnippet>277</a>    /// then this call will sink @parameters and free @self, but
+<a href=#278 id=278 data-nosnippet>278</a>    /// otherwise do nothing (as per the recommendations of the D-Bus
+<a href=#279 id=279 data-nosnippet>279</a>    /// specification).
+<a href=#280 id=280 data-nosnippet>280</a>    /// ## `parameters`
+<a href=#281 id=281 data-nosnippet>281</a>    /// A #GVariant tuple with out parameters for the method or [`None`] if not passing any parameters.
+<a href=#282 id=282 data-nosnippet>282</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_dbus_method_invocation_return_value"</span>)]
+<a href=#283 id=283 data-nosnippet>283</a>    </span><span class="kw">pub fn </span>return_value(<span class="self">self</span>, parameters: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>glib::<a href="../../../glib/variant/struct.Variant.html">Variant</a>&gt;) {
+<a href=#284 id=284 data-nosnippet>284</a>        <span class="kw">unsafe </span>{
+<a href=#285 id=285 data-nosnippet>285</a>            ffi::<a href="../../../gio_sys/fn.g_dbus_method_invocation_return_value.html">g_dbus_method_invocation_return_value</a>(
+<a href=#286 id=286 data-nosnippet>286</a>                <a class="self" href="#283">self</a>.<a href="../../../glib/translate/trait.IntoGlibPtr.html#tymethod.into_glib_ptr">into_glib_ptr</a>(),
+<a href=#287 id=287 data-nosnippet>287</a>                <a href="#283">parameters</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#288 id=288 data-nosnippet>288</a>            );
+<a href=#289 id=289 data-nosnippet>289</a>        }
+<a href=#290 id=290 data-nosnippet>290</a>    }
+<a href=#291 id=291 data-nosnippet>291</a>
+<a href=#292 id=292 data-nosnippet>292</a>    <span class="doccomment">/// Like g_dbus_method_invocation_return_value() but also takes a #GUnixFDList.
+<a href=#293 id=293 data-nosnippet>293</a>    ///
+<a href=#294 id=294 data-nosnippet>294</a>    /// This method is only available on UNIX.
+<a href=#295 id=295 data-nosnippet>295</a>    ///
+<a href=#296 id=296 data-nosnippet>296</a>    /// This method will take ownership of @self. See
+<a href=#297 id=297 data-nosnippet>297</a>    /// #GDBusInterfaceVTable for more information about the ownership of
+<a href=#298 id=298 data-nosnippet>298</a>    /// @self.
+<a href=#299 id=299 data-nosnippet>299</a>    /// ## `parameters`
+<a href=#300 id=300 data-nosnippet>300</a>    /// A #GVariant tuple with out parameters for the method or [`None`] if not passing any parameters.
+<a href=#301 id=301 data-nosnippet>301</a>    /// ## `fd_list`
+<a href=#302 id=302 data-nosnippet>302</a>    /// A #GUnixFDList or [`None`].
+<a href=#303 id=303 data-nosnippet>303</a>    </span><span class="attr">#[cfg(unix)]
+<a href=#304 id=304 data-nosnippet>304</a>    #[cfg_attr(docsrs, doc(cfg(unix)))]
+<a href=#305 id=305 data-nosnippet>305</a>    #[doc(alias = <span class="string">"g_dbus_method_invocation_return_value_with_unix_fd_list"</span>)]
+<a href=#306 id=306 data-nosnippet>306</a>    </span><span class="kw">pub fn </span>return_value_with_unix_fd_list(
+<a href=#307 id=307 data-nosnippet>307</a>        <span class="self">self</span>,
+<a href=#308 id=308 data-nosnippet>308</a>        parameters: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>glib::<a href="../../../glib/variant/struct.Variant.html">Variant</a>&gt;,
+<a href=#309 id=309 data-nosnippet>309</a>        fd_list: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span><a href="../../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="unix_fd_list.rs.html#8-33">UnixFDList</a>&gt;&gt;,
+<a href=#310 id=310 data-nosnippet>310</a>    ) {
+<a href=#311 id=311 data-nosnippet>311</a>        <span class="kw">unsafe </span>{
+<a href=#312 id=312 data-nosnippet>312</a>            ffi::<a href="../../../gio_sys/fn.g_dbus_method_invocation_return_value_with_unix_fd_list.html">g_dbus_method_invocation_return_value_with_unix_fd_list</a>(
+<a href=#313 id=313 data-nosnippet>313</a>                <a class="self" href="#307">self</a>.<a href="../../../glib/translate/trait.IntoGlibPtr.html#tymethod.into_glib_ptr">into_glib_ptr</a>(),
+<a href=#314 id=314 data-nosnippet>314</a>                <a href="#308">parameters</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#315 id=315 data-nosnippet>315</a>                <a href="#309">fd_list</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|p| <a href="#315">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#316 id=316 data-nosnippet>316</a>            );
+<a href=#317 id=317 data-nosnippet>317</a>        }
+<a href=#318 id=318 data-nosnippet>318</a>    }
+<a href=#319 id=319 data-nosnippet>319</a>}
 </code></pre></div></section></main></body></html>

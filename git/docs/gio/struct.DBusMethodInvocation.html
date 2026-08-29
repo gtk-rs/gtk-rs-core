@@ -124,7 +124,7 @@ that is not a tuple it is automatically wrapped into a tuple.</p>
 <p>This can be called only from the thread where the main context is running, e.g.
 from any other <code>Future</code> that is executed on this main context, or after calling
 <code>with_thread_default</code> or <code>acquire</code> on the main context.</p>
-</div></details></div></details><details class="toggle implementors-toggle" open><summary><section id="impl-DBusMethodInvocation-1" class="impl"><a class="src rightside" href="../src/gio/auto/dbus_method_invocation.rs.html#35-302">Source</a><a href="#impl-DBusMethodInvocation-1" class="anchor">§</a><h3 class="code-header">impl <a class="struct" href="struct.DBusMethodInvocation.html" title="struct gio::DBusMethodInvocation">DBusMethodInvocation</a></h3></section></summary><div class="impl-items"><details class="toggle method-toggle" open><summary><section id="method.connection" class="method"><a class="src rightside" href="../src/gio/auto/dbus_method_invocation.rs.html#43-49">Source</a><h4 class="code-header">pub fn <a href="#method.connection" class="fn">connection</a>(&amp;self) -&gt; <a class="struct" href="struct.DBusConnection.html" title="struct gio::DBusConnection">DBusConnection</a></h4></section></summary><div class="docblock"><p>Gets the #GDBusConnection the method was invoked on.</p>
+</div></details></div></details><details class="toggle implementors-toggle" open><summary><section id="impl-DBusMethodInvocation-1" class="impl"><a class="src rightside" href="../src/gio/auto/dbus_method_invocation.rs.html#35-319">Source</a><a href="#impl-DBusMethodInvocation-1" class="anchor">§</a><h3 class="code-header">impl <a class="struct" href="struct.DBusMethodInvocation.html" title="struct gio::DBusMethodInvocation">DBusMethodInvocation</a></h3></section></summary><div class="impl-items"><details class="toggle method-toggle" open><summary><section id="method.connection" class="method"><a class="src rightside" href="../src/gio/auto/dbus_method_invocation.rs.html#43-49">Source</a><h4 class="code-header">pub fn <a href="#method.connection" class="fn">connection</a>(&amp;self) -&gt; <a class="struct" href="struct.DBusConnection.html" title="struct gio::DBusConnection">DBusConnection</a></h4></section></summary><div class="docblock"><p>Gets the #GDBusConnection the method was invoked on.</p>
 <h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
 <p>A #GDBusConnection. Do not free, it is owned by @self.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="method.interface_name" class="method"><a class="src rightside" href="../src/gio/auto/dbus_method_invocation.rs.html#68-74">Source</a><h4 class="code-header">pub fn <a href="#method.interface_name" class="fn">interface_name</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../glib/gstring/struct.GString.html" title="struct glib::gstring::GString">GString</a>&gt;</h4></section></summary><div class="docblock"><p>Gets the name of the D-Bus interface the method was invoked on.</p>
@@ -188,14 +188,26 @@ connections.</p>
 <p>A valid D-Bus error name.</p>
 <h6 id="error_message"><a class="doc-anchor" href="#error_message">§</a><code>error_message</code></h6>
 <p>A valid D-Bus error message.</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.return_value" class="method"><a class="src rightside" href="../src/gio/auto/dbus_method_invocation.rs.html#266-273">Source</a><h4 class="code-header">pub fn <a href="#method.return_value" class="fn">return_value</a>(self, parameters: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;)</h4></section></summary><div class="docblock"><p>error);</p>
-<p>if (error != NULL)
-g_dbus_method_invocation_return_gerror (invocation, error);
+</div></details><details class="toggle method-toggle" open><summary><section id="method.return_value" class="method"><a class="src rightside" href="../src/gio/auto/dbus_method_invocation.rs.html#283-290">Source</a><h4 class="code-header">pub fn <a href="#method.return_value" class="fn">return_value</a>(self, parameters: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;)</h4></section></summary><div class="docblock"><p>Finishes handling a D-Bus method call by returning @parameters.
+If the @parameters GVariant is floating, it is consumed.</p>
+<p>It is an error if @parameters is not of the right format: it must be a tuple
+containing the out-parameters of the D-Bus method. Even if the method has a
+single out-parameter, it must be contained in a tuple. If the method has no
+out-parameters, @parameters may be <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> or an empty tuple.</p>
+<p><strong>⚠️ The following code is in C ⚠️</strong></p>
+<div class="example-wrap"><pre class="language-C"><code>GDBusMethodInvocation *invocation = some_invocation;
+g_autofree gchar *result_string = NULL;
+g_autoptr (GError) error = NULL;
+
+result_string = calculate_result (&amp;error);
+
+if (error != NULL)
+  g_dbus_method_invocation_return_gerror (invocation, error);
 else
-g_dbus_method_invocation_return_value (invocation,
-g_variant_new (“(s)”, result_string));</p>
-<p>// Do not free @self here; returning a value does that
-]|</p>
+  g_dbus_method_invocation_return_value (invocation,
+                                         g_variant_new (&quot;(s)&quot;, result_string));
+
+// Do not free @self here; returning a value does that</code></pre></div>
 <p>This method will take ownership of @self. See
 #GDBusInterfaceVTable for more information about the ownership of
 @self.</p>
@@ -205,7 +217,7 @@ otherwise do nothing (as per the recommendations of the D-Bus
 specification).</p>
 <h6 id="parameters"><a class="doc-anchor" href="#parameters">§</a><code>parameters</code></h6>
 <p>A #GVariant tuple with out parameters for the method or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> if not passing any parameters.</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.return_value_with_unix_fd_list" class="method"><a class="src rightside" href="../src/gio/auto/dbus_method_invocation.rs.html#289-301">Source</a><h4 class="code-header">pub fn <a href="#method.return_value_with_unix_fd_list" class="fn">return_value_with_unix_fd_list</a>(
+</div></details><details class="toggle method-toggle" open><summary><section id="method.return_value_with_unix_fd_list" class="method"><a class="src rightside" href="../src/gio/auto/dbus_method_invocation.rs.html#306-318">Source</a><h4 class="code-header">pub fn <a href="#method.return_value_with_unix_fd_list" class="fn">return_value_with_unix_fd_list</a>(
     self,
     parameters: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;,
     fd_list: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="struct.UnixFDList.html" title="struct gio::UnixFDList">UnixFDList</a>&gt;&gt;,

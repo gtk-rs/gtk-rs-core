@@ -76,7 +76,7 @@ functions below.</p>
 <h2 id="implements"><a class="doc-anchor" href="#implements">§</a>Implements</h2>
 <p>[<code>trait@glib::ObjectExt</code>]</p>
 <p>GLib type: GObject with reference counted clone semantics.</p>
-</div></details><h2 id="implementations" class="section-header">Implementations<a href="#implementations" class="anchor">§</a></h2><div id="implementations-list"><details class="toggle implementors-toggle" open><summary><section id="impl-MenuItem" class="impl"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#23-387">Source</a><a href="#impl-MenuItem" class="anchor">§</a><h3 class="code-header">impl <a class="struct" href="struct.MenuItem.html" title="struct gio::MenuItem">MenuItem</a></h3></section></summary><div class="impl-items"><details class="toggle method-toggle" open><summary><section id="method.new" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#41-48">Source</a><h4 class="code-header">pub fn <a href="#method.new" class="fn">new</a>(label: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, detailed_action: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) -&gt; <a class="struct" href="struct.MenuItem.html" title="struct gio::MenuItem">MenuItem</a></h4></section></summary><div class="docblock"><p>Creates a new #GMenuItem.</p>
+</div></details><h2 id="implementations" class="section-header">Implementations<a href="#implementations" class="anchor">§</a></h2><div id="implementations-list"><details class="toggle implementors-toggle" open><summary><section id="impl-MenuItem" class="impl"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#23-447">Source</a><a href="#impl-MenuItem" class="anchor">§</a><h3 class="code-header">impl <a class="struct" href="struct.MenuItem.html" title="struct gio::MenuItem">MenuItem</a></h3></section></summary><div class="impl-items"><details class="toggle method-toggle" open><summary><section id="method.new" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#41-48">Source</a><h4 class="code-header">pub fn <a href="#method.new" class="fn">new</a>(label: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, detailed_action: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) -&gt; <a class="struct" href="struct.MenuItem.html" title="struct gio::MenuItem">MenuItem</a></h4></section></summary><div class="docblock"><p>Creates a new #GMenuItem.</p>
 <p>If @label is non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> it is used to set the “label” attribute of the
 new item.</p>
 <p>If @detailed_action is non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> it is used to set the “action” and
@@ -98,17 +98,65 @@ g_menu_model_get_n_items() first).</p>
 <p>the index of an item in @model</p>
 <h5 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h5>
 <p>a new #GMenuItem.</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.new_section" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#85-92">Source</a><h4 class="code-header">pub fn <a href="#method.new_section" class="fn">new_section</a>(
+</div></details><details class="toggle method-toggle" open><summary><section id="method.new_section" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#145-152">Source</a><h4 class="code-header">pub fn <a href="#method.new_section" class="fn">new_section</a>(
     label: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
     section: &amp;impl <a class="trait" href="../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="struct.MenuModel.html" title="struct gio::MenuModel">MenuModel</a>&gt;,
-) -&gt; <a class="struct" href="struct.MenuItem.html" title="struct gio::MenuItem">MenuItem</a></h4></section></summary><div class="docblock"><p>]|</p>
-<h6 id="label-1"><a class="doc-anchor" href="#label-1">§</a><code>label</code></h6>
+) -&gt; <a class="struct" href="struct.MenuItem.html" title="struct gio::MenuItem">MenuItem</a></h4></section></summary><div class="docblock"><p>Creates a new #GMenuItem representing a section.</p>
+<p>This is a convenience API around g_menu_item_new() and
+g_menu_item_set_section().</p>
+<p>The effect of having one menu appear as a section of another is
+exactly as it sounds: the items from @section become a direct part of
+the menu that @menu_item is added to.</p>
+<p>Visual separation is typically displayed between two non-empty
+sections.  If @label is non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> then it will be incorporated into
+this visual indication.  This allows for labeled subsections of a
+menu.</p>
+<p>As a simple example, consider a typical “Edit” menu from a simple
+program.  It probably contains an “Undo” and “Redo” item, followed by
+a separator, followed by “Cut”, “Copy” and “Paste”.</p>
+<p>This would be accomplished by creating three #GMenu instances.  The
+first would be populated with the “Undo” and “Redo” items, and the
+second with the “Cut”, “Copy” and “Paste” items.  The first and
+second menus would then be added as submenus of the third.  In XML
+format, this would look something like the following:</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;menu id=&#39;edit-menu&#39;&gt;
+  &lt;section&gt;
+    &lt;item label=&#39;Undo&#39;/&gt;
+    &lt;item label=&#39;Redo&#39;/&gt;
+  &lt;/section&gt;
+  &lt;section&gt;
+    &lt;item label=&#39;Cut&#39;/&gt;
+    &lt;item label=&#39;Copy&#39;/&gt;
+    &lt;item label=&#39;Paste&#39;/&gt;
+  &lt;/section&gt;
+&lt;/menu&gt;</code></pre></div>
+<p>The following example is exactly equivalent.  It is more illustrative
+of the exact relationship between the menus and items (keeping in
+mind that the ‘link’ element defines a new menu that is linked to the
+containing one).  The style of the second example is more verbose and
+difficult to read (and therefore not recommended except for the
+purpose of understanding what is really going on).</p>
+<div class="example-wrap"><pre class="language-text"><code>&lt;menu id=&#39;edit-menu&#39;&gt;
+  &lt;item&gt;
+    &lt;link name=&#39;section&#39;&gt;
+      &lt;item label=&#39;Undo&#39;/&gt;
+      &lt;item label=&#39;Redo&#39;/&gt;
+    &lt;/link&gt;
+  &lt;/item&gt;
+  &lt;item&gt;
+    &lt;link name=&#39;section&#39;&gt;
+      &lt;item label=&#39;Cut&#39;/&gt;
+      &lt;item label=&#39;Copy&#39;/&gt;
+      &lt;item label=&#39;Paste&#39;/&gt;
+    &lt;/link&gt;
+  &lt;/item&gt;
+&lt;/menu&gt;</code></pre></div><h6 id="label-1"><a class="doc-anchor" href="#label-1">§</a><code>label</code></h6>
 <p>the section label, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
 <h6 id="section"><a class="doc-anchor" href="#section">§</a><code>section</code></h6>
 <p>a #GMenuModel with the items of the section</p>
 <h5 id="returns-2"><a class="doc-anchor" href="#returns-2">§</a>Returns</h5>
 <p>a new #GMenuItem</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.new_submenu" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#107-114">Source</a><h4 class="code-header">pub fn <a href="#method.new_submenu" class="fn">new_submenu</a>(
+</div></details><details class="toggle method-toggle" open><summary><section id="method.new_submenu" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#167-174">Source</a><h4 class="code-header">pub fn <a href="#method.new_submenu" class="fn">new_submenu</a>(
     label: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
     submenu: &amp;impl <a class="trait" href="../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="struct.MenuModel.html" title="struct gio::MenuModel">MenuModel</a>&gt;,
 ) -&gt; <a class="struct" href="struct.MenuItem.html" title="struct gio::MenuItem">MenuItem</a></h4></section></summary><div class="docblock"><p>Creates a new #GMenuItem representing a submenu.</p>
@@ -120,7 +168,7 @@ g_menu_item_set_submenu().</p>
 <p>a #GMenuModel with the items of the submenu</p>
 <h5 id="returns-3"><a class="doc-anchor" href="#returns-3">§</a>Returns</h5>
 <p>a new #GMenuItem</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.attribute_value" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#137-149">Source</a><h4 class="code-header">pub fn <a href="#method.attribute_value" class="fn">attribute_value</a>(
+</div></details><details class="toggle method-toggle" open><summary><section id="method.attribute_value" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#197-209">Source</a><h4 class="code-header">pub fn <a href="#method.attribute_value" class="fn">attribute_value</a>(
     &amp;self,
     attribute: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     expected_type: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../glib/variant_type/struct.VariantTy.html" title="struct glib::variant_type::VariantTy">VariantTy</a>&gt;,
@@ -134,12 +182,12 @@ simply does not exist.</p>
 <p>the expected type of the attribute</p>
 <h5 id="returns-4"><a class="doc-anchor" href="#returns-4">§</a>Returns</h5>
 <p>the attribute value, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.link" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#160-167">Source</a><h4 class="code-header">pub fn <a href="#method.link" class="fn">link</a>(&amp;self, link: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="struct.MenuModel.html" title="struct gio::MenuModel">MenuModel</a>&gt;</h4></section></summary><div class="docblock"><p>Queries the named @link on @self.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.link" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#220-227">Source</a><h4 class="code-header">pub fn <a href="#method.link" class="fn">link</a>(&amp;self, link: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="struct.MenuModel.html" title="struct gio::MenuModel">MenuModel</a>&gt;</h4></section></summary><div class="docblock"><p>Queries the named @link on @self.</p>
 <h6 id="link"><a class="doc-anchor" href="#link">§</a><code>link</code></h6>
 <p>the link name to query</p>
 <h5 id="returns-5"><a class="doc-anchor" href="#returns-5">§</a>Returns</h5>
 <p>the link, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.set_action_and_target_value" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#215-227">Source</a><h4 class="code-header">pub fn <a href="#method.set_action_and_target_value" class="fn">set_action_and_target_value</a>(
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_action_and_target_value" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#275-287">Source</a><h4 class="code-header">pub fn <a href="#method.set_action_and_target_value" class="fn">set_action_and_target_value</a>(
     &amp;self,
     action: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
     target_value: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;,
@@ -175,7 +223,7 @@ probably more convenient for most uses.</p>
 <p>the name of the action for this item</p>
 <h6 id="target_value"><a class="doc-anchor" href="#target_value">§</a><code>target_value</code></h6>
 <p>a #GVariant to use as the action target</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.set_attribute_value" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#258-266">Source</a><h4 class="code-header">pub fn <a href="#method.set_attribute_value" class="fn">set_attribute_value</a>(&amp;self, attribute: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;)</h4></section></summary><div class="docblock"><p>Sets or unsets an attribute on @self.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_attribute_value" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#318-326">Source</a><h4 class="code-header">pub fn <a href="#method.set_attribute_value" class="fn">set_attribute_value</a>(&amp;self, attribute: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="struct" href="../glib/variant/struct.Variant.html" title="struct glib::variant::Variant">Variant</a>&gt;)</h4></section></summary><div class="docblock"><p>Sets or unsets an attribute on @self.</p>
 <p>The attribute to set or unset is specified by @attribute. This
 can be one of the standard attribute names <a href="static.MENU_ATTRIBUTE_LABEL.html" title="static gio::MENU_ATTRIBUTE_LABEL"><code>MENU_ATTRIBUTE_LABEL</code></a>,
 <a href="static.MENU_ATTRIBUTE_ACTION.html" title="static gio::MENU_ATTRIBUTE_ACTION"><code>MENU_ATTRIBUTE_ACTION</code></a>, <a href="static.MENU_ATTRIBUTE_TARGET.html" title="static gio::MENU_ATTRIBUTE_TARGET"><code>MENU_ATTRIBUTE_TARGET</code></a>, or a custom
@@ -194,7 +242,7 @@ the same.</p>
 <p>the attribute to set</p>
 <h6 id="value"><a class="doc-anchor" href="#value">§</a><code>value</code></h6>
 <p>a #GVariant to use as the value, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.set_detailed_action" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#282-289">Source</a><h4 class="code-header">pub fn <a href="#method.set_detailed_action" class="fn">set_detailed_action</a>(&amp;self, detailed_action: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)</h4></section></summary><div class="docblock"><p>Sets the “action” and possibly the “target” attribute of @self.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_detailed_action" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#342-349">Source</a><h4 class="code-header">pub fn <a href="#method.set_detailed_action" class="fn">set_detailed_action</a>(&amp;self, detailed_action: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>)</h4></section></summary><div class="docblock"><p>Sets the “action” and possibly the “target” attribute of @self.</p>
 <p>The format of @detailed_action is the same format parsed by
 g_action_parse_detailed_name().</p>
 <p>See g_menu_item_set_action_and_target() or
@@ -204,7 +252,7 @@ slightly less convenient) alternatives.</p>
 the semantics of the action and target attributes.</p>
 <h6 id="detailed_action-1"><a class="doc-anchor" href="#detailed_action-1">§</a><code>detailed_action</code></h6>
 <p>the “detailed” action string</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.set_icon" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#306-310">Source</a><h4 class="code-header">pub fn <a href="#method.set_icon" class="fn">set_icon</a>(&amp;self, icon: &amp;impl <a class="trait" href="../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="struct.Icon.html" title="struct gio::Icon">Icon</a>&gt;)</h4></section></summary><div class="docblock"><p>Sets (or unsets) the icon on @self.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_icon" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#366-370">Source</a><h4 class="code-header">pub fn <a href="#method.set_icon" class="fn">set_icon</a>(&amp;self, icon: &amp;impl <a class="trait" href="../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="struct.Icon.html" title="struct gio::Icon">Icon</a>&gt;)</h4></section></summary><div class="docblock"><p>Sets (or unsets) the icon on @self.</p>
 <p>This call is the same as calling g_icon_serialize() and using the
 result as the value to g_menu_item_set_attribute_value() for
 <a href="static.MENU_ATTRIBUTE_ICON.html" title="static gio::MENU_ATTRIBUTE_ICON"><code>MENU_ATTRIBUTE_ICON</code></a>.</p>
@@ -215,12 +263,12 @@ menu items corresponding to verbs (eg: stock icons for ‘Save’ or
 <p>If @icon is <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> then the icon is unset.</p>
 <h6 id="icon"><a class="doc-anchor" href="#icon">§</a><code>icon</code></h6>
 <p>a #GIcon, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.set_label" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#319-323">Source</a><h4 class="code-header">pub fn <a href="#method.set_label" class="fn">set_label</a>(&amp;self, label: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;)</h4></section></summary><div class="docblock"><p>Sets or unsets the “label” attribute of @self.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_label" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#379-383">Source</a><h4 class="code-header">pub fn <a href="#method.set_label" class="fn">set_label</a>(&amp;self, label: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;)</h4></section></summary><div class="docblock"><p>Sets or unsets the “label” attribute of @self.</p>
 <p>If @label is non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> it is used as the label for the menu item.  If
 it is <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> then the label attribute is unset.</p>
 <h6 id="label-3"><a class="doc-anchor" href="#label-3">§</a><code>label</code></h6>
 <p>the label to set, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to unset</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.set_link" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#340-348">Source</a><h4 class="code-header">pub fn <a href="#method.set_link" class="fn">set_link</a>(&amp;self, link: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, model: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="struct.MenuModel.html" title="struct gio::MenuModel">MenuModel</a>&gt;&gt;)</h4></section></summary><div class="docblock"><p>Creates a link from @self to @model if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, or unsets it.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_link" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#400-408">Source</a><h4 class="code-header">pub fn <a href="#method.set_link" class="fn">set_link</a>(&amp;self, link: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, model: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="struct.MenuModel.html" title="struct gio::MenuModel">MenuModel</a>&gt;&gt;)</h4></section></summary><div class="docblock"><p>Creates a link from @self to @model if non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, or unsets it.</p>
 <p>Links are used to establish a relationship between a particular menu
 item and another menu.  For example, <a href="static.MENU_LINK_SUBMENU.html" title="static gio::MENU_LINK_SUBMENU"><code>MENU_LINK_SUBMENU</code></a> is used to
 associate a submenu with a particular menu item, and <a href="static.MENU_LINK_SECTION.html" title="static gio::MENU_LINK_SECTION"><code>MENU_LINK_SECTION</code></a>
@@ -233,7 +281,7 @@ must not end with a ‘-’, and must not contain consecutive dashes.</p>
 <p>type of link to establish or unset</p>
 <h6 id="model-1"><a class="doc-anchor" href="#model-1">§</a><code>model</code></h6>
 <p>the #GMenuModel to link to (or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> to unset)</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.set_section" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#360-367">Source</a><h4 class="code-header">pub fn <a href="#method.set_section" class="fn">set_section</a>(&amp;self, section: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="struct.MenuModel.html" title="struct gio::MenuModel">MenuModel</a>&gt;&gt;)</h4></section></summary><div class="docblock"><p>Sets or unsets the “section” link of @self to @section.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_section" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#420-427">Source</a><h4 class="code-header">pub fn <a href="#method.set_section" class="fn">set_section</a>(&amp;self, section: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="struct.MenuModel.html" title="struct gio::MenuModel">MenuModel</a>&gt;&gt;)</h4></section></summary><div class="docblock"><p>Sets or unsets the “section” link of @self to @section.</p>
 <p>The effect of having one menu appear as a section of another is
 exactly as it sounds: the items from @section become a direct part of
 the menu that @self is added to.  See g_menu_item_new_section()
@@ -241,7 +289,7 @@ for more information about what it means for a menu item to be a
 section.</p>
 <h6 id="section-1"><a class="doc-anchor" href="#section-1">§</a><code>section</code></h6>
 <p>a #GMenuModel, or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a></p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.set_submenu" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#379-386">Source</a><h4 class="code-header">pub fn <a href="#method.set_submenu" class="fn">set_submenu</a>(&amp;self, submenu: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="struct.MenuModel.html" title="struct gio::MenuModel">MenuModel</a>&gt;&gt;)</h4></section></summary><div class="docblock"><p>Sets or unsets the “submenu” link of @self to @submenu.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.set_submenu" class="method"><a class="src rightside" href="../src/gio/auto/menu_item.rs.html#439-446">Source</a><h4 class="code-header">pub fn <a href="#method.set_submenu" class="fn">set_submenu</a>(&amp;self, submenu: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="../glib/object/trait.IsA.html" title="trait glib::object::IsA">IsA</a>&lt;<a class="struct" href="struct.MenuModel.html" title="struct gio::MenuModel">MenuModel</a>&gt;&gt;)</h4></section></summary><div class="docblock"><p>Sets or unsets the “submenu” link of @self to @submenu.</p>
 <p>If @submenu is non-<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a>, it is linked to.  If it is <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> then the
 link is unset.</p>
 <p>The effect of having one menu appear as a submenu of another is

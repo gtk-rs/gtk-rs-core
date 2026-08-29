@@ -130,25 +130,30 @@ to call when the request is satisfied</p>
 </div></details><section id="method.close_future" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#131-134">Source</a><h4 class="code-header">fn <a href="#method.close_future" class="fn">close_future</a>(
     &amp;self,
     io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
-) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.child" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#159">Source</a><h4 class="code-header">fn <a href="#method.child" class="fn">child</a>(&amp;self, info: &amp;<a class="struct" href="../../gio/auto/file_info/struct.FileInfo.html" title="struct gio::auto::file_info::FileInfo">FileInfo</a>) -&gt; <a class="struct" href="../../gio/auto/file/struct.File.html" title="struct gio::auto::file::File">File</a></h4></section></summary><div class="docblock"><p>gchar *name = g_file_info_get_name (info);
-GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
-name);
-]|</p>
-<h6 id="info"><a class="doc-anchor" href="#info">§</a><code>info</code></h6>
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.child" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#171">Source</a><h4 class="code-header">fn <a href="#method.child" class="fn">child</a>(&amp;self, info: &amp;<a class="struct" href="../../gio/auto/file_info/struct.FileInfo.html" title="struct gio::auto::file_info::FileInfo">FileInfo</a>) -&gt; <a class="struct" href="../../gio/auto/file/struct.File.html" title="struct gio::auto::file::File">File</a></h4></section></summary><div class="docblock"><p>Return a new #GFile which refers to the file named by @info in the source
+directory of @self.  This function is primarily intended to be used
+inside loops with g_file_enumerator_next_file().</p>
+<p>To use this, <a href="../../gio/auto/constants/static.FILE_ATTRIBUTE_STANDARD_NAME.html" title="static gio::auto::constants::FILE_ATTRIBUTE_STANDARD_NAME"><code>FILE_ATTRIBUTE_STANDARD_NAME</code></a> must have been listed in the
+attributes list used when creating the #GFileEnumerator.</p>
+<p>This is a convenience method that’s equivalent to:</p>
+<p><strong>⚠️ The following code is in C ⚠️</strong></p>
+<div class="example-wrap"><pre class="language-C"><code>  gchar *name = g_file_info_get_name (info);
+  GFile *child = g_file_get_child (g_file_enumerator_get_container (enumr),
+                                   name);</code></pre></div><h6 id="info"><a class="doc-anchor" href="#info">§</a><code>info</code></h6>
 <p>a #GFileInfo gotten from g_file_enumerator_next_file()
 or the async equivalents.</p>
 <h5 id="returns"><a class="doc-anchor" href="#returns">§</a>Returns</h5>
 <p>a #GFile for the #GFileInfo passed it.</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.container" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#175">Source</a><h4 class="code-header">fn <a href="#method.container" class="fn">container</a>(&amp;self) -&gt; <a class="struct" href="../../gio/auto/file/struct.File.html" title="struct gio::auto::file::File">File</a></h4></section></summary><div class="docblock"><p>Get the #GFile container which is being enumerated.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.container" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#187">Source</a><h4 class="code-header">fn <a href="#method.container" class="fn">container</a>(&amp;self) -&gt; <a class="struct" href="../../gio/auto/file/struct.File.html" title="struct gio::auto::file::File">File</a></h4></section></summary><div class="docblock"><p>Get the #GFile container which is being enumerated.</p>
 <h5 id="returns-1"><a class="doc-anchor" href="#returns-1">§</a>Returns</h5>
 <p>the #GFile which is being enumerated.</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.has_pending" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#189">Source</a><h4 class="code-header">fn <a href="#method.has_pending" class="fn">has_pending</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if the file enumerator has pending operations.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.has_pending" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#201">Source</a><h4 class="code-header">fn <a href="#method.has_pending" class="fn">has_pending</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if the file enumerator has pending operations.</p>
 <h5 id="returns-2"><a class="doc-anchor" href="#returns-2">§</a>Returns</h5>
 <p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if the @self has pending operations.</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.is_closed" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#203">Source</a><h4 class="code-header">fn <a href="#method.is_closed" class="fn">is_closed</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if the file enumerator has been closed.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.is_closed" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#215">Source</a><h4 class="code-header">fn <a href="#method.is_closed" class="fn">is_closed</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Checks if the file enumerator has been closed.</p>
 <h5 id="returns-3"><a class="doc-anchor" href="#returns-3">§</a>Returns</h5>
 <p><a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html" title="primitive bool"><code>true</code></a> if the @self is closed.</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.next_file" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#231-234">Source</a><h4 class="code-header">fn <a href="#method.next_file" class="fn">next_file</a>(
+</div></details><details class="toggle method-toggle" open><summary><section id="method.next_file" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#243-246">Source</a><h4 class="code-header">fn <a href="#method.next_file" class="fn">next_file</a>(
     &amp;self,
     cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../gio/auto/file_info/struct.FileInfo.html" title="struct gio::auto::file_info::FileInfo">FileInfo</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;</h4></section></summary><div class="docblock"><p>Returns information for the next file in the enumerated object.
@@ -166,15 +171,64 @@ be unset.</p>
 <p>A #GFileInfo or <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None" title="variant core::option::Option::None"><code>None</code></a> on error
 or end of enumerator.  Free the returned object with
 g_object_unref() when no longer needed.</p>
-</div></details><details class="toggle method-toggle" open><summary><section id="method.next_files_async" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#269-275">Source</a><h4 class="code-header">fn <a href="#method.next_files_async" class="fn">next_files_async</a>&lt;P&gt;(
+</div></details><details class="toggle method-toggle" open><summary><section id="method.next_files_async" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#337-343">Source</a><h4 class="code-header">fn <a href="#method.next_files_async" class="fn">next_files_async</a>&lt;P&gt;(
     &amp;self,
     num_files: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
     cancellable: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;impl <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/cancellable/struct.Cancellable.html" title="struct gio::auto::cancellable::Cancellable">Cancellable</a>&gt;&gt;,
     callback: P,
 )<div class="where">where
-    P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/file_info/struct.FileInfo.html" title="struct gio::auto::file_info::FileInfo">FileInfo</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static,</div></h4></section></summary><div class="docblock"><p>message);
-]|</p>
+    P: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(<a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/file_info/struct.FileInfo.html" title="struct gio::auto::file_info::FileInfo">FileInfo</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;) + 'static,</div></h4></section></summary><div class="docblock"><p>Request information for a number of files from the enumerator asynchronously.
+When all I/O for the operation is finished the @callback will be called with
+the requested information.</p>
+<p>See the documentation of #GFileEnumerator for information about the
+order of returned files.</p>
+<p>Once the end of the enumerator is reached, or if an error occurs, the
+@callback will be called with an empty list. In this case, the previous call
+to g_file_enumerator_next_files_async() will typically have returned fewer
+than @num_files items.</p>
+<p>If a request is cancelled the callback will be called with
+<a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.Cancelled" title="variant gio::auto::enums::IOErrorEnum::Cancelled"><code>IOErrorEnum::Cancelled</code></a>.</p>
+<p>This leads to the following pseudo-code usage:</p>
+<div class="example-wrap"><pre class="language-text"><code>g_autoptr(GFile) dir = get_directory ();
+g_autoptr(GFileEnumerator) enumerator = NULL;
+g_autolist(GFileInfo) files = NULL;
+g_autoptr(GError) local_error = NULL;
+
+enumerator = yield g_file_enumerate_children_async (dir,
+                                                    G_FILE_ATTRIBUTE_STANDARD_NAME &quot;,&quot;
+                                                    G_FILE_ATTRIBUTE_STANDARD_TYPE,
+                                                    G_FILE_QUERY_INFO_NONE,
+                                                    G_PRIORITY_DEFAULT,
+                                                    cancellable,
+                                                    …,
+                                                    &amp;local_error);
+if (enumerator == NULL)
+  g_error (&quot;Error enumerating: %s&quot;, local_error-&gt;message);
+
+// Loop until no files are returned, either because the end of the enumerator
+// has been reached, or an error was returned.
+do
+  {
+    files = yield g_file_enumerator_next_files_async (enumerator,
+                                                      5,  // number of files to request
+                                                      G_PRIORITY_DEFAULT,
+                                                      cancellable,
+                                                      …,
+                                                      &amp;local_error);
+
+    // Process the returned files, but don’t assume that exactly 5 were returned.
+    for (GList *l = files; l != NULL; l = l-&gt;next)
+      {
+        GFileInfo *info = l-&gt;data;
+        handle_file_info (info);
+      }
+  }
+while (files != NULL);
+
+if (local_error != NULL &amp;&amp;
+    !g_error_matches (local_error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+  g_error (&quot;Error while enumerating: %s&quot;, local_error-&gt;message);</code></pre></div>
 <p>During an async request no other sync and async calls are allowed, and will
 result in <a href="../../gio/auto/enums/enum.IOErrorEnum.html#variant.Pending" title="variant gio::auto::enums::IOErrorEnum::Pending"><code>IOErrorEnum::Pending</code></a> errors.</p>
 <p>Any outstanding I/O request with higher priority (lower numerical value) will
@@ -189,12 +243,12 @@ priority is <code>G_PRIORITY_DEFAULT</code>.</p>
 <h6 id="callback-1"><a class="doc-anchor" href="#callback-1">§</a><code>callback</code></h6>
 <p>a #GAsyncReadyCallback
 to call when the request is satisfied</p>
-</div></details><section id="method.next_files_future" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#326-330">Source</a><h4 class="code-header">fn <a href="#method.next_files_future" class="fn">next_files_future</a>(
+</div></details><section id="method.next_files_future" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#394-398">Source</a><h4 class="code-header">fn <a href="#method.next_files_future" class="fn">next_files_future</a>(
     &amp;self,
     num_files: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     io_priority: <a class="struct" href="../../glib/source/struct.Priority.html" title="struct glib::source::Priority">Priority</a>,
-) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/file_info/struct.FileInfo.html" title="struct gio::auto::file_info::FileInfo">FileInfo</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.set_pending" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#346">Source</a><h4 class="code-header">fn <a href="#method.set_pending" class="fn">set_pending</a>(&amp;self, pending: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>)</h4></section></summary><div class="docblock"><p>Sets the file enumerator as having pending operations.</p>
+) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="struct" href="../../gio/auto/file_info/struct.FileInfo.html" title="struct gio::auto::file_info::FileInfo">FileInfo</a>&gt;, <a class="struct" href="../../glib/error/struct.Error.html" title="struct glib::error::Error">Error</a>&gt;&gt;&gt;&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="method.set_pending" class="method"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#414">Source</a><h4 class="code-header">fn <a href="#method.set_pending" class="fn">set_pending</a>(&amp;self, pending: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>)</h4></section></summary><div class="docblock"><p>Sets the file enumerator as having pending operations.</p>
 <h6 id="pending"><a class="doc-anchor" href="#pending">§</a><code>pending</code></h6>
 <p>a boolean value.</p>
-</div></details></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety".</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><div class="negative-marker"></div><section id="impl-FileEnumeratorExt-for-O" class="impl"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#353">Source</a><a href="#impl-FileEnumeratorExt-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O&gt; <a class="trait" href="trait.FileEnumeratorExt.html" title="trait gio_win32::prelude::FileEnumeratorExt">FileEnumeratorExt</a> for O<div class="where">where
+</div></details></div><h2 id="dyn-compatibility" class="section-header">Dyn Compatibility<a href="#dyn-compatibility" class="anchor">§</a></h2><div class="dyn-compatibility-info"><p>This trait is <b>not</b> <a href="https://doc.rust-lang.org/nightly/reference/items/traits.html#dyn-compatibility">dyn compatible</a>.</p><p><i>In older versions of Rust, dyn compatibility was called "object safety".</i></p></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><div class="negative-marker"></div><section id="impl-FileEnumeratorExt-for-O" class="impl"><a class="src rightside" href="../../src/gio/auto/file_enumerator.rs.html#421">Source</a><a href="#impl-FileEnumeratorExt-for-O" class="anchor">§</a><h3 class="code-header">impl&lt;O&gt; <a class="trait" href="trait.FileEnumeratorExt.html" title="trait gio_win32::prelude::FileEnumeratorExt">FileEnumeratorExt</a> for O<div class="where">where
     O: <a class="trait" href="trait.IsA.html" title="trait gio_win32::prelude::IsA">IsA</a>&lt;<a class="struct" href="../../gio/auto/file_enumerator/struct.FileEnumerator.html" title="struct gio::auto::file_enumerator::FileEnumerator">FileEnumerator</a>&gt;,</div></h3></section></div><script src="../../trait.impl/gio/auto/file_enumerator/trait.FileEnumeratorExt.js" async></script></section></div></main></body></html>

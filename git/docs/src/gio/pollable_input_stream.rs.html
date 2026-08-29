@@ -82,7 +82,7 @@
 <a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span>futures_io::AsyncRead;
 <a href=#10 id=10 data-nosnippet>10</a><span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 <a href=#11 id=11 data-nosnippet>11</a>
-<a href=#12 id=12 data-nosnippet>12</a><span class="kw">use crate</span>::{<a href="auto/cancellable.rs.html#8-58">Cancellable</a>, <a href="auto/pollable_input_stream.rs.html#8-28">PollableInputStream</a>, <a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#116">prelude</a>::<span class="kw-2">*</span>};
+<a href=#12 id=12 data-nosnippet>12</a><span class="kw">use crate</span>::{<a href="auto/cancellable.rs.html#8-86">Cancellable</a>, <a href="auto/pollable_input_stream.rs.html#8-28">PollableInputStream</a>, <a href="../../gio_sys/index.html">ffi</a>, <a href="lib.rs.html#116">prelude</a>::<span class="kw-2">*</span>};
 <a href=#13 id=13 data-nosnippet>13</a>
 <a href=#14 id=14 data-nosnippet>14</a><span class="kw">pub trait </span><a href="../../gio/prelude/trait.PollableInputStreamExtManual.html">PollableInputStreamExtManual</a>: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/pollable_input_stream.rs.html#8-28">PollableInputStream</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> {
 <a href=#15 id=15 data-nosnippet>15</a>    <span class="doccomment">/// Creates a #GSource that triggers when @self can be read, or
@@ -112,7 +112,7 @@
 <a href=#39 id=39 data-nosnippet>39</a>    ) -&gt; glib::<a href="../../glib/auto/source/struct.Source.html">Source</a>
 <a href=#40 id=40 data-nosnippet>40</a>    <span class="kw">where
 <a href=#41 id=41 data-nosnippet>41</a>        </span>F: <a href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnMut.html">FnMut</a>(<span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; glib::<a href="../../glib/control_flow/enum.ControlFlow.html">ControlFlow</a> + <span class="lifetime">'static</span>,
-<a href=#42 id=42 data-nosnippet>42</a>        C: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-58">Cancellable</a>&gt;,
+<a href=#42 id=42 data-nosnippet>42</a>        C: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;,
 <a href=#43 id=43 data-nosnippet>43</a>    {
 <a href=#44 id=44 data-nosnippet>44</a>        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>trampoline&lt;
 <a href=#45 id=45 data-nosnippet>45</a>            O: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/pollable_input_stream.rs.html#8-28">PollableInputStream</a>&gt;,
@@ -160,12 +160,12 @@
 <a href=#87 id=87 data-nosnippet>87</a>        }
 <a href=#88 id=88 data-nosnippet>88</a>    }
 <a href=#89 id=89 data-nosnippet>89</a>
-<a href=#90 id=90 data-nosnippet>90</a>    <span class="kw">fn </span>create_source_future&lt;C: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;(
+<a href=#90 id=90 data-nosnippet>90</a>    <span class="kw">fn </span>create_source_future&lt;C: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;(
 <a href=#91 id=91 data-nosnippet>91</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#92 id=92 data-nosnippet>92</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>C&gt;,
 <a href=#93 id=93 data-nosnippet>93</a>        priority: glib::<a href="../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#94 id=94 data-nosnippet>94</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span><a href="https://doc.rust-lang.org/nightly/core/future/future/trait.Future.html">std::future::Future</a>&lt;Output = ()&gt; + <span class="lifetime">'static</span>&gt;&gt; {
-<a href=#95 id=95 data-nosnippet>95</a>        <span class="kw">let </span>cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="auto/cancellable.rs.html#8-58">Cancellable</a>&gt; = <a href="#92">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|c| <a href="#95">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.cloned">cloned</a>();
+<a href=#95 id=95 data-nosnippet>95</a>        <span class="kw">let </span>cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt; = <a href="#92">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|c| <a href="#95">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.cloned">cloned</a>();
 <a href=#96 id=96 data-nosnippet>96</a>
 <a href=#97 id=97 data-nosnippet>97</a>        <span class="kw">let </span>obj = <a class="self" href="#91">self</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
 <a href=#98 id=98 data-nosnippet>98</a>        <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">pin</a>(glib::<a href="../../glib/source_futures/struct.SourceFuture.html">SourceFuture</a>::<a href="../../glib/source_futures/struct.SourceFuture.html#method.new">new</a>(<span class="kw">move </span>|send| {
@@ -177,12 +177,12 @@
 <a href=#104 id=104 data-nosnippet>104</a>        }))
 <a href=#105 id=105 data-nosnippet>105</a>    }
 <a href=#106 id=106 data-nosnippet>106</a>
-<a href=#107 id=107 data-nosnippet>107</a>    <span class="kw">fn </span>create_source_stream&lt;C: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;(
+<a href=#107 id=107 data-nosnippet>107</a>    <span class="kw">fn </span>create_source_stream&lt;C: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;(
 <a href=#108 id=108 data-nosnippet>108</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#109 id=109 data-nosnippet>109</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>C&gt;,
 <a href=#110 id=110 data-nosnippet>110</a>        priority: glib::<a href="../../glib/source/struct.Priority.html">Priority</a>,
 <a href=#111 id=111 data-nosnippet>111</a>    ) -&gt; <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">Pin</a>&lt;<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>&lt;<span class="kw">dyn </span>Stream&lt;Item = ()&gt; + <span class="lifetime">'static</span>&gt;&gt; {
-<a href=#112 id=112 data-nosnippet>112</a>        <span class="kw">let </span>cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="auto/cancellable.rs.html#8-58">Cancellable</a>&gt; = <a href="#109">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|c| <a href="#112">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.cloned">cloned</a>();
+<a href=#112 id=112 data-nosnippet>112</a>        <span class="kw">let </span>cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt; = <a href="#109">cancellable</a>.<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.map">map</a>(|c| <a href="#112">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()).<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.cloned">cloned</a>();
 <a href=#113 id=113 data-nosnippet>113</a>
 <a href=#114 id=114 data-nosnippet>114</a>        <span class="kw">let </span>obj = <a class="self" href="#108">self</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>();
 <a href=#115 id=115 data-nosnippet>115</a>        <a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">Box</a>::<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html#method.pin">pin</a>(glib::<a href="../../glib/source_futures/struct.SourceStream.html">SourceStream</a>::<a href="../../glib/source_futures/struct.SourceStream.html#method.new">new</a>(<span class="kw">move </span>|send| {
@@ -222,7 +222,7 @@
 <a href=#149 id=149 data-nosnippet>149</a>    /// a
 <a href=#150 id=150 data-nosnippet>150</a>    ///     buffer to read data into (which should be at least @count bytes long).
 <a href=#151 id=151 data-nosnippet>151</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_pollable_input_stream_read_nonblocking"</span>)]
-<a href=#152 id=152 data-nosnippet>152</a>    </span><span class="kw">fn </span>read_nonblocking&lt;C: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-58">Cancellable</a>&gt;&gt;(
+<a href=#152 id=152 data-nosnippet>152</a>    </span><span class="kw">fn </span>read_nonblocking&lt;C: <a href="../../glib/object/trait.IsA.html">IsA</a>&lt;<a href="auto/cancellable.rs.html#8-86">Cancellable</a>&gt;&gt;(
 <a href=#153 id=153 data-nosnippet>153</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#154 id=154 data-nosnippet>154</a>        buffer: <span class="kw-2">&amp;mut </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
 <a href=#155 id=155 data-nosnippet>155</a>        cancellable: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span>C&gt;,
@@ -284,18 +284,18 @@
 <a href=#211 id=211 data-nosnippet>211</a>        <span class="kw">let </span>gio_result = <a href="#210">stream</a>
 <a href=#212 id=212 data-nosnippet>212</a>            .<span class="number">0
 <a href=#213 id=213 data-nosnippet>213</a>            </span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>()
-<a href=#214 id=214 data-nosnippet>214</a>            .<a href="#152-175">read_nonblocking</a>(<a href="#208">buf</a>, <span class="kw">crate</span>::<a href="auto/cancellable.rs.html#8-58">Cancellable</a>::<a href="auto/cancellable.rs.html#61">NONE</a>);
+<a href=#214 id=214 data-nosnippet>214</a>            .<a href="#152-175">read_nonblocking</a>(<a href="#208">buf</a>, <span class="kw">crate</span>::<a href="auto/cancellable.rs.html#8-86">Cancellable</a>::<a href="auto/cancellable.rs.html#89">NONE</a>);
 <a href=#215 id=215 data-nosnippet>215</a>
 <a href=#216 id=216 data-nosnippet>216</a>        <span class="kw">match </span><a href="#211">gio_result</a> {
 <a href=#217 id=217 data-nosnippet>217</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(size) =&gt; Poll::<a href="https://doc.rust-lang.org/nightly/core/task/poll/enum.Poll.html#variant.Ready">Ready</a>(<a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="#217">size</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>)),
 <a href=#218 id=218 data-nosnippet>218</a>            <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(err) =&gt; {
 <a href=#219 id=219 data-nosnippet>219</a>                <span class="kw">let </span>kind = <a href="#218">err</a>
-<a href=#220 id=220 data-nosnippet>220</a>                    .<a href="../../glib/error/struct.Error.html#method.kind">kind</a>::&lt;<span class="kw">crate</span>::<a href="auto/enums.rs.html#2298-2461">IOErrorEnum</a>&gt;()
-<a href=#221 id=221 data-nosnippet>221</a>                    .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<span class="kw">crate</span>::IOErrorEnum::<a href="auto/enums.rs.html#2302">Failed</a>);
-<a href=#222 id=222 data-nosnippet>222</a>                <span class="kw">if </span><a href="#219">kind</a> == <span class="kw">crate</span>::IOErrorEnum::<a href="auto/enums.rs.html#2383">WouldBlock</a> {
+<a href=#220 id=220 data-nosnippet>220</a>                    .<a href="../../glib/error/struct.Error.html#method.kind">kind</a>::&lt;<span class="kw">crate</span>::<a href="auto/enums.rs.html#2308-2471">IOErrorEnum</a>&gt;()
+<a href=#221 id=221 data-nosnippet>221</a>                    .<a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#method.unwrap_or">unwrap_or</a>(<span class="kw">crate</span>::IOErrorEnum::<a href="auto/enums.rs.html#2312">Failed</a>);
+<a href=#222 id=222 data-nosnippet>222</a>                <span class="kw">if </span><a href="#219">kind</a> == <span class="kw">crate</span>::IOErrorEnum::<a href="auto/enums.rs.html#2393">WouldBlock</a> {
 <a href=#223 id=223 data-nosnippet>223</a>                    <span class="kw">let </span><span class="kw-2">mut </span>waker = <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.Some">Some</a>(<a href="#207">cx</a>.<a href="https://doc.rust-lang.org/nightly/core/task/wake/struct.Context.html#method.waker">waker</a>().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">clone</a>());
 <a href=#224 id=224 data-nosnippet>224</a>                    <span class="kw">let </span>source = <a href="#210">stream</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="#33-88">create_source</a>(
-<a href=#225 id=225 data-nosnippet>225</a>                        <span class="kw">crate</span>::<a href="auto/cancellable.rs.html#8-58">Cancellable</a>::<a href="auto/cancellable.rs.html#61">NONE</a>,
+<a href=#225 id=225 data-nosnippet>225</a>                        <span class="kw">crate</span>::<a href="auto/cancellable.rs.html#8-86">Cancellable</a>::<a href="auto/cancellable.rs.html#89">NONE</a>,
 <a href=#226 id=226 data-nosnippet>226</a>                        <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#variant.None">None</a>,
 <a href=#227 id=227 data-nosnippet>227</a>                        glib::<a href="../../glib/source/struct.Priority.html">Priority</a>::<a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">default</a>(),
 <a href=#228 id=228 data-nosnippet>228</a>                        <span class="kw">move </span>|<span class="kw">_</span>| {
