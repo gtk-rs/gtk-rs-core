@@ -372,8 +372,6 @@ bitflags! {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GRegexCompileFlags")]
     pub struct RegexCompileFlags: u32 {
-        #[cfg(feature = "v2_74")]
-        #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_REGEX_DEFAULT")]
         const DEFAULT = ffi::G_REGEX_DEFAULT as _;
         #[doc(alias = "G_REGEX_CASELESS")]
@@ -431,8 +429,6 @@ bitflags! {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GRegexMatchFlags")]
     pub struct RegexMatchFlags: u32 {
-        #[cfg(feature = "v2_74")]
-        #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_REGEX_MATCH_DEFAULT")]
         const DEFAULT = ffi::G_REGEX_MATCH_DEFAULT as _;
         #[doc(alias = "G_REGEX_MATCH_ANCHORED")]
