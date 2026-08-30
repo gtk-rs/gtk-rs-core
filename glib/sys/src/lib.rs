@@ -957,8 +957,6 @@ pub const G_OPTION_FLAG_NOALIAS: GOptionFlags = 64;
 pub const G_OPTION_FLAG_DEPRECATED: GOptionFlags = 128;
 
 pub type GRegexCompileFlags = c_uint;
-#[cfg(feature = "v2_74")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_REGEX_DEFAULT: GRegexCompileFlags = 0;
 pub const G_REGEX_CASELESS: GRegexCompileFlags = 1;
 pub const G_REGEX_MULTILINE: GRegexCompileFlags = 2;
@@ -977,8 +975,6 @@ pub const G_REGEX_NEWLINE_LF: GRegexCompileFlags = 2097152;
 pub const G_REGEX_NEWLINE_RESERVED1: GRegexCompileFlags = 4194304;
 
 pub type GRegexMatchFlags = c_uint;
-#[cfg(feature = "v2_74")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_REGEX_MATCH_DEFAULT: GRegexMatchFlags = 0;
 pub const G_REGEX_MATCH_ANCHORED: GRegexMatchFlags = 16;
 pub const G_REGEX_MATCH_NOTBOL: GRegexMatchFlags = 128;
