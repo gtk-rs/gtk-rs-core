@@ -146,6 +146,8 @@ bitflags! {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
     #[doc(alias = "GTypeFlags")]
     pub struct TypeFlags: u32 {
+        #[cfg(feature = "v2_74")]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
         #[doc(alias = "G_TYPE_FLAG_NONE")]
         const NONE = crate::gobject_ffi::G_TYPE_FLAG_NONE as _;
         #[doc(alias = "G_TYPE_FLAG_ABSTRACT")]

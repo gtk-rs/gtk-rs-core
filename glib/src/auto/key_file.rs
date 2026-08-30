@@ -284,6 +284,41 @@ impl KeyFile {
         }
     }
 
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    #[doc(alias = "g_key_file_load_unix_configurations")]
+    pub fn load_unix_configurations(
+        &self,
+        project: Option<&str>,
+        etc_subdir: Option<impl AsRef<std::path::Path>>,
+        run_subdir: Option<impl AsRef<std::path::Path>>,
+        usr_subdir: Option<impl AsRef<std::path::Path>>,
+        config_name: impl AsRef<std::path::Path>,
+        config_suffix: Option<impl AsRef<std::path::Path>>,
+        flags: KeyFileFlags,
+    ) -> Result<(), crate::Error> {
+        unsafe {
+            let mut error = std::ptr::null_mut();
+            let is_ok = ffi::g_key_file_load_unix_configurations(
+                self.to_glib_none().0,
+                project.to_glib_none().0,
+                etc_subdir.as_ref().map(|p| p.as_ref()).to_glib_none().0,
+                run_subdir.as_ref().map(|p| p.as_ref()).to_glib_none().0,
+                usr_subdir.as_ref().map(|p| p.as_ref()).to_glib_none().0,
+                config_name.as_ref().to_glib_none().0,
+                config_suffix.as_ref().map(|p| p.as_ref()).to_glib_none().0,
+                flags.into_glib(),
+                &mut error,
+            );
+            debug_assert_eq!(is_ok == crate::ffi::GFALSE, !error.is_null());
+            if error.is_null() {
+                Ok(())
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
+
     #[doc(alias = "g_key_file_remove_comment")]
     pub fn remove_comment(
         &self,

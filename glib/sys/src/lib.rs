@@ -434,11 +434,23 @@ pub const G_UNICODE_BREAK_REGIONAL_INDICATOR: GUnicodeBreakType = 39;
 pub const G_UNICODE_BREAK_EMOJI_BASE: GUnicodeBreakType = 40;
 pub const G_UNICODE_BREAK_EMOJI_MODIFIER: GUnicodeBreakType = 41;
 pub const G_UNICODE_BREAK_ZERO_WIDTH_JOINER: GUnicodeBreakType = 42;
+#[cfg(feature = "v2_80")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
 pub const G_UNICODE_BREAK_AKSARA: GUnicodeBreakType = 43;
+#[cfg(feature = "v2_80")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
 pub const G_UNICODE_BREAK_AKSARA_PRE_BASE: GUnicodeBreakType = 44;
+#[cfg(feature = "v2_80")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
 pub const G_UNICODE_BREAK_AKSARA_START: GUnicodeBreakType = 45;
+#[cfg(feature = "v2_80")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
 pub const G_UNICODE_BREAK_VIRAMA_FINAL: GUnicodeBreakType = 46;
+#[cfg(feature = "v2_80")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_80")))]
 pub const G_UNICODE_BREAK_VIRAMA: GUnicodeBreakType = 47;
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
 pub const G_UNICODE_BREAK_UNAMBIGUOUS_HYPHEN: GUnicodeBreakType = 48;
 
 pub type GUnicodeScript = c_int;
@@ -608,16 +620,38 @@ pub const G_UNICODE_SCRIPT_VITHKUQI: GUnicodeScript = 161;
 pub const G_UNICODE_SCRIPT_MATH: GUnicodeScript = 162;
 pub const G_UNICODE_SCRIPT_KAWI: GUnicodeScript = 163;
 pub const G_UNICODE_SCRIPT_NAG_MUNDARI: GUnicodeScript = 164;
+#[cfg(feature = "v2_84")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
 pub const G_UNICODE_SCRIPT_TODHRI: GUnicodeScript = 165;
+#[cfg(feature = "v2_84")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
 pub const G_UNICODE_SCRIPT_GARAY: GUnicodeScript = 166;
+#[cfg(feature = "v2_84")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
 pub const G_UNICODE_SCRIPT_TULU_TIGALARI: GUnicodeScript = 167;
+#[cfg(feature = "v2_84")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
 pub const G_UNICODE_SCRIPT_SUNUWAR: GUnicodeScript = 168;
+#[cfg(feature = "v2_84")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
 pub const G_UNICODE_SCRIPT_GURUNG_KHEMA: GUnicodeScript = 169;
+#[cfg(feature = "v2_84")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
 pub const G_UNICODE_SCRIPT_KIRAT_RAI: GUnicodeScript = 170;
+#[cfg(feature = "v2_84")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_84")))]
 pub const G_UNICODE_SCRIPT_OL_ONAL: GUnicodeScript = 171;
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
 pub const G_UNICODE_SCRIPT_SIDETIC: GUnicodeScript = 172;
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
 pub const G_UNICODE_SCRIPT_TOLONG_SIKI: GUnicodeScript = 173;
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
 pub const G_UNICODE_SCRIPT_TAI_YO: GUnicodeScript = 174;
+#[cfg(feature = "v2_88")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_88")))]
 pub const G_UNICODE_SCRIPT_BERIA_ERFE: GUnicodeScript = 175;
 
 pub type GUnicodeType = c_int;
@@ -838,7 +872,11 @@ pub const G_FORMAT_SIZE_DEFAULT: GFormatSizeFlags = 0;
 pub const G_FORMAT_SIZE_LONG_FORMAT: GFormatSizeFlags = 1;
 pub const G_FORMAT_SIZE_IEC_UNITS: GFormatSizeFlags = 2;
 pub const G_FORMAT_SIZE_BITS: GFormatSizeFlags = 4;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_FORMAT_SIZE_ONLY_VALUE: GFormatSizeFlags = 8;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_FORMAT_SIZE_ONLY_UNIT: GFormatSizeFlags = 16;
 
 pub type GHookFlagMask = c_uint;
@@ -855,6 +893,8 @@ pub const G_IO_HUP: GIOCondition = 16;
 pub const G_IO_NVAL: GIOCondition = 32;
 
 pub type GIOFlags = c_uint;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_IO_FLAG_NONE: GIOFlags = 0;
 pub const G_IO_FLAG_APPEND: GIOFlags = 1;
 pub const G_IO_FLAG_NONBLOCK: GIOFlags = 2;
@@ -895,6 +935,8 @@ pub const G_MARKUP_COLLECT_TRISTATE: GMarkupCollectType = 4;
 pub const G_MARKUP_COLLECT_OPTIONAL: GMarkupCollectType = 65536;
 
 pub type GMarkupParseFlags = c_uint;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_MARKUP_DEFAULT_FLAGS: GMarkupParseFlags = 0;
 pub const G_MARKUP_DO_NOT_USE_THIS_UNSUPPORTED_FLAG: GMarkupParseFlags = 1;
 pub const G_MARKUP_TREAT_CDATA_AS_TEXT: GMarkupParseFlags = 2;
@@ -915,6 +957,8 @@ pub const G_OPTION_FLAG_NOALIAS: GOptionFlags = 64;
 pub const G_OPTION_FLAG_DEPRECATED: GOptionFlags = 128;
 
 pub type GRegexCompileFlags = c_uint;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_REGEX_DEFAULT: GRegexCompileFlags = 0;
 pub const G_REGEX_CASELESS: GRegexCompileFlags = 1;
 pub const G_REGEX_MULTILINE: GRegexCompileFlags = 2;
@@ -933,6 +977,8 @@ pub const G_REGEX_NEWLINE_LF: GRegexCompileFlags = 2097152;
 pub const G_REGEX_NEWLINE_RESERVED1: GRegexCompileFlags = 4194304;
 
 pub type GRegexMatchFlags = c_uint;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_REGEX_MATCH_DEFAULT: GRegexMatchFlags = 0;
 pub const G_REGEX_MATCH_ANCHORED: GRegexMatchFlags = 16;
 pub const G_REGEX_MATCH_NOTBOL: GRegexMatchFlags = 128;
@@ -972,6 +1018,8 @@ pub const G_SPAWN_CHILD_INHERITS_STDERR: GSpawnFlags = 1024;
 pub const G_SPAWN_STDIN_FROM_DEV_NULL: GSpawnFlags = 2048;
 
 pub type GTestSubprocessFlags = c_uint;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_TEST_SUBPROCESS_DEFAULT: GTestSubprocessFlags = 0;
 pub const G_TEST_SUBPROCESS_INHERIT_STDIN: GTestSubprocessFlags = 1;
 pub const G_TEST_SUBPROCESS_INHERIT_STDOUT: GTestSubprocessFlags = 2;
@@ -979,6 +1027,8 @@ pub const G_TEST_SUBPROCESS_INHERIT_STDERR: GTestSubprocessFlags = 4;
 pub const G_TEST_SUBPROCESS_INHERIT_DESCRIPTORS: GTestSubprocessFlags = 8;
 
 pub type GTestTrapFlags = c_uint;
+#[cfg(feature = "v2_74")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_74")))]
 pub const G_TEST_TRAP_DEFAULT: GTestTrapFlags = 0;
 pub const G_TEST_TRAP_SILENCE_STDOUT: GTestTrapFlags = 128;
 pub const G_TEST_TRAP_SILENCE_STDERR: GTestTrapFlags = 256;
@@ -3914,6 +3964,19 @@ unsafe extern "C" {
         flags: GKeyFileFlags,
         error: *mut *mut GError,
     ) -> gboolean;
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    pub fn g_key_file_load_unix_configurations(
+        key_file: *mut GKeyFile,
+        project: *const c_char,
+        etc_subdir: *const c_char,
+        run_subdir: *const c_char,
+        usr_subdir: *const c_char,
+        config_name: *const c_char,
+        config_suffix: *const c_char,
+        flags: GKeyFileFlags,
+        error: *mut *mut GError,
+    ) -> gboolean;
     pub fn g_key_file_ref(key_file: *mut GKeyFile) -> *mut GKeyFile;
     pub fn g_key_file_remove_comment(
         key_file: *mut GKeyFile,
@@ -5146,6 +5209,9 @@ unsafe extern "C" {
     pub fn g_source_add_poll(source: *mut GSource, fd: *mut GPollFD);
     pub fn g_source_add_unix_fd(source: *mut GSource, fd: c_int, events: GIOCondition) -> gpointer;
     pub fn g_source_attach(source: *mut GSource, context: *mut GMainContext) -> c_uint;
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    pub fn g_source_clear_ready_time(source: *mut GSource);
     pub fn g_source_destroy(source: *mut GSource);
     #[cfg(feature = "v2_86")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_86")))]
@@ -5157,7 +5223,13 @@ unsafe extern "C" {
     pub fn g_source_get_name(source: *mut GSource) -> *const c_char;
     pub fn g_source_get_priority(source: *mut GSource) -> c_int;
     pub fn g_source_get_ready_time(source: *mut GSource) -> i64;
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    pub fn g_source_get_ready_time_ns(source: *mut GSource, ready_time: *mut u64) -> gboolean;
     pub fn g_source_get_time(source: *mut GSource) -> i64;
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    pub fn g_source_get_time_ns(source: *mut GSource) -> u64;
     pub fn g_source_is_destroyed(source: *mut GSource) -> gboolean;
     pub fn g_source_modify_unix_fd(source: *mut GSource, tag: gpointer, new_events: GIOCondition);
     pub fn g_source_query_unix_fd(source: *mut GSource, tag: gpointer) -> GIOCondition;
@@ -5184,6 +5256,9 @@ unsafe extern "C" {
     pub fn g_source_set_name(source: *mut GSource, name: *const c_char);
     pub fn g_source_set_priority(source: *mut GSource, priority: c_int);
     pub fn g_source_set_ready_time(source: *mut GSource, ready_time: i64);
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    pub fn g_source_set_ready_time_ns(source: *mut GSource, ready_time: u64);
     #[cfg(feature = "v2_70")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_70")))]
     pub fn g_source_set_static_name(source: *mut GSource, name: *const c_char);
@@ -5251,6 +5326,9 @@ unsafe extern "C" {
     #[cfg(feature = "v2_76")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_76")))]
     pub fn g_string_free_and_steal(string: *mut GString) -> *mut c_char;
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    pub fn g_string_free_deep(string: *mut GString);
     pub fn g_string_free_to_bytes(string: *mut GString) -> *mut GBytes;
     pub fn g_string_hash(str: *const GString) -> c_uint;
     pub fn g_string_insert(string: *mut GString, pos: ssize_t, val: *const c_char) -> *mut GString;
@@ -7397,6 +7475,9 @@ unsafe extern "C" {
         data: gpointer,
     ) -> c_uint;
     pub fn g_timeout_source_new(interval: c_uint) -> *mut GSource;
+    #[cfg(feature = "v2_90")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+    pub fn g_timeout_source_new_ns(interval: u64) -> *mut GSource;
     pub fn g_timeout_source_new_seconds(interval: c_uint) -> *mut GSource;
     pub fn g_try_malloc(n_bytes: size_t) -> gpointer;
     pub fn g_try_malloc0(n_bytes: size_t) -> gpointer;

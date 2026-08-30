@@ -164,6 +164,14 @@ impl FontDescription {
         }
     }
 
+    //#[cfg(feature = "v1_58")]
+    //#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+    //#[doc(alias = "pango_font_description_get_width")]
+    //#[doc(alias = "get_width")]
+    //pub fn width(&self) -> /*Ignored*/Width {
+    //    unsafe { TODO: call ffi:pango_font_description_get_width() }
+    //}
+
     #[doc(alias = "pango_font_description_hash")]
     fn hash(&self) -> u32 {
         unsafe { ffi::pango_font_description_hash(self.to_glib_none().0) }
@@ -271,6 +279,13 @@ impl FontDescription {
             ffi::pango_font_description_set_weight(self.to_glib_none_mut().0, weight.into_glib());
         }
     }
+
+    //#[cfg(feature = "v1_58")]
+    //#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+    //#[doc(alias = "pango_font_description_set_width")]
+    //pub fn set_width(&mut self, width: /*Ignored*/Width) {
+    //    unsafe { TODO: call ffi:pango_font_description_set_width() }
+    //}
 
     #[doc(alias = "pango_font_description_to_filename")]
     pub fn to_filename(&self) -> Option<glib::GString> {

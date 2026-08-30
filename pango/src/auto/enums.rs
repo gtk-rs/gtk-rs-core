@@ -195,6 +195,8 @@ pub enum AttrType {
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     #[doc(alias = "PANGO_ATTR_FONT_SCALE")]
     FontScale,
+    #[doc(alias = "PANGO_ATTR_WIDTH")]
+    Width,
     #[doc(hidden)]
     __Unknown(i32),
 }
@@ -258,6 +260,7 @@ impl IntoGlib for AttrType {
             Self::BaselineShift => ffi::PANGO_ATTR_BASELINE_SHIFT,
             #[cfg(feature = "v1_50")]
             Self::FontScale => ffi::PANGO_ATTR_FONT_SCALE,
+            Self::Width => ffi::PANGO_ATTR_WIDTH,
             Self::__Unknown(value) => value,
         }
     }
@@ -312,6 +315,7 @@ impl FromGlib<ffi::PangoAttrType> for AttrType {
             ffi::PANGO_ATTR_BASELINE_SHIFT => Self::BaselineShift,
             #[cfg(feature = "v1_50")]
             ffi::PANGO_ATTR_FONT_SCALE => Self::FontScale,
+            ffi::PANGO_ATTR_WIDTH => Self::Width,
             value => Self::__Unknown(value),
         }
     }

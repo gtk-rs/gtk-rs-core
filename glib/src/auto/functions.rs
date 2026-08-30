@@ -836,6 +836,13 @@ pub fn spawn_command_line_async(
 //    unsafe { TODO: call ffi:g_stat() }
 //}
 
+#[cfg(feature = "v2_90")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_90")))]
+#[doc(alias = "g_timeout_source_new_ns")]
+pub fn timeout_source_new_ns(interval: u64) -> Source {
+    unsafe { from_glib_full(ffi::g_timeout_source_new_ns(interval)) }
+}
+
 #[doc(alias = "g_unlink")]
 pub fn unlink(filename: impl AsRef<std::path::Path>) -> i32 {
     unsafe { ffi::g_unlink(filename.as_ref().to_glib_none().0) }

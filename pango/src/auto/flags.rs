@@ -17,6 +17,8 @@ bitflags! {
         const VARIANT = ffi::PANGO_FONT_MASK_VARIANT as _;
         #[doc(alias = "PANGO_FONT_MASK_WEIGHT")]
         const WEIGHT = ffi::PANGO_FONT_MASK_WEIGHT as _;
+        #[doc(alias = "PANGO_FONT_MASK_WIDTH")]
+        const WIDTH = ffi::PANGO_FONT_MASK_WIDTH as _;
         #[doc(alias = "PANGO_FONT_MASK_STRETCH")]
         const STRETCH = ffi::PANGO_FONT_MASK_STRETCH as _;
         #[doc(alias = "PANGO_FONT_MASK_SIZE")]

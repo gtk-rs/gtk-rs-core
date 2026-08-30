@@ -167,6 +167,14 @@ pub trait RendererExt: IsA<Renderer> + 'static {
         }
     }
 
+    //#[cfg(feature = "v1_58")]
+    //#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+    //#[doc(alias = "pango_renderer_get_components")]
+    //#[doc(alias = "get_components")]
+    //fn components(&self) -> /*Ignored*/RenderComponent {
+    //    unsafe { TODO: call ffi:pango_renderer_get_components() }
+    //}
+
     #[doc(alias = "pango_renderer_get_layout")]
     #[doc(alias = "get_layout")]
     fn layout(&self) -> Option<Layout> {
@@ -221,6 +229,13 @@ pub trait RendererExt: IsA<Renderer> + 'static {
             );
         }
     }
+
+    //#[cfg(feature = "v1_58")]
+    //#[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+    //#[doc(alias = "pango_renderer_set_components")]
+    //fn set_components(&self, components: /*Ignored*/RenderComponent) {
+    //    unsafe { TODO: call ffi:pango_renderer_set_components() }
+    //}
 
     #[doc(alias = "pango_renderer_set_matrix")]
     fn set_matrix(&self, matrix: Option<&Matrix>) {
