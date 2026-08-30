@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/layout.rs`."><title>layout.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-1ed95124.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.98.0-nightly (df6ee909e 2026-06-28)" data-channel="nightly" data-search-js="search-9944d736.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-417ebf0a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/layout.rs`."><title>layout.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-203241e4.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.100.0-nightly (fd7ed57df 2026-08-29)" data-channel="nightly" data-search-js="search-b167f383.js" data-stringdex-js="stringdex-b5109af9.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-1814ead3.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-9f56287d.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -77,13 +77,13 @@
 <a href=#4 id=4 data-nosnippet>4</a>
 <a href=#5 id=5 data-nosnippet>5</a></span><span class="attr">#[cfg(feature = <span class="string">"v1_46"</span>)]
 <a href=#6 id=6 data-nosnippet>6</a>#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_46"</span>)))]
-<a href=#7 id=7 data-nosnippet>7</a></span><span class="kw">use </span><a href="enums.rs.html#909-935"><span class="kw">crate</span>::Direction</a>;
+<a href=#7 id=7 data-nosnippet>7</a></span><span class="kw">use </span><a href="enums.rs.html#918-944"><span class="kw">crate</span>::Direction</a>;
 <a href=#8 id=8 data-nosnippet>8</a><span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
 <a href=#9 id=9 data-nosnippet>9</a>#[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
-<a href=#10 id=10 data-nosnippet>10</a></span><span class="kw">use </span><a href="flags.rs.html#233-251"><span class="kw">crate</span>::LayoutSerializeFlags</a>;
+<a href=#10 id=10 data-nosnippet>10</a></span><span class="kw">use </span><a href="flags.rs.html#240-258"><span class="kw">crate</span>::LayoutSerializeFlags</a>;
 <a href=#11 id=11 data-nosnippet>11</a><span class="kw">use crate</span>::{
-<a href=#12 id=12 data-nosnippet>12</a>    <a href="enums.rs.html#19-31">Alignment</a>, <a href="attr_list.rs.html#8-28">AttrList</a>, <a href="context.rs.html#11-26">Context</a>, <a href="enums.rs.html#1036-1051">EllipsizeMode</a>, <a href="font_description.rs.html#11-26">FontDescription</a>, <a href="layout_iter.rs.html#8-23">LayoutIter</a>, <a href="layout_line.rs.html#11-26">LayoutLine</a>,
-<a href=#13 id=13 data-nosnippet>13</a>    <a href="../rectangle.rs.html#8-16">Rectangle</a>, <a href="tab_array.rs.html#8-22">TabArray</a>, <a href="enums.rs.html#3505-3523">WrapMode</a>, <a href="../../../pango_sys/index.html">ffi</a>,
+<a href=#12 id=12 data-nosnippet>12</a>    <a href="enums.rs.html#19-31">Alignment</a>, <a href="attr_list.rs.html#8-28">AttrList</a>, <a href="context.rs.html#11-26">Context</a>, <a href="enums.rs.html#1045-1060">EllipsizeMode</a>, <a href="font_description.rs.html#14-29">FontDescription</a>, <a href="layout_iter.rs.html#8-23">LayoutIter</a>, <a href="layout_line.rs.html#11-26">LayoutLine</a>,
+<a href=#13 id=13 data-nosnippet>13</a>    <a href="../rectangle.rs.html#8-16">Rectangle</a>, <a href="tab_array.rs.html#8-22">TabArray</a>, <a href="enums.rs.html#3667-3685">WrapMode</a>, <a href="../../../pango_sys/index.html">ffi</a>,
 <a href=#14 id=14 data-nosnippet>14</a>};
 <a href=#15 id=15 data-nosnippet>15</a><span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 <a href=#16 id=16 data-nosnippet>16</a>
@@ -344,7 +344,7 @@
 <a href=#271 id=271 data-nosnippet>271</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_46"</span>)))]
 <a href=#272 id=272 data-nosnippet>272</a>    #[doc(alias = <span class="string">"pango_layout_get_direction"</span>)]
 <a href=#273 id=273 data-nosnippet>273</a>    #[doc(alias = <span class="string">"get_direction"</span>)]
-<a href=#274 id=274 data-nosnippet>274</a>    </span><span class="kw">pub fn </span>direction(<span class="kw-2">&amp;</span><span class="self">self</span>, index: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a href="enums.rs.html#909-935">Direction</a> {
+<a href=#274 id=274 data-nosnippet>274</a>    </span><span class="kw">pub fn </span>direction(<span class="kw-2">&amp;</span><span class="self">self</span>, index: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a href="enums.rs.html#918-944">Direction</a> {
 <a href=#275 id=275 data-nosnippet>275</a>        <span class="kw">unsafe </span>{
 <a href=#276 id=276 data-nosnippet>276</a>            <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(ffi::<a href="../../../pango_sys/fn.pango_layout_get_direction.html">pango_layout_get_direction</a>(
 <a href=#277 id=277 data-nosnippet>277</a>                <a class="self" href="#274">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -365,7 +365,7 @@
 <a href=#292 id=292 data-nosnippet>292</a>    /// the current ellipsization mode for @self
 <a href=#293 id=293 data-nosnippet>293</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_get_ellipsize"</span>)]
 <a href=#294 id=294 data-nosnippet>294</a>    #[doc(alias = <span class="string">"get_ellipsize"</span>)]
-<a href=#295 id=295 data-nosnippet>295</a>    </span><span class="kw">pub fn </span>ellipsize(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#1036-1051">EllipsizeMode</a> {
+<a href=#295 id=295 data-nosnippet>295</a>    </span><span class="kw">pub fn </span>ellipsize(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#1045-1060">EllipsizeMode</a> {
 <a href=#296 id=296 data-nosnippet>296</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(ffi::<a href="../../../pango_sys/fn.pango_layout_get_ellipsize.html">pango_layout_get_ellipsize</a>(<a class="self" href="#295">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 <a href=#297 id=297 data-nosnippet>297</a>    }
 <a href=#298 id=298 data-nosnippet>298</a>
@@ -414,7 +414,7 @@
 <a href=#341 id=341 data-nosnippet>341</a>    ///   from the layout's context is inherited.
 <a href=#342 id=342 data-nosnippet>342</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_get_font_description"</span>)]
 <a href=#343 id=343 data-nosnippet>343</a>    #[doc(alias = <span class="string">"get_font_description"</span>)]
-<a href=#344 id=344 data-nosnippet>344</a>    </span><span class="kw">pub fn </span>font_description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="font_description.rs.html#11-26">FontDescription</a>&gt; {
+<a href=#344 id=344 data-nosnippet>344</a>    </span><span class="kw">pub fn </span>font_description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<a href="font_description.rs.html#14-29">FontDescription</a>&gt; {
 <a href=#345 id=345 data-nosnippet>345</a>        <span class="kw">unsafe </span>{
 <a href=#346 id=346 data-nosnippet>346</a>            <a href="../../../glib/translate/fn.from_glib_none.html">from_glib_none</a>(ffi::<a href="../../../pango_sys/fn.pango_layout_get_font_description.html">pango_layout_get_font_description</a>(
 <a href=#347 id=347 data-nosnippet>347</a>                <a class="self" href="#344">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -819,7 +819,7 @@
 <a href=#746 id=746 data-nosnippet>746</a>    /// active wrap mode.
 <a href=#747 id=747 data-nosnippet>747</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_get_wrap"</span>)]
 <a href=#748 id=748 data-nosnippet>748</a>    #[doc(alias = <span class="string">"get_wrap"</span>)]
-<a href=#749 id=749 data-nosnippet>749</a>    </span><span class="kw">pub fn </span>wrap(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3505-3523">WrapMode</a> {
+<a href=#749 id=749 data-nosnippet>749</a>    </span><span class="kw">pub fn </span>wrap(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#3667-3685">WrapMode</a> {
 <a href=#750 id=750 data-nosnippet>750</a>        <span class="kw">unsafe </span>{ <a href="../../../glib/translate/fn.from_glib.html">from_glib</a>(ffi::<a href="../../../pango_sys/fn.pango_layout_get_wrap.html">pango_layout_get_wrap</a>(<a class="self" href="#749">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>)) }
 <a href=#751 id=751 data-nosnippet>751</a>    }
 <a href=#752 id=752 data-nosnippet>752</a>
@@ -1000,7 +1000,7 @@
 <a href=#927 id=927 data-nosnippet>927</a>    </span><span class="attr">#[cfg(feature = <span class="string">"v1_50"</span>)]
 <a href=#928 id=928 data-nosnippet>928</a>    #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">"v1_50"</span>)))]
 <a href=#929 id=929 data-nosnippet>929</a>    #[doc(alias = <span class="string">"pango_layout_serialize"</span>)]
-<a href=#930 id=930 data-nosnippet>930</a>    </span><span class="kw">pub fn </span>serialize(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: <a href="flags.rs.html#233-251">LayoutSerializeFlags</a>) -&gt; glib::<a href="../../../glib/bytes/struct.Bytes.html">Bytes</a> {
+<a href=#930 id=930 data-nosnippet>930</a>    </span><span class="kw">pub fn </span>serialize(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: <a href="flags.rs.html#240-258">LayoutSerializeFlags</a>) -&gt; glib::<a href="../../../glib/bytes/struct.Bytes.html">Bytes</a> {
 <a href=#931 id=931 data-nosnippet>931</a>        <span class="kw">unsafe </span>{
 <a href=#932 id=932 data-nosnippet>932</a>            <a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(ffi::<a href="../../../pango_sys/fn.pango_layout_serialize.html">pango_layout_serialize</a>(
 <a href=#933 id=933 data-nosnippet>933</a>                <a class="self" href="#930">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
@@ -1078,7 +1078,7 @@
 <a href=#1005 id=1005 data-nosnippet>1005</a>    /// ## `ellipsize`
 <a href=#1006 id=1006 data-nosnippet>1006</a>    /// the new ellipsization mode for @self
 <a href=#1007 id=1007 data-nosnippet>1007</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_set_ellipsize"</span>)]
-<a href=#1008 id=1008 data-nosnippet>1008</a>    </span><span class="kw">pub fn </span>set_ellipsize(<span class="kw-2">&amp;</span><span class="self">self</span>, ellipsize: <a href="enums.rs.html#1036-1051">EllipsizeMode</a>) {
+<a href=#1008 id=1008 data-nosnippet>1008</a>    </span><span class="kw">pub fn </span>set_ellipsize(<span class="kw-2">&amp;</span><span class="self">self</span>, ellipsize: <a href="enums.rs.html#1045-1060">EllipsizeMode</a>) {
 <a href=#1009 id=1009 data-nosnippet>1009</a>        <span class="kw">unsafe </span>{
 <a href=#1010 id=1010 data-nosnippet>1010</a>            ffi::<a href="../../../pango_sys/fn.pango_layout_set_ellipsize.html">pango_layout_set_ellipsize</a>(<a class="self" href="#1008">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#1008">ellipsize</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
 <a href=#1011 id=1011 data-nosnippet>1011</a>        }
@@ -1092,7 +1092,7 @@
 <a href=#1019 id=1019 data-nosnippet>1019</a>    /// the new [`FontDescription`][crate::FontDescription]
 <a href=#1020 id=1020 data-nosnippet>1020</a>    ///   to unset the current font description
 <a href=#1021 id=1021 data-nosnippet>1021</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_set_font_description"</span>)]
-<a href=#1022 id=1022 data-nosnippet>1022</a>    </span><span class="kw">pub fn </span>set_font_description(<span class="kw-2">&amp;</span><span class="self">self</span>, desc: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="font_description.rs.html#11-26">FontDescription</a>&gt;) {
+<a href=#1022 id=1022 data-nosnippet>1022</a>    </span><span class="kw">pub fn </span>set_font_description(<span class="kw-2">&amp;</span><span class="self">self</span>, desc: <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html">Option</a>&lt;<span class="kw-2">&amp;</span><a href="font_description.rs.html#14-29">FontDescription</a>&gt;) {
 <a href=#1023 id=1023 data-nosnippet>1023</a>        <span class="kw">unsafe </span>{
 <a href=#1024 id=1024 data-nosnippet>1024</a>            ffi::<a href="../../../pango_sys/fn.pango_layout_set_font_description.html">pango_layout_set_font_description</a>(<a class="self" href="#1022">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#1022">desc</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>);
 <a href=#1025 id=1025 data-nosnippet>1025</a>        }
@@ -1401,7 +1401,7 @@
 <a href=#1328 id=1328 data-nosnippet>1328</a>    /// ## `wrap`
 <a href=#1329 id=1329 data-nosnippet>1329</a>    /// the wrap mode
 <a href=#1330 id=1330 data-nosnippet>1330</a>    </span><span class="attr">#[doc(alias = <span class="string">"pango_layout_set_wrap"</span>)]
-<a href=#1331 id=1331 data-nosnippet>1331</a>    </span><span class="kw">pub fn </span>set_wrap(<span class="kw-2">&amp;</span><span class="self">self</span>, wrap: <a href="enums.rs.html#3505-3523">WrapMode</a>) {
+<a href=#1331 id=1331 data-nosnippet>1331</a>    </span><span class="kw">pub fn </span>set_wrap(<span class="kw-2">&amp;</span><span class="self">self</span>, wrap: <a href="enums.rs.html#3667-3685">WrapMode</a>) {
 <a href=#1332 id=1332 data-nosnippet>1332</a>        <span class="kw">unsafe </span>{
 <a href=#1333 id=1333 data-nosnippet>1333</a>            ffi::<a href="../../../pango_sys/fn.pango_layout_set_wrap.html">pango_layout_set_wrap</a>(<a class="self" href="#1331">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>, <a href="#1331">wrap</a>.<a href="../../../glib/translate/trait.IntoGlib.html#tymethod.into_glib">into_glib</a>());
 <a href=#1334 id=1334 data-nosnippet>1334</a>        }
@@ -1429,7 +1429,7 @@
 <a href=#1356 id=1356 data-nosnippet>1356</a>    #[doc(alias = <span class="string">"pango_layout_write_to_file"</span>)]
 <a href=#1357 id=1357 data-nosnippet>1357</a>    </span><span class="kw">pub fn </span>write_to_file(
 <a href=#1358 id=1358 data-nosnippet>1358</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
-<a href=#1359 id=1359 data-nosnippet>1359</a>        flags: <a href="flags.rs.html#233-251">LayoutSerializeFlags</a>,
+<a href=#1359 id=1359 data-nosnippet>1359</a>        flags: <a href="flags.rs.html#240-258">LayoutSerializeFlags</a>,
 <a href=#1360 id=1360 data-nosnippet>1360</a>        filename: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;std::path::<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">Path</a>&gt;,
 <a href=#1361 id=1361 data-nosnippet>1361</a>    ) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;(), glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
 <a href=#1362 id=1362 data-nosnippet>1362</a>        <span class="kw">unsafe </span>{
