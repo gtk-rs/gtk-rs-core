@@ -127,6 +127,13 @@ unsafe extern "C" {
     );
     pub fn pango_cairo_layout_line_path(cr: *mut cairo::cairo_t, line: *mut pango::PangoLayoutLine);
     pub fn pango_cairo_layout_path(cr: *mut cairo::cairo_t, layout: *mut pango::PangoLayout);
+    #[cfg(feature = "v1_58")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+    pub fn pango_cairo_layout_path_for_components(
+        cr: *mut cairo::cairo_t,
+        layout: *mut pango::PangoLayout,
+        components: pango::PangoRenderComponent,
+    );
     pub fn pango_cairo_show_error_underline(
         cr: *mut cairo::cairo_t,
         x: c_double,

@@ -77,6 +77,7 @@ pub const PANGO_ATTR_WORD: PangoAttrType = 34;
 pub const PANGO_ATTR_SENTENCE: PangoAttrType = 35;
 pub const PANGO_ATTR_BASELINE_SHIFT: PangoAttrType = 36;
 pub const PANGO_ATTR_FONT_SCALE: PangoAttrType = 37;
+pub const PANGO_ATTR_WIDTH: PangoAttrType = 38;
 
 pub type PangoBaselineShift = c_int;
 pub const PANGO_BASELINE_SHIFT_NONE: PangoBaselineShift = 0;
@@ -349,6 +350,17 @@ pub const PANGO_WEIGHT_ULTRABOLD: PangoWeight = 800;
 pub const PANGO_WEIGHT_HEAVY: PangoWeight = 900;
 pub const PANGO_WEIGHT_ULTRAHEAVY: PangoWeight = 1000;
 
+pub type PangoWidth = c_int;
+pub const PANGO_WIDTH_ULTRA_CONDENSED: PangoWidth = 500;
+pub const PANGO_WIDTH_EXTRA_CONDENSED: PangoWidth = 625;
+pub const PANGO_WIDTH_CONDENSED: PangoWidth = 750;
+pub const PANGO_WIDTH_SEMI_CONDENSED: PangoWidth = 875;
+pub const PANGO_WIDTH_NORMAL: PangoWidth = 1000;
+pub const PANGO_WIDTH_SEMI_EXPANDED: PangoWidth = 1125;
+pub const PANGO_WIDTH_EXPANDED: PangoWidth = 1250;
+pub const PANGO_WIDTH_EXTRA_EXPANDED: PangoWidth = 1500;
+pub const PANGO_WIDTH_ULTRA_EXPANDED: PangoWidth = 2000;
+
 pub type PangoWrapMode = c_int;
 pub const PANGO_WRAP_WORD: PangoWrapMode = 0;
 pub const PANGO_WRAP_CHAR: PangoWrapMode = 1;
@@ -366,6 +378,7 @@ pub const PANGO_ATTR_INDEX_TO_TEXT_END: c_uint = 4294967295;
 pub const PANGO_GLYPH_EMPTY: PangoGlyph = 268435455;
 pub const PANGO_GLYPH_INVALID_INPUT: PangoGlyph = 4294967295;
 pub const PANGO_GLYPH_UNKNOWN_FLAG: PangoGlyph = 268435456;
+pub const PANGO_RENDER_COMPONENT_ALL: c_int = 62;
 pub const PANGO_SCALE: c_int = 1024;
 
 // Flags
@@ -374,6 +387,7 @@ pub const PANGO_FONT_MASK_FAMILY: PangoFontMask = 1;
 pub const PANGO_FONT_MASK_STYLE: PangoFontMask = 2;
 pub const PANGO_FONT_MASK_VARIANT: PangoFontMask = 4;
 pub const PANGO_FONT_MASK_WEIGHT: PangoFontMask = 8;
+pub const PANGO_FONT_MASK_WIDTH: PangoFontMask = 16;
 pub const PANGO_FONT_MASK_STRETCH: PangoFontMask = 16;
 pub const PANGO_FONT_MASK_SIZE: PangoFontMask = 32;
 pub const PANGO_FONT_MASK_GRAVITY: PangoFontMask = 64;
@@ -395,6 +409,15 @@ pub type PangoLayoutSerializeFlags = c_uint;
 pub const PANGO_LAYOUT_SERIALIZE_DEFAULT: PangoLayoutSerializeFlags = 0;
 pub const PANGO_LAYOUT_SERIALIZE_CONTEXT: PangoLayoutSerializeFlags = 1;
 pub const PANGO_LAYOUT_SERIALIZE_OUTPUT: PangoLayoutSerializeFlags = 2;
+
+pub type PangoRenderComponent = c_uint;
+pub const PANGO_RENDER_COMPONENT_NONE: PangoRenderComponent = 0;
+pub const PANGO_RENDER_COMPONENT_PLAIN_GLYPH: PangoRenderComponent = 2;
+pub const PANGO_RENDER_COMPONENT_COLOR_GLYPH: PangoRenderComponent = 4;
+pub const PANGO_RENDER_COMPONENT_BACKGROUND: PangoRenderComponent = 8;
+pub const PANGO_RENDER_COMPONENT_UNDERLINE: PangoRenderComponent = 8;
+pub const PANGO_RENDER_COMPONENT_STRIKETHROUGH: PangoRenderComponent = 16;
+pub const PANGO_RENDER_COMPONENT_OVERLINE: PangoRenderComponent = 32;
 
 pub type PangoShapeFlags = c_uint;
 pub const PANGO_SHAPE_NONE: PangoShapeFlags = 0;
@@ -1561,6 +1584,13 @@ unsafe extern "C" {
     pub fn pango_weight_get_type() -> GType;
 
     //=========================================================================
+    // PangoWidth
+    //=========================================================================
+    #[cfg(feature = "v1_58")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+    pub fn pango_width_get_type() -> GType;
+
+    //=========================================================================
     // PangoWrapMode
     //=========================================================================
     pub fn pango_wrap_mode_get_type() -> GType;
@@ -1583,6 +1613,13 @@ unsafe extern "C" {
     #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_layout_serialize_flags_get_type() -> GType;
+
+    //=========================================================================
+    // PangoRenderComponent
+    //=========================================================================
+    #[cfg(feature = "v1_58")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+    pub fn pango_render_component_get_type() -> GType;
 
     //=========================================================================
     // PangoShapeFlags
@@ -1806,6 +1843,9 @@ unsafe extern "C" {
         desc: *const PangoFontDescription,
     ) -> *const c_char;
     pub fn pango_font_description_get_weight(desc: *const PangoFontDescription) -> PangoWeight;
+    #[cfg(feature = "v1_58")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+    pub fn pango_font_description_get_width(desc: *const PangoFontDescription) -> PangoWidth;
     pub fn pango_font_description_hash(desc: *const PangoFontDescription) -> c_uint;
     pub fn pango_font_description_merge(
         desc: *mut PangoFontDescription,
@@ -1871,6 +1911,9 @@ unsafe extern "C" {
         variations: *const c_char,
     );
     pub fn pango_font_description_set_weight(desc: *mut PangoFontDescription, weight: PangoWeight);
+    #[cfg(feature = "v1_58")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+    pub fn pango_font_description_set_width(desc: *mut PangoFontDescription, width: PangoWidth);
     pub fn pango_font_description_to_filename(desc: *const PangoFontDescription) -> *mut c_char;
     pub fn pango_font_description_to_string(desc: *const PangoFontDescription) -> *mut c_char;
     pub fn pango_font_description_unset_fields(
@@ -2743,6 +2786,9 @@ unsafe extern "C" {
         renderer: *mut PangoRenderer,
         part: PangoRenderPart,
     ) -> *mut PangoColor;
+    #[cfg(feature = "v1_58")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+    pub fn pango_renderer_get_components(renderer: *mut PangoRenderer) -> PangoRenderComponent;
     pub fn pango_renderer_get_layout(renderer: *mut PangoRenderer) -> *mut PangoLayout;
     pub fn pango_renderer_get_layout_line(renderer: *mut PangoRenderer) -> *mut PangoLayoutLine;
     pub fn pango_renderer_get_matrix(renderer: *mut PangoRenderer) -> *const PangoMatrix;
@@ -2756,6 +2802,12 @@ unsafe extern "C" {
         renderer: *mut PangoRenderer,
         part: PangoRenderPart,
         color: *const PangoColor,
+    );
+    #[cfg(feature = "v1_58")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+    pub fn pango_renderer_set_components(
+        renderer: *mut PangoRenderer,
+        components: PangoRenderComponent,
     );
     pub fn pango_renderer_set_matrix(renderer: *mut PangoRenderer, matrix: *const PangoMatrix);
 
@@ -2828,6 +2880,9 @@ unsafe extern "C" {
     pub fn pango_attr_underline_new(underline: PangoUnderline) -> *mut PangoAttribute;
     pub fn pango_attr_variant_new(variant: PangoVariant) -> *mut PangoAttribute;
     pub fn pango_attr_weight_new(weight: PangoWeight) -> *mut PangoAttribute;
+    #[cfg(feature = "v1_58")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_58")))]
+    pub fn pango_attr_width_new(width: PangoWidth) -> *mut PangoAttribute;
     #[cfg(feature = "v1_50")]
     #[cfg_attr(docsrs, doc(cfg(feature = "v1_50")))]
     pub fn pango_attr_word_new() -> *mut PangoAttribute;

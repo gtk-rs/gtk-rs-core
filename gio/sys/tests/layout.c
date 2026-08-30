@@ -41,6 +41,7 @@ int main() {
     printf("%s;%zu;%zu\n", "GConverterOutputStreamClass", sizeof(GConverterOutputStreamClass), alignof(GConverterOutputStreamClass));
     printf("%s;%zu;%zu\n", "GConverterResult", sizeof(GConverterResult), alignof(GConverterResult));
     printf("%s;%zu;%zu\n", "GCredentialsType", sizeof(GCredentialsType), alignof(GCredentialsType));
+    printf("%s;%zu;%zu\n", "GDBusActionGroupClass", sizeof(GDBusActionGroupClass), alignof(GDBusActionGroupClass));
     printf("%s;%zu;%zu\n", "GDBusAnnotationInfo", sizeof(GDBusAnnotationInfo), alignof(GDBusAnnotationInfo));
     printf("%s;%zu;%zu\n", "GDBusArgInfo", sizeof(GDBusArgInfo), alignof(GDBusArgInfo));
     printf("%s;%zu;%zu\n", "GDBusCallFlags", sizeof(GDBusCallFlags), alignof(GDBusCallFlags));
@@ -99,6 +100,7 @@ int main() {
     printf("%s;%zu;%zu\n", "GDtlsConnectionInterface", sizeof(GDtlsConnectionInterface), alignof(GDtlsConnectionInterface));
     printf("%s;%zu;%zu\n", "GDtlsServerConnectionInterface", sizeof(GDtlsServerConnectionInterface), alignof(GDtlsServerConnectionInterface));
     printf("%s;%zu;%zu\n", "GEcnCodePoint", sizeof(GEcnCodePoint), alignof(GEcnCodePoint));
+    printf("%s;%zu;%zu\n", "GEmblemClass", sizeof(GEmblemClass), alignof(GEmblemClass));
     printf("%s;%zu;%zu\n", "GEmblemOrigin", sizeof(GEmblemOrigin), alignof(GEmblemOrigin));
     printf("%s;%zu;%zu\n", "GEmblemedIcon", sizeof(GEmblemedIcon), alignof(GEmblemedIcon));
     printf("%s;%zu;%zu\n", "GEmblemedIconClass", sizeof(GEmblemedIconClass), alignof(GEmblemedIconClass));
