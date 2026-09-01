@@ -89,7 +89,7 @@ pub fn convert_with_fallback(
     str_: &[u8],
     to_codeset: impl IntoGStr,
     from_codeset: impl IntoGStr,
-    fallback: Option<impl IntoGStr>,
+    fallback: impl IntoOptionalGStr,
 ) -> Result<(Slice<u8>, usize), CvtError> {
     assert!(str_.len() <= isize::MAX as usize);
     let mut bytes_read = 0;
@@ -97,7 +97,7 @@ pub fn convert_with_fallback(
     let mut error = ptr::null_mut();
     let result = to_codeset.run_with_gstr(|to_codeset| {
         from_codeset.run_with_gstr(|from_codeset| {
-            fallback.run_with_gstr(|fallback| unsafe {
+            fallback.run_with_optional_gstr(|fallback| unsafe {
                 ffi::g_convert_with_fallback(
                     str_.as_ptr(),
                     str_.len() as isize,
