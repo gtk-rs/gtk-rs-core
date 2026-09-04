@@ -799,6 +799,10 @@ impl StrV {
                 ffi::g_free(*self.ptr.as_ptr().add(i) as ffi::gpointer);
             }
 
+            if self.capacity != 0 {
+                *self.ptr.as_ptr().add(0) = ptr::null_mut();
+            }
+
             self.len = 0;
         }
     }
@@ -1939,5 +1943,14 @@ mod test {
         for (i, item) in items.into_iter().enumerate() {
             assert_eq!(ptr_slice[i], item);
         }
+    }
+
+    #[test]
+    fn test_clear_no_double_free() {
+        let mut strv = StrV::from(&["one", "two", "three"][..]);
+        assert_eq!(strv.len(), 3);
+        strv.clear();
+        assert_eq!(strv.len(), 0);
+        // drop must not double-free
     }
 }
