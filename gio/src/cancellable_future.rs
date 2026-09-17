@@ -36,10 +36,19 @@ pin_project! {
         #[pin]
         future: F,
 
-        #[pin]
         waker_handler_cb: Option<CancelledHandlerId>,
 
         cancellable: Cancellable,
+    }
+
+    impl<F> PinnedDrop for CancellableFuture<F> {
+        fn drop(this: Pin<&mut Self>) {
+            let this = this.project();
+
+            if let Some(handler) = this.waker_handler_cb.take() {
+                this.cancellable.disconnect_cancelled(handler);
+            }
+        }
     }
 }
 
@@ -86,15 +95,21 @@ where
 {
     type Output = Result<<F as Future>::Output, Cancelled>;
 
-    fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
+    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         if self.is_cancelled() {
             return Poll::Ready(Err(Cancelled));
         }
 
-        let mut this = self.as_mut().project();
+        let this = self.project();
 
         match this.future.poll(cx) {
-            Poll::Ready(out) => Poll::Ready(Ok(out)),
+            Poll::Ready(out) => {
+                if let Some(handler) = this.waker_handler_cb.take() {
+                    this.cancellable.disconnect_cancelled(handler);
+                }
+
+                Poll::Ready(Ok(out))
+            }
 
             Poll::Pending => {
                 if let Some(prev_handler) = this.waker_handler_cb.take() {
@@ -141,9 +156,14 @@ impl Display for Cancelled {
 
 #[cfg(test)]
 mod tests {
+    use std::{
+        sync::Arc,
+        task::{Wake, Waker},
+    };
+
     use futures_channel::oneshot;
 
-    use super::{Cancellable, CancellableFuture, Cancelled};
+    use super::{Cancellable, CancellableFuture, Cancelled, Context, Future, Poll};
     use crate::prelude::*;
 
     #[test]
@@ -188,5 +208,72 @@ mod tests {
         std::thread::spawn(move || c.cancel()).join().unwrap();
 
         ctx.block_on(rx).unwrap();
+    }
+
+    #[test]
+    fn cancellable_future_releases_waker_on_drop() {
+        let noop_wake = Arc::new(utils::NoopWake);
+        let waker = Waker::from(Arc::clone(&noop_wake));
+        let mut cx = Context::from_waker(&waker);
+
+        let cancellable = Cancellable::new();
+
+        let mut cancellable_future = Box::pin(CancellableFuture::new(
+            std::future::pending::<()>(),
+            cancellable.clone(),
+        ));
+
+        assert_eq!(Arc::strong_count(&noop_wake), 2);
+        let _ = Future::poll(cancellable_future.as_mut(), &mut cx);
+        assert_eq!(Arc::strong_count(&noop_wake), 3);
+
+        drop(cancellable_future);
+        assert_eq!(Arc::strong_count(&noop_wake), 2);
+    }
+
+    #[test]
+    fn cancellable_future_releases_waker_on_ready() {
+        let noop_wake = Arc::new(utils::NoopWake);
+        let waker = Waker::from(Arc::clone(&noop_wake));
+        let mut cx = Context::from_waker(&waker);
+
+        let cancellable = Cancellable::new();
+
+        let mut cancellable_future = Box::pin(CancellableFuture::new(
+            std::future::poll_fn({
+                let mut pending = true;
+
+                move |_| {
+                    if std::mem::take(&mut pending) {
+                        Poll::Pending
+                    } else {
+                        Poll::Ready(())
+                    }
+                }
+            }),
+            cancellable.clone(),
+        ));
+
+        assert_eq!(Arc::strong_count(&noop_wake), 2);
+
+        assert!(Future::poll(cancellable_future.as_mut(), &mut cx).is_pending());
+
+        assert_eq!(Arc::strong_count(&noop_wake), 3);
+
+        assert!(Future::poll(cancellable_future.as_mut(), &mut cx).is_ready());
+
+        assert_eq!(Arc::strong_count(&noop_wake), 2);
+    }
+
+    mod utils {
+        use super::*;
+
+        pub struct NoopWake;
+
+        // We need a manual noop waker, because we need to put it in an `Arc`.
+        #[allow(clippy::manual_noop_waker)]
+        impl Wake for NoopWake {
+            fn wake(self: Arc<Self>) {}
+        }
     }
 }
