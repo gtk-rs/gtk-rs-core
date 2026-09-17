@@ -114,16 +114,26 @@ pub trait CancellableExtManual: IsA<Cancellable> {
     /// Returns a `Future` that completes when the cancellable becomes cancelled. Completes
     /// immediately if the cancellable is already cancelled.
     fn future(&self) -> std::pin::Pin<Box<dyn Future<Output = ()> + Send + Sync + 'static>> {
+        struct Guard(Cancellable, Option<CancelledHandlerId>);
+
+        impl Drop for Guard {
+            fn drop(&mut self) {
+                if let Some(id) = self.1.take() {
+                    self.0.disconnect_cancelled(id);
+                }
+            }
+        }
+
         let cancellable = self.as_ref().clone();
         let (tx, rx) = oneshot::channel();
         let id = cancellable.connect_cancelled(move |_| {
             let _ = tx.send(());
         });
+        let guard = Guard(cancellable, id);
+
         Box::pin(async move {
             rx.await.unwrap();
-            if let Some(id) = id {
-                cancellable.disconnect_cancelled(id);
-            }
+            drop(guard);
         })
     }
     // rustdoc-stripper-ignore-next
