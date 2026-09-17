@@ -4,9 +4,11 @@ use std::{
     fmt::{Debug, Display},
     future::Future,
     pin::Pin,
+    sync::Arc,
     task::{Context, Poll},
 };
 
+use futures_util::task::AtomicWaker;
 use pin_project_lite::pin_project;
 
 use crate::{Cancellable, CancelledHandlerId, IOErrorEnum, prelude::*};
@@ -36,6 +38,8 @@ pin_project! {
         #[pin]
         future: F,
 
+        waker: Arc<AtomicWaker>,
+
         waker_handler_cb: Option<CancelledHandlerId>,
 
         cancellable: Cancellable,
@@ -62,6 +66,7 @@ impl<F> CancellableFuture<F> {
     pub fn new(future: F, cancellable: Cancellable) -> Self {
         Self {
             future,
+            waker: Arc::default(),
             waker_handler_cb: None,
             cancellable,
         }
@@ -102,33 +107,31 @@ where
 
         let this = self.project();
 
+        this.waker.register(cx.waker());
+
         match this.future.poll(cx) {
             Poll::Ready(out) => {
                 if let Some(handler) = this.waker_handler_cb.take() {
                     this.cancellable.disconnect_cancelled(handler);
                 }
 
+                this.waker.take();
+
                 Poll::Ready(Ok(out))
             }
 
             Poll::Pending => {
-                if let Some(prev_handler) = this.waker_handler_cb.take() {
-                    this.cancellable.disconnect_cancelled(prev_handler);
-                }
+                if this.waker_handler_cb.is_none() {
+                    let waker = Arc::clone(this.waker);
 
-                let canceller_handler_id = this.cancellable.connect_cancelled({
-                    let w = cx.waker().clone();
-                    move |_| w.wake()
-                });
+                    match this.cancellable.connect_cancelled(move |_| waker.wake()) {
+                        Some(handler) => *this.waker_handler_cb = Some(handler),
 
-                match canceller_handler_id {
-                    Some(canceller_handler_id) => {
-                        *this.waker_handler_cb = Some(canceller_handler_id);
-                        Poll::Pending
+                        None => return Poll::Ready(Err(Cancelled)),
                     }
-
-                    None => Poll::Ready(Err(Cancelled)),
                 }
+
+                Poll::Pending
             }
         }
     }
