@@ -1214,6 +1214,31 @@ impl From<&str> for Variant {
     }
 }
 
+impl<'a> StaticVariantType for Cow<'a, str> {
+    fn static_variant_type() -> Cow<'static, VariantTy> {
+        String::static_variant_type()
+    }
+}
+
+impl<'a> FromVariant for Cow<'a, str> {
+    fn from_variant(variant: &Variant) -> Option<Self> {
+        String::from_variant(variant).map(Cow::from)
+    }
+}
+
+impl<'a, B> From<Cow<'a, B>> for Variant
+where
+    B: 'a + ToOwned + ?Sized + StaticVariantType + ToVariant,
+    <B as ToOwned>::Owned: StaticVariantType + ToVariant,
+{
+    fn from(s: Cow<'a, B>) -> Self {
+        match s {
+            Cow::Borrowed(v) => v.to_variant(),
+            Cow::Owned(v) => v.to_variant(),
+        }
+    }
+}
+
 impl StaticVariantType for std::path::PathBuf {
     fn static_variant_type() -> Cow<'static, VariantTy> {
         std::path::Path::static_variant_type()
@@ -2293,6 +2318,23 @@ mod tests {
     fn test_string() {
         let s = String::from("this is a test");
         let v = s.to_variant();
+        assert_eq!(v.get(), Some(s));
+        assert_eq!(v.normal_form(), v);
+    }
+
+    #[test]
+    fn test_cow_string() {
+        let s = Cow::from(String::from("this is a test"));
+        let v = s.to_variant();
+        assert_eq!(v.get(), Some(s));
+        assert_eq!(v.normal_form(), v);
+    }
+
+    #[test]
+    fn test_cow_str() {
+        let s = String::from("this is a test");
+        let b = Cow::from(&s);
+        let v = b.to_variant();
         assert_eq!(v.get(), Some(s));
         assert_eq!(v.normal_form(), v);
     }
