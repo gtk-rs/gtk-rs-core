@@ -1093,24 +1093,31 @@ impl<T: TransparentPtrType> From<super::Slice<T>> for PtrSlice<T> {
         let len = value.len();
         let capacity = value.capacity();
         unsafe {
+            // `into_raw()` returns `null` for an empty slice; in that case
+            // any reserved buffer has already been freed.
             let ptr = value.into_raw();
-            let mut s = PtrSlice::<T> {
-                ptr: ptr::NonNull::new_unchecked(ptr),
-                len,
-                capacity,
-            };
+            if ptr.is_null() {
+                debug_assert_eq!(len, 0);
+                PtrSlice::new()
+            } else {
+                let mut s = PtrSlice::<T> {
+                    ptr: ptr::NonNull::new_unchecked(ptr),
+                    len,
+                    capacity,
+                };
 
-            // Reserve space for the `NULL`-terminator if needed
-            if len == capacity {
-                s.reserve(0);
+                // Reserve space for the `NULL`-terminator if needed
+                if len == capacity {
+                    s.reserve(0);
+                }
+
+                ptr::write(
+                    s.ptr.as_ptr().add(s.len()),
+                    Ptr::from(ptr::null_mut::<<T as GlibPtrDefault>::GlibType>()),
+                );
+
+                s
             }
-
-            ptr::write(
-                s.ptr.as_ptr().add(s.len()),
-                Ptr::from(ptr::null_mut::<<T as GlibPtrDefault>::GlibType>()),
-            );
-
-            s
         }
     }
 }
@@ -1411,5 +1418,34 @@ mod test {
                 );
             }
         });
+    }
+
+    #[test]
+    fn test_from_slice_empty() {
+        let items = [
+            crate::GStringPtr::from("one"),
+            crate::GStringPtr::from("two"),
+            crate::GStringPtr::from("three"),
+        ];
+
+        // Non-empty slice, the common path.
+        let slice = crate::Slice::from(&items[..]);
+        let ptr_slice: PtrSlice<crate::GStringPtr> = PtrSlice::from(slice);
+        assert_eq!(ptr_slice.len(), items.len());
+        for (a, b) in Iterator::zip(items.iter(), ptr_slice.iter()) {
+            assert_eq!(a, b);
+        }
+
+        // `Slice::into_raw()` returns `null` for an empty slice, so the
+        // conversion must not build an invalid `NonNull` from it.
+        let empty: crate::Slice<crate::GStringPtr> = crate::Slice::new();
+        let ptr_slice: PtrSlice<crate::GStringPtr> = PtrSlice::from(empty);
+        assert!(ptr_slice.is_empty());
+
+        // Reserved but empty: the buffer is freed by the `Slice` and must
+        // not be used or freed again through the `null` pointer.
+        let reserved: crate::Slice<crate::GStringPtr> = crate::Slice::with_capacity(4);
+        let ptr_slice: PtrSlice<crate::GStringPtr> = PtrSlice::from(reserved);
+        assert!(ptr_slice.is_empty());
     }
 }
