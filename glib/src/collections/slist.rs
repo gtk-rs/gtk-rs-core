@@ -586,9 +586,7 @@ impl<'a, T: TransparentPtrType + 'a> ToGlibPtr<'a, *mut ffi::GSList> for SList<T
     #[inline]
     fn to_glib_container(&'a self) -> Stash<'a, *mut ffi::GSList, Self> {
         unsafe {
-            let ptr = ffi::g_malloc(mem::size_of::<T>().checked_mul(self.len() + 1).unwrap())
-                as *mut ffi::GSList;
-            ptr::copy_nonoverlapping(self.as_ptr(), ptr, self.len() + 1);
+            let ptr = ffi::g_slist_copy(mut_override(self.as_ptr()));
             Stash(ptr, PhantomData)
         }
     }
@@ -987,5 +985,33 @@ mod test {
 
         assert_eq!(list.len(), 1);
         assert_eq!(list.pop_front().unwrap().to_unix(), 3);
+    }
+
+    #[test]
+    fn to_glib_container() {
+        let items = [
+            crate::DateTime::from_utc(2021, 11, 20, 23, 41, 12.0).unwrap(),
+            crate::DateTime::from_utc(2021, 11, 20, 23, 41, 13.0).unwrap(),
+            crate::DateTime::from_utc(2021, 11, 20, 23, 41, 14.0).unwrap(),
+            crate::DateTime::from_utc(2021, 11, 20, 23, 41, 15.0).unwrap(),
+        ];
+        let list: SList<crate::DateTime> = items.iter().cloned().collect();
+
+        let stash = <_ as ToGlibPtr<'_, *mut ffi::GSList>>::to_glib_container(&list);
+        assert!(!stash.0.is_null());
+        // The copy must be a separate chain of nodes sharing the same data
+        assert_ne!(stash.0, list.as_ptr() as *mut _);
+        assert_eq!(unsafe { (*stash.0).data }, unsafe {
+            (*(list.as_ptr() as *mut ffi::GSList)).data
+        },);
+
+        let list_items = unsafe { SList::<crate::DateTime>::from_glib_container(stash.0) }
+            .into_iter()
+            .collect::<Vec<_>>();
+        assert_eq!(&items[..], &list_items);
+
+        let empty = SList::<crate::DateTime>::new();
+        let stash = <_ as ToGlibPtr<'_, *mut ffi::GSList>>::to_glib_container(&empty);
+        assert!(stash.0.is_null());
     }
 }
