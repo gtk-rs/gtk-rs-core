@@ -440,4 +440,25 @@ mod test {
 
         assert_eq!(&d1, d2);
     }
+
+    #[test]
+    fn test_to_glib_full_from_slice() {
+        use crate::translate::ToGlibContainerFromSlice;
+
+        let dates = [
+            Date::from_dmy(1, DateMonth::January, 2024).unwrap(),
+            Date::from_dmy(2, DateMonth::January, 2024).unwrap(),
+            Date::from_dmy(3, DateMonth::January, 2024).unwrap(),
+        ];
+
+        let ptr = <Date as ToGlibContainerFromSlice<'_, *mut ffi::GDate>>::to_glib_full_from_slice(
+            &dates,
+        );
+        assert!(!ptr.is_null());
+
+        let actual_dates: Vec<Date> =
+            unsafe { FromGlibContainer::from_glib_full_num(ptr, dates.len()) };
+
+        assert_eq!(dates.as_slice(), actual_dates);
+    }
 }
