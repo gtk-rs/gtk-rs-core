@@ -586,6 +586,8 @@ impl<T: TransparentType> Slice<T> {
 
     // rustdoc-stripper-ignore-next
     /// Consumes the slice and returns the underlying pointer.
+    ///
+    /// An empty slice returns `NULL`, and any reserved capacity is freed.
     #[inline]
     pub fn into_raw(mut self) -> *mut T::GlibType {
         if self.len == 0 {
