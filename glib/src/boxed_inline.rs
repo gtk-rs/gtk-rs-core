@@ -327,7 +327,7 @@ macro_rules! glib_boxed_inline_wrapper {
 
             fn to_glib_full_from_slice(t: &[Self]) -> *mut $ffi_name {
                 let v_ptr = unsafe {
-                    let v_ptr = $crate::ffi::g_malloc(std::mem::size_of::<$ffi_name>()) as *mut $ffi_name;
+                    let v_ptr = $crate::ffi::g_malloc(std::mem::size_of::<$ffi_name>() * std::cmp::max(t.len(), 1)) as *mut $ffi_name;
 
                     for (i, s) in t.iter().enumerate() {
                         let copy_into = |$copy_into_arg_dest: *mut $ffi_name, $copy_into_arg_src: *const $ffi_name| $copy_into_expr;
