@@ -113,8 +113,6 @@ impl<'a, T: DBusMethodCall> MethodCallBuilder<'a, T> {
 #[derive(Debug, Eq, PartialEq)]
 pub struct RegistrationId(NonZeroU32);
 #[derive(Debug, Eq, PartialEq)]
-pub struct WatcherId(NonZeroU32);
-#[derive(Debug, Eq, PartialEq)]
 pub struct ActionGroupExportId(NonZeroU32);
 #[derive(Debug, Eq, PartialEq)]
 pub struct MenuModelExportId(NonZeroU32);
