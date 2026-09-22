@@ -33,7 +33,7 @@ pub use self::dbus::*;
 mod dbus_connection;
 pub use self::dbus_connection::{
     ActionGroupExportId, DBusSignalRef, FilterId, MenuModelExportId, RegistrationBuilder,
-    RegistrationId, SignalSubscription, SignalSubscriptionId, SubscribedSignalStream, WatcherId,
+    RegistrationId, SignalSubscription, SignalSubscriptionId, SubscribedSignalStream,
     WeakSignalSubscription,
 };
 mod dbus_interface_info;
