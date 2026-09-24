@@ -611,6 +611,22 @@ impl Value {
     }
 
     // rustdoc-stripper-ignore-next
+    /// Tries to transform the value into the target type
+    #[doc(alias = "g_value_transform")]
+    pub fn get_transformed<T: ValueType>(&self) -> Result<T, crate::BoolError> {
+        self.transform::<T>().and_then(|v| {
+            v.get().map_err(|e| {
+                crate::bool_error!(
+                    "Can't transform value of type '{}' into '{}': {}",
+                    self.type_(),
+                    T::Type::static_type(),
+                    e
+                )
+            })
+        })
+    }
+
+    // rustdoc-stripper-ignore-next
     /// Returns `true` if the type of the value corresponds to `T`
     /// or is a sub-type of `T`.
     #[inline]
