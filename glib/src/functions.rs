@@ -273,8 +273,23 @@ pub fn file_open_tmp(
 pub fn spawn_future<R: Send + 'static, F: std::future::Future<Output = R> + Send + 'static>(
     f: F,
 ) -> crate::JoinHandle<R> {
+    spawn_future_with_priority(crate::source::Priority::DEFAULT, f)
+}
+
+// rustdoc-stripper-ignore-next
+/// Spawn a new infallible `Future` on the main context, with a non-default priority.
+///
+/// This can be called from any thread and will execute the future from the thread
+/// where main context is running, e.g. via a `MainLoop`.
+pub fn spawn_future_with_priority<
+    R: Send + 'static,
+    F: std::future::Future<Output = R> + Send + 'static,
+>(
+    priority: crate::source::Priority,
+    f: F,
+) -> crate::JoinHandle<R> {
     let ctx = crate::MainContext::ref_thread_default();
-    ctx.spawn(f)
+    ctx.spawn_with_priority(priority, f)
 }
 
 // rustdoc-stripper-ignore-next
@@ -289,6 +304,24 @@ pub fn spawn_future<R: Send + 'static, F: std::future::Future<Output = R> + Send
 pub fn spawn_future_local<R: 'static, F: std::future::Future<Output = R> + 'static>(
     f: F,
 ) -> crate::JoinHandle<R> {
+    spawn_future_local_with_priority(crate::source::Priority::DEFAULT, f)
+}
+
+// rustdoc-stripper-ignore-next
+/// Spawn a new infallible `Future` on the main context, with a non-default priority.
+///
+/// The given `Future` does not have to be `Send`.
+///
+/// This can be called only from the thread where the main context is running, e.g.
+/// from any other `Future` that is executed on this main context, or after calling
+/// `with_thread_default` or `acquire` on the main context.
+pub fn spawn_future_local_with_priority<
+    R: 'static,
+    F: std::future::Future<Output = R> + 'static,
+>(
+    priority: crate::source::Priority,
+    f: F,
+) -> crate::JoinHandle<R> {
     let ctx = crate::MainContext::ref_thread_default();
-    ctx.spawn_local(f)
+    ctx.spawn_local_with_priority(priority, f)
 }
