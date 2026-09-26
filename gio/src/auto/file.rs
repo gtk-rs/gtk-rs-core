@@ -670,6 +670,90 @@ pub trait FileExt: IsA<File> + 'static {
         }
     }
 
+    #[doc(alias = "g_file_enumerate_children_async")]
+    fn enumerate_children_async<P: FnOnce(Result<FileEnumerator, glib::Error>) + 'static>(
+        &self,
+        attributes: &str,
+        flags: FileQueryInfoFlags,
+        io_priority: glib::Priority,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
+    ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        unsafe extern "C" fn enumerate_children_async_trampoline<
+            P: FnOnce(Result<FileEnumerator, glib::Error>) + 'static,
+        >(
+            _source_object: *mut glib::gobject_ffi::GObject,
+            res: *mut crate::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
+        ) {
+            unsafe {
+                let mut error = std::ptr::null_mut();
+                let ret = ffi::g_file_enumerate_children_finish(
+                    _source_object as *mut _,
+                    res,
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    Ok(from_glib_full(ret))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                    Box_::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
+        }
+        let callback = enumerate_children_async_trampoline::<P>;
+        unsafe {
+            ffi::g_file_enumerate_children_async(
+                self.as_ref().to_glib_none().0,
+                attributes.to_glib_none().0,
+                flags.into_glib(),
+                io_priority.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                Some(callback),
+                Box_::into_raw(user_data) as *mut _,
+            );
+        }
+    }
+
+    fn enumerate_children_future(
+        &self,
+        attributes: &str,
+        flags: FileQueryInfoFlags,
+        io_priority: glib::Priority,
+    ) -> Pin<Box_<dyn std::future::Future<Output = Result<FileEnumerator, glib::Error>> + 'static>>
+    {
+        let attributes = String::from(attributes);
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.enumerate_children_async(
+                    &attributes,
+                    flags,
+                    io_priority,
+                    Some(cancellable),
+                    move |res| {
+                        send.resolve(res);
+                    },
+                );
+            },
+        ))
+    }
+
     #[doc(alias = "g_file_equal")]
     fn equal(&self, file2: &impl IsA<File>) -> bool {
         unsafe {
@@ -698,6 +782,76 @@ pub trait FileExt: IsA<File> + 'static {
                 Err(from_glib_full(error))
             }
         }
+    }
+
+    #[doc(alias = "g_file_find_enclosing_mount_async")]
+    fn find_enclosing_mount_async<P: FnOnce(Result<Mount, glib::Error>) + 'static>(
+        &self,
+        io_priority: glib::Priority,
+        cancellable: Option<&impl IsA<Cancellable>>,
+        callback: P,
+    ) {
+        let main_context = glib::MainContext::ref_thread_default();
+        let is_main_context_owner = main_context.is_owner();
+        let has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
+        assert!(
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            "Async operations only allowed if the thread is owning the MainContext"
+        );
+
+        let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        unsafe extern "C" fn find_enclosing_mount_async_trampoline<
+            P: FnOnce(Result<Mount, glib::Error>) + 'static,
+        >(
+            _source_object: *mut glib::gobject_ffi::GObject,
+            res: *mut crate::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
+        ) {
+            unsafe {
+                let mut error = std::ptr::null_mut();
+                let ret = ffi::g_file_find_enclosing_mount_finish(
+                    _source_object as *mut _,
+                    res,
+                    &mut error,
+                );
+                let result = if error.is_null() {
+                    Ok(from_glib_full(ret))
+                } else {
+                    Err(from_glib_full(error))
+                };
+                let callback: Box_<glib::thread_guard::ThreadGuard<P>> =
+                    Box_::from_raw(user_data as *mut _);
+                let callback: P = callback.into_inner();
+                callback(result);
+            }
+        }
+        let callback = find_enclosing_mount_async_trampoline::<P>;
+        unsafe {
+            ffi::g_file_find_enclosing_mount_async(
+                self.as_ref().to_glib_none().0,
+                io_priority.into_glib(),
+                cancellable.map(|p| p.as_ref()).to_glib_none().0,
+                Some(callback),
+                Box_::into_raw(user_data) as *mut _,
+            );
+        }
+    }
+
+    fn find_enclosing_mount_future(
+        &self,
+        io_priority: glib::Priority,
+    ) -> Pin<Box_<dyn std::future::Future<Output = Result<Mount, glib::Error>> + 'static>> {
+        Box_::pin(crate::GioFuture::new(
+            self,
+            move |obj, cancellable, send| {
+                obj.find_enclosing_mount_async(io_priority, Some(cancellable), move |res| {
+                    send.resolve(res);
+                });
+            },
+        ))
     }
 
     #[doc(alias = "g_file_get_basename")]

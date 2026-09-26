@@ -227,6 +227,24 @@ mod imp {
             }
         }
 
+        fn enumerate_children_future(
+            &self,
+            attributes: &str,
+            flags: FileQueryInfoFlags,
+            _priority: glib::Priority,
+        ) -> std::pin::Pin<
+            Box<dyn std::future::Future<Output = Result<FileEnumerator, Error>> + 'static>,
+        > {
+            let attributes = String::from(attributes);
+            Box::pin(GioFuture::new(
+                &self.ref_counted(),
+                move |self_, cancellable, send| {
+                    let res = self_.enumerate_children(&attributes, flags, Some(cancellable));
+                    send.resolve(res);
+                },
+            ))
+        }
+
         fn query_info(
             &self,
             attributes: &str,
@@ -270,6 +288,23 @@ mod imp {
             Ok(file_info)
         }
 
+        fn query_info_future(
+            &self,
+            attributes: &str,
+            flags: FileQueryInfoFlags,
+            _priority: glib::Priority,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<FileInfo, Error>> + 'static>>
+        {
+            let attributes = String::from(attributes);
+            Box::pin(GioFuture::new(
+                &self.ref_counted(),
+                move |self_, cancellable, send| {
+                    let res = self_.query_info(&attributes, flags, Some(cancellable));
+                    send.resolve(res);
+                },
+            ))
+        }
+
         fn query_filesystem_info(
             &self,
             attributes: &str,
@@ -278,10 +313,40 @@ mod imp {
             self.query_info(attributes, FileQueryInfoFlags::NONE, cancellable)
         }
 
+        fn query_filesystem_info_future(
+            &self,
+            attributes: &str,
+            _priority: glib::Priority,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<FileInfo, Error>> + 'static>>
+        {
+            let attributes = String::from(attributes);
+            Box::pin(GioFuture::new(
+                &self.ref_counted(),
+                move |self_, cancellable, send| {
+                    let res = self_.query_filesystem_info(&attributes, Some(cancellable));
+                    send.resolve(res);
+                },
+            ))
+        }
+
         fn find_enclosing_mount(&self, _cancellable: Option<&Cancellable>) -> Result<Mount, Error> {
             Err(Error::new(
                 IOErrorEnum::NotSupported,
                 "Find enclosing mount not supported for MyFile",
+            ))
+        }
+
+        fn find_enclosing_mount_future(
+            &self,
+            _priority: glib::Priority,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<Mount, Error>> + 'static>>
+        {
+            Box::pin(GioFuture::new(
+                &self.ref_counted(),
+                move |self_, cancellable, send| {
+                    let res = self_.find_enclosing_mount(Some(cancellable));
+                    send.resolve(res);
+                },
             ))
         }
 
@@ -295,6 +360,22 @@ mod imp {
                 None => PathBuf::from(display_name),
             };
             Ok(Self::Type::new(path).upcast())
+        }
+
+        fn set_display_name_future(
+            &self,
+            display_name: &str,
+            _priority: glib::Priority,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<File, Error>> + 'static>>
+        {
+            let display_name = String::from(display_name);
+            Box::pin(GioFuture::new(
+                &self.ref_counted(),
+                move |self_, cancellable, send| {
+                    let res = self_.set_display_name(&display_name, Some(cancellable));
+                    send.resolve(res);
+                },
+            ))
         }
 
         fn query_settable_attributes(
@@ -363,6 +444,26 @@ mod imp {
                     ),
                 )),
             }
+        }
+
+        fn set_attributes_future(
+            &self,
+            info: &FileInfo,
+            flags: FileQueryInfoFlags,
+            _priority: glib::Priority,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<FileInfo, Error>> + 'static>>
+        {
+            let info = info.clone();
+            Box::pin(GioFuture::new(
+                &self.ref_counted(),
+                move |self_, cancellable, send| {
+                    // Call set_attributes_from_info and return the info
+                    let res = self_
+                        .set_attributes_from_info(&info, flags, Some(cancellable))
+                        .map(|_| info);
+                    send.resolve(res);
+                },
+            ))
         }
 
         fn set_attributes_from_info(
@@ -1474,6 +1575,77 @@ fn file_enumerate_children() {
 }
 
 #[test]
+fn file_enumerate_children_future() {
+    // run test in a main context dedicated and configured as the thread default one
+    let _ = glib::MainContext::new().with_thread_default(|| {
+        // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::enumerate_children_async/finish`
+        let my_custom_file =
+            MyCustomFile::with_type_state("/my_file", FileType::Regular, MyFileState::Exist);
+        let res = glib::MainContext::ref_thread_default().block_on(
+            my_custom_file.enumerate_children_future(
+                "*",
+                FileQueryInfoFlags::NONE,
+                glib::Priority::DEFAULT,
+            ),
+        );
+        assert!(res.is_err(), "unexpected enumerator");
+        let err = res.unwrap_err();
+
+        // invoke `MyFile` implementation of `crate::ffi::GFileIface::enumerate_children_async/finish`
+        let my_file = MyFile::with_type_state("/my_file", FileType::Regular, MyFileState::Exist);
+        let res =
+            glib::MainContext::ref_thread_default().block_on(my_file.enumerate_children_future(
+                "*",
+                FileQueryInfoFlags::NONE,
+                glib::Priority::DEFAULT,
+            ));
+        assert!(res.is_err(), "unexpected enumerator");
+        let expected = res.unwrap_err();
+
+        // both errors should equal
+        assert_eq!(err.message(), expected.message());
+        assert_eq!(err.kind::<IOErrorEnum>(), expected.kind::<IOErrorEnum>());
+
+        // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::enumerate_children_async/finish`
+        let my_custom_parent =
+            MyCustomFile::with_children("/my_parent", vec!["my_file1", "my_file2"]);
+        let res = glib::MainContext::ref_thread_default().block_on(
+            my_custom_parent.enumerate_children_future(
+                "*",
+                FileQueryInfoFlags::NONE,
+                glib::Priority::DEFAULT,
+            ),
+        );
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let my_custom_enumerator = res.unwrap();
+        let res = my_custom_enumerator
+            .map(|res| res.map(|file_info| file_info.name()))
+            .collect::<Result<Vec<_>, _>>();
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let my_custom_children = res.unwrap();
+
+        // invoke `MyFile` implementation of `crate::ffi::GFileIface::enumerate_children_async/finish`
+        let my_parent = MyFile::with_children("/my_parent", vec!["my_file1", "my_file2"]);
+        let res =
+            glib::MainContext::ref_thread_default().block_on(my_parent.enumerate_children_future(
+                "*",
+                FileQueryInfoFlags::NONE,
+                glib::Priority::DEFAULT,
+            ));
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let my_enumerator = res.unwrap();
+        let res = my_enumerator
+            .map(|res| res.map(|file_info| file_info.name()))
+            .collect::<Result<Vec<_>, _>>();
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let expected = res.unwrap();
+
+        // both children should equal
+        assert_eq!(my_custom_children, expected)
+    });
+}
+
+#[test]
 fn file_query_info() {
     // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::query_info`
     let my_custom_file =
@@ -1498,6 +1670,46 @@ fn file_query_info() {
         file_info.attribute_as_string("xattr::key2"),
         expected.attribute_as_string("xattr::key2")
     );
+}
+
+#[test]
+fn file_query_info_future() {
+    // run test in a main context dedicated and configured as the thread default one
+    let _ = glib::MainContext::new().with_thread_default(|| {
+        // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::query_info_async/finish`
+        let my_custom_file =
+            MyCustomFile::with_xattr("/my_file", vec!["xattr::key1=value1", "xattr::key2=value2"]);
+        let res =
+            glib::MainContext::ref_thread_default().block_on(my_custom_file.query_info_future(
+                "*",
+                FileQueryInfoFlags::NONE,
+                glib::Priority::DEFAULT,
+            ));
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let file_info = res.unwrap();
+
+        // invoke `MyFile` implementation of `crate::ffi::GFileIface::query_info_async/finish`
+        let my_file =
+            MyFile::with_xattr("/my_file", vec!["xattr::key1=value1", "xattr::key2=value2"]);
+        let res = glib::MainContext::ref_thread_default().block_on(my_file.query_info_future(
+            "*",
+            FileQueryInfoFlags::NONE,
+            glib::Priority::DEFAULT,
+        ));
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let expected = res.unwrap();
+
+        // both results should equal
+        assert_eq!(file_info.name(), expected.name());
+        assert_eq!(
+            file_info.attribute_as_string("xattr::key1"),
+            expected.attribute_as_string("xattr::key1")
+        );
+        assert_eq!(
+            file_info.attribute_as_string("xattr::key2"),
+            expected.attribute_as_string("xattr::key2")
+        );
+    });
 }
 
 #[test]
@@ -1528,6 +1740,39 @@ fn file_query_filesystem_info() {
 }
 
 #[test]
+fn file_query_filesystem_info_future() {
+    // run test in a main context dedicated and configured as the thread default one
+    let _ = glib::MainContext::new().with_thread_default(|| {
+        // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::query_filesystem_info_async/finish`
+        let my_custom_file =
+            MyCustomFile::with_xattr("/my_file", vec!["xattr::key1=value1", "xattr::key2=value2"]);
+        let res = glib::MainContext::ref_thread_default()
+            .block_on(my_custom_file.query_filesystem_info_future("*", glib::Priority::DEFAULT));
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let file_info = res.unwrap();
+
+        // invoke `MyFile` implementation of `crate::ffi::GFileIface::query_filesystem_info_async/finish`
+        let my_file =
+            MyFile::with_xattr("/my_file", vec!["xattr::key1=value1", "xattr::key2=value2"]);
+        let res = glib::MainContext::ref_thread_default()
+            .block_on(my_file.query_filesystem_info_future("*", glib::Priority::DEFAULT));
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let expected = res.unwrap();
+
+        // both results should equal
+        assert_eq!(file_info.name(), expected.name());
+        assert_eq!(
+            file_info.attribute_as_string("xattr::key1"),
+            expected.attribute_as_string("xattr::key1")
+        );
+        assert_eq!(
+            file_info.attribute_as_string("xattr::key2"),
+            expected.attribute_as_string("xattr::key2")
+        );
+    });
+}
+
+#[test]
 fn file_find_enclosing_mount() {
     // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::find_enclosing_mount`
     let my_custom_dir = MyCustomFile::new("/my_directory");
@@ -1547,6 +1792,30 @@ fn file_find_enclosing_mount() {
 }
 
 #[test]
+fn file_find_enclosing_mount_future() {
+    // run test in a main context dedicated and configured as the thread default one
+    let _ = glib::MainContext::new().with_thread_default(|| {
+        // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::find_enclosing_mount_async/finish`
+        let my_custom_dir = MyCustomFile::new("/my_directory");
+        let res = glib::MainContext::ref_thread_default()
+            .block_on(my_custom_dir.find_enclosing_mount_future(glib::Priority::DEFAULT));
+        assert!(res.is_err(), "unexpected mount {:?}", res.ok().unwrap());
+        let err = res.unwrap_err();
+
+        // invoke `MyFile` implementation of `crate::ffi::GFileIface::find_enclosing_mount_async/finish`
+        let my_dir = MyFile::new("/my_directory");
+        let res = glib::MainContext::ref_thread_default()
+            .block_on(my_dir.find_enclosing_mount_future(glib::Priority::DEFAULT));
+        assert!(res.is_err(), "unexpected mount {:?}", res.ok().unwrap());
+        let expected = res.unwrap_err();
+
+        // both errors should equal
+        assert_eq!(err.message(), expected.message());
+        assert_eq!(err.kind::<IOErrorEnum>(), expected.kind::<IOErrorEnum>());
+    });
+}
+
+#[test]
 fn file_set_display_name() {
     // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::set_display_name`
     let my_custom_file = MyCustomFile::new("/my_file");
@@ -1561,6 +1830,30 @@ fn file_set_display_name() {
 
     // both new paths should equal
     assert_eq!(renamed.path(), expected.path());
+}
+
+#[test]
+fn file_set_display_name_future() {
+    // run test in a main context dedicated and configured as the thread default one
+    let _ = glib::MainContext::new().with_thread_default(|| {
+        // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::set_display_name_async/finish`
+        let my_custom_file = MyCustomFile::new("/my_file");
+        let res = glib::MainContext::ref_thread_default().block_on(
+            my_custom_file.set_display_name_future("my_file_new_name", glib::Priority::DEFAULT),
+        );
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let renamed = res.unwrap();
+
+        // invoke `MyFile` implementation of `crate::ffi::GFileIface::set_display_name_async/finish`
+        let my_file = MyFile::new("/my_file");
+        let res = glib::MainContext::ref_thread_default()
+            .block_on(my_file.set_display_name_future("my_file_new_name", glib::Priority::DEFAULT));
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let expected = res.unwrap();
+
+        // both new paths should equal
+        assert_eq!(renamed.path(), expected.path());
+    });
 }
 
 #[test]
@@ -1655,6 +1948,43 @@ fn file_set_attribute() {
         file_info.attribute_as_string("xattr::key1"),
         expected.attribute_as_string("xattr::key1")
     );
+}
+
+#[test]
+fn file_set_attributes_future() {
+    // run test in a main context dedicated and configured as the thread default one
+    let _ = glib::MainContext::new().with_thread_default(|| {
+        // invoke `MyCustomFile` implementation of `crate::ffi::GFileIface::set_attributes_async/finish`
+        let my_custom_file = MyCustomFile::new("/my_file");
+        let info = FileInfo::new();
+        info.set_attribute_string("xattr::key1", "value1");
+        let res =
+            glib::MainContext::ref_thread_default().block_on(my_custom_file.set_attributes_future(
+                &info,
+                FileQueryInfoFlags::NONE,
+                glib::Priority::DEFAULT,
+            ));
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let file_info = res.unwrap();
+
+        // invoke `MyFile` implementation of `crate::ffi::GFileIface::set_attributes_async/finish`
+        let my_file = MyFile::new("/my_file");
+        let info = FileInfo::new();
+        info.set_attribute_string("xattr::key1", "value1");
+        let res = glib::MainContext::ref_thread_default().block_on(my_file.set_attributes_future(
+            &info,
+            FileQueryInfoFlags::NONE,
+            glib::Priority::DEFAULT,
+        ));
+        assert!(res.is_ok(), "{}", res.unwrap_err());
+        let expected = res.unwrap();
+
+        // both file attributes should equal
+        assert_eq!(
+            file_info.attribute_as_string("xattr::key1"),
+            expected.attribute_as_string("xattr::key1")
+        );
+    });
 }
 
 #[test]
