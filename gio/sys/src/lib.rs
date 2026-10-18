@@ -689,6 +689,8 @@ pub const G_IO_STREAM_SPLICE_WAIT_FOR_BOTH: GIOStreamSpliceFlags = 4;
 
 pub type GMountMountFlags = c_uint;
 pub const G_MOUNT_MOUNT_NONE: GMountMountFlags = 0;
+#[cfg(feature = "v2_92")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
 pub const G_MOUNT_MOUNT_READ_ONLY: GMountMountFlags = 1;
 
 pub type GMountUnmountFlags = c_uint;

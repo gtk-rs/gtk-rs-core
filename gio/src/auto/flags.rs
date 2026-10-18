@@ -2359,6 +2359,8 @@ bitflags! {
     pub struct MountMountFlags: u32 {
         #[doc(alias = "G_MOUNT_MOUNT_NONE")]
         const NONE = ffi::G_MOUNT_MOUNT_NONE as _;
+        #[cfg(feature = "v2_92")]
+        #[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
         #[doc(alias = "G_MOUNT_MOUNT_READ_ONLY")]
         const READ_ONLY = ffi::G_MOUNT_MOUNT_READ_ONLY as _;
     }
