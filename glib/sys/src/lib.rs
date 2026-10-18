@@ -6741,6 +6741,9 @@ unsafe extern "C" {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_get_os_info(key_name: *const c_char) -> *mut c_char;
     pub fn g_get_prgname() -> *const c_char;
+    #[cfg(feature = "v2_92")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+    pub fn g_get_process_executable_dir() -> *const c_char;
     pub fn g_get_real_name() -> *const c_char;
     pub fn g_get_real_time() -> i64;
     pub fn g_get_system_config_dirs() -> *const *const c_char;
