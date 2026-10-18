@@ -2786,6 +2786,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("G_MENU_LINK_SECTION", "section"),
     ("G_MENU_LINK_SUBMENU", "submenu"),
     ("(guint) G_MOUNT_MOUNT_NONE", "0"),
+    ("(guint) G_MOUNT_MOUNT_READ_ONLY", "1"),
     ("(gint) G_MOUNT_OPERATION_ABORTED", "1"),
     ("(gint) G_MOUNT_OPERATION_HANDLED", "0"),
     ("(gint) G_MOUNT_OPERATION_UNHANDLED", "2"),
