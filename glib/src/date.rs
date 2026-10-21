@@ -230,10 +230,10 @@ impl Date {
     #[doc(alias = "g_date_set_parse")]
     pub fn set_parse(&mut self, str: &str) -> Result<(), BoolError> {
         let mut c = *self;
-        if !unsafe {
+        unsafe {
             ffi::g_date_set_parse(c.to_glib_none_mut().0, str.to_glib_none().0);
-            ffi::g_date_valid(c.to_glib_none().0) == 0
-        } {
+        }
+        if !c.valid() {
             Err(bool_error!("invalid parse string"))
         } else {
             *self = c;
@@ -460,5 +460,24 @@ mod test {
             unsafe { FromGlibContainer::from_glib_full_num(ptr, dates.len()) };
 
         assert_eq!(dates.as_slice(), actual_dates);
+    }
+
+    #[test]
+    fn test_date_set_parse() {
+        let mut date = Date::from_dmy(1, DateMonth::January, 1970).unwrap();
+
+        // Valid user input (locale is not set for this test)
+        let result = date.set_parse("12/31/2026");
+        assert!(result.is_ok());
+        assert!(date.valid());
+
+        // Invalid user input
+        let result = date.set_parse("lorem ipsum");
+        assert!(result.is_err());
+        // glib.rs avoids to update date with invalid data (so it lets previous data)
+        assert!(date.valid());
+        assert_eq!(date.month(), DateMonth::December);
+        assert_eq!(date.day(), 31);
+        assert_eq!(date.year(), 2026);
     }
 }
