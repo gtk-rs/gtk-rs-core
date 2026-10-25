@@ -621,6 +621,51 @@ mod test {
     }
 
     #[test]
+    fn test_register_subtype() {
+        use std::sync::{Arc, Mutex};
+
+        let initialized = Arc::new(Mutex::new(Vec::new()));
+        let types = ["RuntimeSimpleObject1", "RuntimeSimpleObject2"].map(|name| {
+            let initialized = initialized.clone();
+            crate::subclass::register_subtype::<SimpleObject, _>(
+                SimpleObject::static_type(),
+                name,
+                crate::TypeFlags::empty(),
+                move |class| initialized.lock().unwrap().push(class.type_()),
+            )
+        });
+
+        let child_initialized = initialized.clone();
+        let child = crate::subclass::register_subtype::<SimpleObject, _>(
+            types[0],
+            "RuntimeSimpleObjectChild",
+            crate::TypeFlags::empty(),
+            move |class| child_initialized.lock().unwrap().push(class.type_()),
+        );
+
+        assert_ne!(types[0], types[1]);
+        for (type_, parent) in [
+            (types[0], SimpleObject::static_type()),
+            (types[1], SimpleObject::static_type()),
+            (child, types[0]),
+        ] {
+            assert_eq!(type_.parent(), Some(parent));
+            let obj = Object::with_type(type_).downcast::<SimpleObject>().unwrap();
+            assert_eq!(obj.type_(), type_);
+            assert!(obj.property::<bool>("constructed"));
+
+            obj.set_property("name", type_.name());
+            assert_eq!(obj.property::<String>("name"), type_.name());
+
+            let weak = obj.downgrade();
+            drop(obj);
+            assert!(weak.upgrade().is_none());
+        }
+
+        assert_eq!(*initialized.lock().unwrap(), [types[0], types[1], child]);
+    }
+
+    #[test]
     fn test_properties() {
         let type_ = SimpleObject::static_type();
         let obj = Object::with_type(type_);

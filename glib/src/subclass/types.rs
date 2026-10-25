@@ -1208,6 +1208,103 @@ pub fn register_dynamic_type<P: DynamicObjectRegisterExt, T: ObjectSubclass>(
     }
 }
 
+// rustdoc-stripper-ignore-next
+/// Registers a static subtype of `parent` with a runtime name and class initializer.
+///
+/// This can be used to register types based on the runtime environment, such as
+/// available devices and their capabilities. Each type shares the same Rust
+/// implementation but can have different class configuration without a separate
+/// `ObjectSubclass` implementation.
+///
+/// The subtype uses the parent's class and instance layouts. The parent must be `T`
+/// or a subtype of `T`, and must not be final. Parents registered through `GTypePlugin`
+/// are not supported.
+/// Parents registered at runtime with this function are supported.
+///
+/// `class_init` may run later on another thread. The closure and its captures are
+/// kept for the lifetime of the type. The closure must not panic.
+///
+/// Panics if the parent does not meet these requirements, the name is already
+/// registered, or registration fails.
+pub fn register_subtype<T, F>(
+    parent: Type,
+    name: impl crate::IntoGStr,
+    flags: crate::TypeFlags,
+    class_init: F,
+) -> Type
+where
+    T: IsA<Object> + IsClass,
+    F: Fn(&mut crate::Class<T>) + Send + Sync + 'static,
+{
+    unsafe extern "C" fn init<T, F>(klass: ffi::gpointer, data: ffi::gpointer)
+    where
+        T: IsA<Object> + IsClass,
+        F: Fn(&mut crate::Class<T>) + Send + Sync + 'static,
+    {
+        unsafe {
+            let class_init = &*(data as *const F);
+            let klass = &mut *(klass as *mut crate::Class<T>);
+            class_init(klass);
+        }
+    }
+
+    assert!(
+        parent.is_a(T::static_type()),
+        "Parent type must be T or a subtype of T"
+    );
+
+    assert!(parent.plugin().is_none(), "Parent type must be static");
+
+    unsafe {
+        assert_eq!(
+            gobject_ffi::g_type_test_flags(parent.into_glib(), gobject_ffi::G_TYPE_FLAG_FINAL),
+            ffi::GFALSE,
+            "Parent type must not be final"
+        );
+
+        let mut query = mem::MaybeUninit::uninit();
+        gobject_ffi::g_type_query(parent.into_glib(), query.as_mut_ptr());
+        let query = query.assume_init();
+        let class_size = query
+            .class_size
+            .try_into()
+            .expect("Parent class is too large");
+        let instance_size = query
+            .instance_size
+            .try_into()
+            .expect("Parent instance is too large");
+
+        name.run_with_gstr(|name| {
+            assert_eq!(
+                gobject_ffi::g_type_from_name(name.as_ptr()),
+                gobject_ffi::G_TYPE_INVALID,
+                "Type {} has already been registered",
+                name
+            );
+
+            let class_init = Box::new(class_init);
+            let info = gobject_ffi::GTypeInfo {
+                class_size,
+                instance_size,
+                class_init: Some(init::<T, F>),
+                class_data: (&*class_init as *const F).cast(),
+                ..TypeInfo::default().0
+            };
+            let type_ = Type::from_glib(gobject_ffi::g_type_register_static(
+                parent.into_glib(),
+                name.as_ptr(),
+                &info,
+                flags.into_glib(),
+            ));
+
+            assert!(type_.is_valid());
+            let _ = Box::into_raw(class_init);
+
+            type_
+        })
+    }
+}
+
 pub(crate) unsafe fn signal_override_class_handler<F>(
     name: &str,
     type_: ffi::GType,
