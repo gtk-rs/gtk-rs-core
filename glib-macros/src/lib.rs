@@ -1327,8 +1327,8 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// | --- | --- | --- | --- |
 /// | `name = "literal"` | The name of the property | field ident where `_` (leading and trailing `_` are trimmed) is replaced into `-` | `#[property(name = "prop-name")]` |
 /// | `type = expr` | The type of the property | inferred | `#[property(type = i32)]` |
-/// | `get [= expr]` | Specify that the property is readable and use [`PropertyGet::get`] [or optionally set a custom internal getter] | | `#[property(get)]`, `#[property(get = get_prop)]`, or `[property(get = \|_\| 2)]` |
-/// | `set [= expr]` | Specify that the property is writable and use [`PropertySet::set`] [or optionally set a custom internal setter] | | `#[property(set)]`, `#[property(set = set_prop)]`, or `[property(set = \|_, val\| {})]` |
+/// | `[vis] get [= expr]` | Specify that the property is readable and use [`PropertyGet::get`] [or optionally set a custom internal getter]. The visibility of generated getter methods can be restricted by explicitly defining a scope here. | | `#[property(get)]`, `#[property(pub(super) get)]`, `#[property(get = get_prop)]`, or `[property(get = \|_\| 2)]` |
+/// | `[vis] set [= expr]` | Specify that the property is writable and use [`PropertySet::set`] [or optionally set a custom internal setter]. The visibility of the generated setter method can be restricted by explicitly defining a scope here. | | `#[property(set)]`, `#[property(pub(self) set)]`, `#[property(set = set_prop)]`, or `[property(set = \|_, val\| {})]` |
 /// | `override_class = expr` | The type of class of which to override the property from | | `#[property(override_class = SomeClass)]` |
 /// | `override_interface = expr` | The type of interface of which to override the property from | | `#[property(override_interface = SomeInterface)]` |
 /// | `nullable` | Whether to use `Option<T>` in the generated setter method |  | `#[property(nullable)]` |
@@ -1351,6 +1351,10 @@ pub fn cstr_bytes(item: TokenStream) -> TokenStream {
 /// * `set_$property()`, when the property is writable and not construct-only
 /// * `connect_$property_notify()`
 /// * `notify_$property()`
+///
+/// All will inherit the derived struct's visibility scope, unless otherwise explicitly defined in the `get` or `set` attributes of `#[property]`.
+///
+/// `connect_$property_notify()` and `notify_$property()` will match the visibility of the getter method (i.e. `$property()`).
 ///
 /// # Documentation
 ///
