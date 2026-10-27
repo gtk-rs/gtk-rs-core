@@ -1743,6 +1743,25 @@ pub(crate) unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
     }
 }
 
+#[cfg(not(windows))]
+pub(crate) unsafe fn c_to_path<'a>(ptr: *const c_char) -> &'a Path {
+    unsafe {
+        debug_assert!(!ptr.is_null());
+
+        Path::new(OsStr::from_bytes(CStr::from_ptr(ptr).to_bytes()))
+    }
+}
+
+#[cfg(windows)]
+pub(crate) unsafe fn c_to_path<'a>(ptr: *const c_char) -> &'a Path {
+    debug_assert!(!ptr.is_null());
+
+    unsafe {
+        // GLib paths on Windows are always UTF-8, see c_to_path_buf() above
+        Path::new(crate::GStr::from_ptr(ptr).as_str())
+    }
+}
+
 #[cfg(windows)]
 pub(crate) unsafe fn c_to_path_buf(ptr: *const c_char) -> PathBuf {
     debug_assert!(!ptr.is_null());
