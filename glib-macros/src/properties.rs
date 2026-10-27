@@ -681,6 +681,7 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
             parse_quote_spanned!(span=>
                 #(#setter_docs)*
                 #[allow(dead_code)]
+                #[allow(unused_lifetimes)]
                 pub fn #ident<'a>(&self, value: #set_ty) {
                     self.set_property_from_value(#stripped_name, &::std::convert::From::from(#upcasted_borrowed_value))
                 }
