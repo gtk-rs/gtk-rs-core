@@ -229,6 +229,109 @@ pub fn charset() -> (bool, Option<&'static GStr>) {
     }
 }
 
+#[doc(alias = "g_get_home_dir")]
+#[doc(alias = "get_home_dir")]
+pub fn home_dir() -> &'static std::path::Path {
+    unsafe { c_to_path(ffi::g_get_home_dir()) }
+}
+
+#[doc(alias = "g_get_tmp_dir")]
+#[doc(alias = "get_tmp_dir")]
+pub fn tmp_dir() -> &'static std::path::Path {
+    unsafe { c_to_path(ffi::g_get_tmp_dir()) }
+}
+
+#[doc(alias = "g_get_user_name")]
+#[doc(alias = "get_user_name")]
+pub fn user_name() -> &'static std::ffi::OsStr {
+    unsafe { c_to_path(ffi::g_get_user_name()).as_os_str() }
+}
+
+#[doc(alias = "g_get_real_name")]
+#[doc(alias = "get_real_name")]
+pub fn real_name() -> &'static std::ffi::OsStr {
+    unsafe { c_to_path(ffi::g_get_real_name()).as_os_str() }
+}
+
+#[doc(alias = "g_get_host_name")]
+#[doc(alias = "get_host_name")]
+pub fn host_name() -> &'static GStr {
+    unsafe { GStr::from_ptr(ffi::g_get_host_name()) }
+}
+
+#[doc(alias = "g_get_user_cache_dir")]
+#[doc(alias = "get_user_cache_dir")]
+pub fn user_cache_dir() -> &'static std::path::Path {
+    unsafe { c_to_path(ffi::g_get_user_cache_dir()) }
+}
+
+#[doc(alias = "g_get_user_config_dir")]
+#[doc(alias = "get_user_config_dir")]
+pub fn user_config_dir() -> &'static std::path::Path {
+    unsafe { c_to_path(ffi::g_get_user_config_dir()) }
+}
+
+#[doc(alias = "g_get_user_data_dir")]
+#[doc(alias = "get_user_data_dir")]
+pub fn user_data_dir() -> &'static std::path::Path {
+    unsafe { c_to_path(ffi::g_get_user_data_dir()) }
+}
+
+#[doc(alias = "g_get_user_runtime_dir")]
+#[doc(alias = "get_user_runtime_dir")]
+pub fn user_runtime_dir() -> &'static std::path::Path {
+    unsafe { c_to_path(ffi::g_get_user_runtime_dir()) }
+}
+
+#[cfg(feature = "v2_72")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
+#[doc(alias = "g_get_user_state_dir")]
+#[doc(alias = "get_user_state_dir")]
+pub fn user_state_dir() -> &'static std::path::Path {
+    unsafe { c_to_path(ffi::g_get_user_state_dir()) }
+}
+
+#[doc(alias = "g_get_system_data_dirs")]
+#[doc(alias = "get_system_data_dirs")]
+pub fn system_data_dirs() -> &'static [&'static std::path::Path] {
+    static DIRS: std::sync::LazyLock<Vec<&'static std::path::Path>> =
+        std::sync::LazyLock::new(|| unsafe { strv_to_static_paths(ffi::g_get_system_data_dirs()) });
+
+    std::sync::LazyLock::force(&DIRS).as_slice()
+}
+
+#[doc(alias = "g_get_system_config_dirs")]
+#[doc(alias = "get_system_config_dirs")]
+pub fn system_config_dirs() -> &'static [&'static std::path::Path] {
+    static DIRS: std::sync::LazyLock<Vec<&'static std::path::Path>> =
+        std::sync::LazyLock::new(|| unsafe {
+            strv_to_static_paths(ffi::g_get_system_config_dirs())
+        });
+
+    std::sync::LazyLock::force(&DIRS).as_slice()
+}
+
+#[doc(alias = "g_get_language_names")]
+#[doc(alias = "get_language_names")]
+pub fn language_names() -> &'static [crate::GStringPtr] {
+    unsafe { crate::StrV::from_glib_borrow(ffi::g_get_language_names()) }
+}
+
+unsafe fn strv_to_static_paths(
+    mut ptr: *const *const libc::c_char,
+) -> Vec<&'static std::path::Path> {
+    let mut paths = Vec::new();
+
+    unsafe {
+        while !(*ptr).is_null() {
+            paths.push(c_to_path(*ptr));
+            ptr = ptr.add(1);
+        }
+    }
+
+    paths
+}
+
 #[doc(alias = "g_compute_checksum_for_string")]
 pub fn compute_checksum_for_string(
     checksum_type: ChecksumType,

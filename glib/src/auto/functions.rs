@@ -363,24 +363,6 @@ pub fn environ() -> Vec<std::ffi::OsString> {
     unsafe { FromGlibPtrContainer::from_glib_full(ffi::g_get_environ()) }
 }
 
-#[doc(alias = "g_get_home_dir")]
-#[doc(alias = "get_home_dir")]
-pub fn home_dir() -> std::path::PathBuf {
-    unsafe { from_glib_none(ffi::g_get_home_dir()) }
-}
-
-#[doc(alias = "g_get_host_name")]
-#[doc(alias = "get_host_name")]
-pub fn host_name() -> crate::GString {
-    unsafe { from_glib_none(ffi::g_get_host_name()) }
-}
-
-#[doc(alias = "g_get_language_names")]
-#[doc(alias = "get_language_names")]
-pub fn language_names() -> Vec<crate::GString> {
-    unsafe { FromGlibPtrContainer::from_glib_none(ffi::g_get_language_names()) }
-}
-
 #[cfg(feature = "v2_58")]
 #[cfg_attr(docsrs, doc(cfg(feature = "v2_58")))]
 #[doc(alias = "g_get_language_names_with_category")]
@@ -437,78 +419,16 @@ pub fn process_executable_dir() -> Option<std::path::PathBuf> {
     unsafe { from_glib_none(ffi::g_get_process_executable_dir()) }
 }
 
-#[doc(alias = "g_get_real_name")]
-#[doc(alias = "get_real_name")]
-pub fn real_name() -> std::ffi::OsString {
-    unsafe { from_glib_none(ffi::g_get_real_name()) }
-}
-
 #[doc(alias = "g_get_real_time")]
 #[doc(alias = "get_real_time")]
 pub fn real_time() -> i64 {
     unsafe { ffi::g_get_real_time() }
 }
 
-#[doc(alias = "g_get_system_config_dirs")]
-#[doc(alias = "get_system_config_dirs")]
-pub fn system_config_dirs() -> Vec<std::path::PathBuf> {
-    unsafe { FromGlibPtrContainer::from_glib_none(ffi::g_get_system_config_dirs()) }
-}
-
-#[doc(alias = "g_get_system_data_dirs")]
-#[doc(alias = "get_system_data_dirs")]
-pub fn system_data_dirs() -> Vec<std::path::PathBuf> {
-    unsafe { FromGlibPtrContainer::from_glib_none(ffi::g_get_system_data_dirs()) }
-}
-
-#[doc(alias = "g_get_tmp_dir")]
-#[doc(alias = "get_tmp_dir")]
-pub fn tmp_dir() -> std::path::PathBuf {
-    unsafe { from_glib_none(ffi::g_get_tmp_dir()) }
-}
-
-#[doc(alias = "g_get_user_cache_dir")]
-#[doc(alias = "get_user_cache_dir")]
-pub fn user_cache_dir() -> std::path::PathBuf {
-    unsafe { from_glib_none(ffi::g_get_user_cache_dir()) }
-}
-
-#[doc(alias = "g_get_user_config_dir")]
-#[doc(alias = "get_user_config_dir")]
-pub fn user_config_dir() -> std::path::PathBuf {
-    unsafe { from_glib_none(ffi::g_get_user_config_dir()) }
-}
-
-#[doc(alias = "g_get_user_data_dir")]
-#[doc(alias = "get_user_data_dir")]
-pub fn user_data_dir() -> std::path::PathBuf {
-    unsafe { from_glib_none(ffi::g_get_user_data_dir()) }
-}
-
-#[doc(alias = "g_get_user_name")]
-#[doc(alias = "get_user_name")]
-pub fn user_name() -> std::ffi::OsString {
-    unsafe { from_glib_none(ffi::g_get_user_name()) }
-}
-
-#[doc(alias = "g_get_user_runtime_dir")]
-#[doc(alias = "get_user_runtime_dir")]
-pub fn user_runtime_dir() -> std::path::PathBuf {
-    unsafe { from_glib_none(ffi::g_get_user_runtime_dir()) }
-}
-
 #[doc(alias = "g_get_user_special_dir")]
 #[doc(alias = "get_user_special_dir")]
 pub fn user_special_dir(directory: UserDirectory) -> Option<std::path::PathBuf> {
     unsafe { from_glib_none(ffi::g_get_user_special_dir(directory.into_glib())) }
-}
-
-#[cfg(feature = "v2_72")]
-#[cfg_attr(docsrs, doc(cfg(feature = "v2_72")))]
-#[doc(alias = "g_get_user_state_dir")]
-#[doc(alias = "get_user_state_dir")]
-pub fn user_state_dir() -> std::path::PathBuf {
-    unsafe { from_glib_none(ffi::g_get_user_state_dir()) }
 }
 
 #[doc(alias = "g_getenv")]

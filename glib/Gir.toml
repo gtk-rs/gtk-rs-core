@@ -164,6 +164,12 @@ status = "generate"
     name = "get_current_time"
     ignore = true # Deprecated
     [[object.function]]
+    pattern = "(get_user_cache_dir|get_user_config_dir|get_user_data_dir|get_user_runtime_dir|get_user_state_dir)"
+    manual = true # return &'static Path instead of copying, see https://github.com/gtk-rs/gtk-rs-core/issues/2036
+    [[object.function]]
+    pattern = "(get_home_dir|get_tmp_dir|get_user_name|get_real_name|get_host_name|get_system_data_dirs|get_system_config_dirs|get_language_names)"
+    manual = true # return borrowed values instead of copying, see https://github.com/gtk-rs/gtk-rs-core/issues/2036
+    [[object.function]]
     name = "get_filename_charsets"
     manual = true
     [[object.function]]
@@ -224,14 +230,6 @@ status = "generate"
     pattern = "[gs]et_prgname"
     #manual pathbuf
     ignore = true
-    [[object.function]]
-    name = "get_user_name"
-        [object.function.return]
-        string_type = "os_string"
-    [[object.function]]
-    name = "get_real_name"
-        [object.function.return]
-        string_type = "os_string"
     [[object.function]]
     name = "setenv"
     unsafe = true
