@@ -11,6 +11,11 @@ impl Iterator for FileEnumerator {
 
     fn next(&mut self) -> Option<Result<FileInfo, glib::Error>> {
         match self.next_file(crate::Cancellable::NONE) {
+            // An already closed enumerator returns the same error forever,
+            // treat it as the end of the iterator instead.
+            Err(err) if err.kind::<crate::IOErrorEnum>() == Some(crate::IOErrorEnum::Closed) => {
+                None
+            }
             Err(err) => Some(Err(err)),
             Ok(file_info) => file_info.map(Ok),
         }
@@ -152,5 +157,26 @@ mod tests {
             .into_inner()
             .unwrap()
             .unwrap();
+    }
+
+    #[test]
+    fn file_enumerator_iterator_closed() {
+        let dir = crate::File::for_path(std::env::current_dir().unwrap());
+        let mut enumerator = dir
+            .enumerate_children(
+                crate::FILE_ATTRIBUTE_STANDARD_NAME,
+                crate::FileQueryInfoFlags::NONE,
+                crate::Cancellable::NONE,
+            )
+            .unwrap();
+
+        // Exhaust the iterator, which must end with `None`
+        while enumerator.next().is_some() {}
+
+        // A closed enumerator must also behave like an ended iterator
+        // instead of returning the same error forever
+        assert!(enumerator.close(crate::Cancellable::NONE).0);
+        assert!(enumerator.next().is_none());
+        assert!(enumerator.next().is_none());
     }
 }
