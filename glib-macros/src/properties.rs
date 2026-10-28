@@ -77,7 +77,7 @@ impl Parse for PropsMacroInput {
             })?;
         let attrs: PropertiesAttrs = attrs.parse_args()?;
         let props: Vec<_> = match derive_input.data {
-            syn::Data::Struct(struct_data) => parse_fields(struct_data.fields)?,
+            syn::Data::Struct(struct_data) => parse_fields(struct_data.fields, &derive_input.vis)?,
             _ => {
                 return Err(syn::Error::new(
                     derive_input.span(),
@@ -117,9 +117,15 @@ enum PropAttr {
     // ident
     Nullable,
 
-    // ident [= expr]
-    Get(Option<syn::Expr>),
-    Set(Option<syn::Expr>),
+    // [vis] ident [= expr]
+    Get {
+        visibility: Option<syn::Visibility>,
+        expr: Option<syn::Expr>,
+    },
+    Set {
+        visibility: Option<syn::Visibility>,
+        expr: Option<syn::Expr>,
+    },
 
     // ident = expr
     OverrideClass(syn::Type),
@@ -145,6 +151,12 @@ enum PropAttr {
 
 impl Parse for PropAttr {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+        let visibility = if input.peek(Token![pub]) {
+            Some(input.parse::<syn::Visibility>()?)
+        } else {
+            None
+        };
+
         let name = input.call(syn::Ident::parse_any)?;
         let name_str = name.to_string();
 
@@ -153,8 +165,14 @@ impl Parse for PropAttr {
             // name = expr | type | ident
             match &*name_str {
                 "name" => PropAttr::Name(input.parse()?),
-                "get" => PropAttr::Get(Some(input.parse()?)),
-                "set" => PropAttr::Set(Some(input.parse()?)),
+                "get" => PropAttr::Get {
+                    visibility,
+                    expr: Some(input.parse()?),
+                },
+                "set" => PropAttr::Set {
+                    visibility,
+                    expr: Some(input.parse()?),
+                },
                 "override_class" => PropAttr::OverrideClass(input.parse()?),
                 "override_interface" => PropAttr::OverrideInterface(input.parse()?),
                 "type" => PropAttr::Type(input.parse()?),
@@ -186,8 +204,14 @@ impl Parse for PropAttr {
             // attributes with only the identifier name
             match &*name_str {
                 "nullable" => PropAttr::Nullable,
-                "get" => PropAttr::Get(None),
-                "set" => PropAttr::Set(None),
+                "get" => PropAttr::Get {
+                    visibility,
+                    expr: None,
+                },
+                "set" => PropAttr::Set {
+                    visibility,
+                    expr: None,
+                },
                 "readwrite" | "read_only" | "write_only" => {
                     return Err(syn::Error::new(
                         name.span(),
@@ -210,6 +234,8 @@ struct ReceivedAttrs {
     nullable: bool,
     get: Option<MaybeCustomFn>,
     set: Option<MaybeCustomFn>,
+    get_visibility: Option<syn::Visibility>,
+    set_visibility: Option<syn::Visibility>,
     override_class: Option<syn::Type>,
     override_interface: Option<syn::Type>,
     ty: Option<syn::Type>,
@@ -236,8 +262,14 @@ impl ReceivedAttrs {
     fn set_from_attr(&mut self, attr: PropAttr) {
         match attr {
             PropAttr::Nullable => self.nullable = true,
-            PropAttr::Get(some_fn) => self.get = Some(some_fn.into()),
-            PropAttr::Set(some_fn) => self.set = Some(some_fn.into()),
+            PropAttr::Get { visibility, expr } => {
+                self.get_visibility = visibility;
+                self.get = Some(expr.into());
+            }
+            PropAttr::Set { visibility, expr } => {
+                self.set_visibility = visibility;
+                self.set = Some(expr.into());
+            }
             PropAttr::Name(lit) => self.name = Some(lit),
             PropAttr::OverrideClass(ty) => self.override_class = Some(ty),
             PropAttr::OverrideInterface(ty) => self.override_interface = Some(ty),
@@ -269,6 +301,8 @@ struct PropDesc {
     nullable: bool,
     get: Option<MaybeCustomFn>,
     set: Option<MaybeCustomFn>,
+    get_visibility: Option<syn::Visibility>,
+    set_visibility: Option<syn::Visibility>,
     member: Option<syn::Ident>,
     builder: Option<(Punctuated<syn::Expr, Token![,]>, TokenStream2)>,
     builder_fields: BTreeMap<syn::Ident, Option<syn::Expr>>,
@@ -283,11 +317,14 @@ impl PropDesc {
         field_ty: syn::Type,
         comments: Vec<Attribute>,
         attrs: ReceivedAttrs,
+        struct_vis: &syn::Visibility,
     ) -> syn::Result<Self> {
         let ReceivedAttrs {
             nullable,
             get,
             mut set,
+            get_visibility,
+            set_visibility,
             override_class,
             override_interface,
             ty,
@@ -327,6 +364,10 @@ impl PropDesc {
         });
         let ty = ty.unwrap_or_else(|| field_ty.clone());
 
+        // Fallback to the derived struct's visibility scope when not explicitly defined
+        let get_visibility = get_visibility.or_else(|| Some(struct_vis.clone()));
+        let set_visibility = set_visibility.or_else(|| Some(struct_vis.clone()));
+
         // Now that everything is set and safe, return the final property description
         Ok(Self {
             attrs_span,
@@ -339,6 +380,8 @@ impl PropDesc {
             nullable,
             get,
             set,
+            get_visibility,
+            set_visibility,
             member,
             builder,
             builder_fields,
@@ -552,7 +595,7 @@ fn expand_set_property_fn(props: &[PropDesc]) -> TokenStream2 {
     )
 }
 
-fn parse_fields(fields: syn::Fields) -> syn::Result<Vec<PropDesc>> {
+fn parse_fields(fields: syn::Fields, struct_vis: &syn::Visibility) -> syn::Result<Vec<PropDesc>> {
     let mut properties = vec![];
 
     for field in fields.into_iter() {
@@ -574,6 +617,7 @@ fn parse_fields(fields: syn::Fields) -> syn::Result<Vec<PropDesc>> {
                     ty.clone(),
                     existing_comments,
                     prop_attr.parse_args()?,
+                    struct_vis,
                 )?);
             }
         }
@@ -645,6 +689,8 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
         let stripped_name = strip_raw_prefix_from_name(name);
         let ident = name_to_ident(name);
         let ty = &p.ty;
+        let getter_vis = &p.get_visibility;
+        let setter_vis = &p.set_visibility;
 
         let (getter_docs, setter_docs) = arrange_property_comments(&p.comments);
 
@@ -654,7 +700,7 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
                 #(#getter_docs)*
                 #[must_use]
                 #[allow(dead_code)]
-                pub fn #ident(&self) -> <#ty as #crate_ident::property::Property>::Value {
+                #getter_vis fn #ident(&self) -> <#ty as #crate_ident::property::Property>::Value {
                     self.property::<<#ty as #crate_ident::property::Property>::Value>(#stripped_name)
                 }
             )
@@ -682,7 +728,7 @@ fn expand_impl_getset_properties(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
                 #(#setter_docs)*
                 #[allow(dead_code)]
                 #[allow(unused_lifetimes)]
-                pub fn #ident<'a>(&self, value: #set_ty) {
+                #setter_vis fn #ident<'a>(&self, value: #set_ty) {
                     self.set_property_from_value(#stripped_name, &::std::convert::From::from(#upcasted_borrowed_value))
                 }
             )
@@ -702,11 +748,12 @@ fn expand_impl_connect_prop_notify(props: &[PropDesc]) -> Vec<syn::ImplItemFn> {
         let stripped_name = strip_raw_prefix_from_name(name);
         let fn_ident = format_ident!("connect_{}_notify", name_to_ident(name));
         let span = p.attrs_span;
+        let vis = &p.get_visibility;
         let doc = format!("Listen for notifications of a change in the `{}` property", name.value());
         parse_quote_spanned!(span=>
             #[doc = #doc]
             #[allow(dead_code)]
-            pub fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId {
+            #vis fn #fn_ident<F: Fn(&Self) + 'static>(&self, f: F) -> #crate_ident::SignalHandlerId {
                 self.connect_notify_local(::core::option::Option::Some(#stripped_name), move |this, _| {
                     f(this)
                 })
@@ -722,12 +769,13 @@ fn expand_impl_notify_prop(wrapper_type: &syn::Path, props: &[PropDesc]) -> Vec<
         let name = strip_raw_prefix_from_name(&p.name);
         let fn_ident = format_ident!("notify_{}", name_to_ident(&name));
         let span = p.attrs_span;
+        let vis = &p.get_visibility;
         let enum_ident = name_to_enum_ident(name.value());
         let doc = format!("Notify listeners of a change in the `{}` property", name.value());
         parse_quote_spanned!(span=>
             #[doc = #doc]
             #[allow(dead_code)]
-            pub fn #fn_ident(&self) {
+            #vis fn #fn_ident(&self) {
                 self.notify_by_pspec(
                     &<<#wrapper_type as #crate_ident::object::ObjectSubclassIs>::Subclass
                         as #crate_ident::subclass::object::DerivedObjectProperties>::derived_properties()

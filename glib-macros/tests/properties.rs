@@ -158,6 +158,14 @@ mod foo {
             construct_only_cell: OnceCell<u32>,
             #[property(get, set = Self::set_construct_only_custom, construct_only)]
             construct_only_custom_setter: OnceCell<Option<String>>,
+            #[property(pub(crate) get, pub(super) set)]
+            visibility_restricted: RefCell<bool>,
+            #[property(pub get, pub (in super::super) set)]
+            visibility_public_getter_and_restricted_setter: RefCell<bool>,
+            #[property(get, pub(self) set)]
+            visibility_private_setter: RefCell<bool>,
+            #[property(pub(self) get, pub(self) set)]
+            visibility_private: RefCell<bool>,
         }
 
         #[glib::object_subclass]
@@ -202,11 +210,68 @@ mod foo {
             let vec: Vec<String> = vec![String::new(); 2];
             assert_eq!(vec.get(1), Some(&String::new()));
         }
+
+        #[test]
+        fn generated_methods_visibility_inside_imp() {
+            let foo: super::Foo = glib::object::Object::new();
+
+            // Visible to this module only
+            foo.set_visibility_restricted(true);
+            // Visible from root
+            assert!(foo.visibility_restricted());
+
+            // Visible up to two parents of this module
+            foo.set_visibility_public_getter_and_restricted_setter(true);
+            // Visible to public
+            assert!(foo.visibility_public_getter_and_restricted_setter());
+
+            // Visible to this module only
+            foo.set_visibility_private_setter(true);
+            // Visible with derived struct visibility (default)
+            assert!(foo.visibility_private_setter());
+
+            // Visible to this module only
+            foo.set_visibility_private(true);
+            // Visible to this module only
+            assert!(foo.visibility_private());
+        }
     }
 
     glib::wrapper! {
         pub struct Foo(ObjectSubclass<imp::Foo>) @extends Base;
     }
+
+    #[test]
+    fn generated_methods_visibility_from_parent() {
+        let foo: Foo = glib::object::Object::new();
+
+        // Visible from root
+        assert!(!foo.visibility_restricted());
+
+        // Visible up to one more parents from this module
+        foo.set_visibility_public_getter_and_restricted_setter(true);
+        // Visible to public
+        assert!(foo.visibility_public_getter_and_restricted_setter());
+
+        // Visible with derived struct visibility
+        assert!(!foo.visibility_private_setter());
+    }
+}
+
+#[test]
+fn generated_methods_visibility_from_root() {
+    let foo: crate::foo::Foo = glib::object::Object::new();
+
+    // Visible from root
+    assert!(!foo.visibility_restricted());
+
+    // Visible up to this module
+    foo.set_visibility_public_getter_and_restricted_setter(true);
+    // Visible to public
+    assert!(foo.visibility_public_getter_and_restricted_setter());
+
+    // Visible with derived struct visibility
+    assert!(!foo.visibility_private_setter());
 }
 
 #[test]
@@ -426,6 +491,15 @@ fn props() {
         myfoo.construct_only_custom_setter(),
         Some("custom set: foo".to_owned())
     );
+}
+
+#[test]
+fn generated_methods_visibility_failures() {
+    let t = trybuild::TestCases::new();
+
+    t.compile_fail("tests/generated_methods_compiletest/01-getter-visibility-private.rs");
+    t.compile_fail("tests/generated_methods_compiletest/02-setter-visibility-private.rs");
+    t.compile_fail("tests/generated_methods_compiletest/03-fallback-to-private.rs");
 }
 
 #[test]
