@@ -258,6 +258,7 @@ mod test {
 
         let surface = PdfSurface::for_stream(20., 20., custom_writer).unwrap();
         surface.set_size(100., 100.).unwrap();
+        surface.restrict(PdfVersion::_1_5).unwrap();
         draw(&surface);
         let stream = surface.finish_output_stream().unwrap();
         let custom_writer = stream.downcast::<CustomWriter>().unwrap();
