@@ -128,6 +128,25 @@ impl Error {
                 .unwrap_or_else(|err| str::from_utf8(&bytes[..err.valid_up_to()]).unwrap())
         }
     }
+
+    // rustdoc-stripper-ignore-next
+    /// Prefix the error message with a given string, returning a new [`Error`].
+    #[doc(alias = "g_prefix_error_literal")]
+    #[doc(alias = "prefix_error_literal")]
+    #[doc(alias = "g_prefix_error")]
+    #[doc(alias = "prefix_error")]
+    pub fn prefix(self, name: impl IntoGStr) -> Self {
+        let mut this = self.into_glib_ptr();
+        name.run_with_gstr(|name| unsafe {
+            match () {
+                #[cfg(feature = "v2_70")]
+                () => ffi::g_prefix_error_literal(&mut this, name.as_ptr()),
+                #[cfg(not(feature = "v2_70"))]
+                () => ffi::g_prefix_error(&mut this, c"%s".as_ptr(), name.as_ptr()),
+            }
+            from_glib_full(this)
+        })
+    }
 }
 
 impl fmt::Display for Error {
@@ -376,5 +395,17 @@ mod tests {
         // But different message
         assert_eq!(modified.message(), "Modified message");
         assert_ne!(original.message(), modified.message());
+    }
+
+    #[test]
+    fn test_prefix() {
+        let original = Error::new(crate::FileError::Failed, "Original message");
+        let modified = original.prefix(crate::gstr!("Prefix: "));
+
+        // Should have same domain and code
+        assert!(modified.matches(crate::FileError::Failed));
+
+        // But different message
+        assert_eq!(modified.message(), "Prefix: Original message");
     }
 }
