@@ -25,7 +25,7 @@ pub trait LoadableIconExt: IsA<LoadableIcon> + 'static {
         &self,
         size: i32,
         cancellable: Option<&impl IsA<Cancellable>>,
-    ) -> Result<(InputStream, glib::GString), glib::Error> {
+    ) -> Result<(InputStream, Option<glib::GString>), glib::Error> {
         unsafe {
             let mut type_ = std::ptr::null_mut();
             let mut error = std::ptr::null_mut();
@@ -45,7 +45,9 @@ pub trait LoadableIconExt: IsA<LoadableIcon> + 'static {
     }
 
     #[doc(alias = "g_loadable_icon_load_async")]
-    fn load_async<P: FnOnce(Result<(InputStream, glib::GString), glib::Error>) + 'static>(
+    fn load_async<
+        P: FnOnce(Result<(InputStream, Option<glib::GString>), glib::Error>) + 'static,
+    >(
         &self,
         size: i32,
         cancellable: Option<&impl IsA<Cancellable>>,
@@ -64,7 +66,7 @@ pub trait LoadableIconExt: IsA<LoadableIcon> + 'static {
         let user_data: Box_<glib::thread_guard::ThreadGuard<P>> =
             Box_::new(glib::thread_guard::ThreadGuard::new(callback));
         unsafe extern "C" fn load_async_trampoline<
-            P: FnOnce(Result<(InputStream, glib::GString), glib::Error>) + 'static,
+            P: FnOnce(Result<(InputStream, Option<glib::GString>), glib::Error>) + 'static,
         >(
             _source_object: *mut glib::gobject_ffi::GObject,
             res: *mut crate::ffi::GAsyncResult,
@@ -107,8 +109,9 @@ pub trait LoadableIconExt: IsA<LoadableIcon> + 'static {
         size: i32,
     ) -> Pin<
         Box_<
-            dyn std::future::Future<Output = Result<(InputStream, glib::GString), glib::Error>>
-                + 'static,
+            dyn std::future::Future<
+                    Output = Result<(InputStream, Option<glib::GString>), glib::Error>,
+                > + 'static,
         >,
     > {
         Box_::pin(crate::GioFuture::new(
