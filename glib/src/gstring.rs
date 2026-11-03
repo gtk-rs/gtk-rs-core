@@ -1585,7 +1585,7 @@ impl IntoGlibPtr<*mut c_char> for GString {
     #[inline]
     fn into_glib_ptr(self) -> *mut c_char {
         match self.0 {
-            Inner::Native(ref s) => unsafe { ffi::g_strndup(s.as_ptr() as *const _, s.len()) },
+            Inner::Native(ref s) => unsafe { ffi::g_strndup(s.as_ptr() as *const _, s.len() - 1) },
             Inner::Foreign { ptr, .. } => {
                 let _s = mem::ManuallyDrop::new(self);
                 ptr.as_ptr()
