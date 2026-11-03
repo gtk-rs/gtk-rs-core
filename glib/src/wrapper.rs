@@ -31,7 +31,8 @@
 /// functions from an FFI crate.
 ///
 /// What follows is a description of each of the possible `$kind`:
-/// [`Boxed`][#boxed], [`Shared`][#shared], and [`Object`][#object];
+/// [`Boxed`][#boxed], [`BoxedInline`][#boxedinline], [`Shared`][#shared],
+/// [`Object`][#object], and [`ObjectSubclass`][#objectsubclass];
 /// note that each supports different sets of `$fn_name` inside the
 /// `match fn` block.  Also, `Object` may require you to specify
 /// things like the class struct to wrap, plus any interfaces that the
@@ -268,9 +269,32 @@
 /// }
 /// ```
 ///
+/// ### ObjectSubclass
+///
+/// Wrappers for objects whose implementation is a Rust
+/// [`ObjectSubclass`](crate::subclass::types::ObjectSubclass). This is used to define the outer
+/// type of a subclass implementation, typically together with `#[derive(ObjectSubclass)]`.
+///
+/// The basic syntax is:
+///
+/// ```ignore
+/// wrapper! {
+///     pub struct MyObject(ObjectSubclass<imp::MyObject>)
+///         @extends ParentClass, GrandparentClass, ...,
+///         @implements Interface1, Interface2, ...;
+/// }
+/// ```
+///
+/// Unlike the other kinds no `match fn` block is needed: the GType and the parent type are taken
+/// from the [`ObjectSubclass`](crate::subclass::types::ObjectSubclass) implementation.
+/// `@extends` and `@implements` are optional and list the parent classes and interfaces of the
+/// wrapper.
+///
 /// [#boxed]: #boxed
+/// [#boxedinline]: #boxedinline
 /// [#shared]: #shared
 /// [#object]: #object
+/// [#objectsubclass]: #objectsubclass
 /// [#non-derivable-classes]: #non-derivable-classes
 #[macro_export]
 macro_rules! wrapper {
