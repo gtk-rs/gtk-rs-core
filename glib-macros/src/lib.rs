@@ -525,6 +525,9 @@ pub fn closure_local(item: TokenStream) -> TokenStream {
 /// }
 /// ```
 ///
+/// The derive macro also implements `TryFrom<i32>` for the enum, returning the
+/// original value as the error if it does not correspond to any variant.
+///
 /// When using the [`Properties`] macro with enums that derive [`Enum`], the
 /// default value can be explicitly set via the `builder` parameter of the
 /// `#[property]` attribute. If the enum implements or derives
