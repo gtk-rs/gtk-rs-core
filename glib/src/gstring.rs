@@ -1371,7 +1371,7 @@ impl GString {
                 s.into_bytes()
             }
             Inner::Foreign { ptr, len } => {
-                let bytes = unsafe { slice::from_raw_parts(ptr.as_ptr() as *const u8, *len - 1) };
+                let bytes = unsafe { slice::from_raw_parts(ptr.as_ptr() as *const u8, *len) };
                 bytes.to_owned()
             }
             Inner::Inline { len, data } => {
@@ -1387,7 +1387,7 @@ impl GString {
         match &mut self.0 {
             Inner::Native(s) => str::into_boxed_bytes(mem::replace(s, "".into())).into(),
             Inner::Foreign { ptr, len } => {
-                let bytes = unsafe { slice::from_raw_parts(ptr.as_ptr() as *const u8, *len) };
+                let bytes = unsafe { slice::from_raw_parts(ptr.as_ptr() as *const u8, *len + 1) };
                 bytes.to_owned()
             }
             Inner::Inline { len, data } => {
@@ -2681,6 +2681,41 @@ mod tests {
                 FromGlibContainer::from_glib_container_num(ffi::g_strdup(std::ptr::null()), 0);
             assert_eq!("", test_e.as_str());
         }
+    }
+
+    #[test]
+    fn test_into_bytes() {
+        fn check(make: impl Fn() -> GString, expected: &str) {
+            let mut with_nul = expected.as_bytes().to_vec();
+            with_nul.push(0);
+
+            assert_eq!(make().into_bytes(), expected.as_bytes());
+            assert_eq!(make().into_bytes_with_nul(), with_nul);
+
+            // `into_bytes_with_nul()` must produce a valid C string
+            let cstring = CString::try_from(make()).unwrap();
+            assert_eq!(cstring.to_str().unwrap(), expected);
+        }
+
+        // Inline
+        check(|| GString::from("foo"), "foo");
+        // Native
+        check(
+            || GString::from("very very very long string".to_owned()),
+            "very very very long string",
+        );
+        // Foreign
+        check(
+            || GString::from("very very very long string"),
+            "very very very long string",
+        );
+        // Foreign, empty
+        check(
+            || unsafe {
+                GString::from_ptr_and_len_unchecked(ffi::g_strdup(b"\0".as_ptr() as *const _), 0)
+            },
+            "",
+        );
     }
 
     #[test]
