@@ -279,6 +279,13 @@ manual_traits = ["AppInfoExtManual"]
     name = "launch_uris_async"
     #in array of strings
     manual = true
+    [[object.function]]
+    name = "get_executable"
+        [object.function.return]
+        # g_app_info_get_executable() can return NULL for D-Bus activatable
+        # applications without an Exec= line, and on Windows.
+        # https://gitlab.gnome.org/GNOME/glib/-/issues/2974
+        nullable = true
 
 [[object]]
 name = "Gio.AppLaunchContext"
