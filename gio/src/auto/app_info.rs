@@ -431,7 +431,7 @@ pub trait AppInfoExt: IsA<AppInfo> + 'static {
 
     #[doc(alias = "g_app_info_get_executable")]
     #[doc(alias = "get_executable")]
-    fn executable(&self) -> std::path::PathBuf {
+    fn executable(&self) -> Option<std::path::PathBuf> {
         unsafe {
             from_glib_none(ffi::g_app_info_get_executable(
                 self.as_ref().to_glib_none().0,
