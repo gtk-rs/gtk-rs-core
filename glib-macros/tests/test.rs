@@ -113,6 +113,12 @@ fn derive_enum() {
     assert_eq!(unsafe { Animal::from_glib(1) }, Animal::Dog);
     assert_eq!(unsafe { Animal::from_glib(5) }, Animal::Cat);
 
+    assert_eq!(Animal::try_from(0), Ok(Animal::Goat));
+    assert_eq!(Animal::try_from(1), Ok(Animal::Dog));
+    assert_eq!(Animal::try_from(5), Ok(Animal::Cat));
+    assert_eq!(Animal::try_from(2), Err(2));
+    assert_eq!(Animal::try_from(-1), Err(-1));
+
     assert_eq!(Animal::Goat.to_value().get::<Animal>(), Ok(Animal::Goat));
     assert_eq!(Animal::Dog.to_value().get::<Animal>(), Ok(Animal::Dog));
     assert_eq!(Animal::Cat.to_value().get::<Animal>(), Ok(Animal::Cat));

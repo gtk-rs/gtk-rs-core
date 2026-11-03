@@ -157,16 +157,25 @@ pub fn impl_enum(input: &syn::DeriveInput) -> syn::Result<TokenStream> {
             }
         }
 
-        impl #crate_ident::translate::TryFromGlib<i32> for #name {
+        impl ::core::convert::TryFrom<i32> for #name {
             type Error = i32;
 
             #[inline]
-            unsafe fn try_from_glib(value: i32) -> ::core::result::Result<Self, i32> {
+            fn try_from(value: i32) -> ::core::result::Result<Self, i32> {
                 let from_glib = || {
                     #from_glib
                 };
 
                 from_glib().ok_or(value)
+            }
+        }
+
+        impl #crate_ident::translate::TryFromGlib<i32> for #name {
+            type Error = i32;
+
+            #[inline]
+            unsafe fn try_from_glib(value: i32) -> ::core::result::Result<Self, i32> {
+                <Self as ::core::convert::TryFrom<i32>>::try_from(value)
             }
         }
 
