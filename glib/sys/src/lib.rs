@@ -782,6 +782,7 @@ pub const G_KEY_FILE_DESKTOP_KEY_EXEC: &[u8] = b"Exec\0";
 pub const G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME: &[u8] = b"GenericName\0";
 pub const G_KEY_FILE_DESKTOP_KEY_HIDDEN: &[u8] = b"Hidden\0";
 pub const G_KEY_FILE_DESKTOP_KEY_ICON: &[u8] = b"Icon\0";
+pub const G_KEY_FILE_DESKTOP_KEY_IMPLEMENTS: &[u8] = b"Implements\0";
 pub const G_KEY_FILE_DESKTOP_KEY_MIME_TYPE: &[u8] = b"MimeType\0";
 pub const G_KEY_FILE_DESKTOP_KEY_NAME: &[u8] = b"Name\0";
 pub const G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN: &[u8] = b"NotShowIn\0";
