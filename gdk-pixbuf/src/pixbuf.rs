@@ -9,7 +9,7 @@ use crate::{Colorspace, Pixbuf, PixbufFormat, ffi};
 
 impl Pixbuf {
     #[doc(alias = "gdk_pixbuf_new_from_data")]
-    pub fn from_mut_slice<T: AsMut<[u8]>>(
+    pub fn from_mut_slice<T: AsMut<[u8]> + 'static>(
         data: T,
         colorspace: Colorspace,
         has_alpha: bool,
