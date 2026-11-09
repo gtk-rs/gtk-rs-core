@@ -377,7 +377,10 @@ pub struct LogField<'a>(ffi::GLogField, std::marker::PhantomData<&'a GStr>);
 impl<'a> LogField<'a> {
     // rustdoc-stripper-ignore-next
     /// Creates a field from a borrowed key and value.
-    pub fn new(key: &'a GStr, value: &[u8]) -> Self {
+    ///
+    /// The returned field borrows both the key and the value, and hence cannot outlive either of
+    /// them.
+    pub fn new(key: &'a GStr, value: &'a [u8]) -> Self {
         let (value, length) = if value.is_empty() {
             // Use an empty C string to represent empty data, since length: 0 is reserved for user
             // data fields.
