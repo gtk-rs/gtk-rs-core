@@ -365,7 +365,7 @@ pub trait SocketExtManual: IsA<Socket> + Sized {
         &self,
         mut buffer: B,
         cancellable: Option<&C>,
-    ) -> Result<(usize, SocketAddress), glib::Error> {
+    ) -> Result<(usize, Option<SocketAddress>), glib::Error> {
         let cancellable = cancellable.map(|c| c.as_ref());
         let gcancellable = cancellable.to_glib_none();
         let buffer = buffer.as_mut();
