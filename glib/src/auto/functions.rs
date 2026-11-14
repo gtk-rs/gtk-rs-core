@@ -429,6 +429,14 @@ pub fn os_info(key_name: &str) -> Option<crate::GString> {
     unsafe { from_glib_full(ffi::g_get_os_info(key_name.to_glib_none().0)) }
 }
 
+#[cfg(feature = "v2_92")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+#[doc(alias = "g_get_process_executable_dir")]
+#[doc(alias = "get_process_executable_dir")]
+pub fn process_executable_dir() -> Option<std::path::PathBuf> {
+    unsafe { from_glib_none(ffi::g_get_process_executable_dir()) }
+}
+
 #[doc(alias = "g_get_real_name")]
 #[doc(alias = "get_real_name")]
 pub fn real_name() -> std::ffi::OsString {

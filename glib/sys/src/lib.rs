@@ -782,6 +782,7 @@ pub const G_KEY_FILE_DESKTOP_KEY_EXEC: &[u8] = b"Exec\0";
 pub const G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME: &[u8] = b"GenericName\0";
 pub const G_KEY_FILE_DESKTOP_KEY_HIDDEN: &[u8] = b"Hidden\0";
 pub const G_KEY_FILE_DESKTOP_KEY_ICON: &[u8] = b"Icon\0";
+pub const G_KEY_FILE_DESKTOP_KEY_IMPLEMENTS: &[u8] = b"Implements\0";
 pub const G_KEY_FILE_DESKTOP_KEY_MIME_TYPE: &[u8] = b"MimeType\0";
 pub const G_KEY_FILE_DESKTOP_KEY_NAME: &[u8] = b"Name\0";
 pub const G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN: &[u8] = b"NotShowIn\0";
@@ -6737,6 +6738,9 @@ unsafe extern "C" {
     #[cfg_attr(docsrs, doc(cfg(feature = "v2_64")))]
     pub fn g_get_os_info(key_name: *const c_char) -> *mut c_char;
     pub fn g_get_prgname() -> *const c_char;
+    #[cfg(feature = "v2_92")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+    pub fn g_get_process_executable_dir() -> *const c_char;
     pub fn g_get_real_name() -> *const c_char;
     pub fn g_get_real_time() -> i64;
     pub fn g_get_system_config_dirs() -> *const *const c_char;

@@ -427,6 +427,19 @@ unsafe extern "C" {
     pub fn g_desktop_app_info_new_from_keyfile(
         key_file: *mut glib::GKeyFile,
     ) -> *mut GDesktopAppInfo;
+    #[cfg(feature = "v2_92")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+    pub fn g_desktop_app_info_get_default_for_intent(
+        interface: *const c_char,
+        scope: *const c_char,
+    ) -> *mut gio::GAppInfo;
+    #[cfg(feature = "v2_92")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+    pub fn g_desktop_app_info_get_for_intent(
+        interface: *const c_char,
+        scope: *const c_char,
+        out_n_results: *mut size_t,
+    ) -> *mut *mut gio::GAppInfo;
     pub fn g_desktop_app_info_get_implementations(interface: *const c_char) -> *mut glib::GList;
     pub fn g_desktop_app_info_search(search_string: *const c_char) -> *mut *mut *mut c_char;
     pub fn g_desktop_app_info_set_desktop_env(desktop_env: *const c_char);
@@ -441,6 +454,9 @@ unsafe extern "C" {
     pub fn g_desktop_app_info_get_categories(info: *mut GDesktopAppInfo) -> *const c_char;
     pub fn g_desktop_app_info_get_filename(info: *mut GDesktopAppInfo) -> *const c_char;
     pub fn g_desktop_app_info_get_generic_name(info: *mut GDesktopAppInfo) -> *const c_char;
+    #[cfg(feature = "v2_92")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+    pub fn g_desktop_app_info_get_intents(info: *mut GDesktopAppInfo) -> *const *const c_char;
     pub fn g_desktop_app_info_get_is_hidden(info: *mut GDesktopAppInfo) -> gboolean;
     pub fn g_desktop_app_info_get_keywords(info: *mut GDesktopAppInfo) -> *const *const c_char;
     pub fn g_desktop_app_info_get_locale_string(
@@ -464,6 +480,12 @@ unsafe extern "C" {
         key: *const c_char,
         length: *mut size_t,
     ) -> *mut *mut c_char;
+    #[cfg(feature = "v2_92")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+    pub fn g_desktop_app_info_has_intent(
+        info: *mut GDesktopAppInfo,
+        intent: *const c_char,
+    ) -> gboolean;
     pub fn g_desktop_app_info_has_key(info: *mut GDesktopAppInfo, key: *const c_char) -> gboolean;
     pub fn g_desktop_app_info_launch_action(
         info: *mut GDesktopAppInfo,
@@ -498,6 +520,14 @@ unsafe extern "C" {
         error: *mut *mut glib::GError,
     ) -> gboolean;
     pub fn g_desktop_app_info_list_actions(info: *mut GDesktopAppInfo) -> *const *const c_char;
+    #[cfg(feature = "v2_92")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+    pub fn g_desktop_app_info_set_as_default_for_intent(
+        info: *mut GDesktopAppInfo,
+        interface: *const c_char,
+        scope: *const c_char,
+        error: *mut *mut glib::GError,
+    ) -> gboolean;
 
     //=========================================================================
     // GUnixFDMessage

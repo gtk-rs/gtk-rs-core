@@ -88,6 +88,18 @@ impl DesktopAppInfo {
         }
     }
 
+    #[cfg(feature = "v2_92")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+    #[doc(alias = "g_desktop_app_info_get_intents")]
+    #[doc(alias = "get_intents")]
+    pub fn intents(&self) -> Vec<glib::GString> {
+        unsafe {
+            FromGlibPtrContainer::from_glib_none(ffi::g_desktop_app_info_get_intents(
+                self.to_glib_none().0,
+            ))
+        }
+    }
+
     #[doc(alias = "g_desktop_app_info_get_is_hidden")]
     #[doc(alias = "get_is_hidden")]
     pub fn is_hidden(&self) -> bool {
@@ -172,6 +184,18 @@ impl DesktopAppInfo {
         }
     }
 
+    #[cfg(feature = "v2_92")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+    #[doc(alias = "g_desktop_app_info_has_intent")]
+    pub fn has_intent(&self, intent: &str) -> bool {
+        unsafe {
+            from_glib(ffi::g_desktop_app_info_has_intent(
+                self.to_glib_none().0,
+                intent.to_glib_none().0,
+            ))
+        }
+    }
+
     #[doc(alias = "g_desktop_app_info_has_key")]
     pub fn has_key(&self, key: &str) -> bool {
         unsafe {
@@ -208,6 +232,63 @@ impl DesktopAppInfo {
             FromGlibPtrContainer::from_glib_none(ffi::g_desktop_app_info_list_actions(
                 self.to_glib_none().0,
             ))
+        }
+    }
+
+    #[cfg(feature = "v2_92")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+    #[doc(alias = "g_desktop_app_info_set_as_default_for_intent")]
+    pub fn set_as_default_for_intent(
+        &self,
+        interface: &str,
+        scope: Option<&str>,
+    ) -> Result<(), glib::Error> {
+        unsafe {
+            let mut error = std::ptr::null_mut();
+            let is_ok = ffi::g_desktop_app_info_set_as_default_for_intent(
+                self.to_glib_none().0,
+                interface.to_glib_none().0,
+                scope.to_glib_none().0,
+                &mut error,
+            );
+            debug_assert_eq!(is_ok == glib::ffi::GFALSE, !error.is_null());
+            if error.is_null() {
+                Ok(())
+            } else {
+                Err(from_glib_full(error))
+            }
+        }
+    }
+
+    #[cfg(feature = "v2_92")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+    #[doc(alias = "g_desktop_app_info_get_default_for_intent")]
+    #[doc(alias = "get_default_for_intent")]
+    pub fn default_for_intent(interface: &str, scope: Option<&str>) -> Option<gio::AppInfo> {
+        unsafe {
+            from_glib_full(ffi::g_desktop_app_info_get_default_for_intent(
+                interface.to_glib_none().0,
+                scope.to_glib_none().0,
+            ))
+        }
+    }
+
+    #[cfg(feature = "v2_92")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+    #[doc(alias = "g_desktop_app_info_get_for_intent")]
+    #[doc(alias = "get_for_intent")]
+    pub fn for_intent(interface: &str, scope: Option<&str>) -> Vec<gio::AppInfo> {
+        unsafe {
+            let mut out_n_results = std::mem::MaybeUninit::uninit();
+            let ret = FromGlibContainer::from_glib_full_num(
+                ffi::g_desktop_app_info_get_for_intent(
+                    interface.to_glib_none().0,
+                    scope.to_glib_none().0,
+                    out_n_results.as_mut_ptr(),
+                ),
+                out_n_results.assume_init() as _,
+            );
+            ret
         }
     }
 
