@@ -103,6 +103,9 @@ pub use self::constants::KEY_FILE_DESKTOP_KEY_EXEC;
 pub use self::constants::KEY_FILE_DESKTOP_KEY_GENERIC_NAME;
 pub use self::constants::KEY_FILE_DESKTOP_KEY_HIDDEN;
 pub use self::constants::KEY_FILE_DESKTOP_KEY_ICON;
+#[cfg(feature = "v2_92")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+pub use self::constants::KEY_FILE_DESKTOP_KEY_IMPLEMENTS;
 pub use self::constants::KEY_FILE_DESKTOP_KEY_MIME_TYPE;
 pub use self::constants::KEY_FILE_DESKTOP_KEY_NAME;
 pub use self::constants::KEY_FILE_DESKTOP_KEY_NO_DISPLAY;

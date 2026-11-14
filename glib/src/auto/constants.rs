@@ -37,6 +37,11 @@ pub static KEY_FILE_DESKTOP_KEY_HIDDEN: &GStr =
 #[doc(alias = "G_KEY_FILE_DESKTOP_KEY_ICON")]
 pub static KEY_FILE_DESKTOP_KEY_ICON: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_KEY_FILE_DESKTOP_KEY_ICON) };
+#[cfg(feature = "v2_92")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+#[doc(alias = "G_KEY_FILE_DESKTOP_KEY_IMPLEMENTS")]
+pub static KEY_FILE_DESKTOP_KEY_IMPLEMENTS: &GStr =
+    unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_KEY_FILE_DESKTOP_KEY_IMPLEMENTS) };
 #[doc(alias = "G_KEY_FILE_DESKTOP_KEY_MIME_TYPE")]
 pub static KEY_FILE_DESKTOP_KEY_MIME_TYPE: &GStr =
     unsafe { GStr::from_utf8_with_nul_unchecked(ffi::G_KEY_FILE_DESKTOP_KEY_MIME_TYPE) };

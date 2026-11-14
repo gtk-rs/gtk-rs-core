@@ -1177,6 +1177,7 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("G_KEY_FILE_DESKTOP_KEY_GENERIC_NAME", "GenericName"),
     ("G_KEY_FILE_DESKTOP_KEY_HIDDEN", "Hidden"),
     ("G_KEY_FILE_DESKTOP_KEY_ICON", "Icon"),
+    ("G_KEY_FILE_DESKTOP_KEY_IMPLEMENTS", "Implements"),
     ("G_KEY_FILE_DESKTOP_KEY_MIME_TYPE", "MimeType"),
     ("G_KEY_FILE_DESKTOP_KEY_NAME", "Name"),
     ("G_KEY_FILE_DESKTOP_KEY_NOT_SHOW_IN", "NotShowIn"),

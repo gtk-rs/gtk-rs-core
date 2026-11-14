@@ -378,7 +378,7 @@ pub const PANGO_ATTR_INDEX_TO_TEXT_END: c_uint = 4294967295;
 pub const PANGO_GLYPH_EMPTY: PangoGlyph = 268435455;
 pub const PANGO_GLYPH_INVALID_INPUT: PangoGlyph = 4294967295;
 pub const PANGO_GLYPH_UNKNOWN_FLAG: PangoGlyph = 268435456;
-pub const PANGO_RENDER_COMPONENT_ALL: c_int = 62;
+pub const PANGO_RENDER_COMPONENT_ALL: c_int = 63;
 pub const PANGO_SCALE: c_int = 1024;
 
 // Flags
@@ -412,9 +412,9 @@ pub const PANGO_LAYOUT_SERIALIZE_OUTPUT: PangoLayoutSerializeFlags = 2;
 
 pub type PangoRenderComponent = c_uint;
 pub const PANGO_RENDER_COMPONENT_NONE: PangoRenderComponent = 0;
-pub const PANGO_RENDER_COMPONENT_PLAIN_GLYPH: PangoRenderComponent = 2;
-pub const PANGO_RENDER_COMPONENT_COLOR_GLYPH: PangoRenderComponent = 4;
-pub const PANGO_RENDER_COMPONENT_BACKGROUND: PangoRenderComponent = 8;
+pub const PANGO_RENDER_COMPONENT_PLAIN_GLYPH: PangoRenderComponent = 1;
+pub const PANGO_RENDER_COMPONENT_COLOR_GLYPH: PangoRenderComponent = 2;
+pub const PANGO_RENDER_COMPONENT_BACKGROUND: PangoRenderComponent = 4;
 pub const PANGO_RENDER_COMPONENT_UNDERLINE: PangoRenderComponent = 8;
 pub const PANGO_RENDER_COMPONENT_STRIKETHROUGH: PangoRenderComponent = 16;
 pub const PANGO_RENDER_COMPONENT_OVERLINE: PangoRenderComponent = 32;
