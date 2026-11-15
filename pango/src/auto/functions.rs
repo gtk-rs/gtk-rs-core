@@ -2,6 +2,9 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
+#[cfg(feature = "v1_60")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_60")))]
+use crate::{AttrIterator, Context, Item};
 use crate::{AttrList, Direction, Stretch, Style, Variant, Weight, ffi};
 use glib::translate::*;
 
@@ -52,6 +55,35 @@ pub fn find_paragraph_boundary(text: &str) -> (i32, i32) {
 #[doc(alias = "pango_is_zero_width")]
 pub fn is_zero_width(ch: char) -> bool {
     unsafe { from_glib(ffi::pango_is_zero_width(ch.into_glib())) }
+}
+
+#[cfg(feature = "v1_60")]
+#[cfg_attr(docsrs, doc(cfg(feature = "v1_60")))]
+#[doc(alias = "pango_itemize_with_base_dir_and_embedding_levels")]
+pub fn itemize_with_base_dir_and_embedding_levels(
+    context: &Context,
+    base_dir: Direction,
+    text: &str,
+    start_index: i32,
+    length: i32,
+    attrs: Option<&AttrList>,
+    cached_iter: Option<&mut AttrIterator>,
+    embedding_levels: &[u8],
+) -> Vec<Item> {
+    let n_embedding_levels = embedding_levels.len() as _;
+    unsafe {
+        FromGlibPtrContainer::from_glib_full(ffi::pango_itemize_with_base_dir_and_embedding_levels(
+            context.to_glib_none().0,
+            base_dir.into_glib(),
+            text.to_glib_none().0,
+            start_index,
+            length,
+            attrs.to_glib_none().0,
+            cached_iter.to_glib_none_mut().0,
+            embedding_levels.to_glib_none().0,
+            n_embedding_levels,
+        ))
+    }
 }
 
 #[doc(alias = "pango_markup_parser_finish")]

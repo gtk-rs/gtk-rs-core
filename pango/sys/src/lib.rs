@@ -422,6 +422,8 @@ pub const PANGO_RENDER_COMPONENT_OVERLINE: PangoRenderComponent = 32;
 pub type PangoShapeFlags = c_uint;
 pub const PANGO_SHAPE_NONE: PangoShapeFlags = 0;
 pub const PANGO_SHAPE_ROUND_POSITIONS: PangoShapeFlags = 1;
+pub const PANGO_SHAPE_NOT_START_OF_PARAGRAPH: PangoShapeFlags = 4;
+pub const PANGO_SHAPE_NOT_END_OF_PARAGRAPH: PangoShapeFlags = 8;
 
 pub type PangoShowFlags = c_uint;
 pub const PANGO_SHOW_NONE: PangoShowFlags = 0;
@@ -1038,12 +1040,16 @@ impl ::std::fmt::Debug for PangoGlyphString {
 #[repr(C)]
 pub struct PangoGlyphVisAttr {
     pub is_cluster_start: c_uint,
+    pub unsafe_to_break: c_uint,
+    pub unsafe_to_concat: c_uint,
 }
 
 impl ::std::fmt::Debug for PangoGlyphVisAttr {
     fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
         f.debug_struct(&format!("PangoGlyphVisAttr @ {self:p}"))
             .field("is_cluster_start", &self.is_cluster_start)
+            .field("unsafe_to_break", &self.unsafe_to_break)
+            .field("unsafe_to_concat", &self.unsafe_to_concat)
             .finish()
     }
 }
@@ -2934,6 +2940,19 @@ unsafe extern "C" {
         length: c_int,
         attrs: *mut PangoAttrList,
         cached_iter: *mut PangoAttrIterator,
+    ) -> *mut glib::GList;
+    #[cfg(feature = "v1_60")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v1_60")))]
+    pub fn pango_itemize_with_base_dir_and_embedding_levels(
+        context: *mut PangoContext,
+        base_dir: PangoDirection,
+        text: *const c_char,
+        start_index: c_int,
+        length: c_int,
+        attrs: *mut PangoAttrList,
+        cached_iter: *mut PangoAttrIterator,
+        embedding_levels: *const u8,
+        n_embedding_levels: c_int,
     ) -> *mut glib::GList;
     pub fn pango_log2vis_get_embedding_levels(
         text: *const c_char,

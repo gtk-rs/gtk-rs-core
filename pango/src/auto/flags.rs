@@ -437,6 +437,10 @@ bitflags! {
         const NONE = ffi::PANGO_SHAPE_NONE as _;
         #[doc(alias = "PANGO_SHAPE_ROUND_POSITIONS")]
         const ROUND_POSITIONS = ffi::PANGO_SHAPE_ROUND_POSITIONS as _;
+        #[doc(alias = "PANGO_SHAPE_NOT_START_OF_PARAGRAPH")]
+        const NOT_START_OF_PARAGRAPH = ffi::PANGO_SHAPE_NOT_START_OF_PARAGRAPH as _;
+        #[doc(alias = "PANGO_SHAPE_NOT_END_OF_PARAGRAPH")]
+        const NOT_END_OF_PARAGRAPH = ffi::PANGO_SHAPE_NOT_END_OF_PARAGRAPH as _;
     }
 }
 
