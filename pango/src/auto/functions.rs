@@ -67,7 +67,7 @@ pub fn itemize_with_base_dir_and_embedding_levels(
     start_index: i32,
     length: i32,
     attrs: Option<&AttrList>,
-    cached_iter: Option<&mut AttrIterator>,
+    cached_iter: Option<&AttrIterator>,
     embedding_levels: &[u8],
 ) -> Vec<Item> {
     let n_embedding_levels = embedding_levels.len() as _;
@@ -79,7 +79,7 @@ pub fn itemize_with_base_dir_and_embedding_levels(
             start_index,
             length,
             attrs.to_glib_none().0,
-            cached_iter.to_glib_none_mut().0,
+            mut_override(cached_iter.to_glib_none().0),
             embedding_levels.to_glib_none().0,
             n_embedding_levels,
         ))
