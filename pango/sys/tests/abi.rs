@@ -940,6 +940,8 @@ const RUST_CONSTANTS: &[(&str, &str)] = &[
     ("(gint) PANGO_SCRIPT_WARANG_CITI", "110"),
     ("(gint) PANGO_SCRIPT_YI", "41"),
     ("(guint) PANGO_SHAPE_NONE", "0"),
+    ("(guint) PANGO_SHAPE_NOT_END_OF_PARAGRAPH", "8"),
+    ("(guint) PANGO_SHAPE_NOT_START_OF_PARAGRAPH", "4"),
     ("(guint) PANGO_SHAPE_ROUND_POSITIONS", "1"),
     ("(guint) PANGO_SHOW_IGNORABLES", "4"),
     ("(guint) PANGO_SHOW_LINE_BREAKS", "2"),
