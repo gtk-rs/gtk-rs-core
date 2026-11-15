@@ -14,6 +14,10 @@
 use glib_sys as glib;
 use gobject_sys as gobject;
 
+mod manual;
+
+pub use manual::*;
+
 #[allow(unused_imports)]
 use libc::{FILE, intptr_t, off_t, size_t, ssize_t, time_t, uintptr_t};
 #[cfg(unix)]
@@ -1032,24 +1036,6 @@ impl ::std::fmt::Debug for PangoGlyphString {
             .field("num_glyphs", &self.num_glyphs)
             .field("glyphs", &self.glyphs)
             .field("log_clusters", &self.log_clusters)
-            .finish()
-    }
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PangoGlyphVisAttr {
-    pub is_cluster_start: c_uint,
-    pub unsafe_to_break: c_uint,
-    pub unsafe_to_concat: c_uint,
-}
-
-impl ::std::fmt::Debug for PangoGlyphVisAttr {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        f.debug_struct(&format!("PangoGlyphVisAttr @ {self:p}"))
-            .field("is_cluster_start", &self.is_cluster_start)
-            .field("unsafe_to_break", &self.unsafe_to_break)
-            .field("unsafe_to_concat", &self.unsafe_to_concat)
             .finish()
     }
 }
