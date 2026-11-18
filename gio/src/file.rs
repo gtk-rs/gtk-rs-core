@@ -6,9 +6,7 @@ use glib::{prelude::*, translate::*};
 
 #[cfg(feature = "v2_74")]
 use crate::FileIOStream;
-use crate::{
-    Cancellable, File, FileAttributeValue, FileCreateFlags, FileEnumerator, FileQueryInfoFlags, ffi,
-};
+use crate::{Cancellable, File, FileAttributeValue, FileCreateFlags, FileQueryInfoFlags, ffi};
 
 impl File {
     #[cfg(feature = "v2_74")]
@@ -272,93 +270,6 @@ pub trait FileExtManual: IsA<File> + Sized {
                     etag.as_ref().map(|s| s.as_str()),
                     make_backup,
                     flags,
-                    Some(cancellable),
-                    move |res| {
-                        send.resolve(res);
-                    },
-                );
-            },
-        ))
-    }
-
-    #[doc(alias = "g_file_enumerate_children_async")]
-    fn enumerate_children_async<
-        P: IsA<Cancellable>,
-        Q: FnOnce(Result<FileEnumerator, glib::Error>) + 'static,
-    >(
-        &self,
-        attributes: &str,
-        flags: FileQueryInfoFlags,
-        io_priority: glib::Priority,
-        cancellable: Option<&P>,
-        callback: Q,
-    ) {
-        let main_context = glib::MainContext::ref_thread_default();
-        let is_main_context_owner = main_context.is_owner();
-        let has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
-            .flatten();
-        assert!(
-            is_main_context_owner || has_acquired_main_context.is_some(),
-            "Async operations only allowed if the thread is owning the MainContext"
-        );
-
-        let user_data: Box<glib::thread_guard::ThreadGuard<Q>> =
-            Box::new(glib::thread_guard::ThreadGuard::new(callback));
-        unsafe extern "C" fn create_async_trampoline<
-            Q: FnOnce(Result<FileEnumerator, glib::Error>) + 'static,
-        >(
-            _source_object: *mut glib::gobject_ffi::GObject,
-            res: *mut crate::ffi::GAsyncResult,
-            user_data: glib::ffi::gpointer,
-        ) {
-            unsafe {
-                let mut error = ptr::null_mut();
-                let ret = ffi::g_file_enumerate_children_finish(
-                    _source_object as *mut _,
-                    res,
-                    &mut error,
-                );
-                let result = if error.is_null() {
-                    Ok(from_glib_full(ret))
-                } else {
-                    Err(from_glib_full(error))
-                };
-                let callback: Box<glib::thread_guard::ThreadGuard<Q>> =
-                    Box::from_raw(user_data as *mut _);
-                let callback = callback.into_inner();
-                callback(result);
-            }
-        }
-        let callback = create_async_trampoline::<Q>;
-        unsafe {
-            ffi::g_file_enumerate_children_async(
-                self.as_ref().to_glib_none().0,
-                attributes.to_glib_none().0,
-                flags.into_glib(),
-                io_priority.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().0,
-                Some(callback),
-                Box::into_raw(user_data) as *mut _,
-            );
-        }
-    }
-
-    fn enumerate_children_future(
-        &self,
-        attributes: &str,
-        flags: FileQueryInfoFlags,
-        io_priority: glib::Priority,
-    ) -> Pin<Box<dyn std::future::Future<Output = Result<FileEnumerator, glib::Error>> + 'static>>
-    {
-        let attributes = attributes.to_owned();
-        Box::pin(crate::GioFuture::new(
-            self,
-            move |obj, cancellable, send| {
-                obj.enumerate_children_async(
-                    &attributes,
-                    flags,
-                    io_priority,
                     Some(cancellable),
                     move |res| {
                         send.resolve(res);
