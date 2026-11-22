@@ -40,11 +40,6 @@ pub trait DBusObjectProxyExt: IsA<DBusObjectProxy> + 'static {
         }
     }
 
-    #[doc(alias = "g-connection")]
-    fn g_connection(&self) -> Option<DBusConnection> {
-        ObjectExt::property(self.as_ref(), "g-connection")
-    }
-
     #[doc(alias = "g-object-path")]
     fn g_object_path(&self) -> Option<glib::GString> {
         ObjectExt::property(self.as_ref(), "g-object-path")

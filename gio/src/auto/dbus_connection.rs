@@ -822,6 +822,13 @@ impl DBusConnection {
         ObjectExt::property(self, "flags")
     }
 
+    #[cfg(feature = "v2_92")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "v2_92")))]
+    #[doc(alias = "max-message-unix-fds")]
+    pub fn max_message_unix_fds(&self) -> u32 {
+        ObjectExt::property(self, "max-message-unix-fds")
+    }
+
     #[doc(alias = "g_dbus_connection_new")]
     pub fn new<P: FnOnce(Result<DBusConnection, glib::Error>) + 'static>(
         stream: &impl IsA<IOStream>,
