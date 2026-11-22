@@ -29,7 +29,7 @@ impl BindingGroup {
     #[doc(alias = "dup_source")]
     pub fn source(&self) -> Option<Object> {
         unsafe {
-            from_glib_none(crate::gobject_ffi::g_binding_group_dup_source(
+            from_glib_full(crate::gobject_ffi::g_binding_group_dup_source(
                 self.to_glib_none().0,
             ))
         }
