@@ -45,7 +45,7 @@ impl Pixbuf {
         width: i32,
         height: i32,
         rowstride: i32,
-    ) -> Pixbuf {
+    ) -> Option<Pixbuf> {
         unsafe {
             from_glib_full(ffi::gdk_pixbuf_new_from_bytes(
                 data.to_glib_none().0,
@@ -486,7 +486,7 @@ impl Pixbuf {
 
     #[doc(alias = "gdk_pixbuf_new_subpixbuf")]
     #[must_use]
-    pub fn new_subpixbuf(&self, src_x: i32, src_y: i32, width: i32, height: i32) -> Pixbuf {
+    pub fn new_subpixbuf(&self, src_x: i32, src_y: i32, width: i32, height: i32) -> Option<Pixbuf> {
         unsafe {
             from_glib_full(ffi::gdk_pixbuf_new_subpixbuf(
                 self.to_glib_none().0,
