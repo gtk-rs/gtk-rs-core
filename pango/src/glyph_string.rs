@@ -47,7 +47,10 @@ impl GlyphString {
     pub fn logical_widths(&self, text: &str, rtl: bool) -> Vec<i32> {
         let count = text.chars().count();
         unsafe {
-            let mut logical_widths = Vec::with_capacity(count);
+            // Pango only initializes the entries covered by the shaped
+            // glyphs; zero-initialize the rest instead of exposing
+            // uninitialized memory.
+            let mut logical_widths = vec![0i32; count];
             ffi::pango_glyph_string_get_logical_widths(
                 mut_override(self.to_glib_none().0),
                 text.as_ptr() as *const _,
@@ -55,7 +58,6 @@ impl GlyphString {
                 rtl as i32,
                 logical_widths.as_mut_ptr(),
             );
-            logical_widths.set_len(count);
             logical_widths
         }
     }

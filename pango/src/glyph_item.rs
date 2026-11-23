@@ -18,13 +18,15 @@ impl GlyphItem {
     pub fn logical_widths(&self, text: &str) -> Vec<i32> {
         let count = text.chars().count();
         unsafe {
-            let mut logical_widths = Vec::with_capacity(count);
+            // Pango only initializes the entries covered by this item's
+            // glyphs; zero-initialize the rest instead of exposing
+            // uninitialized memory.
+            let mut logical_widths = vec![0i32; count];
             ffi::pango_glyph_item_get_logical_widths(
                 mut_override(self.to_glib_none().0),
                 text.to_glib_none().0,
                 logical_widths.as_mut_ptr(),
             );
-            logical_widths.set_len(count);
             logical_widths
         }
     }
