@@ -2,7 +2,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use crate::{AsyncResult, Cancellable, Initable, InputStream, OutputStream, SubprocessFlags, ffi};
+use crate::{AsyncResult, Cancellable, Initable, InputStream, OutputStream, ffi};
 use glib::{prelude::*, translate::*};
 use std::{boxed::Box as Box_, pin::Pin};
 
@@ -20,22 +20,6 @@ impl Subprocess {
     //pub fn new(flags: SubprocessFlags, error: Option<&mut glib::Error>, argv0: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -> Subprocess {
     //    unsafe { TODO: call ffi:g_subprocess_new() }
     //}
-
-    #[doc(alias = "g_subprocess_newv")]
-    pub fn newv(
-        argv: &[&std::ffi::OsStr],
-        flags: SubprocessFlags,
-    ) -> Result<Subprocess, glib::Error> {
-        unsafe {
-            let mut error = std::ptr::null_mut();
-            let ret = ffi::g_subprocess_newv(argv.to_glib_none().0, flags.into_glib(), &mut error);
-            if error.is_null() {
-                Ok(from_glib_full(ret))
-            } else {
-                Err(from_glib_full(error))
-            }
-        }
-    }
 
     #[doc(alias = "g_subprocess_communicate")]
     pub fn communicate(

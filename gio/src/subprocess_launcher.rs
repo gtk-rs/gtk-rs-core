@@ -5,8 +5,8 @@ use std::os::unix::io::{AsFd, AsRawFd, IntoRawFd, OwnedFd};
 
 use glib::translate::*;
 
-use crate::SubprocessLauncher;
 use crate::ffi;
+use crate::{IOErrorEnum, Subprocess, SubprocessLauncher};
 
 #[cfg(all(docsrs, not(unix)))]
 pub trait IntoRawFd: Sized {
@@ -16,6 +16,36 @@ pub trait IntoRawFd: Sized {
 }
 
 impl SubprocessLauncher {
+    #[doc(alias = "g_subprocess_launcher_spawnv")]
+    #[doc(alias = "spawnv")]
+    pub fn spawn(&self, argv: &[&std::ffi::OsStr]) -> Result<Subprocess, glib::Error> {
+        if argv.is_empty() || argv[0].is_empty() {
+            return Err(glib::Error::new(
+                IOErrorEnum::InvalidArgument,
+                "argv must contain at least one non-empty element",
+            ));
+        }
+
+        unsafe {
+            let mut error = std::ptr::null_mut();
+            let ret = ffi::g_subprocess_launcher_spawnv(
+                self.to_glib_none().0,
+                argv.to_glib_none().0,
+                &mut error,
+            );
+            if !error.is_null() {
+                Err(from_glib_full(error))
+            } else if ret.is_null() {
+                Err(glib::Error::new(
+                    IOErrorEnum::InvalidArgument,
+                    "g_subprocess_launcher_spawnv() returned NULL without setting an error",
+                ))
+            } else {
+                Ok(from_glib_full(ret))
+            }
+        }
+    }
+
     #[doc(alias = "g_subprocess_launcher_set_environ")]
     pub fn set_environ(&self, env: &[std::ffi::OsString]) {
         unsafe {
