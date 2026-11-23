@@ -75,7 +75,7 @@
 <a href=#2 id=2 data-nosnippet>2</a>// from gir-files (https://github.com/gtk-rs/gir-files)
 <a href=#3 id=3 data-nosnippet>3</a>// DO NOT EDIT
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{<a href="subprocess.rs.html#9-97">Subprocess</a>, <a href="flags.rs.html#3254-3316">SubprocessFlags</a>, <a href="../../../gio_sys/index.html">ffi</a>};
+<a href=#5 id=5 data-nosnippet>5</a></span><span class="kw">use crate</span>::{<a href="flags.rs.html#3254-3316">SubprocessFlags</a>, <a href="../../../gio_sys/index.html">ffi</a>};
 <a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span><a href="../../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 <a href=#7 id=7 data-nosnippet>7</a><span class="attr">#[cfg(unix)]
 <a href=#8 id=8 data-nosnippet>8</a>#[cfg_attr(docsrs, doc(cfg(unix)))]
@@ -362,49 +362,22 @@
 <a href=#289 id=289 data-nosnippet>289</a>    //    unsafe { TODO: call ffi:g_subprocess_launcher_spawn() }
 <a href=#290 id=290 data-nosnippet>290</a>    //}
 <a href=#291 id=291 data-nosnippet>291</a>
-<a href=#292 id=292 data-nosnippet>292</a>    </span><span class="doccomment">/// Creates a #GSubprocess given a provided varargs list of arguments.
-<a href=#293 id=293 data-nosnippet>293</a>    /// ## `error`
-<a href=#294 id=294 data-nosnippet>294</a>    /// Error
-<a href=#295 id=295 data-nosnippet>295</a>    /// ## `argv0`
-<a href=#296 id=296 data-nosnippet>296</a>    /// Command line arguments
-<a href=#297 id=297 data-nosnippet>297</a>    ///
-<a href=#298 id=298 data-nosnippet>298</a>    /// # Returns
-<a href=#299 id=299 data-nosnippet>299</a>    ///
-<a href=#300 id=300 data-nosnippet>300</a>    /// A new #GSubprocess, or [`None`] on error (and @error will be set)
-<a href=#301 id=301 data-nosnippet>301</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_subprocess_launcher_spawnv"</span>)]
-<a href=#302 id=302 data-nosnippet>302</a>    #[doc(alias = <span class="string">"spawnv"</span>)]
-<a href=#303 id=303 data-nosnippet>303</a>    </span><span class="kw">pub fn </span>spawn(<span class="kw-2">&amp;</span><span class="self">self</span>, argv: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>std::ffi::<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html">OsStr</a>]) -&gt; <a class="prelude-ty" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html">Result</a>&lt;<a href="subprocess.rs.html#9-97">Subprocess</a>, glib::<a href="../../../glib/error/struct.Error.html">Error</a>&gt; {
-<a href=#304 id=304 data-nosnippet>304</a>        <span class="kw">unsafe </span>{
-<a href=#305 id=305 data-nosnippet>305</a>            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::<a href="https://doc.rust-lang.org/nightly/core/ptr/fn.null_mut.html">null_mut</a>();
-<a href=#306 id=306 data-nosnippet>306</a>            <span class="kw">let </span>ret = ffi::<a href="../../../gio_sys/fn.g_subprocess_launcher_spawnv.html">g_subprocess_launcher_spawnv</a>(
-<a href=#307 id=307 data-nosnippet>307</a>                <a class="self" href="#303">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#308 id=308 data-nosnippet>308</a>                <a href="#303">argv</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#309 id=309 data-nosnippet>309</a>                <span class="kw-2">&amp;mut </span><a href="#305">error</a>,
-<a href=#310 id=310 data-nosnippet>310</a>            );
-<a href=#311 id=311 data-nosnippet>311</a>            <span class="kw">if </span><a href="#305">error</a>.<a href="https://doc.rust-lang.org/nightly/core/primitive.pointer.html#method.is_null">is_null</a>() {
-<a href=#312 id=312 data-nosnippet>312</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Ok">Ok</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#306">ret</a>))
-<a href=#313 id=313 data-nosnippet>313</a>            } <span class="kw">else </span>{
-<a href=#314 id=314 data-nosnippet>314</a>                <a class="prelude-val" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html#variant.Err">Err</a>(<a href="../../../glib/translate/fn.from_glib_full.html">from_glib_full</a>(<a href="#305">error</a>))
-<a href=#315 id=315 data-nosnippet>315</a>            }
-<a href=#316 id=316 data-nosnippet>316</a>        }
-<a href=#317 id=317 data-nosnippet>317</a>    }
-<a href=#318 id=318 data-nosnippet>318</a>
-<a href=#319 id=319 data-nosnippet>319</a>    <span class="doccomment">/// Removes the environment variable @variable from the environment of
-<a href=#320 id=320 data-nosnippet>320</a>    /// processes launched from this launcher.
-<a href=#321 id=321 data-nosnippet>321</a>    ///
-<a href=#322 id=322 data-nosnippet>322</a>    /// On UNIX, the variable's name can be an arbitrary byte string not
-<a href=#323 id=323 data-nosnippet>323</a>    /// containing '='. On Windows, it should be in UTF-8.
-<a href=#324 id=324 data-nosnippet>324</a>    /// ## `variable`
-<a href=#325 id=325 data-nosnippet>325</a>    /// the environment variable to unset,
-<a href=#326 id=326 data-nosnippet>326</a>    ///     must not contain '='
-<a href=#327 id=327 data-nosnippet>327</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_subprocess_launcher_unsetenv"</span>)]
-<a href=#328 id=328 data-nosnippet>328</a>    </span><span class="kw">pub fn </span>unsetenv(<span class="kw-2">&amp;</span><span class="self">self</span>, variable: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;std::ffi::<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html">OsStr</a>&gt;) {
-<a href=#329 id=329 data-nosnippet>329</a>        <span class="kw">unsafe </span>{
-<a href=#330 id=330 data-nosnippet>330</a>            ffi::<a href="../../../gio_sys/fn.g_subprocess_launcher_unsetenv.html">g_subprocess_launcher_unsetenv</a>(
-<a href=#331 id=331 data-nosnippet>331</a>                <a class="self" href="#328">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#332 id=332 data-nosnippet>332</a>                <a href="#328">variable</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
-<a href=#333 id=333 data-nosnippet>333</a>            );
-<a href=#334 id=334 data-nosnippet>334</a>        }
-<a href=#335 id=335 data-nosnippet>335</a>    }
-<a href=#336 id=336 data-nosnippet>336</a>}
+<a href=#292 id=292 data-nosnippet>292</a>    </span><span class="doccomment">/// Removes the environment variable @variable from the environment of
+<a href=#293 id=293 data-nosnippet>293</a>    /// processes launched from this launcher.
+<a href=#294 id=294 data-nosnippet>294</a>    ///
+<a href=#295 id=295 data-nosnippet>295</a>    /// On UNIX, the variable's name can be an arbitrary byte string not
+<a href=#296 id=296 data-nosnippet>296</a>    /// containing '='. On Windows, it should be in UTF-8.
+<a href=#297 id=297 data-nosnippet>297</a>    /// ## `variable`
+<a href=#298 id=298 data-nosnippet>298</a>    /// the environment variable to unset,
+<a href=#299 id=299 data-nosnippet>299</a>    ///     must not contain '='
+<a href=#300 id=300 data-nosnippet>300</a>    </span><span class="attr">#[doc(alias = <span class="string">"g_subprocess_launcher_unsetenv"</span>)]
+<a href=#301 id=301 data-nosnippet>301</a>    </span><span class="kw">pub fn </span>unsetenv(<span class="kw-2">&amp;</span><span class="self">self</span>, variable: <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">AsRef</a>&lt;std::ffi::<a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html">OsStr</a>&gt;) {
+<a href=#302 id=302 data-nosnippet>302</a>        <span class="kw">unsafe </span>{
+<a href=#303 id=303 data-nosnippet>303</a>            ffi::<a href="../../../gio_sys/fn.g_subprocess_launcher_unsetenv.html">g_subprocess_launcher_unsetenv</a>(
+<a href=#304 id=304 data-nosnippet>304</a>                <a class="self" href="#301">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#305 id=305 data-nosnippet>305</a>                <a href="#301">variable</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html#tymethod.as_ref">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html#tymethod.to_glib_none">to_glib_none</a>().<span class="number">0</span>,
+<a href=#306 id=306 data-nosnippet>306</a>            );
+<a href=#307 id=307 data-nosnippet>307</a>        }
+<a href=#308 id=308 data-nosnippet>308</a>    }
+<a href=#309 id=309 data-nosnippet>309</a>}
 </code></pre></div></section></main></body></html>
