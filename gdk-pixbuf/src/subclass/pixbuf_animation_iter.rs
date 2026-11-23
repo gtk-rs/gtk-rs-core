@@ -143,6 +143,11 @@ unsafe extern "C" fn animation_iter_get_delay_time<T: PixbufAnimationIterImpl>(
     }
 }
 
+fn pixbuf_quark() -> glib::Quark {
+    static QUARK: OnceLock<glib::Quark> = OnceLock::new();
+    *QUARK.get_or_init(|| glib::Quark::from_str("gtk-rs-subclass-pixbuf"))
+}
+
 unsafe extern "C" fn animation_iter_get_pixbuf<T: PixbufAnimationIterImpl>(
     ptr: *mut ffi::GdkPixbufAnimationIter,
 ) -> *mut ffi::GdkPixbuf {
@@ -150,13 +155,18 @@ unsafe extern "C" fn animation_iter_get_pixbuf<T: PixbufAnimationIterImpl>(
         let instance = &*(ptr as *mut T::Instance);
         let imp = instance.imp();
 
+        // The pixbuf must stay valid until gdk_pixbuf_animation_iter_advance()
+        // changes the frame. Return the cached pixbuf for repeated calls in the
+        // same frame instead of replacing (and freeing) it every time.
+        let quark = pixbuf_quark();
+        if let Some(cached) = imp.obj().qdata::<Option<Pixbuf>>(quark) {
+            if let Some(pixbuf) = cached.as_ref() {
+                return pixbuf.to_glib_none().0;
+            }
+        }
+
         let pixbuf = imp.pixbuf();
-        // Ensure that the pixbuf stays alive until the next call
-        let pixbuf_quark = {
-            static QUARK: OnceLock<glib::Quark> = OnceLock::new();
-            *QUARK.get_or_init(|| glib::Quark::from_str("gtk-rs-subclass-pixbuf"))
-        };
-        imp.obj().set_qdata(pixbuf_quark, pixbuf.clone());
+        imp.obj().set_qdata(quark, Some(pixbuf.clone()));
         pixbuf.to_glib_none().0
     }
 }
@@ -184,6 +194,12 @@ unsafe extern "C" fn animation_iter_advance<T: PixbufAnimationIterImpl>(
             + Duration::from_secs((*current_time_ptr).tv_sec.try_into().unwrap())
             + Duration::from_micros((*current_time_ptr).tv_usec.try_into().unwrap());
 
-        imp.advance(current_time).into_glib()
+        let advanced = imp.advance(current_time);
+        if advanced {
+            // The frame changed: the previously returned pixbuf becomes
+            // invalid now, so drop the cached reference.
+            imp.obj().set_qdata(pixbuf_quark(), None::<Pixbuf>);
+        }
+        advanced.into_glib()
     }
 }
