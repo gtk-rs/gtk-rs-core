@@ -159,10 +159,10 @@ unsafe extern "C" fn animation_iter_get_pixbuf<T: PixbufAnimationIterImpl>(
         // changes the frame. Return the cached pixbuf for repeated calls in the
         // same frame instead of replacing (and freeing) it every time.
         let quark = pixbuf_quark();
-        if let Some(cached) = imp.obj().qdata::<Option<Pixbuf>>(quark) {
-            if let Some(pixbuf) = cached.as_ref() {
-                return pixbuf.to_glib_none().0;
-            }
+        if let Some(cached) = imp.obj().qdata::<Option<Pixbuf>>(quark)
+            && let Some(pixbuf) = cached.as_ref()
+        {
+            return pixbuf.to_glib_none().0;
         }
 
         let pixbuf = imp.pixbuf();
