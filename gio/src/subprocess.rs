@@ -1,13 +1,38 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
-use std::{pin::Pin, ptr};
+use std::{ffi::OsStr, pin::Pin, ptr};
 
 use glib::{GString, prelude::*, translate::*};
 use libc::c_char;
 
-use crate::{Cancellable, Subprocess, ffi};
+use crate::{Cancellable, IOErrorEnum, Subprocess, SubprocessFlags, ffi};
 
 impl Subprocess {
+    #[doc(alias = "g_subprocess_newv")]
+    pub fn newv(argv: &[&OsStr], flags: SubprocessFlags) -> Result<Subprocess, glib::Error> {
+        if argv.is_empty() || argv[0].is_empty() {
+            return Err(glib::Error::new(
+                IOErrorEnum::InvalidArgument,
+                "argv must contain at least one non-empty element",
+            ));
+        }
+
+        unsafe {
+            let mut error = ptr::null_mut();
+            let ret = ffi::g_subprocess_newv(argv.to_glib_none().0, flags.into_glib(), &mut error);
+            if !error.is_null() {
+                Err(from_glib_full(error))
+            } else if ret.is_null() {
+                Err(glib::Error::new(
+                    IOErrorEnum::InvalidArgument,
+                    "g_subprocess_newv() returned NULL without setting an error",
+                ))
+            } else {
+                Ok(from_glib_full(ret))
+            }
+        }
+    }
+
     #[doc(alias = "g_subprocess_communicate_utf8_async")]
     pub fn communicate_utf8_async<
         R: FnOnce(Result<(Option<GString>, Option<GString>), glib::Error>) + 'static,
