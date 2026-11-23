@@ -181,7 +181,7 @@ mod tests {
     #[test]
     fn attr_iterator() {
         let default_lang = crate::Language::default();
-        let attributes = crate::AttrList::new();
+        let mut attributes = crate::AttrList::new();
         attributes.insert(crate::AttrColor::new_foreground(0x2000, 0x2000, 0x2000));
         attributes.insert(crate::AttrSize::new(10 * crate::SCALE));
         attributes.insert(crate::AttrLanguage::new(&default_lang));
