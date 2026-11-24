@@ -1,5 +1,8 @@
 // Take a look at the license at the top of the repository in the LICENSE file.
 
+#![cfg_attr(feature = "strict-provenance", feature(strict_provenance_lints))]
+#![cfg_attr(feature = "strict-provenance", deny(fuzzy_provenance_casts))]
+#![cfg_attr(feature = "strict-provenance", deny(lossy_provenance_casts))]
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #![allow(clippy::type_complexity)]
 #![allow(clippy::too_many_arguments)]
